@@ -6,7 +6,6 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 ### :movie_camera: Demo
 [![YouTube](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/homepage.png)](https://www.youtube.com/watch?v=OYd8R6s_UZs)
 
----
 
 ## 🚀 Features
 
@@ -18,8 +17,6 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 - **Voice Input**: Use voice commands to describe your desired recipe.
 - **Text-to-Speech**: Listen to recipe instructions while cooking.
 - **Smart Filtering**: Filter recipes by dietary restrictions and cuisine types.
-
----
 
 ## 🎯 Key Functionalities
 
@@ -41,10 +38,9 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
    - Text-to-speech for recipe instructions
    - Responsive design for all devices
    - Clear, readable typography
-
----
-
-## 📸 Screenshots
+  
+   
+## Screenshots
 
 Here are some screenshots of the project in action:
 
@@ -56,8 +52,6 @@ Here are some screenshots of the project in action:
 |--------------|--------------|
 | ![Screenshot 3](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/Category.png) | ![Screenshot 4](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/RandomRecipe.png) |
 
----
-
 ## 🖥️ Tech Stack
 
 - **Frontend**: Next.js
@@ -66,36 +60,29 @@ Here are some screenshots of the project in action:
 - **AI Integration**: OpenAI/Groq API
 - **Hosting**: Vercel
 
----
-
 ## 📦 Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Ayushjhawar8/flavor-ai.git
-````
+   ```
 
-2. Add Your Groq API key in `.env.sample` file and change file name to `.env`:
-
+2. Add Your Groq Api key in `.env.sample` file and change file name to `.env`:
    ```bash
    GROQ_API_KEY=your_api_key_here
    ```
 
 3. Install dependencies:
-
    ```bash
    cd Flavor-ai && npm install
    ```
 
 4. Run the development server:
-
    ```bash
    npm run dev
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
 
 ## 🎨 Project Structure
 
@@ -108,41 +95,29 @@ flavor-ai/
 │   └── random/          # Random recipe page
 ├── components/          # Reusable components
 ├── lib/                 # Utility functions
-└── public/              # Static assets
+└── public/             # Static assets
 ```
-
----
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
----
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
 ## 🙏 Acknowledgments
 
-* Built with [Next.js](https://nextjs.org/), [CodeBuff](https://www.codebuff.com/docs/help#getting-started-with-codebuff)
-* Styled with [Tailwind CSS](https://tailwindcss.com/)
-* UI components from [DaisyUI](https://daisyui.com/)
-* AI powered by [Groq](https://groq.com/)
-
----
+- Built with [Next.js](https://nextjs.org/), [CodeBuff](https://www.codebuff.com/docs/help#getting-started-with-codebuff)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- UI components from [DaisyUI](https://daisyui.com/)
+- AI powered by [Groq](https://groq.com/)
 
 ## 🔗 Links
 
-* [Live Demo](https://flavor-ai-dish.netlify.app/)
-* [GitHub Repository](https://github.com/Ayushjhawar8/flavor-ai)
+- [Live Demo](https://flavor-ai-dish.netlify.app/)
+- [GitHub Repository](https://github.com/Ayushjhawar8/flavor-ai)
 
 ---
+Built with CodeBuff 🚀
 
-[🔝 Back to Top](#flavor-ai)
-
-```
-
----
