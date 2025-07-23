@@ -177,45 +177,47 @@ export default function Page() {
 
         {/* Categories section */}
         {showCategories && (
-          <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-indigo-50 to-blue-100 rounded-lg shadow-lg">
-            <h1 className="text-xl md:text-3xl text-gray-700 mb-10 font-semibold text-center">
-              A Taste for Every Mood and Moment
-            </h1>
+        <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-indigo-50 to-blue-100 rounded-lg shadow-lg">
+  <h1 className="text-xl md:text-3xl text-gray-700 mb-10 font-semibold text-center">
+    A Taste for Every Mood and Moment
+  </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
-              {categories.map((category) => (
-                <div
-                  key={category.idCategory}
-                  className="card card-compact w-full bg-white shadow-lg rounded-lg overflow-hidden"
-                >
-                  <figure>
-                    <img
-                      src={category.strCategoryThumb}
-                      alt={category.strCategory}
-                      className="w-full h-48 object-cover"
-                    />
-                  </figure>
-                  <div className="card-body p-4">
-                    <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center">
-                      <PlusIcon />
-                      {category.strCategory}
-                    </h2>
-                    <p className="text-sm md:text-base text-gray-600">
-                      {category.strCategoryDescription.slice(0, 150) + " ..."}
-                    </p>
-                    <Link
-                      className="card-actions justify-end"
-                      href={`/category/${category.strCategory}`}
-                    >
-                      <button className="btn bg-blue-500 hover:bg-blue-700 text-white text-sm md:text-base shadow-md">
-                        Explore
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+  {/* THIS IS THE CRUCIAL PART FOR THE GRID LAYOUT */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+    {categories.map((category) => (
+      <div
+        key={category.idCategory}
+        className="card card-compact w-full bg-white shadow-xl rounded-lg overflow-hidden transform transition duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 cursor-pointer"
+      >
+        <figure>
+          <img
+            src={category.strCategoryThumb}
+            alt={category.strCategory}
+            className="w-full h-48 object-cover"
+          />
+        </figure>
+        <div className="card-body p-4">
+          <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center">
+            {/* Assuming PlusIcon component exists */}
+            <PlusIcon />
+            {category.strCategory}
+          </h2>
+          <p className="text-sm md:text-base text-gray-600">
+            {category.strCategoryDescription.slice(0, 150) + " ..."}
+          </p>
+          <Link
+            className="card-actions justify-end"
+            href={`/category/${category.strCategory}`}
+          >
+            <button className="btn bg-blue-500 hover:bg-blue-700 text-white text-sm md:text-base shadow-md">
+              Explore
+            </button>
+          </Link>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
         )}
 
         <footer className="footer rounded-md mt-10 p-10 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white footer-center">
