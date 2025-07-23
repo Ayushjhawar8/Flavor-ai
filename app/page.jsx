@@ -77,8 +77,10 @@ export default function Page() {
     <>
       {/* Navbar */}
       <div
-        className={`navbar fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg flex flex-col md:flex-row transition-all duration-300 ${
-          isScrolled ? "backdrop-blur-md bg-opacity-30" : "bg-opacity-100"
+        className={`navbar fixed top-0 left-0 right-0 z-50 text-white shadow-lg flex flex-col md:flex-row transition-all duration-300 ${
+        isScrolled
+          ? "bg-gradient-to-r from-white/10 via-white/20 to-white/10 backdrop-blur-lg backdrop-saturate-150"
+          : "bg-gradient-to-r from-white/20 via-white/30 to-white/20 backdrop-blur-md"
         }`}
         style={{ margin: 0, border: "none" }}
       >
