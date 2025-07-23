@@ -118,6 +118,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Live Demo](https://flavor-ai-dish.netlify.app/)
 - [GitHub Repository](https://github.com/Ayushjhawar8/flavor-ai)
 
+[🔝 Back to Top](#finpilot-gssoc)
+
 ---
 Built with CodeBuff 🚀
 
