@@ -8,8 +8,6 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 ### :movie_camera: Demo
 [![YouTube](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/homepage.png)](https://www.youtube.com/watch?v=OYd8R6s_UZs)
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 🚀 Features
@@ -22,8 +20,6 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 - **Voice Input**: Use voice commands to describe your desired recipe.
 - **Text-to-Speech**: Listen to recipe instructions while cooking.
 - **Smart Filtering**: Filter recipes by dietary restrictions and cuisine types.
-
-[🔝 Back to Top](#top)
 
 ---
 
@@ -48,8 +44,6 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
    - Responsive design for all devices
    - Clear, readable typography
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 📸 Screenshots
@@ -64,8 +58,6 @@ Here are some screenshots of the project in action:
 |--------------|--------------|
 | ![Screenshot 3](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/Category.png) | ![Screenshot 4](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/RandomRecipe.png) |
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 🖥️ Tech Stack
@@ -75,8 +67,6 @@ Here are some screenshots of the project in action:
 - **Styling**: Tailwind CSS, DaisyUI
 - **AI Integration**: OpenAI/Groq API
 - **Hosting**: Vercel
-
-[🔝 Back to Top](#top)
 
 ---
 
@@ -107,8 +97,6 @@ Here are some screenshots of the project in action:
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 🎨 Project Structure
@@ -125,23 +113,17 @@ flavor-ai/
 └── public/              # Static assets
 ```
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-[🔝 Back to Top](#top)
 
 ---
 
@@ -152,8 +134,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * UI components from [DaisyUI](https://daisyui.com/)
 * AI powered by [Groq](https://groq.com/)
 
-[🔝 Back to Top](#top)
-
 ---
 
 ## 🔗 Links
@@ -161,6 +141,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * [Live Demo](https://flavor-ai-dish.netlify.app/)
 * [GitHub Repository](https://github.com/Ayushjhawar8/flavor-ai)
 
+---
+
 [🔝 Back to Top](#top)
 
+```
 
+---
