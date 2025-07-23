@@ -24,25 +24,31 @@ export function SelectField({ label, name, options, register }) {
   );
 }
 
-export function CheckboxField({ label, name, options, register }) {
+export function CheckboxField({ label, name, options, register, descriptions = {} }) {
   return (
-    <div className="form-control mb-4">
-      <label className="label">
+    <div className="form-control mb-4 ">
+      <label className="block text-gray-700 text-sm font-bold mb-2">
         <span className="label-text">{label}</span>
       </label>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-1"> 
         {options.map((option) => (
           <label
-            className="label cursor-pointer inline-flex items-center gap-3"
+            className="label cursor-pointer inline-flex items-center "
             key={option}
+            title={descriptions[option] || ""}
           >
             <input
               type="checkbox"
               value={option}
               {...register(name)}
-              className="checkbox checkbox-primary"
+              className="h-6 w-4 rounded border-gray-300 "
             />
-            <span className="label-text text-gray-700 flex-1">{option}</span>
+            <div className="text-gray-500 text-md ">
+              {option}
+              <span style={{ display: 'none' }}>
+                {descriptions[option] || ""}
+              </span>
+            </div>
           </label>
         ))}
       </div>
