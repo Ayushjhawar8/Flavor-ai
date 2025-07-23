@@ -1,5 +1,3 @@
-<a name="top"></a>
-
 # **Flavor AI**
 > *Built with CodeBuff* 🚀
 
@@ -143,7 +141,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-[🔝 Back to Top](#top)
+[🔝 Back to Top](#flavor-ai)
 
 ```
 
