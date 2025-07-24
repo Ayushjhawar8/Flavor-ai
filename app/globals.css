@@ -2,29 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-      display: none;
-  }
- /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
-}
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
+/* ===== Text-to-Speech Highlighting Style ===== */
+/* This single, powerful class is used to highlight the exact word being spoken. */
+.speaking-word {
+  background-color: #fef08a; /* A bright, distinct yellow */
+  color: #1f2937;
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.2rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 50ms ease-in-out;
 }

@@ -2,103 +2,154 @@
 
 import BackButton from "@/components/BackButton";
 import { PlusIcon, YoutubeIcon } from "@/components/Icons";
+import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import TextToSpeech from "./TextToSpeech";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 
+// --- Self-contained helper components ---
+
+function HighlightedSentence({ text, isActive, wordRange }) {
+  if (!isActive || !wordRange) {
+    return <span>{text}</span>;
+  }
+
+  const { startChar, endChar } = wordRange;
+  const before = text.substring(0, startChar);
+  const highlighted = text.substring(startChar, endChar);
+  const after = text.substring(endChar);
+
+  return (
+    <span>
+      {before}
+      <span className="speaking-word">{highlighted}</span>
+      {after}
+    </span>
+  );
+}
+
+function IngredientsTable({ mealData }) {
+  const ingredients = useMemo(() => Object.keys(mealData).map(key => {
+    if (key.startsWith("strIngredient") && mealData[key]) {
+      const num = key.slice(13);
+      if (mealData[`strMeasure${num}`]) return { measure: mealData[`strMeasure${num}`], name: mealData[key] };
+    }
+    return null;
+  }).filter(Boolean), [mealData]);
+  return (<div className="overflow-x-auto mt-2"><table className="table w-full"><thead><tr className="text-left"><th className="p-2 w-1/3 text-sm font-semibold text-gray-600">Quantity</th><th className="p-2 text-sm font-semibold text-gray-600">Ingredient</th></tr></thead><tbody>{ingredients.map((ing, i) => <tr key={i} className="border-t border-gray-200 hover:bg-gray-50"><td className="p-2 font-medium text-primary">{ing.measure}</td><td className="p-2 text-gray-800">{ing.name}</td></tr>)}</tbody></table></div>);
+}
+
+// --- The Main Page Component ---
 function ShowMeal({ URL }) {
-    const [mealData, setMealData] = useState(null);
+  const [mealData, setMealData] = useState(null);
+  const [playerState, setPlayerState] = useState('idle');
+  const [activeWordRange, setActiveWordRange] = useState({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+  const utterances = useRef([]);
 
-    useEffect(() => {
-        fetch(URL)
-            .then((res) => res.json())
-            .then((data) => {
-                setMealData(data.meals[0]);
-                console.log(mealData);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }, []);
+  const instructionSentences = useMemo(() => {
+    if (!mealData?.strInstructions) return [];
+    return mealData.strInstructions.split(/\r?\n/).filter(s => s.trim());
+  }, [mealData]);
 
-    return (
-        <div className="min-h-screen py-10 bg-gradient-to-br from-indigo-50 to-blue-100 flex justify-center items-center">
-            <BackButton />
-            {mealData ? (
-                <div className="relative max-w-96 md:max-w-7xl w-full bg-white text-gray-800 shadow-md rounded-lg overflow-hidden">
-                    <div className="px-10 md:px-20 py-10">
-                        <h1 className="text-3xl md:text-4xl text-center font-bold text-primary mb-4">
-                            {mealData.strMeal} 🍲
-                        </h1>
-                        <div className="flex flex-col md:flex-row gap-10">
-                            <div>
-                                <img
-                                    src={mealData.strMealThumb}
-                                    alt={mealData.strMeal}
-                                    className="max-w-72 md:max-w-xl h-auto rounded-lg mb-4"
-                                />
-                                <div className="flex flex-wrap items-center gap-4 mb-4">
-                                    <span className="badge badge-primary">
-                                        {mealData.strArea}
-                                    </span>
-                                    <span className="badge badge-success">
-                                        {mealData.strCategory}
-                                    </span>
-                                    {mealData.strYoutube && (
-                                        <Link
-                                            href={mealData.strYoutube}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="btn btn-error btn-sm gap-2 hover:btn-error-focus transition-colors"
-                                            title="Watch recipe video on YouTube"
-                                        >
-                                            <YoutubeIcon /> Watch Video
-                                        </Link>
-                                    )}
-                                </div>
-                            </div>
-                            <div>
-                                <h2 className="text-xl text-gray-800 font-semibold mb-2 flex items-center">
-                                    <PlusIcon />
-                                    <span className="ml-2">Ingredients</span>
-                                </h2>
-                                <table className="w-full mb-4">
-                                    <tbody>
-                                        {Object.keys(mealData)
-                                            .filter(
-                                                (key) => key.includes("strIngredient") && mealData[key]
-                                            )
-                                            .map((key, index) => (
-                                                <tr key={index}>
-                                                    <td className="py-1 pr-4">{mealData[key]}</td>
-                                                    <td className="py-1">
-                                                        {mealData[`strMeasure${key.slice(13)}`]}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="mb-4">
-                            <h2 className="text-xl text-neutral-content font-semibold mb-2 flex items-center">
-                                <PlusIcon />
-                                <span className="ml-2">Instructions</span>
-                            </h2>
-                            <ol className="list-decimal list-inside space-y-2">
-                                {mealData.strInstructions.split('.').filter(step => step.trim()).map((step, index) => (
-                                    <li key={index} className="text-gray-800">{step.trim()}.</li>
-                                ))}
-                            </ol>
-                            <TextToSpeech text={mealData.strInstructions} />
-                        </div>
-                    </div>
+  useEffect(() => {
+    const synth = window.speechSynthesis;
+    synth.cancel();
+
+    utterances.current = instructionSentences.map((text, sentenceIndex) => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 1;
+      
+      utterance.onboundary = (event) => {
+        if (event.name === 'word') {
+          setActiveWordRange({
+            sentenceIndex,
+            startChar: event.charIndex,
+            endChar: event.charIndex + event.charLength,
+          });
+        }
+      };
+
+      utterance.onend = () => {
+        if (sentenceIndex === instructionSentences.length - 1) {
+          setPlayerState('idle');
+          setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+        }
+      };
+      return utterance;
+    });
+
+    return () => synth.cancel();
+  }, [instructionSentences]);
+
+  const handlePlay = useCallback(() => {
+    const synth = window.speechSynthesis;
+    if (playerState === 'paused') {
+      synth.resume();
+    } else {
+      utterances.current.forEach(utterance => synth.speak(utterance));
+    }
+    setPlayerState('playing');
+  }, [playerState]);
+
+  const handlePause = useCallback(() => {
+    window.speechSynthesis.pause();
+    setPlayerState('paused');
+  }, []);
+  
+  const handleRestart = useCallback(() => {
+    window.speechSynthesis.cancel();
+    setPlayerState('idle');
+    setTimeout(() => {
+        handlePlay();
+    }, 100);
+  }, [handlePlay]);
+
+  useEffect(() => {
+    fetch(URL).then(res => res.json()).then(data => setMealData(data.meals[0])).catch(error => console.error("Error fetching data:", error));
+  }, [URL]);
+
+  if (!mealData) {
+    return <div className="min-h-screen flex justify-center items-center p-4"><div className="max-w-4xl w-full p-12 bg-white rounded-xl shadow-md"><div className="animate-pulse"><div className="h-10 bg-gray-300 rounded-md w-3/4 mx-auto mb-4"></div><div className="h-6 bg-gray-200 rounded-md w-1/4 mx-auto mb-10"></div><div className="flex flex-col md:flex-row gap-12"><div className="md:w-1/2"><div className="h-80 bg-gray-300 rounded-lg"></div></div><div className="md:w-1/2 space-y-4"><div className="h-8 bg-gray-300 rounded-md w-1/2"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div></div></div></div></div></div>;
+  }
+
+  return (
+    // --- THIS IS THE LINE THAT WAS CHANGED ---
+    <div className="min-h-screen py-10 px-4 bg-blue-100 flex justify-center items-start">
+      <BackButton />
+      <div className="relative max-w-4xl w-full bg-white shadow-xl rounded-xl">
+        <div className="p-6 md:p-12">
+          <header className="text-center mb-8"><h1 className="text-3xl md:text-5xl font-bold text-gray-900">{mealData.strMeal}</h1><p className="text-lg text-gray-500 mt-2">{mealData.strArea} Cuisine</p></header>
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12"><div className="md:w-1/2"><img src={mealData.strMealThumb} alt={mealData.strMeal} className="w-full h-auto rounded-lg shadow-md mb-4" /><div className="flex items-center gap-4"><span className="badge badge-lg badge-accent">{mealData.strCategory}</span>{mealData.strYoutube && (<Link href={mealData.strYoutube} target="_blank" rel="noopener noreferrer" className="btn btn-error btn-sm gap-2"><YoutubeIcon /> Watch</Link>)}</div></div><div className="md:w-1/2"><h2 className="text-2xl font-bold mb-2 flex items-center text-gray-800"><PlusIcon /><span className="ml-2">Ingredients</span></h2><IngredientsTable mealData={mealData} /></div></div>
+          
+          <section id="instructions-section">
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold text-gray-800">Preparation Steps</h2>
+                <div className="flex items-center gap-2 p-1 border border-gray-200 rounded-full bg-gray-50">
+                    <button onClick={playerState === 'playing' ? handlePause : handlePlay} className="btn btn-ghost btn-circle">
+                        {playerState === 'playing' ? <PauseIcon className="h-6 w-6 text-blue-600" /> : <PlayIcon className="h-6 w-6 text-green-600" />}
+                    </button>
+                    <button onClick={handleRestart} className="btn btn-ghost btn-circle" disabled={playerState === 'idle'}>
+                        <ArrowPathIcon className="h-5 w-5 text-gray-600" />
+                    </button>
                 </div>
-            ) : (
-                <div className="text-gray-800 text-lg">Loading...</div>
-            )}
+            </div>
+            
+            <ol className="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed">
+              {instructionSentences.map((sentence, index) => (
+                <li key={index}>
+                  <HighlightedSentence
+                    text={sentence}
+                    isActive={index === activeWordRange.sentenceIndex}
+                    wordRange={activeWordRange}
+                  />
+                </li>
+              ))}
+            </ol>
+          </section>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default ShowMeal;
