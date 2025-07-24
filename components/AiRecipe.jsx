@@ -50,8 +50,18 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
             <PlusIcon2 />
             Instructions
           </h2>
-          <p className="text-base-content">{recipe.steps.join("\n")}</p>
-          <TextToSpeech text={recipe.steps.join(" ")} />
+          {recipe.steps && (
+            (() => {
+              // Remove leading numbers, dots, parentheses, and trim whitespace from each step
+              const cleanedSteps = recipe.steps
+                .map(step => step.replace(/^\s*\d+([.)])?\s*/, "").trim())
+                .filter(Boolean);
+              return <>
+                <p className="text-base-content">{cleanedSteps.join("\n")}</p>
+                <TextToSpeech sentences={cleanedSteps} onHighlightChange={() => {}} />
+              </>;
+            })()
+          )}
         </div>
       </div>
     </div>

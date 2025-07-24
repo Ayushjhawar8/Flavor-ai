@@ -47,7 +47,11 @@ function ShowMeal({ URL }) {
 
   const instructionSentences = useMemo(() => {
     if (!mealData?.strInstructions) return [];
-    return mealData.strInstructions.split(/\r?\n/).filter(s => s.trim());
+    // Clean each instruction: remove leading numbers, dots, parentheses, and trim whitespace
+    return mealData.strInstructions
+      .split(/\r?\n/)
+      .map(s => s.replace(/^\s*\d+([.)])?\s*/, "").trim())
+      .filter(Boolean);
   }, [mealData]);
 
   useEffect(() => {
