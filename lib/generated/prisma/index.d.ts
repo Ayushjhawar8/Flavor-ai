@@ -10062,6 +10062,7 @@ export namespace Prisma {
 
   export type RatingWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    userId_recipeId?: RatingUserIdRecipeIdCompoundUniqueInput
     AND?: RatingWhereInput | RatingWhereInput[]
     OR?: RatingWhereInput[]
     NOT?: RatingWhereInput | RatingWhereInput[]
@@ -10071,7 +10072,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Rating"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     recipe?: XOR<RecipeScalarRelationFilter, RecipeWhereInput>
-  }, "id">
+  }, "id" | "userId_recipeId">
 
   export type RatingOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10120,6 +10121,7 @@ export namespace Prisma {
 
   export type FavoriteWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    userId_recipeId?: FavoriteUserIdRecipeIdCompoundUniqueInput
     AND?: FavoriteWhereInput | FavoriteWhereInput[]
     OR?: FavoriteWhereInput[]
     NOT?: FavoriteWhereInput | FavoriteWhereInput[]
@@ -10128,7 +10130,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Favorite"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     recipe?: XOR<RecipeScalarRelationFilter, RecipeWhereInput>
-  }, "id">
+  }, "id" | "userId_recipeId">
 
   export type FavoriteOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10956,6 +10958,11 @@ export namespace Prisma {
     recipeId?: SortOrder
   }
 
+  export type RatingUserIdRecipeIdCompoundUniqueInput = {
+    userId: number
+    recipeId: number
+  }
+
   export type RatingCountOrderByAggregateInput = {
     id?: SortOrder
     value?: SortOrder
@@ -10992,6 +10999,11 @@ export namespace Prisma {
     value?: SortOrder
     userId?: SortOrder
     recipeId?: SortOrder
+  }
+
+  export type FavoriteUserIdRecipeIdCompoundUniqueInput = {
+    userId: number
+    recipeId: number
   }
 
   export type FavoriteCountOrderByAggregateInput = {

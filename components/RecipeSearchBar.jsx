@@ -111,7 +111,7 @@ const RecipeSearchBar = ({
           <input
             ref={inputRef}
             type="text"
-            className="grow"
+            className="grow search-bar-input focus:bg-gray-900 focus:text-white focus:border-2 focus:border-yellow-400 transition-colors duration-200"
             placeholder="Search dish..."
             value={input}
             onChange={(e) => {

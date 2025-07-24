@@ -43,11 +43,15 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
       body: JSON.stringify(data),
     });
 
-    const recipe = await res.json();
-    setRecipe(recipe.recipe);
+    const recipeRes = await res.json();
+    if (!recipeRes.recipe || recipeRes.error) {
+      alert(recipeRes.error || "Failed to generate recipe.");
+      return;
+    }
+    setRecipe(recipeRes.recipe);
 
     // Generate recipe image
-    const imagePrompt = await `${data.userPrompt}, ${recipe.recipe.name}`;
+    const imagePrompt = `${data.userPrompt}, ${recipeRes.recipe.name}`;
     const resImage = await fetch("/api/generate-recipe-image", {
       method: "POST",
       headers: {

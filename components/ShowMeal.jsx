@@ -5,6 +5,7 @@ import { PlusIcon, YoutubeIcon } from "@/components/Icons";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useAuth } from "@/components/AuthContext";
 
 // --- Self-contained helper components ---
 
@@ -39,11 +40,19 @@ function IngredientsTable({ mealData }) {
 }
 
 // --- The Main Page Component ---
-function ShowMeal({ URL }) {
-  const [mealData, setMealData] = useState(null);
+function ShowMeal({ URL, mealData: mealDataProp }) {
+  const [mealData, setMealData] = useState(mealDataProp || null);
   const [playerState, setPlayerState] = useState('idle');
   const [activeWordRange, setActiveWordRange] = useState({ sentenceIndex: -1, startChar: -1, endChar: -1 });
   const utterances = useRef([]);
+  const { user, token } = useAuth();
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [ratings, setRatings] = useState([]);
+  const [myRating, setMyRating] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [message, setMessage] = useState("");
 
   const instructionSentences = useMemo(() => {
     if (!mealData?.strInstructions) return [];
@@ -105,15 +114,138 @@ function ShowMeal({ URL }) {
   }, [handlePlay]);
 
   useEffect(() => {
-    fetch(URL).then(res => res.json()).then(data => setMealData(data.meals[0])).catch(error => console.error("Error fetching data:", error));
-  }, [URL]);
+    if (mealDataProp) return; // Don't fetch if mealData is provided
+    if (!URL) return;
+    fetch(URL)
+      .then(res => res.json())
+      .then(data => setMealData(data.meals[0]))
+      .catch(error => console.error("Error fetching data:", error));
+  }, [URL, mealDataProp]);
+
+  useEffect(() => {
+    if (!mealData) return;
+    const recipeId = mealData.id || mealData.idMeal;
+    if (!recipeId) return;
+    fetch(`/api/comment?recipeId=${recipeId}`)
+      .then(res => res.json()).then(setComments);
+    fetch(`/api/rating?recipeId=${recipeId}`)
+      .then(res => res.json()).then(data => {
+        setRatings(data);
+        if (user) {
+          const mine = data.find(r => r.userId === user.id);
+          setMyRating(mine ? mine.value : null);
+        }
+      });
+    if (user && token) {
+      fetch(`/api/favorite`, { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => res.json()).then(data => {
+          setFavorites(data);
+          setIsFavorite(data.some(f => f.recipeId === recipeId));
+        });
+    }
+  }, [mealData, user, token]);
+
+  const handleComment = async e => {
+    e.preventDefault();
+    setMessage("");
+    const recipeId = mealData?.id || mealData?.idMeal;
+    if (!recipeId) {
+      setMessage("Error: No recipe selected.");
+      return;
+    }
+    if (!commentText.trim()) return;
+    let body = { recipeId, content: commentText };
+    if (!mealData?.id && mealData?.idMeal) {
+      // If this is a random/external recipe, send recipeData
+      body.recipeData = mealData;
+    }
+    const res = await fetch("/api/comment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setMessage("Comment added!");
+      setCommentText("");
+      fetch(`/api/comment?recipeId=${recipeId}`).then(res => res.json()).then(setComments);
+    } else {
+      setMessage(data.error || "Failed to add comment.");
+    }
+  };
+
+  const handleRating = async value => {
+    setMessage("");
+    const recipeId = mealData?.id || mealData?.idMeal;
+    if (!recipeId) {
+      setMessage("Error: No recipe selected.");
+      return;
+    }
+    let body = { recipeId, value };
+    if (!mealData?.id && mealData?.idMeal) {
+      // If this is a random/external recipe, send recipeData
+      body.recipeData = mealData;
+    }
+    const res = await fetch("/api/rating", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setMessage("Rating submitted!");
+      setMyRating(value);
+      fetch(`/api/rating?recipeId=${recipeId}`).then(res => res.json()).then(setRatings);
+    } else {
+      setMessage(data.error || "Failed to submit rating.");
+    }
+  };
+
+  const handleFavorite = async () => {
+    setMessage("");
+    const recipeId = mealData?.id || mealData?.idMeal;
+    if (!recipeId) {
+      setMessage("Error: No recipe selected.");
+      return;
+    }
+    if (isFavorite) {
+      const fav = favorites.find(f => f.recipeId === recipeId);
+      await fetch("/api/favorite", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ id: fav.id }),
+      });
+      setMessage("Removed from favorites.");
+    } else {
+      let body = { recipeId };
+      if (!mealData?.id && mealData?.idMeal) {
+        // If this is a random/external recipe, send recipeData
+        body.recipeData = mealData;
+      }
+      const res = await fetch("/api/favorite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage("Added to favorites!");
+      } else {
+        setMessage(data.error || "Failed to add favorite.");
+      }
+    }
+    fetch(`/api/favorite`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => res.json()).then(data => {
+        setFavorites(data);
+        setIsFavorite(data.some(f => f.recipeId === recipeId));
+      });
+  };
 
   if (!mealData) {
     return <div className="min-h-screen flex justify-center items-center p-4"><div className="max-w-4xl w-full p-12 bg-white rounded-xl shadow-md"><div className="animate-pulse"><div className="h-10 bg-gray-300 rounded-md w-3/4 mx-auto mb-4"></div><div className="h-6 bg-gray-200 rounded-md w-1/4 mx-auto mb-10"></div><div className="flex flex-col md:flex-row gap-12"><div className="md:w-1/2"><div className="h-80 bg-gray-300 rounded-lg"></div></div><div className="md:w-1/2 space-y-4"><div className="h-8 bg-gray-300 rounded-md w-1/2"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div></div></div></div></div></div>;
   }
 
   return (
-    // --- THIS IS THE LINE THAT WAS CHANGED ---
     <div className="min-h-screen py-10 px-4 bg-blue-100 flex justify-center items-start">
       <BackButton />
       <div className="relative max-w-4xl w-full bg-white shadow-xl rounded-xl">
@@ -145,6 +277,46 @@ function ShowMeal({ URL }) {
                 </li>
               ))}
             </ol>
+          </section>
+
+          {/* --- Comments, Ratings, Favorites --- */}
+          <section className="mt-10">
+            {message && <div className="mb-4 text-center text-md font-semibold text-red-600">{message}</div>}
+            <div className="flex items-center gap-4 mb-4">
+              <span className="font-bold text-lg">Average Rating:</span>
+              <span className="text-yellow-500 font-bold">{ratings.length ? (ratings.reduce((a, b) => a + b.value, 0) / ratings.length).toFixed(1) : "N/A"}</span>
+              {user && (
+                <span>
+                  Your Rating:
+                  {[1,2,3,4,5].map(val => (
+                    <button key={val} className={`ml-1 ${myRating === val ? "text-yellow-500" : "text-gray-400"}`} onClick={() => handleRating(val)}>
+                      ★
+                    </button>
+                  ))}
+                </span>
+              )}
+              {user && (
+                <button className={`btn btn-sm ml-4 ${isFavorite ? "btn-warning" : "btn-outline"}`} onClick={handleFavorite}>
+                  {isFavorite ? "Unfavorite" : "Favorite"}
+                </button>
+              )}
+            </div>
+            <div className="mb-4">
+              <span className="font-bold text-lg">Comments:</span>
+            </div>
+            <ul className="mb-4">
+              {comments.map(c => (
+                <li key={c.id} className="border-b py-2">
+                  <span className="font-semibold">{c.user?.name || "User"}:</span> {c.content}
+                </li>
+              ))}
+            </ul>
+            {user && (
+              <form onSubmit={handleComment} className="flex gap-2">
+                <input className="input input-bordered flex-1" value={commentText} onChange={e => setCommentText(e.target.value)} placeholder="Add a comment..." />
+                <button className="btn btn-primary" type="submit">Post</button>
+              </form>
+            )}
           </section>
         </div>
       </div>
