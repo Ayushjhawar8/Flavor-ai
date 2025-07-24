@@ -83,8 +83,16 @@ function ShowMeal({ URL }) {
   // Memoize instruction sentences to avoid recalculation on re-renders
   const instructionSentences = useMemo(() => {
     if (!mealData?.strInstructions) return [];
+
     // Split by newlines, which is more reliable for paragraphs
     return mealData.strInstructions.split(/\r?\n/).filter(s => s.trim());
+
+    // Clean each instruction: remove leading numbers, dots, parentheses, and trim whitespace
+    return mealData.strInstructions
+      .split(/\r?\n/)
+      .map(s => s.replace(/^\s*\d+([.)])?\s*/, "").trim())
+      .filter(Boolean);
+
   }, [mealData]);
 
   // Effect to set up SpeechSynthesisUtterance objects when instructions change
