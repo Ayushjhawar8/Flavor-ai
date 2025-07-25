@@ -263,7 +263,7 @@ export default function Page()
           )}
         </div>
 
-        <footer className="w-full mt-10 p-6 md:p-10 min-h-[149px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white">
+        <footer className="w-full mt-10 p-6 md:p-10 min-h-[150px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-0 text-center md:text-left">
             {/* Brand and tagline */}
             <div className="flex-1 flex flex-col items-center md:items-start gap-2">
