@@ -1,21 +1,7 @@
 import { PrismaClient } from "@/lib/generated/prisma";
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "dev_secret";
-
-function getUserId(req) {
-  const auth = req.headers.get("authorization");
-  if (!auth) return null;
-  try {
-    const token = auth.replace("Bearer ", "");
-    const payload = jwt.verify(token, JWT_SECRET);
-    return payload.userId;
-  } catch {
-    return null;
-  }
-}
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -27,8 +13,6 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const userId = getUserId(req);
-    if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     let { recipeId, content, recipeData } = await req.json();
     recipeId = parseInt(recipeId);
     if (!recipeId) return NextResponse.json({ error: "Missing recipeId" }, { status: 400 });
@@ -45,11 +29,11 @@ export async function POST(req) {
           description: recipeData.strInstructions || "",
           ingredients: JSON.stringify([]),
           steps: JSON.stringify([]),
-          userId: userId,
+          userId: 1, // default userId
         }
       });
     }
-    const comment = await prisma.comment.create({ data: { recipeId, content, userId } });
+    const comment = await prisma.comment.create({ data: { recipeId, content, userId: 1 } });
     return NextResponse.json(comment);
   } catch (error) {
     console.error("/api/comment error:", error);
@@ -58,8 +42,6 @@ export async function POST(req) {
 }
 
 export async function DELETE(req) {
-  const userId = getUserId(req);
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await req.json();
   await prisma.comment.delete({ where: { id } });
   return NextResponse.json({ success: true });

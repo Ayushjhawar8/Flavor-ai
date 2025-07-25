@@ -5,7 +5,6 @@ import { PlusIcon, YoutubeIcon } from "@/components/Icons";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
-import { useAuth } from "@/components/AuthContext";
 
 // --- Self-contained helper components ---
 
@@ -45,7 +44,6 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
   const [playerState, setPlayerState] = useState('idle');
   const [activeWordRange, setActiveWordRange] = useState({ sentenceIndex: -1, startChar: -1, endChar: -1 });
   const utterances = useRef([]);
-  const { user, token } = useAuth();
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [ratings, setRatings] = useState([]);
@@ -135,19 +133,14 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
     fetch(`/api/rating?recipeId=${recipeId}`)
       .then(res => res.json()).then(data => {
         setRatings(data);
-        if (user) {
-          const mine = data.find(r => r.userId === user.id);
-          setMyRating(mine ? mine.value : null);
-        }
+        setMyRating(data.find(r => r.userId === 1)?.value || null); // Assuming a default user ID for now
       });
-    if (user && token) {
-      fetch(`/api/favorite`, { headers: { Authorization: `Bearer ${token}` } })
-        .then(res => res.json()).then(data => {
-          setFavorites(data);
-          setIsFavorite(data.some(f => f.recipeId === recipeId));
-        });
-    }
-  }, [mealData, user, token]);
+    fetch(`/api/favorite?recipeId=${recipeId}`)
+      .then(res => res.json()).then(data => {
+        setFavorites(data);
+        setIsFavorite(data.some(f => f.recipeId === recipeId));
+      });
+  }, [mealData]);
 
   const handleComment = async e => {
     e.preventDefault();
@@ -165,7 +158,7 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
     }
     const res = await fetch("/api/comment", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
     const data = await res.json();
@@ -192,7 +185,7 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
     }
     const res = await fetch("/api/rating", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
     const data = await res.json();
@@ -216,7 +209,7 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
       const fav = favorites.find(f => f.recipeId === recipeId);
       await fetch("/api/favorite", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: fav.id }),
       });
       setMessage("Removed from favorites.");
@@ -228,7 +221,7 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
       }
       const res = await fetch("/api/favorite", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       const data = await res.json();
@@ -238,7 +231,7 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
         setMessage(data.error || "Failed to add favorite.");
       }
     }
-    fetch(`/api/favorite`, { headers: { Authorization: `Bearer ${token}` } })
+    fetch(`/api/favorite?recipeId=${recipeId}`)
       .then(res => res.json()).then(data => {
         setFavorites(data);
         setIsFavorite(data.some(f => f.recipeId === recipeId));
@@ -289,21 +282,14 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
             <div className="flex items-center gap-4 mb-4">
               <span className="font-bold text-lg">Average Rating:</span>
               <span className="text-yellow-500 font-bold">{ratings.length ? (ratings.reduce((a, b) => a + b.value, 0) / ratings.length).toFixed(1) : "N/A"}</span>
-              {user && (
-                <span>
-                  Your Rating:
-                  {[1,2,3,4,5].map(val => (
+              {[1,2,3,4,5].map(val => (
                     <button key={val} className={`ml-1 ${myRating === val ? "text-yellow-500" : "text-gray-400"}`} onClick={() => handleRating(val)}>
                       ★
                     </button>
                   ))}
-                </span>
-              )}
-              {user && (
-                <button className={`btn btn-sm ml-4 ${isFavorite ? "btn-warning" : "btn-outline"}`} onClick={handleFavorite}>
-                  {isFavorite ? "Unfavorite" : "Favorite"}
-                </button>
-              )}
+              <button className={`btn btn-sm ml-4 ${isFavorite ? "btn-warning" : "btn-outline"}`} onClick={handleFavorite}>
+                {isFavorite ? "Unfavorite" : "Favorite"}
+              </button>
             </div>
             <div className="mb-4">
               <span className="font-bold text-lg">Comments:</span>
@@ -315,12 +301,10 @@ function ShowMeal({ URL, mealData: mealDataProp }) {
                 </li>
               ))}
             </ul>
-            {user && (
-              <form onSubmit={handleComment} className="flex gap-2">
-                <input className="input input-bordered flex-1" value={commentText} onChange={e => setCommentText(e.target.value)} placeholder="Add a comment..." />
-                <button className="btn btn-primary" type="submit">Post</button>
-              </form>
-            )}
+            <form onSubmit={handleComment} className="flex gap-2">
+              <input className="input input-bordered flex-1" value={commentText} onChange={e => setCommentText(e.target.value)} placeholder="Add a comment..." />
+              <button className="btn btn-primary" type="submit">Post</button>
+            </form>
           </section>
         </div>
       </div>

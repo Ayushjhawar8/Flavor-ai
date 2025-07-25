@@ -2,11 +2,9 @@
 
 import { PlusIcon } from "@/components/Icons";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import AuthStatus from "@/components/AuthStatus";
 import { CATEGORIES_URL } from "@/lib/urls";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/components/AuthContext";
 
 
 export default function Page() {
@@ -24,8 +22,6 @@ export default function Page() {
       setShowResults(false);
     }, 200);
   };
-
-  const { user, logout } = useAuth();
 
   useEffect(() => {
     fetch(CATEGORIES_URL)
@@ -108,34 +104,7 @@ export default function Page() {
 
       {/* AuthStatus prominently at the top of the home page */}
       <div className="w-full flex justify-end p-4">
-        <AuthStatus />
-      </div>
-
-      {/* Test Features Section */}
-      <div className="w-full flex justify-center mt-4">
-        <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center gap-4 max-w-2xl w-full">
-          <h2 className="text-xl font-bold mb-2 text-black">Features Offered</h2>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {!user && <Link href="/register" className="btn btn-primary">Register</Link>}
-            {!user && <Link href="/login" className="btn btn-outline">Login</Link>}
-            {user && <Link href="/recipe" className="btn btn-info">My Recipes</Link>}
-            <Link href="/ai" className="btn btn-accent">AI Recipe Generation</Link>
-            <Link href="/random" className="btn btn-secondary">Random Recipe</Link>
-            <button
-              className="btn btn-success"
-              onClick={() => {
-                if (!showCategories) setShowCategories(true);
-                setTimeout(() => {
-                  document.querySelector('.categories-section')?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }}
-            >
-              Browse Categories
-            </button>
-            {user && <button className="btn btn-error" onClick={logout}>Logout</button>}
-          </div>
-          <div className="text-sm mt-2 text-black">Use these buttons to quickly test all major features of the app.</div>
-        </div>
+        {/* AuthStatus component was removed, so this div is now empty */}
       </div>
 
       {/* Content */}
