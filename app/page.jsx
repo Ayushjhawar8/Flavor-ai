@@ -88,7 +88,9 @@ export default function Page() {
           <Link
             href="#"
             id="main"
-            className="btn btn-ghost text-2xl font-bold text-white"
+            className={`text-2xl font-bold transition-colors duration-300 ${
+      isScrolled ? "text-gray-600" : "text-white"
+    }`}
           >
             Flavor AI
           </Link>
@@ -119,6 +121,7 @@ export default function Page() {
           </a>
         </div>
         <RecipeSearchBar
+        isScrolled={isScrolled}
           handleBlur={handleBlur}
           handleSearchFocus={handleSearchFocus}
           showResults={showResults}
