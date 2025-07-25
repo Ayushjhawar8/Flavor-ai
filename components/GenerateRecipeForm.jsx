@@ -18,16 +18,20 @@ import {
  * @param {Function} setShowRecipe - Controls recipe display visibility
  * @param {Function} setRecipeImageUrl - Updates recipe image URL
  */
-function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
-  const { register, handleSubmit } = useForm({
+function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onResetRef }) {
+  const { register, handleSubmit , reset, watch} = useForm({
     // Default form values
     defaultValues: {
+        userPrompt: "",
       dishType: "Snack",
       cuisine: "Indian",
       dietaryRestrictions: [],
       spiceLevel: "Spicy",
     },
   });
+  if (onResetRef) {
+    onResetRef.current = reset;
+  }
 
   /**
    * Form submission handler
@@ -57,7 +61,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
     });
     setRecipeImageUrl((await resImage.json()).url);
 
-    setShowRecipe(true);
+    // setShowRecipe(true);
   };
 
   const dietaryDescriptions = {
@@ -78,6 +82,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
         label="Describe about dish:"
         name="userPrompt"
         register={register}
+        watch={watch}
       />
 
       <div className="flex w-full justify-between">
