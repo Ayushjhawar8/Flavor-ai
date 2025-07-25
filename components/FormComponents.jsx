@@ -1,7 +1,7 @@
 "use client";
 
 import { MicrophoneIcon, StopIcon, X } from "@/components/Icons";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 
 const SpeechRecognition =
   typeof window !== "undefined" &&
@@ -67,9 +67,14 @@ export function CheckboxField({ label, name, options, register, descriptions = {
  * @param {string} name - The name attribute for the input field.
  * @param {Function} register - The register function for form handling.
  */
-export function InputField({ label, name, register }) {
+export function InputField({ label, name, register , watch }) {
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
+
+   const watchedValue = watch ? watch(name) : "";
+  useEffect(() => {
+    setInputValue(watchedValue || "");
+  }, [watchedValue]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
