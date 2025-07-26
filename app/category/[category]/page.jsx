@@ -86,9 +86,7 @@ function Page({ params })
             </div>
           ))}
       </div>
-
-      {/* Theme Toggle Button */}
-      <ThemeToggle />
+      </div>
     </div>
   );
 }
