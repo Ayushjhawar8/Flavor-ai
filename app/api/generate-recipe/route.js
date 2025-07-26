@@ -13,6 +13,7 @@ import { NextResponse } from "next/server";
  * - spiceLevel (optional): Desired spice level
  * - dietaryRestrictions (optional): Array of dietary restrictions
  * - userPrompt: User's specific requirements/preferences
+ * - availableIngredients (optional): Array of ingredients identified from uploaded image
  * 
  * Returns a structured recipe object following the recipeSchema
  */
@@ -25,20 +26,26 @@ export async function POST(req) {
     const dishType = "Curry";
     const spiceLevel = "Mild";
 
+    // Build ingredients section if available
+    const ingredientsSection = body.availableIngredients && body.availableIngredients.length > 0
+      ? `\n\nIngredients I have available: ${body.availableIngredients.map(ing => `${ing.name}${ing.quantity ? ` (${ing.quantity})` : ''}`).join(', ')}\n`
+      : '';
+
     // Construct AI prompt with user preferences
-    const prompt = `Generate a ${body.cuisine ?? cuisine} recipe for ${
+    const prompt = `Create a delicious ${body.cuisine ?? cuisine} ${
       body.dishType ?? dishType
-    } (with ${body.spiceLevel ?? spiceLevel} spice level if applicable).
+    } recipe${body.spiceLevel && body.spiceLevel !== "Mild" ? ` with ${body.spiceLevel.toLowerCase()} spicing` : ''}.
       
       ${
-        body.dietaryRestrictions
-          ? `Dietary Restrictions - ${body.dietaryRestrictions.join(", ")}`
+        body.dietaryRestrictions && body.dietaryRestrictions.length > 0
+          ? `Requirements: ${body.dietaryRestrictions.join(", ")}\n`
           : ""
-      }
+      }${ingredientsSection}
+      Request: ${body.userPrompt}
       
-      ${body.userPrompt}
+      Create an amazing recipe that would be perfect for this request. Use whatever ingredients work best - if I mentioned having certain ingredients available, feel free to incorporate them if they fit well, but don't limit yourself to only those ingredients. Focus on making the best possible dish.
       
-      Give a simple name of 2-3 words to the recipe.`;
+      Give the recipe a simple, appetizing name (2-3 words).`;
 
     // Generate recipe using AI model
     const result = await generateObject({
