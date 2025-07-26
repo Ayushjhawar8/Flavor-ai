@@ -25,20 +25,38 @@ export async function POST(req) {
     const dishType = "Curry";
     const spiceLevel = "Mild";
 
-    // Construct AI prompt with user preferences
-    const prompt = `Generate a ${body.cuisine ?? cuisine} recipe for ${
-      body.dishType ?? dishType
-    } (with ${body.spiceLevel ?? spiceLevel} spice level if applicable).
-      
-      ${
-        body.dietaryRestrictions
-          ? `Dietary Restrictions - ${body.dietaryRestrictions.join(", ")}`
-          : ""
-      }
-      
-      ${body.userPrompt}
-      
-      Give a simple name of 2-3 words to the recipe.`;
+    /*
+      IMPROVEMENT: The previous prompt was too generic and did not enforce structure or clarity, which could lead to inconsistent or incomplete AI responses. By making the prompt more explicit, instructive, and format-driven, we:
+      - Ensure the AI returns recipes in a consistent, structured format (matching the schema)
+      - Encourage the use of common ingredients and clear, step-by-step instructions
+      - Make dietary restrictions and user preferences more prominent
+      - Add a short description for context
+      This change will result in more reliable, user-friendly, and context-aware recipe outputs, improving both developer and end-user experience.
+    */
+    const prompt = `You are a professional chef and recipe creator.
+
+Generate a ${body.cuisine ?? cuisine} recipe for ${body.dishType ?? dishType} (with ${body.spiceLevel ?? spiceLevel} spice level if applicable).
+${body.dietaryRestrictions ? `Strictly avoid these ingredients: ${body.dietaryRestrictions.join(", ")}.` : ""}
+User preferences: ${body.userPrompt}
+
+Return the recipe in this JSON format:
+{
+  "name": "Recipe Name (2-3 words)",
+  "area": "Cuisine/Region",
+  "category": "Dish Type",
+  "ingredients": [
+    { "name": "Ingredient 1", "amount": "Amount" },
+    ...
+  ],
+  "steps": [
+    "Step 1",
+    "Step 2",
+    ...
+  ],
+  "description": "A one-line summary of the dish."
+}
+
+Use simple, clear instructions and common ingredients. Make the recipe unique and easy to follow.`;
 
     // Generate recipe using AI model
     const result = await generateObject({
