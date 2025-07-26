@@ -25,7 +25,7 @@ function Page({ params }) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-indigo-50 to-blue-100 relative">
+    <div className="flex flex-col items-center justify-center p-5 md:p-10 w-full min-h-screen bg-base-100 relative">
       <BackButton />
       <h1 className="text-4xl md:text-6xl text-secondary mb-10">
         {params.category} 🍽️
@@ -39,7 +39,7 @@ function Page({ params }) {
         meals.map((meal) => (
           <div
             key={meal.idMeal}
-            className="card card-compact w-72 lg:w-96 bg-white shadow-xl"
+            className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
           >
             <figure>
               <Image

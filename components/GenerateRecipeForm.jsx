@@ -76,7 +76,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-xl p-6 bg-white rounded-lg shadow-xl"
+      className="w-full max-w-xl p-6 bg-base-200 rounded-lg shadow-xl"
     >
       <InputField
         label="Describe about dish:"

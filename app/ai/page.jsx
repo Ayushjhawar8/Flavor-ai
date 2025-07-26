@@ -24,7 +24,7 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen py-10 bg-gradient-to-br from-indigo-50 to-blue-100 flex flex-col justify-center items-center relative">
+    <div className="min-h-screen py-10 bg-base-100 flex flex-col justify-center items-center relative">
       <BackButton />
 
       {showRecipe && recipe ? (

@@ -72,13 +72,14 @@ function BackButton({ fallbackUrl = "/" }) {
         <button
             className={`
                 btn btn-circle 
-                bg-base-content hover:bg-neutral-content 
-                active:bg-neutral-content
+                bg-base-200 hover:bg-base-300 
+                active:bg-base-300
                 absolute top-5 md:top-10 left-3 md:left-10 
                 z-50
                 transition-all duration-150 ease-in-out
                 select-none
-                ${isPressed ? 'scale-90 bg-neutral-content shadow-inner' : 'scale-100 shadow-lg'}
+                ${isPressed ? 'scale-90 bg-base-300 shadow-inner' : 'scale-100 shadow-lg'}
+                text-base-content
             `}
             onClick={handleBack}
             onTouchStart={handleTouchStart}
