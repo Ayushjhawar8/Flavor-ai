@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
 
 const RecipeSearchBar = ({
+  isScrolled,
   handleSearchFocus,
   handleBlur,
   showResults,
@@ -100,7 +101,9 @@ const RecipeSearchBar = ({
       {!isSearchOpen ? (
         <button 
           onClick={() => setIsSearchOpen(true)}
-          className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors duration-200 px-3 py-2"
+          className={`flex items-center gap-2 transition-colors duration-200 px-3 py-2 ${
+    isScrolled ? "text-gray-600 hover:text-gray-800" : "text-white hover:text-gray-200"
+  }`}
         >
           <SearchIcon className="w-5 h-5" />
           <span className="text-base font-medium">Search dish</span>

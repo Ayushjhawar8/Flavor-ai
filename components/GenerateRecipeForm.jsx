@@ -18,16 +18,20 @@ import {
  * @param {Function} setShowRecipe - Controls recipe display visibility
  * @param {Function} setRecipeImageUrl - Updates recipe image URL
  */
-function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
-  const { register, handleSubmit } = useForm({
+function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onResetRef }) {
+  const { register, handleSubmit , reset, watch} = useForm({
     // Default form values
     defaultValues: {
+        userPrompt: "",
       dishType: "Snack",
       cuisine: "Indian",
       dietaryRestrictions: [],
       spiceLevel: "Spicy",
     },
   });
+  if (onResetRef) {
+    onResetRef.current = reset;
+  }
 
   /**
    * Form submission handler
@@ -57,7 +61,16 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
     });
     setRecipeImageUrl((await resImage.json()).url);
 
-    setShowRecipe(true);
+    // setShowRecipe(true);
+  };
+
+  const dietaryDescriptions = {
+    Vegetarian: "Suitable for those avoiding meat and fish.",
+    Vegan: "Excludes all animal products, including dairy and eggs.",
+    "Gluten-Free": "Avoids gluten, a protein found in wheat, barley, and rye. Suitable for people with celiac disease or gluten sensitivity.",
+    "Dairy-Free": "Avoids milk and all dairy products, including cheese, butter, and yogurt.",
+    "Nut-Free": "Excludes all tree nuts and peanuts. Important for those with nut allergies.",
+    Halal: "Follows Islamic dietary laws. Prohibits pork and alcohol; meat must be prepared in a specific way (halal-certified).",
   };
 
   return (
@@ -69,6 +82,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
         label="Describe about dish:"
         name="userPrompt"
         register={register}
+        watch={watch}
       />
 
       <div className="flex w-full justify-between">
@@ -114,6 +128,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl }) {
           "Halal",
         ]}
         register={register}
+        descriptions = {dietaryDescriptions} //Added this For 
       />
 
       <SelectField

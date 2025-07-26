@@ -1,7 +1,7 @@
 "use client";
 
 import { MicrophoneIcon, StopIcon, X } from "@/components/Icons";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 
 const SpeechRecognition =
   typeof window !== "undefined" &&
@@ -24,25 +24,31 @@ export function SelectField({ label, name, options, register }) {
   );
 }
 
-export function CheckboxField({ label, name, options, register }) {
+export function CheckboxField({ label, name, options, register, descriptions = {} }) {
   return (
-    <div className="form-control mb-4">
-      <label className="label">
+    <div className="form-control mb-4 ">
+      <label>
         <span className="label-text">{label}</span>
       </label>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4"> 
         {options.map((option) => (
           <label
-            className="label cursor-pointer inline-flex items-center gap-3"
+            className="label cursor-pointer inline-flex items-center gap-3 "
             key={option}
+            title={descriptions[option] || ""}
           >
             <input
               type="checkbox"
               value={option}
               {...register(name)}
-              className="checkbox checkbox-primary"
+              className="checkbox checkbox-primary "
             />
-            <span className="label-text text-gray-700 flex-1">{option}</span>
+            <div className="label-text text-gray-700 flex-1 ">
+              {option}
+              <span style={{ display: 'none' }}>
+                {descriptions[option] || ""}
+              </span>
+            </div>
           </label>
         ))}
       </div>
@@ -61,9 +67,14 @@ export function CheckboxField({ label, name, options, register }) {
  * @param {string} name - The name attribute for the input field.
  * @param {Function} register - The register function for form handling.
  */
-export function InputField({ label, name, register }) {
+export function InputField({ label, name, register , watch }) {
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
+
+   const watchedValue = watch ? watch(name) : "";
+  useEffect(() => {
+    setInputValue(watchedValue || "");
+  }, [watchedValue]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
