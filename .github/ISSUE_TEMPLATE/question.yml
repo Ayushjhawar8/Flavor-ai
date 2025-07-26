@@ -1,0 +1,21 @@
+name: Question / Help
+description: Ask a question or request guidance
+title: "[QUESTION] Write your question"
+labels: [question]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      placeholder: "Explain your doubt or what you need help with"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Related Area
+      options:
+        - Setup
+        - Code Usage
+        - Contribution Process
+        - Other

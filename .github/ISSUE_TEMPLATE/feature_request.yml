@@ -1,0 +1,25 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+title: "[FEAT] Feature title"
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Describe the Feature
+      placeholder: "Explain your suggestion clearly"
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: "What problem would this solve?"
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Expected Impact
+      options:
+        - Low
+        - Medium
+        - High

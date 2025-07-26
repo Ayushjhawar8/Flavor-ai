@@ -1,0 +1,19 @@
+name: Documentation Update
+description: Propose updates or improvements to documentation
+title: "[DOCS] Documentation update"
+labels: [documentation]
+body:
+  - type: textarea
+    id: section
+    attributes:
+      label: Affected Section or Page
+      placeholder: "Where is the documentation that needs to be updated?"
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Update
+      placeholder: "What should be changed or added?"
+    validations:
+      required: true
