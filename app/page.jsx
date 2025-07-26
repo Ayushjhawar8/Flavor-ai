@@ -2,6 +2,7 @@
 
 import { PlusIcon } from "@/components/Icons";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
+import ThemeToggle from "@/components/ThemeToggle";
 import { CATEGORIES_URL } from "@/lib/urls";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -91,17 +92,17 @@ export default function Page()
     <>
       {/* Navbar */}
       <div
-        className={`navbar fixed top-0 left-0 right-0 z-50 text-white shadow-lg flex flex-col md:flex-row transition-all duration-300 ${isScrolled
-          ? "bg-gradient-to-r from-white/10 via-white/20 to-white/10 backdrop-blur-lg backdrop-saturate-150"
-          : "bg-gradient-to-r from-white/20 via-white/30 to-white/20 backdrop-blur-md"
+        className={`navbar fixed top-0 left-0 right-0 z-50 text-base-content shadow-lg flex flex-col md:flex-row transition-all duration-300 ${isScrolled
+          ? "bg-gradient-to-r from-base-100/80 via-base-200/80 to-base-100/80 backdrop-blur-lg backdrop-saturate-150 border-b border-base-300"
+          : "bg-gradient-to-r from-base-100/60 via-base-200/60 to-base-100/60 backdrop-blur-md border-b border-base-300/50"
           }`}
-        style={{ margin: 0, border: "none" }}
+        style={{ margin: 0 }}
       >
         <div className="flex-1 flex items-center gap-4">
           <Link
             href="#"
             id="main"
-            className="btn btn-ghost text-2xl font-bold text-white"
+            className="btn btn-ghost text-2xl font-bold text-base-content"
           >
             Flavor AI
           </Link>
@@ -130,13 +131,14 @@ export default function Page()
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
           </a>
+          <ThemeToggle />
         </div>
         <RecipeSearchBar
           handleBlur={handleBlur}
           handleSearchFocus={handleSearchFocus}
           showResults={showResults}
           setShowResults={setShowResults}
-          className="bg-purple-900/30 placeholder-gray-200 text-white border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 backdrop-blur-sm"
+          className="bg-base-200/50 placeholder-base-content/70 text-base-content border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary backdrop-blur-sm"
         />
       </div>
 
@@ -144,13 +146,13 @@ export default function Page()
       <div className="min-h-screen flex flex-col pt-[64px]"> {/* pt-[64px] to offset navbar height */}
         {/* Content */}
         <div
-          className={`content flex-1 flex flex-col items-center justify-center p-5 md:p-1 w-full bg-gradient-to-br from-indigo-50 to-blue-100 ${!showResults ? "opacity-100" : "opacity-80 blur-sm"
+          className={`content flex-1 flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 ${!showResults ? "opacity-100" : "opacity-80 blur-sm"
             }`}
         >
-          <section className="w-full h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center">
+          <section className="w-full h-screen bg-gradient-to-br from-base-100 to-base-200 flex items-center justify-center">
             <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-6 md:space-y-8">
               <div className="relative">
-                <h1 className="text-5xl md:text-7xl font-extrabold text-indigo-900 leading-tight">
+                <h1 className="text-5xl md:text-7xl font-extrabold text-base-content leading-tight">
                   Start Your Flavor Journey
                 </h1>
                 <div className="absolute -top-2 -right-2 transform rotate-12">
@@ -164,7 +166,7 @@ export default function Page()
                   </a>
                 </div>
               </div>
-              <p className="text-xl md:text-2xl text-gray-700 max-w-3xl leading-relaxed">
+              <p className="text-xl md:text-2xl text-base-content/80 max-w-3xl leading-relaxed">
                 Unlock a world of flavors with AI-curated recipes, personalized
                 suggestions, and exciting surprises. Explore new cuisines or craft
                 the perfect meal with Flavor AI!
@@ -219,8 +221,8 @@ export default function Page()
 
           {/* Categories section */}
           {showCategories && (
-            <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-indigo-50 to-blue-100 rounded-lg shadow-lg">
-              <h1 className="text-xl md:text-3xl text-gray-700 mb-10 font-semibold text-center">
+            <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-base-200 rounded-lg shadow-lg">
+              <h1 className="text-xl md:text-3xl text-base-content mb-10 font-semibold text-center">
                 A Taste for Every Mood and Moment
               </h1>
 
@@ -239,12 +241,12 @@ export default function Page()
                       />
                     </figure>
                     <div className="card-body p-4">
-                      <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center">
+                      <h2 className="card-title text-lg md:text-xl text-base-content flex items-center">
                         {/* Assuming PlusIcon component exists */}
                         <PlusIcon />
                         {category.strCategory}
                       </h2>
-                      <p className="text-sm md:text-base text-gray-600">
+                      <p className="text-sm md:text-base text-base-content/70">
                         {category.strCategoryDescription.slice(0, 150) + " ..."}
                       </p>
                       <Link
