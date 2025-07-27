@@ -134,6 +134,7 @@ export default function Page()
           <ThemeToggle />
         </div>
         <RecipeSearchBar
+          isScrolled={isScrolled}
           handleBlur={handleBlur}
           handleSearchFocus={handleSearchFocus}
           showResults={showResults}

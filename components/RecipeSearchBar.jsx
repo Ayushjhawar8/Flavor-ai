@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
 
 const RecipeSearchBar = ({
+  isScrolled,
   handleSearchFocus,
   handleBlur,
   showResults,
