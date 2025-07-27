@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { BackIcon } from '@/components/Icons';
 import { useState, useEffect } from 'react';
+import React from 'react';
 
 function BackButton({ fallbackUrl = "/" }) {
     const router = useRouter();

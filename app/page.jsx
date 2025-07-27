@@ -155,6 +155,12 @@ export default function Page() {
                   Discover a Random Recipe
                 </button>
               </Link>
+              <Link href="/favorite" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn" style={{ animationDelay: '200ms' }}>
+                <button className="btn btn-primary text-white px-6 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus">
+                  ❤️ Favorites
+                </button>
+              </Link>
+              
               <button
                 className="btn btn-primary text-white text-lg md:text-xl shadow-md mt-6 md:mt-0 transform hover:scale-105 transition-all duration-300 animate-fadeIn flex items-center gap-2 hover:bg-primary-focus"
                 onClick={() => {
