@@ -118,9 +118,9 @@ function ShowMeal({ URL }) {
 
   return (
     // --- THIS IS THE LINE THAT WAS CHANGED ---
-    <div className="min-h-screen py-10 px-4 bg-blue-100 flex justify-center items-start">
+    <div className="min-h-screen py-10 px-4 bg-base-100 flex justify-center items-start">
       <BackButton />
-      <div className="relative max-w-4xl w-full bg-white shadow-xl rounded-xl">
+      <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
         <div className="p-6 md:p-12">
           <header className="text-center mb-8"><h1 className="text-3xl md:text-5xl font-bold text-gray-900">{mealData.strMeal}</h1><p className="text-lg text-gray-500 mt-2">{mealData.strArea} Cuisine</p></header>
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12"><div className="md:w-1/2"><img src={mealData.strMealThumb} alt={mealData.strMeal} className="w-full h-auto rounded-lg shadow-md mb-4" /><div className="flex items-center gap-4"><span className="badge badge-lg badge-accent">{mealData.strCategory}</span>{mealData.strYoutube && (<Link href={mealData.strYoutube} target="_blank" rel="noopener noreferrer" className="btn btn-error btn-sm gap-2"><YoutubeIcon /> Watch</Link>)}</div></div><div className="md:w-1/2"><h2 className="text-2xl font-bold mb-2 flex items-center text-gray-800"><PlusIcon /><span className="ml-2">Ingredients</span></h2><IngredientsTable mealData={mealData} /></div></div>
