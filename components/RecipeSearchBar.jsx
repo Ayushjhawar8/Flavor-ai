@@ -19,11 +19,16 @@ const RecipeSearchBar = ({
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (input) {
-      fetchMeals(input);
-    } else {
+    if (!input) {
       setMeals([]);
+      return;
     }
+    const handler = setTimeout(() => {
+      fetchMeals(input);
+    }, 400);
+    return () => {
+      clearTimeout(handler);
+    };
   }, [input]);
 
   const fetchMeals = (value) => {
@@ -38,7 +43,6 @@ const RecipeSearchBar = ({
       setMeals([]);
       return;
     }
-    fetchMeals(value);
   };
 
   const handleKeyDown = (event) => {
