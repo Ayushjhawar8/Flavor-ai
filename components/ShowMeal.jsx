@@ -118,7 +118,7 @@ function ShowMeal({ URL }) {
 
   return (
     // --- THIS IS THE LINE THAT WAS CHANGED ---
-    <div className="min-h-screen py-10 px-4 bg-base-100 flex justify-center items-start">
+    <div className="min-h-screen py-10 px-4 bg-base-100 flex justify-center items-center flex-col relative">
       <BackButton />
       <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
         <div className="p-6 md:p-12">

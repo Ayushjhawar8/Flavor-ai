@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,10 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
       </head>
-      <body className={inter.className} style={patrickHand}>{children}</body>
+      <body className={inter.className} style={patrickHand}>
+        <Navbar />
+        <div className="pt-[40px] bg-base-100">{children}</div>
+      </body>
     </html>
   );
 }
