@@ -56,6 +56,14 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
     setIsAnalyzing(true);
     setError("");
 
+    // Check for GOOGLE_GENERATIVE_AI_API_KEY
+    const googleApiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    if (!googleApiKey) {
+      setError("Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file.");
+      setIsAnalyzing(false);
+      return;
+    }
+
     try {
       const response = await fetch("/api/analyze-ingredients", {
         method: "POST",
