@@ -252,7 +252,7 @@ export default function Page() {
                 href="https://x.com/JhawarAj123"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-gray-200 transition"
+                className="text-black text-base hover:text-gray-500 hover:underline transition-colors"
               >
                 Ayush Jhawar
               </a>

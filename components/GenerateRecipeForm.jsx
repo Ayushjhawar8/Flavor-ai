@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   CheckboxField,
   InputField,
   SelectField,
 } from "@/components/FormComponents";
+import ImageUpload from "@/components/ImageUpload";
 
 /**
  * GenerateRecipeForm Component
@@ -19,32 +21,41 @@ import {
  * @param {Function} setRecipeImageUrl - Updates recipe image URL
  */
 function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onResetRef }) {
-  const { register, handleSubmit , reset, watch} = useForm({
-    // Default form values
-    defaultValues: {
-        userPrompt: "",
-      dishType: "Snack",
-      cuisine: "Indian",
-      dietaryRestrictions: [],
-      spiceLevel: "Spicy",
-    },
-  });
-  if (onResetRef) {
-    onResetRef.current = reset;
-  }
+  const [analyzedIngredients, setAnalyzedIngredients] = useState([]);
+  
+  const { register, handleSubmit, reset, watch } = useForm({
+  defaultValues: {
+    userPrompt: "",
+    dishType: "Snack",
+    cuisine: "Indian",
+    dietaryRestrictions: [],
+    spiceLevel: "Spicy",
+  },
+});
+
+if (onResetRef) {
+  onResetRef.current = reset;
+}
+
 
   /**
    * Form submission handler
    * Generates recipe and corresponding image using API
    */
   const onSubmit = async (data) => {
+    // Add analyzed ingredients to the request data
+    const requestData = {
+      ...data,
+      availableIngredients: analyzedIngredients,
+    };
+
     // Generate recipe
     const res = await fetch("/api/generate-recipe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(requestData),
     });
 
     const recipe = await res.json();
@@ -76,8 +87,14 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-xl p-6 bg-base-200 rounded-lg shadow-xl"
+className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
+
     >
+      <ImageUpload
+        onIngredientsAnalyzed={setAnalyzedIngredients}
+        analyzedIngredients={analyzedIngredients}
+      />
+
       <InputField
         label="Describe about dish:"
         name="userPrompt"

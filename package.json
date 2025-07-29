@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.2.22",
     "@ai-sdk/mistral": "^0.0.30",
     "@ai-sdk/openai": "^0.0.44",
     "@heroicons/react": "^2.2.0",
