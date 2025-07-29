@@ -2,7 +2,7 @@
 import { recipeSchema } from "@/lib/schemas";
 import { generateObject } from "ai";
 import { NextResponse } from "next/server";
-import ingredientGraph from "@/lib/ingredientGraph";
+const ingredientGraph = require("@/lib/ingredientGraph");
 
 /**
  * API Route: POST /api/generate-recipe
