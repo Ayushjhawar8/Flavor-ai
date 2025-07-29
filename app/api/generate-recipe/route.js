@@ -1,7 +1,8 @@
-import { model } from "@/lib/groq";
+﻿import { model } from "@/lib/groq";
 import { recipeSchema } from "@/lib/schemas";
 import { generateObject } from "ai";
 import { NextResponse } from "next/server";
+import ingredientGraph from "@/lib/ingredientGraph";
 
 /**
  * API Route: POST /api/generate-recipe
@@ -38,6 +39,23 @@ export async function POST(req) {
       ? `Available ingredients: ${body.availableIngredients.map(ing => `${ing.name}${ing.quantity ? ` (${ing.quantity})` : ''}`).join(', ')}.`
       : '';
 
+    // Get graph-based ingredient suggestions if available ingredients are provided
+    let ingredientSuggestions = '';
+    if (body.availableIngredients && body.availableIngredients.length > 0) {
+      const ingredientNames = body.availableIngredients.map(ing => ing.name.toLowerCase());
+      const pairingSuggestions = ingredientGraph.generatePairingSuggestions(ingredientNames, 3);
+      
+      if (pairingSuggestions.complementary.length > 0) {
+        const complementaryNames = pairingSuggestions.complementary.map(c => c.ingredient).join(', ');
+        ingredientSuggestions += `\nSuggested complementary ingredients: ${complementaryNames}.`;
+      }
+      
+      if (pairingSuggestions.substitutes.length > 0) {
+        const substituteNames = pairingSuggestions.substitutes.map(s => s.ingredient).join(', ');
+        ingredientSuggestions += `\nSuggested substitutes if needed: ${substituteNames}.`;
+      }
+    }
+
     /*
       COMBINED: This prompt combines structure enforcement from `main` with ingredient awareness from `feat/24-add-ingredients-detection`.
 
@@ -45,32 +63,16 @@ export async function POST(req) {
       - AI gets clear formatting requirements for JSON schema
       - User dietary restrictions and preferences are honored
       - Ingredients user has are included contextually (optional, not limiting)
+      - Graph-based ingredient pairing suggestions for enhanced flavor profiles
     */
-    const prompt = `You are a professional chef and recipe creator.
+    const prompt = `You are a professional chef and recipe creator with expertise in ingredient pairing and flavor combinations.
 
     Generate a ${cuisine} recipe for ${dishType}${spiceLevel !== "Mild" ? ` with ${spiceLevel.toLowerCase()} spicing` : ""}.
     ${body.dietaryRestrictions && body.dietaryRestrictions.length > 0 ? `Strictly avoid these ingredients: ${body.dietaryRestrictions.join(", ")}.` : ""}
-    ${ingredientsSection}
+    ${ingredientsSection}${ingredientSuggestions}
     User preferences: ${body.userPrompt}
 
-    Create an amazing recipe that would be perfect for this request. Use whatever ingredients work best - if I mentioned having certain ingredients available, feel free to incorporate them if they fit well, but don't limit yourself to only those ingredients. Focus on making the best possible dish.
-
-    Return the recipe in this JSON format:
-    {
-      "name": "Recipe Name (2-3 words)",
-      "area": "Cuisine/Region",
-      "category": "Dish Type",
-      "ingredients": [
-        { "name": "Ingredient 1", "amount": "Amount" },
-        ...
-      ],
-      "steps": [
-        "Step 1",
-        "Step 2",
-        ...
-      ],
-      "description": "A one-line summary of the dish."
-    }
+    Create an amazing recipe that would be perfect for this request. Consider the ingredient pairing suggestions provided - they are based on flavor compatibility and culinary traditions. Use whatever ingredients work best - if I mentioned having certain ingredients available, feel free to incorporate them if they fit well, but don't limit yourself to only those ingredients. Focus on making the best possible dish with innovative yet accessible ingredient combinations.
 
     Use simple, clear instructions and common ingredients. Make the recipe unique, appetizing, and easy to follow.`;
 
