@@ -38,7 +38,7 @@ Examples of representing our community include using an official email address, 
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at https://www.linkedin.com/in/eammen-shaik-71aa5a1b2/.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at https://gssoc.girlscript.tech/team.
 
 All complaints will be reviewed and investigated promptly and fairly.
 
