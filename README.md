@@ -131,9 +131,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Thanks to all the amazing people who have contributed to this project! 🎉
 
-<div align="center">
-  <img src="https://contrib.rocks/image?repo=Ayushjhawar8/Flavor-ai&max=100&columns=10" alt="Contributors to Flavor AI" />
-</div>
+<a href="https://github.com/Ayushjhawar8"><img src="https://github.com/Ayushjhawar8.png" width="50" height="50" alt="Ayushjhawar8" style="border-radius: 50%;"></a>
+<a href="https://github.com/contributors-img/contributors-img"><img src="https://contributors-img.web.app/image?repo=Ayushjhawar8/Flavor-ai" alt="Contributors" /></a>
 
 
 
