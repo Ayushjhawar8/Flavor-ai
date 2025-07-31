@@ -113,6 +113,14 @@ export default function Page() {
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
           </a>
+          <Link
+            href="/favorite"
+            className="group flex items-center gap-2 bg-base-200 hover:bg-base-300 text-base-content px-3 py-2 rounded-full text-sm font-medium shadow-lg transition-all duration-300 hover:scale-105 border border-base-300"
+          >
+            <span className="text-pink-500">❤️</span>
+            <span className="hidden sm:inline">Favorites</span>
+            <span className="sm:hidden">Favorites</span>
+          </Link>
         </div>
         <div className="ml-auto">
           <RecipeSearchBar
@@ -145,24 +153,21 @@ export default function Page() {
               the perfect meal with Flavor AI!
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-              <Link href="/ai" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn">
-                <button className="btn btn-primary text-white px-6 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus">
-                  Get AI-Generated Recipes
-                </button>
+              <Link 
+                href="/ai" 
+                className="btn btn-primary text-white px-4 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus transform hover:scale-105 transition-all duration-300 animate-fadeIn w-full sm:w-auto text-center"
+              >
+                Get AI-Generated Recipes
               </Link>
-              <Link href="/random" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn" style={{ animationDelay: '200ms' }}>
-                <button className="btn btn-primary text-white px-6 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus">
-                  Discover a Random Recipe
-                </button>
+              <Link 
+                href="/random" 
+                className="btn btn-primary text-white px-4 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus transform hover:scale-105 transition-all duration-300 animate-fadeIn w-full sm:w-auto text-center"
+                style={{ animationDelay: '200ms' }}
+              >
+                Discover a Random Recipe
               </Link>
-              <Link href="/favorite" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn" style={{ animationDelay: '200ms' }}>
-                <button className="btn btn-primary text-white px-6 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus">
-                  ❤️ Favorites
-                </button>
-              </Link>
-              
               <button
-                className="btn btn-primary text-white text-lg md:text-xl shadow-md mt-6 md:mt-0 transform hover:scale-105 transition-all duration-300 animate-fadeIn flex items-center gap-2 hover:bg-primary-focus"
+                className="btn btn-primary text-white px-4 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus transform hover:scale-105 transition-all duration-300 animate-fadeIn flex items-center justify-center gap-2 w-full sm:w-auto"
                 onClick={() => {
                   setShowCategories((prev) => !prev);
                   if (!showCategories) {
@@ -191,6 +196,13 @@ export default function Page() {
                   </svg>
                 )}
               </button>
+              <Link 
+                href="/idea-hub" 
+                className="btn btn-primary text-white px-4 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus transform hover:scale-105 transition-all duration-300 animate-fadeIn w-full sm:w-auto text-center"
+                style={{ animationDelay: '600ms' }}
+              >
+                💡 Idea Hub
+              </Link>
             </div>
           </div>
         </section>
