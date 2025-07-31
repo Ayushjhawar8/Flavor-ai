@@ -4,7 +4,7 @@ This guide will walk you through setting up the Idea Hub feature with MongoDB fo
 
 ## Prerequisites
 
-- Node.js (v14 or later)
+- Node.js (v18 LTS or later)
 - npm or yarn
 - MongoDB Atlas account (free tier available)
 
