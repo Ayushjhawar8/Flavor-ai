@@ -131,7 +131,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Thanks to all the amazing people who have contributed to this project! 🎉
 
-<img src="https://contributors-img.web.app/image?repo=Ayushjhawar8/Flavor-ai" alt="Contributors" />
+<div align="center">
+  <img src="https://contrib.rocks/image?repo=Ayushjhawar8/Flavor-ai&max=100&columns=10" alt="Contributors to Flavor AI" usemap="#contributors-map" />
+</div>
 
 
 
@@ -142,4 +144,3 @@ Thanks to all the amazing people who have contributed to this project! 🎉
 </p>
 ---
 Built with CodeBuff 🚀
-
