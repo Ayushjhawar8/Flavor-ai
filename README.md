@@ -129,9 +129,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Contributors
 
-<a href="https://github.com/Ayushjhawar8/Flavor-ai/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Ayushjhawar8/Flavor-ai" />
-</a>
+Thanks to all the amazing people who have contributed to this project! 🎉
+
+<div align="center">
+  <a href="https://github.com/Ayushjhawar8/Flavor-ai/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=Ayushjhawar8/Flavor-ai&max=100&columns=10" alt="Contributors" />
+  </a>
+</div>
+
+<div align="center">
+  <sub>Made with <a href="https://contrib.rocks">contrib.rocks</a></sub>
+</div>
 
 <p align="center">
   <a href="/" style="text-decoration:none;">
