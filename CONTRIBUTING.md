@@ -39,7 +39,7 @@ Ensure you have the following installed:
 
 2. **Clone the Repo Locally**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/flavor-ai.git
+   git clone https://github.com/your-github-username/flavor-ai.git
    cd flavor-ai
    ```
 
