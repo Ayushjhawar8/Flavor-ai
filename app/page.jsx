@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "@/components/Icons";
+import ThemeToggle from "@/components/ThemeToggle"    // ✅ Correct - default import
 import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { CATEGORIES_URL } from "@/lib/urls";
 import Link from "next/link";
@@ -11,6 +12,30 @@ export default function Page() {
   const [showResults, setShowResults] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState("light");
+
+  // Monitor theme changes
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          const newTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          setCurrentTheme(newTheme);
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+
+    // Get initial theme
+    const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    setCurrentTheme(initialTheme);
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleSearchFocus = () => {
     setShowResults(true);
@@ -81,10 +106,15 @@ export default function Page() {
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">
+          <div className="rounded-full text-base-content bg-purple-400">
+            <ThemeToggle/>
+          </div>
           <Link
             href="#"
             id="main"
-            className="btn btn-ghost text-2xl font-bold"
+            className={`btn rounded-full btn-ghost text-2xl font-bold ${
+              currentTheme === 'dark' ? 'text-white' : 'bg-[linear-gradient(to_bottom_right,_#ffc1cc,_#fbc2eb,_#fff)]'
+            }`}
           >
             Flavor AI
           </Link>
@@ -133,128 +163,144 @@ export default function Page() {
         }`}
       >
         <section className="w-full h-screen bg-base-100 flex items-center justify-center">
-  <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8">
-    <div className="relative">
-      <h1 className="text-5xl md:text-7xl font-extrabold text-base-content leading-tight">
-        Start Your Flavor Journey
-      </h1>
-    </div>
-    <p className="text-xl md:text-2xl text-base-content/80 max-w-3xl leading-relaxed">
-      Unlock a world of flavors with AI-curated recipes, personalized
-      suggestions, and exciting surprises. Explore new cuisines or craft
-      the perfect meal with Flavor AI!
-    </p>
-    <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8">
+            <div className="relative">
+              <h1 className={`text-5xl md:text-7xl font-extrabold leading-tight ${
+                currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+              }`}>
+                Start Your Flavor Journey
+              </h1>
+            </div>
+            <p className={`text-xl md:text-2xl max-w-3xl leading-relaxed ${
+              currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+            }`}>
+              Unlock a world of flavors with AI-curated recipes, personalized
+              suggestions, and exciting surprises. Explore new cuisines or craft
+              the perfect meal with Flavor AI!
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
 
-      {/* --- Button 1: AI Recipes --- */}
-      <Link href="/ai" className="animate-fadeIn">
-        <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2">
-          {/* Magic Wand Icon 🪄 */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0" /></svg>
-          Get AI-Generated Recipes
-        </button>
-      </Link>
+              {/* --- Button 1: AI Recipes --- */}
+              <Link href="/ai" className="animate-fadeIn">
+                <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2">
+                  {/* Magic Wand Icon 🪄 */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0" /></svg>
+                  Get AI-Generated Recipes
+                </button>
+              </Link>
 
-      {/* --- Button 2: Random Recipe --- */}
-      <Link href="/random" className="animate-fadeIn" style={{ animationDelay: '200ms' }}>
-        <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2">
-          {/* Shuffle Icon 🔀 */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v2a3 3 0 01-3 3z" /></svg>
-          Discover a Random Recipe
-        </button>
-      </Link>
+              {/* --- Button 2: Random Recipe --- */}
+              <Link href="/random" className="animate-fadeIn" style={{ animationDelay: '200ms' }}>
+                <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2">
+                  {/* Shuffle Icon 🔀 */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v2a3 3 0 01-3 3z" /></svg>
+                  Discover a Random Recipe
+                </button>
+              </Link>
 
-      {/* --- Button 3: Favorites --- */}
-      <Link href="/favorite" className="animate-fadeIn" style={{ animationDelay: '200ms' }}>
-         <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30">
-          ❤️ Favorites
-        </button>
-      </Link>
-      
-      {/* --- Button 4: Show/Hide Categories --- */}
-      <button
-        className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2 animate-fadeIn"
-        onClick={() => {
-          setShowCategories((prev) => !prev);
-          if (!showCategories) {
-            setTimeout(() => {
-              document.querySelector('.categories-section')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          }
-        }}
-        style={{ animationDelay: '400ms' }}
-      >
-        {showCategories ? "Hide Categories" : "Show Categories"}
-        {!showCategories && (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        )}
-      </button>
+              {/* --- Button 3: Favorites --- */}
+              <Link href="/favorite" className="animate-fadeIn" style={{ animationDelay: '200ms' }}>
+                 <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30">
+                  ❤️ Favorites
+                </button>
+              </Link>
+              
+              {/* --- Button 4: Show/Hide Categories --- */}
+              <button
+                className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2 animate-fadeIn"
+                onClick={() => {
+                  setShowCategories((prev) => !prev);
+                  if (!showCategories) {
+                    setTimeout(() => {
+                      document.querySelector('.categories-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }
+                }}
+                style={{ animationDelay: '400ms' }}
+              >
+                {showCategories ? "Hide Categories" : "Show Categories"}
+                {!showCategories && (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </button>
 
-    </div>
-  </div>
-</section>
+            </div>
+          </div>
+        </section>
 
         <div className="divider mt-10"></div>
 
         {/* Categories section */}
         {showCategories && (
-  <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/20 rounded-lg shadow-lg">
-    <h1 className="text-xl md:text-3xl text-base-content mb-10 font-semibold text-center">
-      A Taste for Every Mood and Moment
-    </h1>
+          <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/20 rounded-lg shadow-lg">
+            <h1 className={`text-xl md:text-3xl mb-10 font-semibold text-center ${
+              currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+            }`}>
+              A Taste for Every Mood and Moment
+            </h1>
 
-    {/* Grid layout for categories */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
-      {categories.map((category) => (
-        <div
-          key={category.idCategory}
-          // The shadow is now larger and tinted with the theme color on hover
-          className="card card-compact w-full bg-base-100 shadow-xl rounded-lg overflow-hidden transform transition duration-300 hover:shadow-2xl hover:shadow-amber-400/40 hover:scale-105 hover:-translate-y-1 cursor-pointer hover:ring-2 hover:ring-amber-400"
-        >
-          <figure>
-            <img
-              src={category.strCategoryThumb}
-              alt={category.strCategory}
-              className="w-full h-48 object-cover"
-            />
-          </figure>
-          <div className="card-body p-4">
-            <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center">
-              <PlusIcon />
-              {category.strCategory}
-            </h2>
-            <p className="text-sm md:text-base text-gray-600">
-              {category.strCategoryDescription.slice(0, 150) + " ..."}
-            </p>
-            <Link
-              className="card-actions justify-end"
-              href={`/category/${category.strCategory}`}
-            >
-              <button className="btn btn-primary text-white text-sm md:text-base shadow-md">
-                Explore
-              </button>
-            </Link>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-)}
+            {/* Grid layout for categories */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+              {categories.map((category) => (
+                <div
+                  key={category.idCategory}
+                  // The shadow is now larger and tinted with the theme color on hover
+                  className="card card-compact w-full bg-base-100 shadow-xl rounded-lg overflow-hidden transform transition duration-300 hover:shadow-2xl hover:shadow-amber-400/40 hover:scale-105 hover:-translate-y-1 cursor-pointer hover:ring-2 hover:ring-amber-400"
+                >
+                  <figure>
+                    <img
+                      src={category.strCategoryThumb}
+                      alt={category.strCategory}
+                      className="w-full h-48 object-cover"
+                    />
+                  </figure>
+                  <div className="card-body p-4">
+                    <h2 className={`card-title text-lg md:text-xl flex items-center ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+                    }`}>
+                      <PlusIcon />
+                      {category.strCategory}
+                    </h2>
+                    <p className={`text-sm md:text-base ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-700'
+                    }`}>
+                      {category.strCategoryDescription.slice(0, 150) + " ..."}
+                    </p>
+                    <Link
+                      className="card-actions justify-end"
+                      href={`/category/${category.strCategory}`}
+                    >
+                      <button className="btn btn-primary text-white text-sm md:text-base shadow-md">
+                        Explore
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <footer className="footer rounded-md mt-10 p-10 bg-base-200 text-base-content footer-center">
           <div className="flex flex-col md:flex-row justify-between items-center w-full max-w-4xl mx-auto space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
-              <h3 className="text-lg font-semibold">Flavor AI</h3>
-              <p className="text-sm">Your AI-powered culinary companion.</p>
+              <h3 className={`card-title text-lg md:text-xl flex items-center ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+                    }`}>Flavor AI</h3>
+              <p className={`card-title text-lg md:text-xl flex items-center ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+                    }`}>Your AI-powered culinary companion.</p>
             </div>
             <div className="flex flex-col items-center space-y-4">
               <a
                 href="https://x.com/JhawarAj123"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black text-base hover:text-gray-500 hover:underline transition-colors"
+                className={`card-title text-lg md:text-xl flex items-center ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+                    }`}
               >
                 Ayush Jhawar
               </a>
@@ -267,7 +313,9 @@ export default function Page() {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
+                   className={`h-4 w-4 ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+                    }`}
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -278,7 +326,9 @@ export default function Page() {
               </div>
             </div>
             <div className="text-sm text-center md:text-right">
-              <p>
+              <p className={`card-title text-lg md:text-xl flex items-center ${
+                      currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
+                    }`}>
                 &copy; {new Date().getFullYear()} Flavor AI. All Rights
                 Reserved.
               </p>
