@@ -5,7 +5,6 @@ import { PlusIcon } from "@/components/Icons";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { CATEGORIES_URL } from "@/lib/urls";
 
 interface Meal {
   idMeal: string;
@@ -50,7 +49,13 @@ export default function FavoritesPage() {
 
   return (
     <div className="p-6 min-h-screen bg-base-100">
-      <BackButton />
+
+      {/* 🔙 Back Button */}
+      <div className="mb-4">
+        <BackButton />
+      </div>
+
+
       <h1 className="text-3xl md:text-5xl font-bold text-center text-secondary mb-10">
         Your Favorite Meals 💖
       </h1>
@@ -128,7 +133,7 @@ export default function FavoritesPage() {
                 </div>
               </div>
             </div>
-          ))}
+ 
         </div>
       )}
     </div>
