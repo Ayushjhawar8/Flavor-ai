@@ -124,7 +124,6 @@ All contributors are expected to adhere to our [Code of Conduct](./CODE_OF_CONDU
 
 If you're stuck:
 - Open an issue describing the problem
-- Join our community discussions (if applicable)
 - Tag the maintainers in comments for guidance
 
 ---
