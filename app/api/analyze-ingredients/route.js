@@ -29,6 +29,13 @@ const ingredientAnalysisSchema = z.object({
  * Returns identified ingredients and cooking suggestions
  */
 export async function POST(req) {
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return NextResponse.json(
+      { error: "Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file." },
+      { status: 400 }
+    );
+  }
+
   try {
     const { image } = await req.json();
 

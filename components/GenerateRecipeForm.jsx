@@ -22,27 +22,35 @@ import ImageUpload from "@/components/ImageUpload";
  */
 function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onResetRef }) {
   const [analyzedIngredients, setAnalyzedIngredients] = useState([]);
-  
+  const [error, setError] = useState(null); 
+
   const { register, handleSubmit, reset, watch } = useForm({
-  defaultValues: {
-    userPrompt: "",
-    dishType: "Snack",
-    cuisine: "Indian",
-    dietaryRestrictions: [],
-    spiceLevel: "Spicy",
-  },
-});
+    defaultValues: {
+      userPrompt: "",
+      dishType: "Snack",
+      cuisine: "Indian",
+      dietaryRestrictions: [],
+      spiceLevel: "Spicy",
+    },
+  });
 
-if (onResetRef) {
-  onResetRef.current = reset;
-}
-
+  if (onResetRef) {
+    onResetRef.current = reset;
+  }
 
   /**
    * Form submission handler
    * Generates recipe and corresponding image using API
    */
   const onSubmit = async (data) => {
+    setError(null); // Reset error state
+    // Check for GROQ_API_KEY
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      setError("Missing GROQ API key. Please set GROQ_API_KEY in your .env.local file.");
+      return;
+    }
+
     // Add analyzed ingredients to the request data
     const requestData = {
       ...data,
@@ -50,29 +58,46 @@ if (onResetRef) {
     };
 
     // Generate recipe
-    const res = await fetch("/api/generate-recipe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    });
+    let res;
+    try {
+      res = await fetch("/api/generate-recipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      if (!res.ok) throw new Error("Failed to generate recipe");
+      const recipe = await res.json();
+      setRecipe(recipe.recipe);
+    } catch (err) {
+      setError(`Recipe generation failed: ${err.message}`);
+      return;
+    }
 
-    const recipe = await res.json();
-    setRecipe(recipe.recipe);
+    const googleApiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    if (!googleApiKey) {
+      setError("Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file.");
+      return;
+    }
 
-    // Generate recipe image
-    const imagePrompt = await `${data.userPrompt}, ${recipe.recipe.name}`;
-    const resImage = await fetch("/api/generate-recipe-image", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt: imagePrompt }),
-    });
-    setRecipeImageUrl((await resImage.json()).url);
+    const imagePrompt = `${data.userPrompt}, ${recipe.recipe.name}`;
+    try {
+      const resImage = await fetch("/api/generate-recipe-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: imagePrompt }),
+      });
+      if (!resImage.ok) throw new Error("Failed to generate recipe image");
+      setRecipeImageUrl((await resImage.json()).url);
+    } catch (err) {
+      setError(`Image generation failed: ${err.message}`);
+      return;
+    }
 
-    // setShowRecipe(true);
+    setShowRecipe(true);
   };
 
   const dietaryDescriptions = {
@@ -87,8 +112,7 @@ if (onResetRef) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
-
+      className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
     >
       <ImageUpload
         onIngredientsAnalyzed={setAnalyzedIngredients}
@@ -106,29 +130,14 @@ className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 sp
         <SelectField
           label="Type of Dish:"
           name="dishType"
-          options={[
-            "",
-            "Appetizer",
-            "Main Course",
-            "Dessert",
-            "Snack",
-            "Beverage",
-          ]}
+          options={["", "Appetizer", "Main Course", "Dessert", "Snack", "Beverage"]}
           register={register}
         />
 
         <SelectField
           label="Cuisine Preference:"
           name="cuisine"
-          options={[
-            "",
-            "Italian",
-            "Mexican",
-            "Indian",
-            "Chinese",
-            "American",
-            "Mediterranean",
-          ]}
+          options={["", "Italian", "Mexican", "Indian", "Chinese", "American", "Mediterranean"]}
           register={register}
         />
       </div>
@@ -136,16 +145,9 @@ className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 sp
       <CheckboxField
         label="Dietary Restrictions:"
         name="dietaryRestrictions"
-        options={[
-          "Vegetarian",
-          "Vegan",
-          "Gluten-Free",
-          "Dairy-Free",
-          "Nut-Free",
-          "Halal",
-        ]}
+        options={["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free", "Halal"]}
         register={register}
-        descriptions = {dietaryDescriptions} //Added this For 
+        descriptions={dietaryDescriptions}
       />
 
       <SelectField
@@ -158,6 +160,7 @@ className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 sp
       <button type="submit" className="btn btn-primary w-full text-white">
         Generate Recipe
       </button>
+      {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>} {/* Display error */}
     </form>
   );
 }

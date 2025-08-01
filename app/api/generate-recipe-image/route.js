@@ -19,6 +19,13 @@ function generateRandomNumber() {
  * - url: Generated image URL
  */
 export async function POST(req) {
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return NextResponse.json(
+      { error: "Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file." },
+      { status: 400 }
+    );
+  }
+
   const { prompt } = await req.json();
 
   // Generate unique seed for image variation
