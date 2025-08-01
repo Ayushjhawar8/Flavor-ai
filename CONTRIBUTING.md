@@ -1,6 +1,6 @@
-# 🙌 Contributing to FlavorAI
+# 🙌 Contributing to Flavor AI
 
-Welcome, and thank you for showing interest in contributing to **FlavorAI** — your AI-powered culinary companion! Whether you're here to report bugs, suggest features, write documentation, or contribute code, we're happy to have you 💖
+Welcome, and thank you for showing interest in contributing to **Flavor AI** — your AI-powered culinary companion! Whether you're here to report bugs, suggest features, write documentation, or contribute code, we're happy to have you 💖
 
 ---
 
@@ -129,5 +129,5 @@ If you're stuck:
 
 ---
 
-Thank you for contributing to **FlavorAI** 🌟  
+Thank you for contributing to **Flavor AI** 🌟  
 We can't wait to see what you build! 🍽️✨
