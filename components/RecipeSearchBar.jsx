@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
 
 const RecipeSearchBar = ({
+  isScrolled,
   handleSearchFocus,
   handleBlur,
   showResults,
@@ -18,11 +19,16 @@ const RecipeSearchBar = ({
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (input) {
-      fetchMeals(input);
-    } else {
+    if (!input) {
       setMeals([]);
+      return;
     }
+    const handler = setTimeout(() => {
+      fetchMeals(input);
+    }, 400);
+    return () => {
+      clearTimeout(handler);
+    };
   }, [input]);
 
   const fetchMeals = (value) => {
@@ -37,7 +43,6 @@ const RecipeSearchBar = ({
       setMeals([]);
       return;
     }
-    fetchMeals(value);
   };
 
   const handleKeyDown = (event) => {
@@ -100,7 +105,7 @@ const RecipeSearchBar = ({
       {!isSearchOpen ? (
         <button 
           onClick={() => setIsSearchOpen(true)}
-          className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors duration-200 px-3 py-2"
+          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200"
         >
           <SearchIcon className="w-5 h-5" />
           <span className="text-base font-medium">Search dish</span>

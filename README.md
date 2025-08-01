@@ -1,3 +1,8 @@
+![GSSoC'25](https://img.shields.io/badge/GirlScript%20Summer%20of%20Code-2025-orange?style=for-the-badge)
+
+
+---
+
 # **Flavor AI**
 > *Built with CodeBuff* 🚀
 
@@ -10,6 +15,7 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 ## 🚀 Features
 
 - **AI-Curated Recipes**: Generate recipes tailored to your preferences.
+- **Ingredient Image Analysis**: Upload photos of available ingredients for smart recipe suggestions.
 - **Random Recipe Discovery**: Discover a surprise recipe at the click of a button.
 - **Diverse Meal Categories**: Browse through various categories like Beef, Chicken, Desserts, and more.
 - **Responsive Design**: Optimized for devices of all sizes.
@@ -22,6 +28,7 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 
 1. **Recipe Generation**
    - Describe your desired dish
+   - Upload images of available ingredients
    - Set dietary restrictions
    - Choose cuisine type
    - Adjust spice levels
@@ -67,10 +74,12 @@ Here are some screenshots of the project in action:
    git clone https://github.com/Ayushjhawar8/flavor-ai.git
    ```
 
-2. Add Your Groq Api key in `.env.sample` file and change file name to `.env`:
+2. Add Your Groq and Gemini Api key in `.env.sample` file and change file name to `.env.local`:
    ```bash
    GROQ_API_KEY=your_api_key_here
+   GOOGLE_GENERATIVE_AI_API_KEY=your_google_gemini_api_key_here
    ```
+
 
 3. Install dependencies:
    ```bash
@@ -118,5 +127,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Live Demo](https://flavor-ai-dish.netlify.app/)
 - [GitHub Repository](https://github.com/Ayushjhawar8/flavor-ai)
 
+## 👥 Contributors
+
+Thanks to all the amazing people who have contributed to this project! 🎉
+
+
+
+
+
+
+<div align="center">
+
+
+  <a href="https://github.com/Ayushjhawar8/Flavor-ai/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=Ayushjhawar8/Flavor-ai&max=100&columns=10" alt="Contributors" />
+  </a>
+
+</div>
+
+
+
+<p align="center">
+  <a href="/" style="text-decoration:none;">
+    <strong>🔝 Back to Top</strong>
+  </a>
+</p>
 ---
 Built with CodeBuff 🚀

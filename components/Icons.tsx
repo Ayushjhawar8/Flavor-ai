@@ -1,3 +1,5 @@
+import React from "react";
+
 export const SearchIcon = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +66,12 @@ export const BackIcon = () => (
     width="36"
     height="36"
     viewBox="0 0 24 24"
+    className="text-base-content"
   >
-    <path d="M20 11H7.41l2.29-2.29A1 1 0 1 0 8.29 7.29L3.71 12l4.59 4.59a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z" />
+    <path 
+      d="M20 11H7.41l2.29-2.29A1 1 0 1 0 8.29 7.29L3.71 12l4.59 4.59a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z" 
+      className="fill-current"
+    />
   </svg>
 );
 
@@ -92,7 +98,7 @@ export const PlusIcon2 = () => (
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
-    class="w-8 h-8"
+    className="w-8 h-8"
   >
     <path
       strokeLinecap="round"
@@ -162,5 +168,18 @@ export const ResumeIcon = () => (
       fill="#6439FF"
       d="M6 17V7q0-.425.288-.712T7 6t.713.288T8 7v10q0 .425-.288.713T7 18t-.712-.288T6 17m5.525.1q-.5.3-1.012 0T10 16.225v-8.45q0-.575.513-.875t1.012 0l7.05 4.25q.5.3.5.85t-.5.85z"
     />
+  </svg>
+);
+
+export const YoutubeIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-4 h-4"
+  >
+    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
   </svg>
 );
