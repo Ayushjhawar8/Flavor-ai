@@ -126,7 +126,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
         watch={watch}
       />
 
-      <div className="flex w-full justify-between">
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
         <SelectField
           label="Type of Dish:"
           name="dishType"
