@@ -1,8 +1,8 @@
-﻿import { model } from "@/lib/groq";
+import { model } from "@/lib/groq";
 import { recipeSchema } from "@/lib/schemas";
 import { generateObject } from "ai";
 import { NextResponse } from "next/server";
-const ingredientGraph = require("@/lib/ingredientGraph");
+import ingredientGraph from "@/lib/ingredientGraph";
 
 /**
  * API Route: POST /api/generate-recipe
