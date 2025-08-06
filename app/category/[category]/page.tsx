@@ -58,7 +58,7 @@ import Footer from "@/components/Footer";
 
     return (
       <>
-      <div className="flex flex-col items-center justify-center p-5 md:p-10 w-full min-h-screen bg-base-100">
+      <div className="flex flex-col items-center justify-start p-5 md:p-10 w-full min-h-screen bg-base-100">
         <BackButton />
         <h1 className="text-4xl md:text-6xl text-secondary mb-10 capitalize">
           {params.category} 🍽
