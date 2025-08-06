@@ -23,6 +23,7 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 - **Voice Input**: Use voice commands to describe your desired recipe.
 - **Text-to-Speech**: Listen to recipe instructions while cooking.
 - **Smart Filtering**: Filter recipes by dietary restrictions and cuisine types.
+- **User Feedback System**: Share feedback, report bugs, and request new features through an intuitive feedback form.
 
 ## 🎯 Key Functionalities
 
