@@ -15,6 +15,7 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
 ## 🚀 Features
 
 - **AI-Curated Recipes**: Generate recipes tailored to your preferences.
+- **AI Diet Planner**: Get personalized daily meal plans based on your health profile and fitness goals.
 - **Ingredient Image Analysis**: Upload photos of available ingredients for smart recipe suggestions.
 - **Random Recipe Discovery**: Discover a surprise recipe at the click of a button.
 - **Diverse Meal Categories**: Browse through various categories like Beef, Chicken, Desserts, and more.
@@ -34,13 +35,22 @@ Welcome to FlavorAI, your AI-powered culinary companion! This project is designe
    - Adjust spice levels
    - Get AI-generated recipes with images
 
-2. **Recipe Search**
+2. **AI Diet Planner**
+   - Personalized daily meal plans
+   - Health-conscious recommendations based on blood sugar and blood pressure
+   - Fitness goal alignment (bulk, cut, maintain, general health)
+   - Nutritional breakdown for each meal
+   - BMR and TDEE calculations
+   - Dietary restrictions and allergy considerations
+   - Exercise and hydration recommendations
+
+3. **Recipe Search**
    - Quick search functionality
    - Category-based browsing
    - Random recipe discovery
    - Detailed recipe views
 
-3. **Accessibility Features**
+4. **Accessibility Features**
    - Voice input for hands-free operation
    - Text-to-speech for recipe instructions
    - Responsive design for all devices
