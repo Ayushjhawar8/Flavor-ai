@@ -5,6 +5,7 @@ import { PlusIcon, YoutubeIcon } from "@/components/Icons";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import Footer from "./Footer";
 
 // --- Self-contained helper components ---
 
@@ -62,7 +63,7 @@ function ShowMeal({ URL }) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
       utterance.rate = 1;
-      
+
       utterance.onboundary = (event) => {
         if (event.name === 'word') {
           setActiveWordRange({
@@ -99,12 +100,12 @@ function ShowMeal({ URL }) {
     window.speechSynthesis.pause();
     setPlayerState('paused');
   }, []);
-  
+
   const handleRestart = useCallback(() => {
     window.speechSynthesis.cancel();
     setPlayerState('idle');
     setTimeout(() => {
-        handlePlay();
+      handlePlay();
     }, 100);
   }, [handlePlay]);
 
@@ -117,42 +118,45 @@ function ShowMeal({ URL }) {
   }
 
   return (
-    // --- THIS IS THE LINE THAT WAS CHANGED ---
-    <div className="min-h-screen py-10 px-4 bg-base-100 flex justify-center items-start">
-      <BackButton />
-      <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
-        <div className="p-6 md:p-12">
-          <header className="text-center mb-8"><h1 className="text-3xl md:text-5xl font-bold text-gray-900">{mealData.strMeal}</h1><p className="text-lg text-gray-500 mt-2">{mealData.strArea} Cuisine</p></header>
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12"><div className="md:w-1/2"><img src={mealData.strMealThumb} alt={mealData.strMeal} className="w-full h-auto rounded-lg shadow-md mb-4" /><div className="flex items-center gap-4"><span className="badge badge-lg badge-accent">{mealData.strCategory}</span>{mealData.strYoutube && (<Link href={mealData.strYoutube} target="_blank" rel="noopener noreferrer" className="btn btn-error btn-sm gap-2"><YoutubeIcon /> Watch</Link>)}</div></div><div className="md:w-1/2"><h2 className="text-2xl font-bold mb-2 flex items-center text-gray-800"><PlusIcon /><span className="ml-2">Ingredients</span></h2><IngredientsTable mealData={mealData} /></div></div>
-          
-          <section id="instructions-section">
-            <div className="flex justify-between items-center mb-4">
+    <>
+      {/* THIS IS THE LINE THAT WAS CHANGED --- */}
+      <div className="min-h-screen py-10 px-4 bg-base-100 flex justify-center items-start">
+        <BackButton />
+        <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
+          <div className="p-6 md:p-12">
+            <header className="text-center mb-8"><h1 className="text-3xl md:text-5xl font-bold text-gray-900">{mealData.strMeal}</h1><p className="text-lg text-gray-500 mt-2">{mealData.strArea} Cuisine</p></header>
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12"><div className="md:w-1/2"><img src={mealData.strMealThumb} alt={mealData.strMeal} className="w-full h-auto rounded-lg shadow-md mb-4" /><div className="flex items-center gap-4"><span className="badge badge-lg badge-accent">{mealData.strCategory}</span>{mealData.strYoutube && (<Link href={mealData.strYoutube} target="_blank" rel="noopener noreferrer" className="btn btn-error btn-sm gap-2"><YoutubeIcon /> Watch</Link>)}</div></div><div className="md:w-1/2"><h2 className="text-2xl font-bold mb-2 flex items-center text-gray-800"><PlusIcon /><span className="ml-2">Ingredients</span></h2><IngredientsTable mealData={mealData} /></div></div>
+
+            <section id="instructions-section">
+              <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-800">Preparation Steps</h2>
                 <div className="flex items-center gap-2 p-1 border border-gray-200 rounded-full bg-gray-50">
-                    <button onClick={playerState === 'playing' ? handlePause : handlePlay} className="btn btn-ghost btn-circle">
-                        {playerState === 'playing' ? <PauseIcon className="h-6 w-6 text-blue-600" /> : <PlayIcon className="h-6 w-6 text-green-600" />}
-                    </button>
-                    <button onClick={handleRestart} className="btn btn-ghost btn-circle" disabled={playerState === 'idle'}>
-                        <ArrowPathIcon className="h-5 w-5 text-gray-600" />
-                    </button>
+                  <button onClick={playerState === 'playing' ? handlePause : handlePlay} className="btn btn-ghost btn-circle">
+                    {playerState === 'playing' ? <PauseIcon className="h-6 w-6 text-blue-600" /> : <PlayIcon className="h-6 w-6 text-green-600" />}
+                  </button>
+                  <button onClick={handleRestart} className="btn btn-ghost btn-circle" disabled={playerState === 'idle'}>
+                    <ArrowPathIcon className="h-5 w-5 text-gray-600" />
+                  </button>
                 </div>
-            </div>
-            
-            <ol className="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed">
-              {instructionSentences.map((sentence, index) => (
-                <li key={index}>
-                  <HighlightedSentence
-                    text={sentence}
-                    isActive={index === activeWordRange.sentenceIndex}
-                    wordRange={activeWordRange}
-                  />
-                </li>
-              ))}
-            </ol>
-          </section>
+              </div>
+
+              <ol className="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed">
+                {instructionSentences.map((sentence, index) => (
+                  <li key={index}>
+                    <HighlightedSentence
+                      text={sentence}
+                      isActive={index === activeWordRange.sentenceIndex}
+                      wordRange={activeWordRange}
+                    />
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

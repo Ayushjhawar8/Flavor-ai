@@ -1,6 +1,7 @@
   "use client";
 
   import BackButton from "@/components/BackButton";
+import Footer from "@/components/Footer";
   import { PlusIcon } from "@/components/Icons";
   import Image from "next/image";
   import Link from "next/link";
@@ -56,6 +57,7 @@
       favorites.some((f) => f.idMeal === idMeal);
 
     return (
+      <>
       <div className="flex flex-col items-center justify-center p-5 md:p-10 w-full min-h-screen bg-base-100">
         <BackButton />
         <h1 className="text-4xl md:text-6xl text-secondary mb-10 capitalize">
@@ -106,6 +108,9 @@
           )}
         </div>
       </div>
+
+      <Footer />
+      </>
     );
   }
 
