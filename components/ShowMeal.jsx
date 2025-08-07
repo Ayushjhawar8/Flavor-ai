@@ -172,7 +172,7 @@ function ShowMeal({ URL }) {
     localStorage.setItem("favoriteDishes", JSON.stringify(updatedFavs));
     setIsFavorited(!isFavorited);
   };
-  
+
   if (!mealData) {
     return (
       <div className="min-h-screen flex justify-center items-center p-4">
@@ -218,7 +218,7 @@ function ShowMeal({ URL }) {
                 onClick={toggleFavorite}
                 className={`btn btn-sm ${isFavorited ? 'btn-error' : 'btn-outline'}`}
               >
-                {isFavorited ? "unfavorite" : "favorite"}
+                {isFavorited ? "❤️ unfavorite" : "🤍 favorite"}
               </button>
             </div>
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">

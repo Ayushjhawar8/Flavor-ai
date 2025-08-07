@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusIcon } from "@/components/Icons";
-import ThemeToggle from "@/components/ThemeToggle"    // ✅ Correct - default import
+import ThemeToggle from "@/components/ThemeToggle"    
 import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { CATEGORIES_URL } from "@/lib/urls";
 import Link from "next/link";
@@ -156,10 +156,8 @@ export default function Page() {
       </div>
 
       {/* Content */}
-      <div
-        className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 ${!showResults ? "opacity-100" : "opacity-80 blur-sm"
-          }`}
-      >
+      <div className={`content flex flex-col flex-grow items-center justify-center p-5 md:p-1 w-full bg-base-100 ${!showResults ? "opacity-100" : "opacity-80 blur-sm"}`}>
+
         <section className="w-full h-screen bg-base-100 flex items-center justify-center">
           <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8">
             <div className="relative">
