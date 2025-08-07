@@ -225,9 +225,9 @@ export default function Page() {
                     }, 100);
                   }
                 }}
-                >
+                
                 style={{ animationDelay: '400ms' }}
-              
+              >
                 {showCategories ? "Hide Categories" : "Show Categories"}
                 {!showCategories && (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
