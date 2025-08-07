@@ -7,8 +7,8 @@ body {
   @apply bg-gradient-to-br from-indigo-50 to-blue-100;
 }
 
-/*By Devika Harshey*/
-/*This hides scrollbar for entire body element.*/
+/* By Devika Harshey */
+/* This hides scrollbar for entire body element. */
 body::-webkit-scrollbar {
   display: none;
 }
@@ -24,8 +24,8 @@ body::-webkit-scrollbar {
   transition: background-color 50ms ease-in-out;
 }
 
-/*By Devika Harshey*/
-/*This class hides the scrollbar of the element to which it is applied.*/
+/* By Devika Harshey */
+/* This class hides the scrollbar of the element to which it is applied. */
 @layer utilities {
   .scrollbar-none::-webkit-scrollbar {
     display: none;
