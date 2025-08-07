@@ -117,6 +117,12 @@ export default function Page() {
           >
             Flavor AI
           </Link>
+          <Link
+            href="/grocery-list"
+            className="group flex items-center gap-2 bg-base-200 hover:bg-base-300 text-base-content px-3 py-2 rounded-full text-sm font-medium shadow-lg transition-all duration-300 hover:scale-105 border border-base-300"
+          >
+            🛒 Grocery List
+          </Link>
           <a
             href="https://github.com/Ayushjhawar8/Flavor-ai"
             target="_blank"
