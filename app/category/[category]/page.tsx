@@ -2,13 +2,11 @@ import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import CategoryMeals from "./CategoryMeals";
 
-interface PageProps {
-  params: Promise<{
-    category: string;
-  }>;
-}
-
-export default async function Page({ params }: PageProps) {
+export default async function Page({ 
+  params 
+}: { 
+  params: Promise<{ category: string }> 
+}) {
   const { category } = await params;
   
   return (
