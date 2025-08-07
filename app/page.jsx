@@ -201,11 +201,25 @@ export default function Page() {
               </Link>
 
 
+
               <Link href="/favorite" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn" style={{ animationDelay: '200ms' }}>
                 <button className="btn btn-primary text-white px-6 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus">
 
               {/* --- Button 3: Favorites --- */}
               <Link href="/favorite" className="animate-fadeIn" style={{ animationDelay: '200ms' }}>
+
+              {/* --- Button 3: Diet Planner --- */}
+              <Link href="/diet-planner" className="animate-fadeIn" style={{ animationDelay: '300ms' }}>
+                <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2">
+                  {/* Diet/Health Icon 🥗 */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  AI Diet Planner
+                </button>
+              </Link>
+
+              {/* --- Button 4: Favorites --- */}
+              <Link href="/favorite" className="animate-fadeIn" style={{ animationDelay: '400ms' }}>
+
                 <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30">
             
                   ❤️ Favorites
@@ -214,7 +228,11 @@ export default function Page() {
               </Link>
               </div>
 
+
               {/* --- Button 4: Show/Hide Categories --- */}
+
+
+              {/* --- Button 5: Show/Hide Categories --- */}
 
               <button
                 className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30 flex items-center gap-2 animate-fadeIn"
@@ -226,8 +244,12 @@ export default function Page() {
                     }, 100);
                   }
                 }}
+
                 
                 style={{ animationDelay: '400ms' }}
+
+                style={{ animationDelay: '500ms' }}
+
               >
                 {showCategories ? "Hide Categories" : "Show Categories"}
                 {!showCategories && (

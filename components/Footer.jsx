@@ -22,7 +22,7 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-col items-center space-y-4">
                     <a
-                        href="https://x.com/JhawarAj123"
+                        href="https://x.com/itsAyushJ"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`card-title text-lg md:text-xl flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-amber-800'

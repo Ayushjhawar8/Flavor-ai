@@ -6,9 +6,11 @@
 body {
   @apply bg-gradient-to-br from-indigo-50 to-blue-100;
 }
+
 /* This single, powerful class is used to highlight the exact word being spoken. */
 .speaking-word {
-  background-color: #fef08a; /* A bright, distinct yellow */
+  background-color: #fef08a;
+  /* A bright, distinct yellow */
   color: #1f2937;
   border-radius: 0.25rem;
   padding: 0.1rem 0.2rem;
