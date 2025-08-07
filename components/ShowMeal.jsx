@@ -153,26 +153,6 @@ function ShowMeal({ URL }) {
       .catch((error) => console.error("Error fetching data:", error));
   }, [URL]);
 
-  useEffect(() => {
-    if(!mealData) return;
-    const favs = JSON.parse(localStorage.getItem("favorite dishes")) || [];
-    setFavorited(favs.includes(mealData.idMeal));
-  }, [mealData]);
-
-  const toggleFavorite = () => {
-    const favs = JSON.parse(localStorage.getItem("Favorite items")) || [];
-    let updatedFavs;
-
-    if(isFavorited){
-      updatedFavs = favs.filter(id => id !== mealData.idMeal);
-    }else{
-      updatedFavs = [...favs, mealData.idMeal];
-    }
-
-    localStorage.setItem("favoriteDishes", JSON.stringify(updatedFavs));
-    setIsFavorited(!isFavorited);
-  };
-
   if (!mealData) {
     return (
       <div className="min-h-screen flex justify-center items-center p-4">
@@ -213,14 +193,7 @@ function ShowMeal({ URL }) {
                 {mealData.strArea} Cuisine
               </p>
             </header>
-            <div className="flex justify-center mb-4">
-              <button
-                onClick={toggleFavorite}
-                className={`btn btn-sm ${isFavorited ? 'btn-error' : 'btn-outline'}`}
-              >
-                {isFavorited ? "❤️ unfavorite" : "🤍 favorite"}
-              </button>
-            </div>
+            
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
               <div className="md:w-1/2">
                 <img
