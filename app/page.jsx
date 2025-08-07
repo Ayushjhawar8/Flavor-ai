@@ -174,11 +174,11 @@ export default function Page() {
               suggestions, and exciting surprises. Explore new cuisines or craft
               the perfect meal with Flavor AI!
             </p>
-
+            </div>
             <div className="flex flex-wrap md:flex-row items-center justify-center gap-4 mt-6">
-              <Link href="/ai" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn">
+              <Link  href="/ai" className="transform hover:scale-105 transition-all duration-300 animate-fadeIn">
                 <button className="btn btn-primary text-white px-6 py-3 rounded-lg shadow-lg text-lg hover:bg-primary-focus">
-
+              
             <div className="flex flex-wrap items-center justify-center gap-4">
 
               {/* --- Button 1: AI Recipes --- */}
@@ -207,11 +207,12 @@ export default function Page() {
               {/* --- Button 3: Favorites --- */}
               <Link href="/favorite" className="animate-fadeIn" style={{ animationDelay: '200ms' }}>
                 <button className="btn btn-outline btn-primary text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30">
-
+            
                   ❤️ Favorites
                 </button>
+                </button>
               </Link>
-
+              </div>
 
               {/* --- Button 4: Show/Hide Categories --- */}
 
@@ -237,6 +238,7 @@ export default function Page() {
               </button>
 
             </div>
+            
           </div>
         </section>
 
@@ -294,5 +296,6 @@ export default function Page() {
         <Footer />
       </div>
     </>
-  );
-}
+  
+);
+};
