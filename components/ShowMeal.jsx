@@ -2,7 +2,7 @@
 
 import BackButton from "@/components/BackButton";
 import { PlusIcon, YoutubeIcon } from "@/components/Icons";
-import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
+import { PlayIcon, PauseIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Footer from "./Footer";
@@ -29,21 +29,58 @@ function HighlightedSentence({ text, isActive, wordRange }) {
 }
 
 function IngredientsTable({ mealData }) {
-  const ingredients = useMemo(() => Object.keys(mealData).map(key => {
-    if (key.startsWith("strIngredient") && mealData[key]) {
-      const num = key.slice(13);
-      if (mealData[`strMeasure${num}`]) return { measure: mealData[`strMeasure${num}`], name: mealData[key] };
-    }
-    return null;
-  }).filter(Boolean), [mealData]);
-  return (<div className="overflow-x-auto mt-2"><table className="table w-full"><thead><tr className="text-left"><th className="p-2 w-1/3 text-sm font-semibold text-gray-600">Quantity</th><th className="p-2 text-sm font-semibold text-gray-600">Ingredient</th></tr></thead><tbody>{ingredients.map((ing, i) => <tr key={i} className="border-t border-gray-200 hover:bg-gray-50"><td className="p-2 font-medium text-primary">{ing.measure}</td><td className="p-2 text-gray-800">{ing.name}</td></tr>)}</tbody></table></div>);
+  const ingredients = useMemo(
+    () =>
+      Object.keys(mealData)
+        .map((key) => {
+          if (key.startsWith("strIngredient") && mealData[key]) {
+            const num = key.slice(13);
+            if (mealData[`strMeasure${num}`])
+              return {
+                measure: mealData[`strMeasure${num}`],
+                name: mealData[key],
+              };
+          }
+          return null;
+        })
+        .filter(Boolean),
+    [mealData]
+  );
+  return (
+    <div className="overflow-x-auto mt-2">
+      <table className="table w-full">
+        <thead>
+          <tr className="text-left">
+            <th className="p-2 w-1/3 text-sm font-semibold text-gray-600">
+              Quantity
+            </th>
+            <th className="p-2 text-sm font-semibold text-gray-600">
+              Ingredient
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {ingredients.map((ing, i) => (
+            <tr key={i} className="border-t border-gray-200 hover:bg-gray-50">
+              <td className="p-2 font-medium text-primary">{ing.measure}</td>
+              <td className="p-2 text-gray-800">{ing.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 // --- The Main Page Component ---
 function ShowMeal({ URL }) {
   const [mealData, setMealData] = useState(null);
-  const [playerState, setPlayerState] = useState('idle');
-  const [activeWordRange, setActiveWordRange] = useState({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+  const [playerState, setPlayerState] = useState("idle");
+  const [activeWordRange, setActiveWordRange] = useState({
+    sentenceIndex: -1,
+    startChar: -1,
+    endChar: -1,
+  });
   const utterances = useRef([]);
 
   const instructionSentences = useMemo(() => {
@@ -51,7 +88,7 @@ function ShowMeal({ URL }) {
     // Clean each instruction: remove leading numbers, dots, parentheses, and trim whitespace
     return mealData.strInstructions
       .split(/\r?\n/)
-      .map(s => s.replace(/^\s*\d+([.)])?\s*/, "").trim())
+      .map((s) => s.replace(/^\s*\d+([.)])?\s*/, "").trim())
       .filter(Boolean);
   }, [mealData]);
 
@@ -61,11 +98,11 @@ function ShowMeal({ URL }) {
 
     utterances.current = instructionSentences.map((text, sentenceIndex) => {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
+      utterance.lang = "en-US";
       utterance.rate = 1;
 
       utterance.onboundary = (event) => {
-        if (event.name === 'word') {
+        if (event.name === "word") {
           setActiveWordRange({
             sentenceIndex,
             startChar: event.charIndex,
@@ -76,7 +113,7 @@ function ShowMeal({ URL }) {
 
       utterance.onend = () => {
         if (sentenceIndex === instructionSentences.length - 1) {
-          setPlayerState('idle');
+          setPlayerState("idle");
           setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
         }
       };
@@ -88,33 +125,77 @@ function ShowMeal({ URL }) {
 
   const handlePlay = useCallback(() => {
     const synth = window.speechSynthesis;
-    if (playerState === 'paused') {
+    if (playerState === "paused") {
       synth.resume();
     } else {
-      utterances.current.forEach(utterance => synth.speak(utterance));
+      utterances.current.forEach((utterance) => synth.speak(utterance));
     }
-    setPlayerState('playing');
+    setPlayerState("playing");
   }, [playerState]);
 
   const handlePause = useCallback(() => {
     window.speechSynthesis.pause();
-    setPlayerState('paused');
+    setPlayerState("paused");
   }, []);
 
   const handleRestart = useCallback(() => {
     window.speechSynthesis.cancel();
-    setPlayerState('idle');
+    setPlayerState("idle");
     setTimeout(() => {
       handlePlay();
     }, 100);
   }, [handlePlay]);
 
   useEffect(() => {
-    fetch(URL).then(res => res.json()).then(data => setMealData(data.meals[0])).catch(error => console.error("Error fetching data:", error));
+    fetch(URL)
+      .then((res) => res.json())
+      .then((data) => setMealData(data.meals[0]))
+      .catch((error) => console.error("Error fetching data:", error));
   }, [URL]);
 
+  useEffect(() => {
+    if(!mealData) return;
+    const favs = JSON.parse(localStorage.getItem("favorite dishes")) || [];
+    setFavorited(favs.includes(mealData.idMeal));
+  }, [mealData]);
+
+  const toggleFavorite = () => {
+    const favs = JSON.parse(localStorage.getItem("Favorite items")) || [];
+    let updatedFavs;
+
+    if(isFavorited){
+      updatedFavs = favs.filter(id => id !== mealData.idMeal);
+    }else{
+      updatedFavs = [...favs, mealData.idMeal];
+    }
+
+    localStorage.setItem("favoriteDishes", JSON.stringify(updatedFavs));
+    setIsFavorited(!isFavorited);
+  };
+  
   if (!mealData) {
-    return <div className="min-h-screen flex justify-center items-center p-4"><div className="max-w-4xl w-full p-12 bg-white rounded-xl shadow-md"><div className="animate-pulse"><div className="h-10 bg-gray-300 rounded-md w-3/4 mx-auto mb-4"></div><div className="h-6 bg-gray-200 rounded-md w-1/4 mx-auto mb-10"></div><div className="flex flex-col md:flex-row gap-12"><div className="md:w-1/2"><div className="h-80 bg-gray-300 rounded-lg"></div></div><div className="md:w-1/2 space-y-4"><div className="h-8 bg-gray-300 rounded-md w-1/2"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div><div className="h-5 bg-gray-200 rounded-md"></div></div></div></div></div></div>;
+    return (
+      <div className="min-h-screen flex justify-center items-center p-4">
+        <div className="max-w-4xl w-full p-12 bg-white rounded-xl shadow-md">
+          <div className="animate-pulse">
+            <div className="h-10 bg-gray-300 rounded-md w-3/4 mx-auto mb-4"></div>
+            <div className="h-6 bg-gray-200 rounded-md w-1/4 mx-auto mb-10"></div>
+            <div className="flex flex-col md:flex-row gap-12">
+              <div className="md:w-1/2">
+                <div className="h-80 bg-gray-300 rounded-lg"></div>
+              </div>
+              <div className="md:w-1/2 space-y-4">
+                <div className="h-8 bg-gray-300 rounded-md w-1/2"></div>
+                <div className="h-5 bg-gray-200 rounded-md"></div>
+                <div className="h-5 bg-gray-200 rounded-md"></div>
+                <div className="h-5 bg-gray-200 rounded-md"></div>
+                <div className="h-5 bg-gray-200 rounded-md"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -124,17 +205,77 @@ function ShowMeal({ URL }) {
         <BackButton />
         <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
           <div className="p-6 md:p-12">
-            <header className="text-center mb-8"><h1 className="text-3xl md:text-5xl font-bold text-gray-900">{mealData.strMeal}</h1><p className="text-lg text-gray-500 mt-2">{mealData.strArea} Cuisine</p></header>
-            <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12"><div className="md:w-1/2"><img src={mealData.strMealThumb} alt={mealData.strMeal} className="w-full h-auto rounded-lg shadow-md mb-4" /><div className="flex items-center gap-4"><span className="badge badge-lg badge-accent">{mealData.strCategory}</span>{mealData.strYoutube && (<Link href={mealData.strYoutube} target="_blank" rel="noopener noreferrer" className="btn btn-error btn-sm gap-2"><YoutubeIcon /> Watch</Link>)}</div></div><div className="md:w-1/2"><h2 className="text-2xl font-bold mb-2 flex items-center text-gray-800"><PlusIcon /><span className="ml-2">Ingredients</span></h2><IngredientsTable mealData={mealData} /></div></div>
+            <header className="text-center mb-8">
+              <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
+                {mealData.strMeal}
+              </h1>
+              <p className="text-lg text-gray-500 mt-2">
+                {mealData.strArea} Cuisine
+              </p>
+            </header>
+            <div className="flex justify-center mb-4">
+              <button
+                onClick={toggleFavorite}
+                className={`btn btn-sm ${isFavorited ? 'btn-error' : 'btn-outline'}`}
+              >
+                {isFavorited ? "unfavorite" : "favorite"}
+              </button>
+            </div>
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
+              <div className="md:w-1/2">
+                <img
+                  src={mealData.strMealThumb}
+                  alt={mealData.strMeal}
+                  className="w-full h-auto rounded-lg shadow-md mb-4"
+                />
+                <div className="flex items-center gap-4">
+                  <span className="badge badge-lg badge-accent">
+                    {mealData.strCategory}
+                  </span>
+                  {mealData.strYoutube && (
+                    <Link
+                      href={mealData.strYoutube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-error btn-sm gap-2"
+                    >
+                      <YoutubeIcon /> Watch
+                    </Link>
+                  )}
+                </div>
+              </div>
+              <div className="md:w-1/2">
+                <h2 className="text-2xl font-bold mb-2 flex items-center text-gray-800">
+                  <PlusIcon />
+                  <span className="ml-2">Ingredients</span>
+                </h2>
+                <IngredientsTable mealData={mealData} />
+              </div>
+            </div>
 
             <section id="instructions-section">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">Preparation Steps</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  Preparation Steps
+                </h2>
                 <div className="flex items-center gap-2 p-1 border border-gray-200 rounded-full bg-gray-50">
-                  <button onClick={playerState === 'playing' ? handlePause : handlePlay} className="btn btn-ghost btn-circle">
-                    {playerState === 'playing' ? <PauseIcon className="h-6 w-6 text-blue-600" /> : <PlayIcon className="h-6 w-6 text-green-600" />}
+                  <button
+                    onClick={
+                      playerState === "playing" ? handlePause : handlePlay
+                    }
+                    className="btn btn-ghost btn-circle"
+                  >
+                    {playerState === "playing" ? (
+                      <PauseIcon className="h-6 w-6 text-blue-600" />
+                    ) : (
+                      <PlayIcon className="h-6 w-6 text-green-600" />
+                    )}
                   </button>
-                  <button onClick={handleRestart} className="btn btn-ghost btn-circle" disabled={playerState === 'idle'}>
+                  <button
+                    onClick={handleRestart}
+                    className="btn btn-ghost btn-circle"
+                    disabled={playerState === "idle"}
+                  >
                     <ArrowPathIcon className="h-5 w-5 text-gray-600" />
                   </button>
                 </div>
