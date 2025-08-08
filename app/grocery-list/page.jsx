@@ -4,19 +4,56 @@ import BackButton from '@/components/BackButton';
 
 export default function GroceryList() {
   const [groceryItems, setGroceryItems] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Load grocery items from localStorage
-    const savedItems = localStorage.getItem('groceryList');
-    if (savedItems) {
-      setGroceryItems(JSON.parse(savedItems));
+    try {
+      // Check if localStorage is available
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const savedItems = localStorage.getItem('groceryList');
+        if (savedItems) {
+          const parsedItems = JSON.parse(savedItems);
+          // Validate data structure
+          if (Array.isArray(parsedItems) && parsedItems.every(item => 
+            item && typeof item === 'object' && 
+            'ingredient' in item && 'amount' in item
+          )) {
+            setGroceryItems(parsedItems);
+          } else {
+            console.warn('Invalid data structure in localStorage');
+            localStorage.removeItem('groceryList'); // Clear invalid data
+            setGroceryItems([]);
+          }
+        }
+      } else {
+        setError('Local storage is not available');
+      }
+    } catch (err) {
+      console.error('Error loading grocery list:', err);
+      setError('Failed to load grocery list');
+      setGroceryItems([]);
     }
   }, []);
 
   const removeItem = (index) => {
-    const newItems = groceryItems.filter((_, i) => i !== index);
-    setGroceryItems(newItems);
-    localStorage.setItem('groceryList', JSON.stringify(newItems));
+    try {
+      const newItems = groceryItems.filter((_, i) => i !== index);
+      setGroceryItems(newItems);
+      localStorage.setItem('groceryList', JSON.stringify(newItems));
+    } catch (err) {
+      console.error('Error removing item:', err);
+      setError('Failed to remove item');
+    }
+  };
+
+  const clearList = () => {
+    try {
+      setGroceryItems([]);
+      localStorage.removeItem('groceryList');
+    } catch (err) {
+      console.error('Error clearing list:', err);
+      setError('Failed to clear list');
+    }
   };
 
   return (
@@ -24,10 +61,17 @@ export default function GroceryList() {
       <div className="container mx-auto px-4 py-8">
         <BackButton />
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold mb-6 text-amber-800 dark:text-amber-400 text-center">
-            My Grocery List
-            <span className="ml-2 text-3xl">🛒</span>
-          </h1>
+          <div className="flex flex-col items-center mb-6">
+            <h1 className="text-4xl font-bold text-amber-800 dark:text-amber-400 text-center">
+              My Grocery List
+              <span className="ml-2 text-3xl">🛒</span>
+            </h1>
+            {error && (
+              <div className="mt-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-lg text-center">
+                {error}
+              </div>
+            )}
+          </div>
           
           {groceryItems.length === 0 ? (
             <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl">
@@ -40,6 +84,17 @@ export default function GroceryList() {
             </div>
           ) : (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-gray-600 dark:text-gray-300">
+                  {groceryItems.length} {groceryItems.length === 1 ? 'item' : 'items'}
+                </span>
+                <button
+                  onClick={clearList}
+                  className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                >
+                  Clear All
+                </button>
+              </div>
               <ul className="divide-y divide-amber-200 dark:divide-gray-700">
                 {groceryItems.map((item, index) => (
                   <li key={index} className="py-4 flex items-center justify-between group hover:bg-amber-50 dark:hover:bg-gray-700 rounded-lg px-4 transition-all duration-200">
