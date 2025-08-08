@@ -90,7 +90,7 @@ import Footer from "@/components/Footer";
                   </button>
                 </figure>
                 <div className="card-body">
-                  <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center gap-2">
+                  <h2 className="card-title text-lg md:text-xl text-base-content flex items-center gap-2">
                     <PlusIcon />
                     {meal.strMeal}
                   </h2>
