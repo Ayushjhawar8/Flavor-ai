@@ -60,7 +60,7 @@ export default function FavoritesPage() {
         {favorites.length === 0 ? (
           <>
             <p className="text-center text-lg mb-6">No favorites yet!</p>
-            <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg shadow-lg">
+            <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-base-200 rounded-lg shadow-lg">
               <h2 className="text-xl md:text-3xl text-base-content mb-10 font-semibold text-center">
                 A Taste for Every Mood and Moment
               </h2>
@@ -78,11 +78,11 @@ export default function FavoritesPage() {
                       />
                     </figure>
                     <div className="card-body p-4">
-                      <h3 className="card-title text-lg md:text-xl text-gray-800 flex items-center">
+                      <h3 className="card-title text-lg md:text-xl text-base-content flex items-center">
                         <PlusIcon />
                         {category.strCategory}
                       </h3>
-                      <p className="text-sm md:text-base text-gray-600">
+                      <p className="text-sm md:text-base text-base-content">
                         {category.strCategoryDescription.slice(0, 150) + " ..."}
                       </p>
                       <Link
