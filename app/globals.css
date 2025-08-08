@@ -6,6 +6,13 @@
 body {
   @apply bg-gradient-to-br from-indigo-50 to-blue-100;
 }
+
+/* By Devika Harshey */
+/* This hides scrollbar for entire body element. */
+body::-webkit-scrollbar {
+  display: none;
+}
+
 /* This single, powerful class is used to highlight the exact word being spoken. */
 .speaking-word {
   background-color: #fef08a; /* A bright, distinct yellow */
@@ -15,4 +22,12 @@ body {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   transition: background-color 50ms ease-in-out;
+}
+
+/* By Devika Harshey */
+/* This class hides the scrollbar of the element to which it is applied. */
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }

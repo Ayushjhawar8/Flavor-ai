@@ -1,3 +1,4 @@
+//UI update, scrollbar hide property for search results and position update in navbar - by Devika Harshey
 "use client";
 
 import Link from "next/link";
@@ -10,6 +11,7 @@ const RecipeSearchBar = ({
   handleBlur,
   showResults,
   setShowResults,
+  className,
 }) => {
   const [input, setInput] = useState("");
   const [meals, setMeals] = useState([]);
@@ -87,36 +89,36 @@ const RecipeSearchBar = ({
   }, [meals, activeIndex]);
 
   const handleClickOutside = (e) => {
-    if (!e.target.closest('#searchBar')) {
+    if (!e.target.closest("#searchBar")) {
       setIsSearchOpen(false);
       handleBlur();
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <div id="searchBar" className="flex flex-col relative">
       {!isSearchOpen ? (
-        <button 
+        <button
           onClick={() => setIsSearchOpen(true)}
-          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200"
+          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-4 py-2 rounded-full border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200 backdrop-blur-sm text-sm md:text-base w-[18rem] md:w-[22rem]"
         >
-          <SearchIcon className="w-5 h-5" />
-          <span className="text-base font-medium">Search dish</span>
+          <SearchIcon className="w-4 h-4 md:w-5 md:h-5" />
+          <span className="font-medium">Search dish</span>
         </button>
       ) : (
-        <label className="input input-bordered flex items-center gap-2">
-          <SearchIcon />
+        <label className="flex items-center gap-2 w-[18rem] md:w-[22rem] px-4 py-2 rounded-full bg-base-100 dark:bg-zinc-900 border border-base-300 dark:border-zinc-700 text-sm md:text-base focus-within:ring-2 focus-within:ring-primary transition-all duration-200">
+          <SearchIcon className="w-5 h-5 text-base-content" />
           <input
             ref={inputRef}
             type="text"
-            className="grow"
+            className="grow bg-transparent outline-none placeholder:text-base-content/60 text-sm md:text-base"
             placeholder="Search dish..."
             value={input}
             onChange={(e) => {
@@ -127,11 +129,14 @@ const RecipeSearchBar = ({
             onFocus={handleSearchFocus}
             autoFocus
           />
-          <button onClick={() => {
-            handleSearch("");
-            setIsSearchOpen(false);
-          }}>
-            <X />
+          <button
+            onClick={() => {
+              handleSearch("");
+              setIsSearchOpen(false);
+            }}
+            className="text-base-content/60 hover:text-red-500 transition"
+          >
+            <X className="w-4 h-4" />
           </button>
         </label>
       )}
@@ -139,15 +144,18 @@ const RecipeSearchBar = ({
       {showResults && input && isSearchOpen && (
         <div
           ref={resultsRef}
-          className="w-80 max-h-80 overflow-y-scroll no-scrollbar bg-purple-900 p-2 rounded-xl flex flex-col gap-2 absolute top-12 md:top-20 md:right-0 z-10"
+          className="w-[18rem] md:w-[22rem] max-h-80 overflow-y-scroll scrollbar-none bg-base-100 dark:bg-zinc-900 border border-base-300 dark:border-zinc-700 p-2 rounded-xl flex flex-col gap-2 absolute top-12 md:top-20 md:right-0 z-10 shadow-xl"
         >
           {input &&
             meals &&
             meals.map((meal, index) => (
               <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`}>
                 <div
-                  className={`${index === activeIndex ? "bg-purple-800" : ""
-                    } p-1 rounded-xl flex items-center justify-start gap-3 text-white hover:bg-purple-800 transition-colors duration-200`}
+                  className={`${
+                    index === activeIndex
+                      ? "bg-primary text-white"
+                      : "hover:bg-base-200 dark:hover:bg-zinc-800"
+                  } p-2 rounded-lg flex items-center gap-3 text-sm md:text-base transition-colors duration-200`}
                   onMouseEnter={() => setActiveIndex(index)}
                   onMouseDown={(e) => {
                     e.preventDefault();
@@ -157,9 +165,9 @@ const RecipeSearchBar = ({
                   <img
                     src={meal.strMealThumb}
                     alt={meal.strMeal}
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 rounded-full object-cover"
                   />
-                  <span>{meal.strMeal}</span>
+                  <span className="truncate">{meal.strMeal}</span>
                 </div>
               </Link>
             ))}
@@ -168,4 +176,5 @@ const RecipeSearchBar = ({
     </div>
   );
 };
+
 export default RecipeSearchBar;
