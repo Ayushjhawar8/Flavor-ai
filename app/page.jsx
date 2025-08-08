@@ -3,15 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import Image from "next/image";
 import Navbar from "@/components/Navbar"; // Reusable "Navbar" component
 import { CATEGORIES_URL } from "@/lib/urls";
 import { PlusIcon } from "@/components/Icons";
+
 
 export default function Page() {
   const [categories, setCategories] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("All");
 
   const handleSearchFocus = () => setShowResults(true);
 
@@ -178,43 +182,65 @@ export default function Page() {
               }`}>
               A Taste for Every Mood and Moment
             </h1>
+            <div className="flex flex-wrap gap-4 justify-center mb-8">
+              {["All", "Vegetarian", "Non-Vegetarian"].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setFilter(type)}
+                  className={`btn btn-sm md:btn-md ${filter === type ? "btn-primary" : "btn-outline"} transition-all duration-200`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
 
             {/* Grid layout for categories */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
-              {categories.map((category) => (
-                <div
-                  key={category.idCategory}
-                  // The shadow is now larger and tinted with the theme color on hover
-                  className="card card-compact w-full bg-base-100 shadow-xl rounded-lg overflow-hidden transform transition duration-300 hover:shadow-2xl hover:shadow-amber-400/40 hover:scale-105 hover:-translate-y-1 cursor-pointer hover:ring-2 hover:ring-amber-400"
-                >
-                  <figure>
-                    <img
-                      src={category.strCategoryThumb}
-                      alt={category.strCategory}
-                      className="w-full h-48 object-cover"
-                    />
-                  </figure>
-                  <div className="card-body p-4">
-                    <h2 className={`card-title text-lg md:text-xl flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-amber-800'
-                      }`}>
-                      <PlusIcon />
-                      {category.strCategory}
-                    </h2>
-                    <p className={`text-sm md:text-base ${currentTheme === 'dark' ? 'text-white' : 'text-amber-700'
-                      }`}>
-                      {category.strCategoryDescription.slice(0, 150) + " ..."}
-                    </p>
-                    <Link
-                      className="card-actions justify-end"
-                      href={`/category/${category.strCategory}`}
-                    >
-                      <button className="btn btn-primary text-white text-sm md:text-base shadow-md">
-                        Explore
-                      </button>
-                    </Link>
+              {categories
+                .filter((category) => {
+                  const lowerName = category.strCategory.toLowerCase();
+                  const vegetarianKeywords = ["vegetarian", "vegan", "dessert", "pasta", "starter"];
+
+                  if (filter === "All") return true;
+
+                  if (filter === "Vegetarian") {
+                    return vegetarianKeywords.some((keyword) => lowerName.includes(keyword));
+                  }
+
+                  if (filter === "Non-Vegetarian") {
+                    return !vegetarianKeywords.some((keyword) => lowerName.includes(keyword));
+                  }
+
+                  return true;
+                })
+                .map((category) => (
+                  <div key={category.idCategory} className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <figure className="relative">
+                      <Image
+                        src={category.strCategoryThumb}
+                        alt={category.strCategory}
+                        width={384}
+                        height={216}
+                        className="w-full h-48 object-cover"
+                      />
+                    </figure>
+                    <div className="card-body">
+                      <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center gap-2">
+                        <PlusIcon />
+                        {category.strCategory}
+                      </h2>
+                      <p className="text-sm text-gray-600">{category.strCategoryDescription.slice(0, 80)}...</p>
+                      <div className="card-actions justify-end">
+                        <Link href={`/category/${category.strCategory}`}>
+                          <button className="btn btn-primary text-sm md:text-base">
+                            Show Recipes 🍽️
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+
             </div>
           </section>
         )}
