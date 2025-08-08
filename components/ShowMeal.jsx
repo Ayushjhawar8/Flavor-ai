@@ -6,6 +6,7 @@ import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Footer from "./Footer";
+import AddToGroceryList from "./AddToGroceryList";
 
 // --- Self-contained helper components ---
 
@@ -36,7 +37,31 @@ function IngredientsTable({ mealData }) {
     }
     return null;
   }).filter(Boolean), [mealData]);
-  return (<div className="overflow-x-auto mt-2"><table className="table w-full"><thead><tr className="text-left"><th className="p-2 w-1/3 text-sm font-semibold text-gray-600">Quantity</th><th className="p-2 text-sm font-semibold text-gray-600">Ingredient</th></tr></thead><tbody>{ingredients.map((ing, i) => <tr key={i} className="border-t border-gray-200 hover:bg-gray-50"><td className="p-2 font-medium text-primary">{ing.measure}</td><td className="p-2 text-gray-800">{ing.name}</td></tr>)}</tbody></table></div>);
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <AddToGroceryList ingredients={ingredients} />
+      </div>
+      <div className="overflow-x-auto mt-2">
+        <table className="table w-full">
+          <thead>
+            <tr className="text-left">
+              <th className="p-2 w-1/3 text-sm font-semibold text-gray-600">Quantity</th>
+              <th className="p-2 text-sm font-semibold text-gray-600">Ingredient</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ingredients.map((ing, i) => (
+              <tr key={i} className="border-t border-gray-200 hover:bg-gray-50">
+                <td className="p-2 font-medium text-primary">{ing.measure}</td>
+                <td className="p-2 text-gray-800">{ing.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
 // --- The Main Page Component ---
