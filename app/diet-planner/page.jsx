@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export default function DietPlannerPage() {
   const [formData, setFormData] = useState({
@@ -453,6 +454,8 @@ export default function DietPlannerPage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
