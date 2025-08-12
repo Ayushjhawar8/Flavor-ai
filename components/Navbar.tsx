@@ -1,10 +1,11 @@
-//Navbar Component - by Devika Harshey
+// Navbar Component - by Devika Harshey
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
+import { SignedIn, SignedOut, SignOutButton, UserButton } from "@clerk/nextjs";
 
 interface NavbarProps {
   showResults: boolean;
@@ -122,9 +123,32 @@ export default function Navbar({
         />
       </div>
 
-      {/* Right - Theme Toggle */}
-      <div className="ml-auto md:ml-0">
+      {/* Right - Theme Toggle + Auth buttons */}
+      <div className="ml-auto md:ml-0 flex items-center gap-3">
         <ThemeToggle />
+
+        {/* Auth-aware section */}
+        <SignedIn>
+          <SignOutButton>
+            <button className="px-3 py-1 rounded-full bg-red-500 text-white hover:bg-red-600 transition">
+              Sign Out
+            </button>
+          </SignOutButton>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
+
+        <SignedOut>
+          <Link href="/sign-in">
+            <button className="px-3 py-1 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition">
+              Sign In
+            </button>
+          </Link>
+          <Link href="/sign-up">
+            <button className="px-3 py-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition">
+              Sign Up
+            </button>
+          </Link>
+        </SignedOut>
       </div>
 
       {/* Mobile Search below */}
