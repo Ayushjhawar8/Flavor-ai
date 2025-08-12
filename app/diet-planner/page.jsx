@@ -456,7 +456,6 @@ export default function DietPlannerPage() {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );
