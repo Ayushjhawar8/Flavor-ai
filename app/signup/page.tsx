@@ -38,7 +38,7 @@ export default function SignupPage() {
         } else {
           setError("Session not created. Please try logging in.");
         }
-      } else if (result.status === "needs_email_verification") {
+      } else if (result.status ) {
         setPendingVerification(true);
       }
     } catch (err) {
