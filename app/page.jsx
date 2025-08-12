@@ -16,6 +16,8 @@ export default function Page() {
   const [currentTheme, setCurrentTheme] = useState("light");
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("All");
+const [showDiets, setShowDiets] = useState(false);
+const [selectedDiets, setSelectedDiets] = useState([]);
 
   const handleSearchFocus = () => setShowResults(true);
 
@@ -193,13 +195,36 @@ export default function Page() {
                 </button>
               ))}
             </div>
-
+            <div className="flex flex-wrap gap-4 justify-center mb-8">
+                <button onClick={() => setShowDiets(!showDiets)} className={`btn btn-sm md:btn-md ${showDiets ? "btn-primary" : "btn-outline"} transition-all duration-200`}> Diet Based
+                </button>
+            </div>
+            {showDiets && (
+                <div className="flex flex-wrap gap-4 justify-center mb-8">
+                    {["Vegan", "Keto", "100 Calories", "Low Carbs", "High Protein", "Gluten Free"].map((diet) => (
+                        <button key={diet} onClick={() => {
+                            setSelectedDiets((prev) =>
+                            prev.includes(diet) ? prev.filter((d) => d !== diet) : [...prev, diet]
+                           );
+                        }} className={`btn btn-sm md:btn-md ${selectedDiets.includes(diet) ? "btn-primary" : "btn-outline"} transition-all duration-200`}> {diet}
+                        </button>
+                    ))}
+                </div>
+            )}
             {/* Grid layout for categories */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
               {categories
                 .filter((category) => {
                   const lowerName = category.strCategory.toLowerCase();
                   const vegetarianKeywords = ["vegetarian", "vegan", "dessert", "pasta", "starter"];
+                  const dietKeywords = {
+                    "Keto": ["keto", "ketogenic", "low carb"],
+                    "Vegan": ["vegan", "plant-based"],
+                    "100 Calories": ["100 calorie", "low calorie", "light meal"],
+                    "Low Carbs": ["low carb", "keto", "diabetic friendly"],
+                    "Gluten Free": ["gluten-free", "no gluten"],
+                    "High Protein": ["high protein", "protein rich"]
+                  };
 
                   if (filter === "All") return true;
 
@@ -209,6 +234,11 @@ export default function Page() {
 
                   if (filter === "Non-Vegetarian") {
                     return !vegetarianKeywords.some((keyword) => lowerName.includes(keyword));
+                  }
+                  if (selectedDiets.length > 0) {
+                    return selectedDiets.every((diet) =>
+                      dietKeywords[diet]?.some((keyword) => lowerName.includes(keyword))
+                    );
                   }
 
                   return true;

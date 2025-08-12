@@ -92,6 +92,21 @@ function ShowMeal({ URL }) {
       .filter(Boolean);
   }, [mealData]);
 
+const allergenKeywords = [
+  "milk", "cheese", "butter", "cream", "egg", "peanut", "almond", "cashew", "walnut", "pecan", "hazelnut", "wheat", "barley", "rye", "soy", "soybean", "shrimp", "prawn", "crab", "lobster", "clam", "mussel", "oyster", "fish"
+];
+
+const detectedAllergens = useMemo(() => {
+  if (!mealData) return [];
+  const ingredients = Object.keys(mealData)
+    .filter(k => k.startsWith("strIngredient") && mealData[k])
+    .map(k => mealData[k].toLowerCase());
+
+  return allergenKeywords.filter(allergen =>
+    ingredients.some(ing => ing.includes(allergen))
+  );
+}, [mealData]);
+
   useEffect(() => {
     const synth = window.speechSynthesis;
     synth.cancel();
@@ -195,6 +210,15 @@ function ShowMeal({ URL }) {
               <p className="text-lg text-primary mt-2">
                 {mealData.strArea} Cuisine
               </p>
+              {detectedAllergens.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-2 mt-2">
+                  {detectedAllergens.map((allergen) => (
+                    <span key={allergen} className="badge badge-sm badge-error text-white">
+                      {allergen}
+                    </span>
+                  ))}
+                </div>
+              )}
             </header>
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
               <div className="md:w-1/2">
