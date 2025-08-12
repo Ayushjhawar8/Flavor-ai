@@ -143,7 +143,7 @@ export default function Navbar({
               Sign In
             </button>
           </Link>
-          <Link href="/sign-up">
+          <Link href="/signup">
             <button className="px-3 py-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition">
               Sign Up
             </button>
