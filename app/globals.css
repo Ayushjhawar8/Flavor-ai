@@ -8,6 +8,10 @@ body {
    top: 0 !important;
 }
 
+body.snake-cursor-active {
+  cursor: none;
+}
+
 /* By Devika Harshey */
 /* This hides scrollbar for entire body element. */
 body::-webkit-scrollbar {
@@ -32,7 +36,6 @@ body::-webkit-scrollbar {
     display: none;
   }
 }
-
 
 /* Scroll and selection UI - multilingual Support */
 html {

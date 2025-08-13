@@ -18,14 +18,14 @@ function Page() {
     setShowRecipe(false);
     setRecipeImageUrl(null);
 
-
     if (formResetRef.current) {
       formResetRef.current();
     }
   };
-
+  
   return (
-    <>
+    <> 
+     
       <div className="min-h-screen py-10 bg-base-100 flex flex-col justify-center items-center relative">
         <BackButton />
 
