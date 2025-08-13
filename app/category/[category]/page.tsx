@@ -3,6 +3,7 @@
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import { PlusIcon } from "@/components/Icons";
+import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -23,7 +24,14 @@ export default function Page({ params }: PageProps) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState("All"); 
+  const [showResults, setShowResults] = useState(false);
+
+  const handleSearchFocus = () => setShowResults(true);
+
+  const handleBlur = () => {
+    setTimeout(() => setShowResults(false), 200);
+  };
 
   useEffect(() => {
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${params.category}`)
@@ -80,7 +88,13 @@ export default function Page({ params }: PageProps) {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center p-5 md:p-10 w-full min-h-screen bg-base-100">
+      <Navbar
+        showResults={showResults}
+        setShowResults={setShowResults}
+        handleSearchFocus={handleSearchFocus}
+        handleBlur={handleBlur}
+      />
+      <div className="flex flex-col items-center mt-20 justify-center p-5 md:p-10 w-full min-h-screen bg-base-100">
         <BackButton />
 
         <h1 className="text-4xl md:text-6xl text-secondary mb-5 capitalize">
@@ -93,9 +107,8 @@ export default function Page({ params }: PageProps) {
             <button
               key={type}
               onClick={() => setFilter(type)}
-              className={`btn ${
-                filter === type ? "btn-primary" : "btn-outline"
-              }`}
+              className={`btn ${filter === type ? "btn-primary" : "btn-outline"
+                }`}
             >
               {type}
             </button>

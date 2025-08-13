@@ -7,6 +7,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { CATEGORIES_URL } from "@/lib/urls";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 interface Meal {
   idMeal: string;
@@ -22,8 +23,15 @@ interface Category {
 }
 
 export default function FavoritesPage() {
+  const [showResults, setShowResults] = useState(false);
   const [favorites, setFavorites] = useState<Meal[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+
+  const handleSearchFocus = () => setShowResults(true);
+
+  const handleBlur = () => {
+    setTimeout(() => setShowResults(false), 200);
+  };
 
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
@@ -51,7 +59,13 @@ export default function FavoritesPage() {
 
   return (
     <>
-      <div className="p-6 min-h-screen bg-base-100">
+      <Navbar
+        showResults={showResults}
+        setShowResults={setShowResults}
+        handleSearchFocus={handleSearchFocus}
+        handleBlur={handleBlur}
+      />
+      <div className="p-6 min-h-screen mt-20 bg-base-100">
         <BackButton />
         <h1 className="text-3xl md:text-5xl font-bold text-center text-secondary mb-10">
           Your Favorite Meals 💖

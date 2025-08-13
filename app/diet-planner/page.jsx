@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 export default function DietPlannerPage() {
   const [formData, setFormData] = useState({
@@ -23,6 +24,13 @@ export default function DietPlannerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [useTestAPI, setUseTestAPI] = useState(true);
+  const [showResults, setShowResults] = useState(false);
+
+  const handleSearchFocus = () => setShowResults(true);
+
+  const handleBlur = () => {
+    setTimeout(() => setShowResults(false), 200);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -79,20 +87,14 @@ export default function DietPlannerPage() {
   return (
     <div className="min-h-screen bg-base-100">
       {/* Navigation */}
-      <div className="navbar bg-base-200 shadow-lg">
-        <div className="flex-1">
-          <Link href="/" className="btn btn-ghost text-xl">
-            🍱 Flavor AI
-          </Link>
-        </div>
-        <div className="flex-none">
-          <Link href="/" className="btn btn-ghost">
-            Home
-          </Link>
-        </div>
-      </div>
+      <Navbar
+        showResults={showResults}
+        setShowResults={setShowResults}
+        handleSearchFocus={handleSearchFocus}
+        handleBlur={handleBlur}
+      />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto md:mt-16 mt-28 px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-primary mb-4">
             🥗 AI Diet Planner
@@ -333,7 +335,7 @@ export default function DietPlannerPage() {
           <div className="card bg-base-200 shadow-xl">
             <div className="card-body">
               <h2 className="card-title text-2xl mb-4">Your Personalized Diet Plan</h2>
-              
+
               {!dietPlan && !loading && (
                 <div className="text-center py-8">
                   <div className="text-6xl mb-4">🍽️</div>
@@ -454,7 +456,6 @@ export default function DietPlannerPage() {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

@@ -76,7 +76,7 @@ function BackButton({ fallbackUrl = "/" }) {
                 bg-base-200 hover:bg-base-300 
                 active:bg-base-300
                 absolute top-5 md:top-10 left-3 md:left-10 
-                z-50
+                z-0
                 transition-all duration-150 ease-in-out
                 select-none
                 ${isPressed ? 'scale-90 bg-base-300 shadow-inner' : 'scale-100 shadow-lg'}
