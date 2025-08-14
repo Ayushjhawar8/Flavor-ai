@@ -4,6 +4,7 @@ import AiRecipe from "@/components/AiRecipe";
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import GenerateRecipeForm from "@/components/GenerateRecipeForm";
+import Navbar from "@/components/Navbar";
 import { useRef, useState } from "react";
 
 function Page() {
@@ -18,17 +19,16 @@ function Page() {
     setShowRecipe(false);
     setRecipeImageUrl(null);
 
-
     if (formResetRef.current) {
       formResetRef.current();
     }
   };
-
+  
   return (
-    <>
-      <div className="min-h-screen py-10 bg-base-100 flex flex-col justify-center items-center relative">
+   <>
+      <Navbar />
+      <div className="min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative">
         <BackButton />
-
         {showRecipe && recipe ? (
           <AiRecipe
             recipe={recipe}

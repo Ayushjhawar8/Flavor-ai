@@ -65,7 +65,7 @@ export default function Navbar({
       {/* Left - Logo + GitHub */}
       <div className="flex items-center gap-3 flex-wrap">
         <Link
-          href="#"
+          href="/"
           id="main"
           className={`text-sm md:text-base font-bold px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-md
           ${
