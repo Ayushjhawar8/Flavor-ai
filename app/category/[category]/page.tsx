@@ -1,23 +1,3 @@
-import BackButton from "@/components/BackButton";
-import Footer from "@/components/Footer";
-import CategoryMeals from "./CategoryMeals";
-
-export default async function Page({ 
-  params 
-}: { 
-  params: Promise<{ category: string }> 
-}) {
-  const { category } = await params;
-  
-  return (
-    <>
-      <div className="flex flex-col items-center justify-center p-5 md:p-10 w-full min-h-screen bg-base-100">
-        <BackButton />
-        <h1 className="text-4xl md:text-6xl text-secondary mb-10 capitalize">
-          {category} 🍽
-        </h1>
-        <CategoryMeals category={category} />
-
 "use client";
 
 import BackButton from "@/components/BackButton";
@@ -44,11 +24,10 @@ export default function Page({ params }: PageProps) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);
-  const [filter, setFilter] = useState("All"); 
+  const [filter, setFilter] = useState("All");
   const [showResults, setShowResults] = useState(false);
 
   const handleSearchFocus = () => setShowResults(true);
-
   const handleBlur = () => {
     setTimeout(() => setShowResults(false), 200);
   };
@@ -127,8 +106,7 @@ export default function Page({ params }: PageProps) {
             <button
               key={type}
               onClick={() => setFilter(type)}
-              className={`btn ${filter === type ? "btn-primary" : "btn-outline"
-                }`}
+              className={`btn ${filter === type ? "btn-primary" : "btn-outline"}`}
             >
               {type}
             </button>
