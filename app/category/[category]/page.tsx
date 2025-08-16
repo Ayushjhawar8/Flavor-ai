@@ -14,13 +14,7 @@ interface Meal {
   strMealThumb: string;
 }
 
-interface PageProps {
-  params: {
-    category: string;
-  };
-}
-
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: { params: { category: string } }) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);
