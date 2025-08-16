@@ -95,8 +95,6 @@ function BackButton({ fallbackUrl = "/" }) {
                 WebkitTouchCallout: 'none',
                 WebkitUserSelect: 'none',
                 touchAction: 'manipulation',
-                // Ensure button is above other content
-                zIndex: 50,
                 // Force hardware acceleration for better mobile performance
                 transform: 'translateZ(0)',
                 willChange: 'transform'
