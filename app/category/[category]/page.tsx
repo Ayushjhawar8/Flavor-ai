@@ -14,7 +14,10 @@ interface Meal {
   strMealThumb: string;
 }
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
+// Remove inline type annotation for props and destructure params inside the function
+export default function CategoryPage(props: any) {
+  const { params } = props;
+
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);
