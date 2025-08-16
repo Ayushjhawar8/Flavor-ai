@@ -96,7 +96,6 @@ function BackButton({ fallbackUrl = "/" }) {
                 WebkitUserSelect: 'none',
                 touchAction: 'manipulation',
                 // Force hardware acceleration for better mobile performance
-                //aa
                 transform: 'translateZ(0)',
                 willChange: 'transform'
             }}
