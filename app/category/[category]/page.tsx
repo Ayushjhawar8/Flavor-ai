@@ -7,6 +7,8 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import type { FC } from "react";
+
 
 interface Meal {
   idMeal: string;
@@ -14,7 +16,7 @@ interface Meal {
   strMealThumb: string;
 }
 
-export default function Page({ params }: { params: { category: string } }) {
+export default function CategoryPage({ params }: { params: { category: string } }) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);

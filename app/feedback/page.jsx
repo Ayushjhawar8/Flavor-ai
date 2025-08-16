@@ -344,7 +344,7 @@ export default function FeedbackPage() {
                      Feature Requests
                    </h3>
                    <p className={`${isHydrated && currentTheme === 'dark' ? 'text-gray-300' : 'text-amber-700'}`}>
-                     Have an idea for a new feature? We'd love to hear it!
+                     Have an idea for a new feature? We&apos;d love to hear it!
                    </p>
                  </div>
                  <div className="card bg-base-200 p-6">
