@@ -1,3 +1,5 @@
+"use client";
+
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import { PlusIcon } from "@/components/Icons";
