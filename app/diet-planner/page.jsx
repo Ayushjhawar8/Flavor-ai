@@ -378,7 +378,7 @@ export default function DietPlannerPage() {
 
                   {/* Meals */}
                   <div className="space-y-4">
-                    <h3 className="font-bold text-lg">Today's Meals</h3>
+                    <h3 className="font-bold text-lg">Today&apos;s Meals</h3>
                     {dietPlan.dietPlan.meals.map((meal, index) => (
                       <div key={index} className="bg-base-100 p-4 rounded-lg">
                         <h4 className="font-semibold text-md capitalize mb-2">

@@ -14,21 +14,17 @@ interface Meal {
   strMealThumb: string;
 }
 
-interface PageProps {
-  params: {
-    category: string;
-  };
-}
+// Remove inline type annotation for props and destructure params inside the function
+export default function CategoryPage(props: any) {
+  const { params } = props;
 
-export default function Page({ params }: PageProps) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);
-  const [filter, setFilter] = useState("All"); 
+  const [filter, setFilter] = useState("All");
   const [showResults, setShowResults] = useState(false);
 
   const handleSearchFocus = () => setShowResults(true);
-
   const handleBlur = () => {
     setTimeout(() => setShowResults(false), 200);
   };
@@ -107,8 +103,7 @@ export default function Page({ params }: PageProps) {
             <button
               key={type}
               onClick={() => setFilter(type)}
-              className={`btn ${filter === type ? "btn-primary" : "btn-outline"
-                }`}
+              className={`btn ${filter === type ? "btn-primary" : "btn-outline"}`}
             >
               {type}
             </button>
@@ -159,7 +154,6 @@ export default function Page({ params }: PageProps) {
           )}
         </div>
       </div>
-
       <Footer />
     </>
   );

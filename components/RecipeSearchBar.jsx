@@ -137,7 +137,9 @@ const RecipeSearchBar = ({
   const handleClickOutside = (e) => {
     if (!e.target.closest('#searchBar')) {
       setIsSearchOpen(false);
-      handleBlur();
+      if (typeof handleBlur === 'function') {
+        handleBlur();
+      }
     }
   };
 
