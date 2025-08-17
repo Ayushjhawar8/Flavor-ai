@@ -3,6 +3,10 @@ import { recipeSchema } from "@/lib/schemas";
 import { generateObject } from "ai";
 import { NextResponse } from "next/server";
 import ingredientGraph from "@/lib/ingredientGraph";
+import { config } from "@/lib/config";
+
+console.log(config.GROQ_API_KEY); // safe access
+
 
 /**
  * API Route: POST /api/generate-recipe

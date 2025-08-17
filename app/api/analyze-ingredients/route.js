@@ -2,6 +2,10 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { config } from "@/lib/config";
+
+console.log(config.GROQ_API_KEY); // safe access
+
 
 // Google Gemini client for vision model
 const google = createGoogleGenerativeAI({

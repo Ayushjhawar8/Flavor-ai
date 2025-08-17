@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 const ingredientGraph = require("@/lib/ingredientGraph");
+import { config } from "@/lib/config";
+
+console.log(config.GROQ_API_KEY); // safe access
+
 
 /**
  * API Route: POST /api/ingredient-similarity

@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import { config } from "@/lib/config";
+
+console.log(config.GROQ_API_KEY); // safe access
+
 
 /**
  * Generates a random number between 1 and 100

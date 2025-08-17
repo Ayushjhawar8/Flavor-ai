@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import { config } from "@/lib/config";
+
+console.log(config.GROQ_API_KEY); // safe access
+
 
 /**
  * Test API Route: POST /api/test-diet-plan
