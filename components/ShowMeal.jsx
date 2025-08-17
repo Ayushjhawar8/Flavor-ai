@@ -9,7 +9,6 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 // --- Self-contained helper components ---
-
 function HighlightedSentence({ text, isActive, wordRange }) {
   if (!isActive || !wordRange) {
     return <span>{text}</span>;
@@ -76,10 +75,8 @@ function IngredientsTable({ mealData }) {
 // --- The Main Page Component ---
 function ShowMeal({ URL }) {
   const [mealData, setMealData] = useState(null);
-  // Store favorites from localStorage
   const [favorites, setFavorites] = useState([]);
 
-  // Load favorites on mount
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     if (storedFavorites) {
@@ -87,7 +84,6 @@ function ShowMeal({ URL }) {
     }
   }, []);
 
-  // Toggle favorite for a meal
   const toggleFavorite = (meal) => {
     let updatedFavorites = [];
     if (favorites.some((f) => f.idMeal === meal.idMeal)) {
@@ -99,9 +95,9 @@ function ShowMeal({ URL }) {
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
-  // Check if a meal is already in favorites
   const isFavorite = (idMeal) => favorites.some((f) => f.idMeal === idMeal);
 
+  // --- Instruction TTS ---
   const [playerState, setPlayerState] = useState("idle");
   const [activeWordRange, setActiveWordRange] = useState({
     sentenceIndex: -1,
@@ -112,27 +108,26 @@ function ShowMeal({ URL }) {
 
   const instructionSentences = useMemo(() => {
     if (!mealData?.strInstructions) return [];
-    // Clean each instruction: remove leading numbers, dots, parentheses, and trim whitespace
     return mealData.strInstructions
       .split(/\r?\n/)
       .map((s) => s.replace(/^\s*\d+([.)])?\s*/, "").trim())
       .filter(Boolean);
   }, [mealData]);
 
-const allergenKeywords = [
-  "milk", "cheese", "butter", "cream", "egg", "peanut", "almond", "cashew", "walnut", "pecan", "hazelnut", "wheat", "barley", "rye", "soy", "soybean", "shrimp", "prawn", "crab", "lobster", "clam", "mussel", "oyster", "fish"
-];
+  const allergenKeywords = [
+    "milk", "cheese", "butter", "cream", "egg", "peanut", "almond", "cashew", "walnut", "pecan", "hazelnut", "wheat", "barley", "rye", "soy", "soybean", "shrimp", "prawn", "crab", "lobster", "clam", "mussel", "oyster", "fish"
+  ];
 
-const detectedAllergens = useMemo(() => {
-  if (!mealData) return [];
-  const ingredients = Object.keys(mealData)
-    .filter(k => k.startsWith("strIngredient") && mealData[k])
-    .map(k => mealData[k].toLowerCase());
+  const detectedAllergens = useMemo(() => {
+    if (!mealData) return [];
+    const ingredients = Object.keys(mealData)
+      .filter(k => k.startsWith("strIngredient") && mealData[k])
+      .map(k => mealData[k].toLowerCase());
 
-  return allergenKeywords.filter(allergen =>
-    ingredients.some(ing => ing.includes(allergen))
-  );
-}, [mealData]);
+    return allergenKeywords.filter(allergen =>
+      ingredients.some(ing => ing.includes(allergen))
+    );
+  }, [mealData]);
 
   useEffect(() => {
     const synth = window.speechSynthesis;
@@ -188,6 +183,67 @@ const detectedAllergens = useMemo(() => {
     }, 100);
   }, [handlePlay]);
 
+  // --- Ingredient TTS ---
+  const ingredientSentences = useMemo(() => {
+    if (!mealData) return [];
+    return Object.keys(mealData)
+      .map((key) => {
+        if (key.startsWith("strIngredient") && mealData[key]) {
+          const num = key.slice(13);
+          const measure = mealData[`strMeasure${num}`];
+          if (measure) return `${measure.trim()} ${mealData[key].trim()}`;
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }, [mealData]);
+
+  const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
+  const ingredientUtterances = useRef([]);
+
+  useEffect(() => {
+    const synth = window.speechSynthesis;
+    synth.cancel();
+
+    ingredientUtterances.current = ingredientSentences.map((text, index) => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 1;
+      utterance.onend = () => {
+        if (index === ingredientSentences.length - 1) {
+          setIngredientPlayerState("idle");
+        }
+      };
+      return utterance;
+    });
+
+    return () => synth.cancel();
+  }, [ingredientSentences]);
+
+  const handleIngredientPlay = useCallback(() => {
+    const synth = window.speechSynthesis;
+    if (ingredientPlayerState === "paused") {
+      synth.resume();
+    } else {
+      ingredientUtterances.current.forEach((utt) => synth.speak(utt));
+    }
+    setIngredientPlayerState("playing");
+  }, [ingredientPlayerState]);
+
+  const handleIngredientPause = useCallback(() => {
+    window.speechSynthesis.pause();
+    setIngredientPlayerState("paused");
+  }, []);
+
+  const handleIngredientRestart = useCallback(() => {
+    window.speechSynthesis.cancel();
+    setIngredientPlayerState("idle");
+    setTimeout(() => {
+      handleIngredientPlay();
+    }, 100);
+  }, [handleIngredientPlay]);
+
+  // --- Fetch Meal ---
   useEffect(() => {
     fetch(URL)
       .then((res) => res.json())
@@ -229,7 +285,6 @@ const detectedAllergens = useMemo(() => {
   return (
     <>
       <Navbar />
-      {/* THIS IS THE LINE THAT WAS CHANGED --- */}
       <div className="min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start">
         <BackButton />
         <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
@@ -246,11 +301,9 @@ const detectedAllergens = useMemo(() => {
               >
                 {isFavorite(mealData.idMeal) ? "💖" : "🤍"}
               </button>
-              {/* Title */}
               <h1 className="text-3xl md:text-5xl font-bold text-base-content">
                 {mealData.strMeal}
               </h1>
-              {/* Cuisine */}
               <p className="text-lg text-primary mt-2">
                 {mealData.strArea} Cuisine
               </p>
@@ -288,9 +341,34 @@ const detectedAllergens = useMemo(() => {
                 </div>
               </div>
               <div className="md:w-1/2">
-                <h2 className="text-2xl font-bold mb-2 flex items-center text-base-content">
-                  <PlusIcon />
-                  <span className="ml-2">Ingredients</span>
+                <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
+                  <div className="flex items-center">
+                    <PlusIcon />
+                    <span className="ml-2">Ingredients</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+                    <button
+                      onClick={
+                        ingredientPlayerState === "playing"
+                          ? handleIngredientPause
+                          : handleIngredientPlay
+                      }
+                      className="btn btn-ghost btn-circle"
+                    >
+                      {ingredientPlayerState === "playing" ? (
+                        <PauseIcon className="h-6 w-6 text-info" />
+                      ) : (
+                        <PlayIcon className="h-6 w-6 text-success" />
+                      )}
+                    </button>
+                    <button
+                      onClick={handleIngredientRestart}
+                      className="btn btn-ghost btn-circle"
+                      disabled={ingredientPlayerState === "idle"}
+                    >
+                      <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+                    </button>
+                  </div>
                 </h2>
                 <IngredientsTable mealData={mealData} />
               </div>
