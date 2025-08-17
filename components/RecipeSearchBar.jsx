@@ -7,7 +7,7 @@ import { SearchIcon, X } from "@/components/Icons";
 const RecipeSearchBar = ({
   isScrolled,
   handleSearchFocus,
-  handleBlur,
+  handleBlur = () => {}, // default to empty function
   showResults,
   setShowResults,
   className,
@@ -137,7 +137,7 @@ const RecipeSearchBar = ({
   const handleClickOutside = (e) => {
     if (!e.target.closest('#searchBar')) {
       setIsSearchOpen(false);
-      handleBlur();
+      if (typeof handleBlur === 'function') handleBlur();
     }
   };
 

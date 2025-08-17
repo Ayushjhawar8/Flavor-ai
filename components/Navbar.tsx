@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
+import GoogleTranslateWrapper from "@/components/GoogleTranslateWrapper";
 
 interface NavbarProps {
   showResults: boolean;
@@ -123,7 +124,8 @@ export default function Navbar({
       </div>
 
       {/* Right - Theme Toggle */}
-      <div className="ml-auto md:ml-0">
+      <div className="ml-auto md:ml-0 space-x-2">
+        <GoogleTranslateWrapper />
         <ThemeToggle />
       </div>
 

@@ -29,7 +29,6 @@ body::-webkit-scrollbar {
   transition: background-color 50ms ease-in-out;
 }
 
-/* By Devika Harshey */
 /* This class hides the scrollbar of the element to which it is applied. */
 @layer utilities {
   .scrollbar-none::-webkit-scrollbar {
@@ -37,54 +36,62 @@ body::-webkit-scrollbar {
   }
 }
 
-/* Scroll and selection UI - multilingual Support */
+/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
+/* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background-color: var(--background-color);
+  background-color: var(--scrollbar-track, #f0f0f0);
 }
 ::-webkit-scrollbar-thumb {
-  background-color: purple;
+  background-color: var(--scrollbar-thumb, purple);
   border-radius: 20px;
 }
+
+/* Selection color */
 *::selection {
-  color: rgb(255, 255, 255);
-  background-color:purple;
+  color: #fff;
+  background-color: var(--selection-bg, purple);
+}
+
+/* Theme variables */
+:root {
+  --scrollbar-track: #f0f0f0;   
+  --scrollbar-thumb: purple;    
+  --selection-bg: purple;        
+}
+[data-theme="dark"] {
+  --scrollbar-track: #1f2937;   
+  --scrollbar-thumb: #a855f7;    
+  --selection-bg: #a855f7;
 }
 
 /* Google Translate Styles */
 .google-translate-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 10000;
+  position: relative;  
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  cursor: pointer;
+  z-index: 1000;
+}
+.goog-te-gadget {
+  display: inline-flex !important;
+  align-items: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: transparent !important;
 }
 .goog-logo-link,
 .goog-te-banner-frame,
 .VIpgJd-ZVi9od-l4eHX-hSRGPd,
-.VIpgJd-ZVi9od-ORHb-OEVmcd {
-  display: none !important;
-}
-.goog-te-gadget {
-  color: transparent !important;
-}
-.goog-te-gadget .goog-te-combo {
-  background-color: purple !important;
-  color: white !important;
-  font-size: 15px;
-  border: 2px dotted #ffffff;
-  border-radius: 5px;
-  padding: 4px;
-}
-.goog-te-gadget .goog-te-combo option {
-  color: white;
-}
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
 #goog-gt-tt,
 .goog-te-balloon-frame {
   display: none !important;
@@ -93,6 +100,27 @@ html {
   background: none !important;
   box-shadow: none !important;
 }
-.google-translate-container.hidden {
+#google_translate_element {
   display: none !important;
+}
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-tooltip,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+#goog-gt-tt {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.content[style] {
+  margin-top: 0 !important;
+}
+.goog-te-combo:focus {
+  outline: none;
+  border: 2px solid #9333ea;
 }
