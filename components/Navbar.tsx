@@ -1,10 +1,11 @@
-//Navbar Component - by Devika Harshey
+// Navbar Component - by Devika Harshey
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
+import { useUser, SignInButton, UserButton } from "@clerk/nextjs"; 
 
 interface NavbarProps {
   showResults: boolean;
@@ -21,6 +22,7 @@ export default function Navbar({
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
+  const { isLoaded, isSignedIn } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,9 +98,7 @@ export default function Navbar({
           >
             <path d="M12 0c-6.626 0-12 5.373-12 12c0 5.302 3.438 9.8 8.207 11.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416c-.546-1.387-1.333-1.756-1.333-1.756c-1.089-.745.083-.729.083-.729c1.205.084 1.839 1.237 1.839 1.237c1.07 1.834 2.807 1.304 3.492.997c.107-.775.418-1.305.762-1.604c-2.665-.305-5.467-1.334-5.467-5.931c0-1.311.469-2.381 1.236-3.221c-.124-.303-.535-1.524.117-3.176c0 0 1.008-.322 3.301 1.3c.957-.266 1.983-.399 3.003-.404c1.02.005 2.047.138 3.006.404c2.291-1.552 3.297-1.3 3.297-1.3c.653 1.653.242 2.874.118 3.176c.77.84 1.235 1.911 1.235 3.221c0 4.609-2.807 5.624-5.479 5.921c.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576c4.765-1.589 8.199-6.086 8.199-11.386c0-6.627-5.373-12-12-12z" />
           </svg>
-
           <span className="hidden sm:inline">Star</span>
-
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 md:h-[18px] md:w-[18px] text-yellow-600 group-hover:text-yellow-300 transition-colors"
@@ -122,9 +122,24 @@ export default function Navbar({
         />
       </div>
 
-      {/* Right - Theme Toggle */}
-      <div className="ml-auto md:ml-0">
+      {/* Right - Theme Toggle and Auth */}
+      <div className="flex items-center gap-2">
         <ThemeToggle />
+        {isLoaded && isSignedIn && <UserButton afterSignOutUrl="/" />}
+        {isLoaded && !isSignedIn && (
+          <SignInButton mode="modal">
+            <button
+              className={`text-sm md:text-base font-bold px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-md
+                ${
+                  currentTheme === "dark"
+                    ? "bg-gradient-to-br from-base-100 via-base-300 to-base-200 text-white shadow-md hover:shadow-lg border-white/10"
+                    : "bg-gradient-to-br from-base-200 via-base-100 to-base-300 text-gray-900 shadow-md hover:shadow-lg border-white/10"
+                }`}
+            >
+              Sign In
+            </button>
+          </SignInButton>
+        )}
       </div>
 
       {/* Mobile Search below */}
