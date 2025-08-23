@@ -4,12 +4,22 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
 
+interface RecipeSearchBarProps {
+  isScrolled: boolean;
+  handleSearchFocus: () => void;
+  showResults: boolean;
+  setShowResults: (show: boolean) => void;
+  className?: string;
+  handleBlur: () => void;
+}
+
 const RecipeSearchBar = ({
   isScrolled,
   handleSearchFocus,
   showResults,
   setShowResults,
   className,
+  handleBlur: parentHandleBlur,
 }) => {
   const [input, setInput] = useState("");
   const [meals, setMeals] = useState([]);
@@ -28,6 +38,9 @@ const RecipeSearchBar = ({
   setHoveredIndex(null);
   setMeals([]);
   inputRef.current?.blur();
+  if (parentHandleBlur) {
+    parentHandleBlur();
+  }
 };
 
 
