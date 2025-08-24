@@ -2,9 +2,9 @@
 
 Please describe your changes and what this PR addresses.
 
-## 🔗 Related Issue
+## 🔗 Related Issue IMP*
 
-Closes #[ISSUE_NUMBER]
+Closes #[ENTER YOUR ISSUE_NUMBER]
 
 ## 📸 Screenshots (if applicable)
 

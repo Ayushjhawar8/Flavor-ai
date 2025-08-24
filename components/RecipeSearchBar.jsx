@@ -10,6 +10,7 @@ const RecipeSearchBar = ({
   handleBlur,
   showResults,
   setShowResults,
+  className,
 }) => {
   const [input, setInput] = useState("");
   const [meals, setMeals] = useState([]);
@@ -148,7 +149,7 @@ const RecipeSearchBar = ({
   }, []);
 
   return (
-    <div id="searchBar" className="flex flex-col relative">
+    <div id="searchBar" className={`flex flex-col relative ${className || ''}`}>
       {!isSearchOpen ? (
         <button
           onClick={() => setIsSearchOpen(true)}
