@@ -184,12 +184,12 @@ const [selectedDiets, setSelectedDiets] = useState([]);
               }`}>
               A Taste for Every Mood and Moment
             </h1>
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
+            <div className="flex  flex-wrap gap-4 justify-center mb-8">
               {["All", "Vegetarian", "Non-Vegetarian"].map((type) => (
                 <button
                   key={type}
                   onClick={() => setFilter(type)}
-                  className={`btn btn-sm md:btn-md ${filter === type ? "btn-primary" : "btn-outline"} transition-all duration-200`}
+                  className={`btn btn-sm md:btn-md  ${filter === type ? "btn-primary" : "btn-outline"} transition-all duration-200`}
                 >
                   {type}
                 </button>
@@ -255,11 +255,12 @@ const [selectedDiets, setSelectedDiets] = useState([]);
                       />
                     </figure>
                     <div className="card-body">
-                      <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center gap-2">
+                      <h2 className="card-title text-lg md:text-xl text-base-content flex items-center">
                         <PlusIcon />
                         {category.strCategory}
                       </h2>
-                      <p className="text-sm text-gray-600">{category.strCategoryDescription.slice(0, 80)}...</p>
+                      <p className="text-sm md:text-base text-base-content">
+                        {category.strCategoryDescription.slice(0, 80)}...</p>
                       <div className="card-actions justify-end">
                         <Link href={`/category/${category.strCategory}`}>
                           <button className="btn btn-primary text-sm md:text-base">

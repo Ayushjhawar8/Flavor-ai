@@ -26,6 +26,7 @@ export default function FavoritesPage() {
   const [showResults, setShowResults] = useState(false);
   const [favorites, setFavorites] = useState<Meal[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [currentTheme, setCurrentTheme] = useState("light");
 
   const handleSearchFocus = () => setShowResults(true);
 
