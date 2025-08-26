@@ -255,11 +255,11 @@ const [selectedDiets, setSelectedDiets] = useState([]);
                       />
                     </figure>
                     <div className="card-body">
-                      <h2 className="card-title text-lg md:text-xl text-gray-800 flex items-center gap-2">
+                      <h2 className="card-title text-lg md:text-xl  dark:bg-white-600 flex items-center gap-2">
                         <PlusIcon />
                         {category.strCategory}
                       </h2>
-                      <p className="text-sm text-gray-600">{category.strCategoryDescription.slice(0, 80)}...</p>
+                      <p className="text-sm dark:bg-white-900 ">{category.strCategoryDescription.slice(0, 80)}...</p>
                       <div className="card-actions justify-end">
                         <Link href={`/category/${category.strCategory}`}>
                           <button className="btn btn-primary text-sm md:text-base">
