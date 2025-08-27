@@ -7,8 +7,6 @@ import { SearchIcon, X } from "@/components/Icons";
 const RecipeSearchBar = ({
   isScrolled,
   handleSearchFocus,
-  showResults,
-  setShowResults,
   className,
   handleBlur: parentHandleBlur,
 }) => {
@@ -16,32 +14,35 @@ const RecipeSearchBar = ({
   const [meals, setMeals] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [showResults, setShowResults] = useState(false); // ✅ moved local here
   const resultsRef = useRef(null);
   const inputRef = useRef(null);
-  const [dropdownBgColor, setDropdownBgColor] = useState('rgb(55, 65, 81)'); // dark gray
+  const [dropdownBgColor, setDropdownBgColor] = useState("rgb(55, 65, 81)"); // dark gray
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [currentTheme, setCurrentTheme] = useState('dark');
+  const [currentTheme, setCurrentTheme] = useState("dark");
 
   const handleBlur = () => {
-  setIsSearchOpen(false);
-  setShowResults(false);
-  setActiveIndex(-1);
-  setHoveredIndex(null);
-  setMeals([]);
-  inputRef.current?.blur();
-  if (parentHandleBlur) {
-    parentHandleBlur();
-  }
-};
-
-
+    setIsSearchOpen(false);
+    setShowResults(false);
+    setActiveIndex(-1);
+    setHoveredIndex(null);
+    setMeals([]);
+    inputRef.current?.blur();
+    if (parentHandleBlur) {
+      parentHandleBlur();
+    }
+  };
 
   // Monitor theme changes
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          const newTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-theme"
+        ) {
+          const newTheme =
+            document.documentElement.getAttribute("data-theme") || "dark";
           setCurrentTheme(newTheme);
         }
       });
@@ -49,11 +50,12 @@ const RecipeSearchBar = ({
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme']
+      attributeFilter: ["data-theme"],
     });
 
     // Get initial theme
-    const initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const initialTheme =
+      document.documentElement.getAttribute("data-theme") || "dark";
     setCurrentTheme(initialTheme);
 
     return () => observer.disconnect();
@@ -61,23 +63,23 @@ const RecipeSearchBar = ({
 
   // Theme-based color functions
   const getDropdownBgColor = () => {
-    return currentTheme === 'dark' ? 'rgb(55, 65, 81)' : 'rgb(255,192,203)';
+    return currentTheme === "dark" ? "rgb(55, 65, 81)" : "rgb(255,192,203)";
   };
 
   const getDropdownHoverBgColor = () => {
-    return currentTheme === 'dark' ? 'rgb(75, 85, 99)' : 'rgb(255,105,180)';
+    return currentTheme === "dark" ? "rgb(75, 85, 99)" : "rgb(255,105,180)";
   };
 
   const getItemBgColor = (isActive) => {
-    if (!isActive) return 'transparent';
-    return currentTheme === 'dark' ? 'rgb(139, 107, 79)' : 'rgb(255,105,180)';
+    if (!isActive) return "transparent";
+    return currentTheme === "dark" ? "rgb(139, 107, 79)" : "rgb(255,105,180)";
   };
 
   const getItemTextColor = (isActive) => {
     if (isActive) {
-      return currentTheme === 'dark' ? '#F5DEB3' : '#3a003a';
+      return currentTheme === "dark" ? "#F5DEB3" : "#3a003a";
     }
-    return currentTheme === 'dark' ? '#E5E7EB' : '#1a1a1a';
+    return currentTheme === "dark" ? "#E5E7EB" : "#1a1a1a";
   };
 
   useEffect(() => {
@@ -103,8 +105,10 @@ const RecipeSearchBar = ({
     setInput(value);
     if (!value) {
       setMeals([]);
+      setShowResults(false);
       return;
     }
+    setShowResults(true);
   };
 
   const handleKeyDown = (event) => {
@@ -147,20 +151,23 @@ const RecipeSearchBar = ({
   }, [meals, activeIndex]);
 
   const handleClickOutside = (e) => {
-    if (!e.target.closest('#searchBar')) {
+    if (!e.target.closest("#searchBar")) {
       handleBlur();
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
-    <div id="searchBar" className={`flex flex-col relative ${className || ''}`}>
+    <div
+      id="searchBar"
+      className={`flex flex-col relative ${className || ""}`}
+    >
       {!isSearchOpen ? (
         <button
           onClick={() => setIsSearchOpen(true)}
@@ -178,18 +185,17 @@ const RecipeSearchBar = ({
             className="grow"
             placeholder="Search dish..."
             value={input}
-            onChange={(e) => {
-              handleSearch(e.target.value);
-              setShowResults(true);
-            }}
+            onChange={(e) => handleSearch(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={handleSearchFocus}
             autoFocus
           />
-          <button onClick={() => {
-            handleSearch("");
-            setIsSearchOpen(false);
-          }}>
+          <button
+            onClick={() => {
+              handleSearch("");
+              setIsSearchOpen(false);
+            }}
+          >
             <X />
           </button>
         </label>
@@ -221,11 +227,13 @@ const RecipeSearchBar = ({
                     backgroundColor:
                       index === activeIndex || index === hoveredIndex
                         ? getItemBgColor(true)
-                        : 'transparent',
-                    color: getItemTextColor(index === activeIndex || index === hoveredIndex),
+                        : "transparent",
+                    color: getItemTextColor(
+                      index === activeIndex || index === hoveredIndex
+                    ),
                   }}
                   className={
-                    'p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200'
+                    "p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
                   }
                 >
                   <img
