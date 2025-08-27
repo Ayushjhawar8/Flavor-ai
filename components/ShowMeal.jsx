@@ -34,7 +34,7 @@ function HighlightedIngredient({ text, temp, isActive, wordRange }) {
   }
   const { startChar, endChar } = wordRange;
   const cellEndPos = temp + text.length;
-  
+
   if (endChar <= temp || startChar >= cellEndPos) {
     return <span>{text}</span>;
   }
@@ -144,6 +144,12 @@ function ShowMeal({ URL }) {
     startChar: -1,
     endChar: -1,
   });
+   const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
+  const [activeIngRange, setActiveIngRange] = useState({
+    sentenceIndex: -1,
+    startChar: -1,
+    endChar: -1,
+  });
   const utterances = useRef([]);
 
   const instructionSentences = useMemo(() => {
@@ -225,26 +231,49 @@ function ShowMeal({ URL }) {
 
   const handlePlay = useCallback(() => {
     const synth = window.speechSynthesis;
+
+    // stop ingredients TTS if running
+    if (
+      ingredientPlayerState === "playing" ||
+      ingredientPlayerState === "paused"
+    ) {
+      synth.cancel();
+      setIngredientPlayerState("idle");
+      setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
     if (playerState === "paused") {
       synth.resume();
     } else {
       utterances.current.forEach((utterance) => synth.speak(utterance));
     }
     setPlayerState("playing");
-  }, [playerState]);
+  }, [playerState, ingredientPlayerState]);
 
   const handlePause = useCallback(() => {
-    window.speechSynthesis.pause();
-    setPlayerState("paused");
-  }, []);
+    if (playerState === "playing") {
+      window.speechSynthesis.pause();
+      setPlayerState("paused");
+    }
+  }, [playerState]);
 
   const handleRestart = useCallback(() => {
-    window.speechSynthesis.cancel();
+    const synth = window.speechSynthesis;
+
+    // stop ingredients TTS if running
+    if (ingredientPlayerState !== "idle") {
+      synth.cancel();
+      setIngredientPlayerState("idle");
+      setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
+    synth.cancel();
     setPlayerState("idle");
+
     setTimeout(() => {
       handlePlay();
     }, 100);
-  }, [handlePlay]);
+  }, [handlePlay, ingredientPlayerState]);
 
   // --- Ingredient TTS ---
   const ingredientSentences = useMemo(() => {
@@ -261,12 +290,7 @@ function ShowMeal({ URL }) {
       .filter(Boolean);
   }, [mealData]);
 
-  const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
-  const [activeIngRange, setActiveIngRange] = useState({
-    sentenceIndex: -1,
-    startChar: -1,
-    endChar: -1,
-  });
+ 
   const ingredientUtterances = useRef([]);
 
   useEffect(() => {
@@ -300,26 +324,46 @@ function ShowMeal({ URL }) {
 
   const handleIngredientPlay = useCallback(() => {
     const synth = window.speechSynthesis;
+
+    // stop steps TTS if running
+    if (playerState === "playing" || playerState === "paused") {
+      synth.cancel();
+      setPlayerState("idle");
+      setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
     if (ingredientPlayerState === "paused") {
       synth.resume();
     } else {
       ingredientUtterances.current.forEach((utt) => synth.speak(utt));
     }
     setIngredientPlayerState("playing");
-  }, [ingredientPlayerState]);
+  }, [ingredientPlayerState, playerState]);
 
   const handleIngredientPause = useCallback(() => {
-    window.speechSynthesis.pause();
-    setIngredientPlayerState("paused");
-  }, []);
+    if (ingredientPlayerState === "playing") {
+      window.speechSynthesis.pause();
+      setIngredientPlayerState("paused");
+    }
+  }, [ingredientPlayerState]);
 
   const handleIngredientRestart = useCallback(() => {
-    window.speechSynthesis.cancel();
+    const synth = window.speechSynthesis;
+
+    // stop steps TTS if running
+    if (playerState !== "idle") {
+      synth.cancel();
+      setPlayerState("idle");
+      setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
+    synth.cancel();
     setIngredientPlayerState("idle");
+
     setTimeout(() => {
       handleIngredientPlay();
     }, 100);
-  }, [handleIngredientPlay]);
+  }, [handleIngredientPlay, playerState]);
 
   // --- Fetch Meal ---
   useEffect(() => {
