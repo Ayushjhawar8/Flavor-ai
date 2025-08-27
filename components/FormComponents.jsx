@@ -11,7 +11,7 @@ export function SelectField({ label, name, options, register }) {
   return (
     <div className="form-control mb-4 min-w-64">
       <label className="label">
-        <span className="label-text text-gray-700 font-medium">{label}</span>
+        <span className="label-text text-base-content font-medium">{label}</span>
       </label>
       <select {...register(name)} className="select select-bordered w-full">
         {options.map((option) => (
@@ -43,7 +43,7 @@ export function CheckboxField({ label, name, options, register, descriptions = {
               {...register(name)}
               className="checkbox checkbox-primary "
             />
-            <div className="label-text text-gray-700 flex-1 ">
+            <div className="label-text text-base-content flex-1 ">
               {option}
               <span style={{ display: 'none' }}>
                 {descriptions[option] || ""}
@@ -127,7 +127,7 @@ export function InputField({ label, name, register , watch }) {
           {...register(name)}
           value={inputValue}
           onChange={handleInputChange}
-          className="input input-bordered w-full pr-16 text-gray-700 bg-white border-gray-300"
+          className="input input-bordered w-full pr-16 text-base-content bg-base-100 border-base-300"
         />
 
         <button

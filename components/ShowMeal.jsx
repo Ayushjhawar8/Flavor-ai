@@ -2,7 +2,7 @@
 
 import BackButton from "@/components/BackButton";
 import { PlusIcon, YoutubeIcon } from "@/components/Icons";
-import { PlayIcon, PauseIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
+import { PlayIcon, PauseIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Footer from "./Footer";
@@ -28,7 +28,33 @@ function HighlightedSentence({ text, isActive, wordRange }) {
   );
 }
 
-function IngredientsTable({ mealData }) {
+function HighlightedIngredient({ text, temp, isActive, wordRange }) {
+  if (!isActive || !wordRange) {
+    return <span>{text}</span>;
+  }
+  const { startChar, endChar } = wordRange;
+  const cellEndPos = temp + text.length;
+
+  if (endChar <= temp || startChar >= cellEndPos) {
+    return <span>{text}</span>;
+  }
+
+  const localStartChar = Math.max(0, startChar - temp);
+  const localEndChar = Math.min(text.length, endChar - temp);
+
+  const before = text.substring(0, localStartChar);
+  const highlighted = text.substring(localStartChar, localEndChar);
+  const after = text.substring(localEndChar);
+
+  return (
+    <span>
+      {before}
+      <span className="speaking-word">{highlighted}</span>
+      {after}
+    </span>
+  );
+}
+function IngredientsTable({ mealData, activeIngRange }) {
   const ingredients = useMemo(
     () =>
       Object.keys(mealData)
@@ -62,8 +88,22 @@ function IngredientsTable({ mealData }) {
         <tbody>
           {ingredients.map((ing, i) => (
             <tr key={i} className="border-t border-base-300 hover:bg-base-200">
-              <td className="p-2 font-medium text-secondary">{ing.measure}</td>
-              <td className="p-2 text-base-content">{ing.name}</td>
+              <td className="p-2 font-medium text-secondary">
+                <HighlightedIngredient
+                  text={ing.measure}
+                  temp={0}
+                  isActive={i == activeIngRange.sentenceIndex}
+                  wordRange={activeIngRange}
+                />
+              </td>
+              <td className="p-2 text-base-content">
+                <HighlightedIngredient
+                  text={ing.name}
+                  temp={ing.measure.length + 1}
+                  isActive={i == activeIngRange.sentenceIndex}
+                  wordRange={activeIngRange}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -104,6 +144,12 @@ function ShowMeal({ URL }) {
     startChar: -1,
     endChar: -1,
   });
+   const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
+  const [activeIngRange, setActiveIngRange] = useState({
+    sentenceIndex: -1,
+    startChar: -1,
+    endChar: -1,
+  });
   const utterances = useRef([]);
 
   const instructionSentences = useMemo(() => {
@@ -115,17 +161,40 @@ function ShowMeal({ URL }) {
   }, [mealData]);
 
   const allergenKeywords = [
-    "milk", "cheese", "butter", "cream", "egg", "peanut", "almond", "cashew", "walnut", "pecan", "hazelnut", "wheat", "barley", "rye", "soy", "soybean", "shrimp", "prawn", "crab", "lobster", "clam", "mussel", "oyster", "fish"
+    "milk",
+    "cheese",
+    "butter",
+    "cream",
+    "egg",
+    "peanut",
+    "almond",
+    "cashew",
+    "walnut",
+    "pecan",
+    "hazelnut",
+    "wheat",
+    "barley",
+    "rye",
+    "soy",
+    "soybean",
+    "shrimp",
+    "prawn",
+    "crab",
+    "lobster",
+    "clam",
+    "mussel",
+    "oyster",
+    "fish",
   ];
 
   const detectedAllergens = useMemo(() => {
     if (!mealData) return [];
     const ingredients = Object.keys(mealData)
-      .filter(k => k.startsWith("strIngredient") && mealData[k])
-      .map(k => mealData[k].toLowerCase());
+      .filter((k) => k.startsWith("strIngredient") && mealData[k])
+      .map((k) => mealData[k].toLowerCase());
 
-    return allergenKeywords.filter(allergen =>
-      ingredients.some(ing => ing.includes(allergen))
+    return allergenKeywords.filter((allergen) =>
+      ingredients.some((ing) => ing.includes(allergen))
     );
   }, [mealData]);
 
@@ -162,26 +231,49 @@ function ShowMeal({ URL }) {
 
   const handlePlay = useCallback(() => {
     const synth = window.speechSynthesis;
+
+    // stop ingredients TTS if running
+    if (
+      ingredientPlayerState === "playing" ||
+      ingredientPlayerState === "paused"
+    ) {
+      synth.cancel();
+      setIngredientPlayerState("idle");
+      setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
     if (playerState === "paused") {
       synth.resume();
     } else {
       utterances.current.forEach((utterance) => synth.speak(utterance));
     }
     setPlayerState("playing");
-  }, [playerState]);
+  }, [playerState, ingredientPlayerState]);
 
   const handlePause = useCallback(() => {
-    window.speechSynthesis.pause();
-    setPlayerState("paused");
-  }, []);
+    if (playerState === "playing") {
+      window.speechSynthesis.pause();
+      setPlayerState("paused");
+    }
+  }, [playerState]);
 
   const handleRestart = useCallback(() => {
-    window.speechSynthesis.cancel();
+    const synth = window.speechSynthesis;
+
+    // stop ingredients TTS if running
+    if (ingredientPlayerState !== "idle") {
+      synth.cancel();
+      setIngredientPlayerState("idle");
+      setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
+    synth.cancel();
     setPlayerState("idle");
+
     setTimeout(() => {
       handlePlay();
     }, 100);
-  }, [handlePlay]);
+  }, [handlePlay, ingredientPlayerState]);
 
   // --- Ingredient TTS ---
   const ingredientSentences = useMemo(() => {
@@ -198,7 +290,7 @@ function ShowMeal({ URL }) {
       .filter(Boolean);
   }, [mealData]);
 
-  const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
+ 
   const ingredientUtterances = useRef([]);
 
   useEffect(() => {
@@ -209,9 +301,19 @@ function ShowMeal({ URL }) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
       utterance.rate = 1;
+      utterance.onboundary = (event) => {
+        if (event.name == "word") {
+          setActiveIngRange({
+            sentenceIndex: index,
+            startChar: event.charIndex,
+            endChar: event.charIndex + event.charLength,
+          });
+        }
+      };
       utterance.onend = () => {
         if (index === ingredientSentences.length - 1) {
           setIngredientPlayerState("idle");
+          setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
         }
       };
       return utterance;
@@ -222,26 +324,46 @@ function ShowMeal({ URL }) {
 
   const handleIngredientPlay = useCallback(() => {
     const synth = window.speechSynthesis;
+
+    // stop steps TTS if running
+    if (playerState === "playing" || playerState === "paused") {
+      synth.cancel();
+      setPlayerState("idle");
+      setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
     if (ingredientPlayerState === "paused") {
       synth.resume();
     } else {
       ingredientUtterances.current.forEach((utt) => synth.speak(utt));
     }
     setIngredientPlayerState("playing");
-  }, [ingredientPlayerState]);
+  }, [ingredientPlayerState, playerState]);
 
   const handleIngredientPause = useCallback(() => {
-    window.speechSynthesis.pause();
-    setIngredientPlayerState("paused");
-  }, []);
+    if (ingredientPlayerState === "playing") {
+      window.speechSynthesis.pause();
+      setIngredientPlayerState("paused");
+    }
+  }, [ingredientPlayerState]);
 
   const handleIngredientRestart = useCallback(() => {
-    window.speechSynthesis.cancel();
+    const synth = window.speechSynthesis;
+
+    // stop steps TTS if running
+    if (playerState !== "idle") {
+      synth.cancel();
+      setPlayerState("idle");
+      setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+    }
+
+    synth.cancel();
     setIngredientPlayerState("idle");
+
     setTimeout(() => {
       handleIngredientPlay();
     }, 100);
-  }, [handleIngredientPlay]);
+  }, [handleIngredientPlay, playerState]);
 
   // --- Fetch Meal ---
   useEffect(() => {
@@ -291,11 +413,13 @@ function ShowMeal({ URL }) {
           <div className="p-6 md:p-12">
             <header className="relative text-center mb-8">
               <button
-                onClick={() => toggleFavorite({
-                  idMeal: mealData.idMeal,
-                  strMeal: mealData.strMeal,
-                  strMealThumb: mealData.strMealThumb
-                })}
+                onClick={() =>
+                  toggleFavorite({
+                    idMeal: mealData.idMeal,
+                    strMeal: mealData.strMeal,
+                    strMealThumb: mealData.strMealThumb,
+                  })
+                }
                 className="absolute top-0 right-0 bg-black text-white rounded-full p-2 text-lg hover:bg-black hover:text-black transition"
                 aria-label="Toggle favorite"
               >
@@ -310,7 +434,10 @@ function ShowMeal({ URL }) {
               {detectedAllergens.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-2 mt-2">
                   {detectedAllergens.map((allergen) => (
-                    <span key={allergen} className="badge badge-sm badge-error text-white">
+                    <span
+                      key={allergen}
+                      className="badge badge-sm badge-error text-white"
+                    >
                       {allergen}
                     </span>
                   ))}
@@ -370,7 +497,10 @@ function ShowMeal({ URL }) {
                     </button>
                   </div>
                 </h2>
-                <IngredientsTable mealData={mealData} />
+                <IngredientsTable
+                  mealData={mealData}
+                  activeIngRange={activeIngRange}
+                />
               </div>
             </div>
 
