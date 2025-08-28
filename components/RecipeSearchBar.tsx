@@ -171,7 +171,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
         </button>
       ) : (
         <label className="input input-bordered flex items-center gap-2">
-          <SearchIcon />
+          <SearchIcon className={undefined} />
           <input
             ref={inputRef}
             type="text"
