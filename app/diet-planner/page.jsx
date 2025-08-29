@@ -15,6 +15,7 @@ export default function DietPlannerPage() {
     gender: "",
     activityLevel: "",
     goal: "",
+    dietPreference:"",
     bloodSugar: "",
     bloodPressure: "",
     dietaryRestrictions: [],
@@ -255,7 +256,32 @@ export default function DietPlannerPage() {
                     <option value="general_health">General Health</option>
                   </select>
                 </div>
-
+                {/* Diet Preference Dropdown (added above Dietary Restrictions) */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Diet Preference</span>
+                  </label>
+                  <select
+                    className="select select-bordered"
+                    value={formData.dietPreference || ""}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        dietPreference: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Select your diet preference
+                    </option>
+                    <option value="Vegetarian">Vegetarian</option>
+                    <option value="Non-Vegetarian">Non-Vegetarian</option>
+                    <option value="Eggetarian">Eggetarian</option>
+                    <option value="Vegan">Vegan</option>
+                  </select>
+                  <div className="label">
+                  </div>
+                </div>
                 {/* Health Conditions */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="form-control">
