@@ -148,7 +148,9 @@ export default function FavoritesPage() {
           </div>
         )}
       </div>
-      <Footer />
+      <div className="bg-base-100">
+        <Footer />
+      </div>
     </>
   );
 }

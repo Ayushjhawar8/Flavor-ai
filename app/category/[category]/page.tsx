@@ -160,7 +160,9 @@ export default function Page({ params }: PageProps) {
         </div>
       </div>
 
-      <Footer />
+      <div className="bg-base-100">
+        <Footer />
+      </div>
     </>
   );
 }

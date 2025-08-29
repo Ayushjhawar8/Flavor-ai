@@ -547,7 +547,9 @@ function ShowMeal({ URL }) {
           </div>
         </div>
       </div>
-      <Footer />
+      <div className="bg-base-100">
+        <Footer />
+      </div>
     </>
   );
 }
