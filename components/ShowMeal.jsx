@@ -116,6 +116,10 @@ function IngredientsTable({ mealData, activeIngRange }) {
 function ShowMeal({ URL }) {
   const [mealData, setMealData] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  const handleSearchFocus = () => setShowResults(true);
+  const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
@@ -376,8 +380,15 @@ function ShowMeal({ URL }) {
   if (!mealData) {
     return (
       <>
-        <Navbar />
-        <div className="min-h-screen mt-20 flex bg-base-100 justify-center items-center p-4">
+        <Navbar
+          showResults={showResults}
+          setShowResults={setShowResults}
+          handleSearchFocus={handleSearchFocus}
+          handleBlur={handleBlur}
+        />
+        <div className={`min-h-screen mt-20 flex bg-base-100 justify-center items-center p-4 transition-all duration-300 ${
+          showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}>
           <div className="max-w-4xl w-full p-12 my-6 skeleton bg-base-200 rounded-xl shadow-md">
             <div className="animate-pulse">
               <div className="h-10 bg-base-300 rounded-md w-60 mx-auto mb-4"></div>
@@ -406,8 +417,15 @@ function ShowMeal({ URL }) {
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start">
+      <Navbar
+        showResults={showResults}
+        setShowResults={setShowResults}
+        handleSearchFocus={handleSearchFocus}
+        handleBlur={handleBlur}
+      />
+      <div className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start transition-all duration-300 ${
+        showResults ? "opacity-80 blur-sm" : "opacity-100"
+      }`}>
         <BackButton />
         <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
           <div className="p-6 md:p-12">

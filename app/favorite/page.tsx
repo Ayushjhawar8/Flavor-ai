@@ -65,7 +65,9 @@ export default function FavoritesPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className="p-6 min-h-screen mt-20 bg-base-100">
+      <div className={`p-6 min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
+        showResults ? "opacity-80 blur-sm" : "opacity-100"
+      }`}>
         <BackButton />
         <h1 className="text-3xl md:text-5xl font-bold text-center text-secondary mb-10">
           Your Favorite Meals 💖

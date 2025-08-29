@@ -8,17 +8,17 @@ import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { Home } from "lucide-react";
 
 interface NavbarProps {
-  showResults: boolean;
-  setShowResults: React.Dispatch<React.SetStateAction<boolean>>;
-  handleBlur: () => void;
-  handleSearchFocus: () => void;
+  showResults?: boolean;
+  setShowResults?: React.Dispatch<React.SetStateAction<boolean>>;
+  handleBlur?: () => void;
+  handleSearchFocus?: () => void;
 }
 
 export default function Navbar({
-  showResults,
-  setShowResults,
-  handleBlur,
-  handleSearchFocus,
+  showResults = false,
+  setShowResults = () => {},
+  handleBlur = () => {},
+  handleSearchFocus = () => {},
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");

@@ -100,7 +100,9 @@ export default function DietPlannerPage() {
         handleBlur={handleBlur}
       />
 
-      <div className="container mx-auto md:mt-16 mt-28 px-4 py-8">
+      <div className={`container mx-auto md:mt-16 mt-28 px-4 py-8 transition-all duration-300 ${
+        showResults ? "opacity-80 blur-sm" : "opacity-100"
+      }`}>
         <div className="text-center mb-8 mt-12 md:mt-0">
           <h1 className="text-4xl font-bold text-primary mb-4">
             🥗 AI Diet Planner
