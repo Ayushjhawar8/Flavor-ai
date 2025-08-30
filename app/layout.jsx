@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ScrollToTop from "../components/ScrollToTop";
 import GoogleTranslateWrapper from "@/components/GoogleTranslateWrapper";
 import SnakeCursor from "@/components/SnakeCursor";
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
         <GoogleTranslateWrapper />
         <SnakeCursor />
         {children}
+        <ScrollToTop></ScrollToTop>
       </body>
     </html>
   );
