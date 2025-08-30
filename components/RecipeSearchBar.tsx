@@ -1,10 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
 
-const RecipeSearchBar = ({
+export interface RecipeSearchBarProps {
+  isScrolled: boolean;
+  handleSearchFocus: () => void;
+  showResults: boolean;
+  setShowResults: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string; // ✅ Optional now
+  handleBlur?: () => void;
+}
+
+const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
   isScrolled,
   handleSearchFocus,
   showResults,
@@ -12,74 +21,52 @@ const RecipeSearchBar = ({
   className,
   handleBlur: parentHandleBlur,
 }) => {
-  const [input, setInput] = useState("");
-  const [meals, setMeals] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const resultsRef = useRef(null);
-  const inputRef = useRef(null);
-  const [dropdownBgColor, setDropdownBgColor] = useState('rgb(55, 65, 81)'); // dark gray
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [currentTheme, setCurrentTheme] = useState('dark');
+  const [input, setInput] = useState<string>("");
+  const [meals, setMeals] = useState<any[]>([]);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [dropdownBgColor, setDropdownBgColor] = useState("rgb(55, 65, 81)");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [currentTheme, setCurrentTheme] = useState<string>("dark");
 
+  // Blur handler (calls parentBlur if provided)
   const handleBlur = () => {
-  setIsSearchOpen(false);
-  setShowResults(false);
-  setActiveIndex(-1);
-  setHoveredIndex(null);
-  setMeals([]);
-  inputRef.current?.blur();
-  if (parentHandleBlur) {
-    parentHandleBlur();
-  }
-};
+    setIsSearchOpen(false);
+    setShowResults(false);
+    setActiveIndex(-1);
+    setHoveredIndex(null);
+    setMeals([]);
+    inputRef.current?.blur();
+    if (parentHandleBlur) parentHandleBlur();
+  };
 
-
-
-  // Monitor theme changes
+  // Theme watcher
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          const newTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-theme"
+        ) {
+          const newTheme =
+            document.documentElement.getAttribute("data-theme") || "dark";
           setCurrentTheme(newTheme);
         }
       });
     });
-
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme']
+      attributeFilter: ["data-theme"],
     });
-
-    // Get initial theme
-    const initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    setCurrentTheme(initialTheme);
-
+    setCurrentTheme(
+      document.documentElement.getAttribute("data-theme") || "dark"
+    );
     return () => observer.disconnect();
   }, []);
 
-  // Theme-based color functions
-  const getDropdownBgColor = () => {
-    return currentTheme === 'dark' ? 'rgb(55, 65, 81)' : 'rgb(255,192,203)';
-  };
-
-  const getDropdownHoverBgColor = () => {
-    return currentTheme === 'dark' ? 'rgb(75, 85, 99)' : 'rgb(255,105,180)';
-  };
-
-  const getItemBgColor = (isActive) => {
-    if (!isActive) return 'transparent';
-    return currentTheme === 'dark' ? 'rgb(139, 107, 79)' : 'rgb(255,105,180)';
-  };
-
-  const getItemTextColor = (isActive) => {
-    if (isActive) {
-      return currentTheme === 'dark' ? '#F5DEB3' : '#3a003a';
-    }
-    return currentTheme === 'dark' ? '#E5E7EB' : '#1a1a1a';
-  };
-
+  // Debounced fetch for search
   useEffect(() => {
     if (!input) {
       setMeals([]);
@@ -88,26 +75,24 @@ const RecipeSearchBar = ({
     const handler = setTimeout(() => {
       fetchMeals(input);
     }, 400);
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [input]);
 
-  const fetchMeals = (value) => {
+  // Fetch meals from API
+  const fetchMeals = (value: string) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((response) => response.json())
-      .then((data) => setMeals(data.meals));
+      .then((data) => setMeals(data.meals || []));
   };
 
-  const handleSearch = (value) => {
+  // Search input state
+  const handleSearch = (value: string) => {
     setInput(value);
-    if (!value) {
-      setMeals([]);
-      return;
-    }
+    if (!value) setMeals([]);
   };
 
-  const handleKeyDown = (event) => {
+  // Keyboard navigation for dropdown
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown") {
       setActiveIndex((prev) => {
         const newIndex = prev < meals.length - 1 ? prev + 1 : prev;
@@ -127,11 +112,12 @@ const RecipeSearchBar = ({
     }
   };
 
-  const scrollIntoView = (index) => {
+  // Scroll focused item into view
+  const scrollIntoView = (index: number) => {
     if (resultsRef.current) {
       const resultItems = resultsRef.current.children;
       if (resultItems[index]) {
-        resultItems[index].scrollIntoView({
+        (resultItems[index] as HTMLElement).scrollIntoView({
           block: "nearest",
           behavior: "smooth",
         });
@@ -139,28 +125,42 @@ const RecipeSearchBar = ({
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [meals, activeIndex]);
-
-  const handleClickOutside = (e) => {
-    if (!e.target.closest('#searchBar')) {
+  // Outside click closes dropdown
+  const handleClickOutside = (e: MouseEvent) => {
+    if (!(e.target as Element).closest("#searchBar")) {
       handleBlur();
     }
   };
-
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Color functions
+  const getDropdownBgColor = () =>
+    currentTheme === "dark" ? "rgb(55, 65, 81)" : "rgb(255,192,203)";
+  const getDropdownHoverBgColor = () =>
+    currentTheme === "dark" ? "rgb(75, 85, 99)" : "rgb(255,105,180)";
+  const getItemBgColor = (isActive: boolean) =>
+    isActive
+      ? currentTheme === "dark"
+        ? "rgb(139, 107, 79)"
+        : "rgb(255,105,180)"
+      : "transparent";
+  const getItemTextColor = (isActive: boolean) =>
+    isActive
+      ? currentTheme === "dark"
+        ? "#F5DEB3"
+        : "#3a003a"
+      : currentTheme === "dark"
+      ? "#E5E7EB"
+      : "#1a1a1a";
+
   return (
-    <div id="searchBar" className={`flex flex-col relative ${className || ''}`}>
+    <div
+      id="searchBar"
+      className={`flex flex-col relative ${className || ""}`}
+    >
       {!isSearchOpen ? (
         <button
           onClick={() => setIsSearchOpen(true)}
@@ -171,7 +171,7 @@ const RecipeSearchBar = ({
         </button>
       ) : (
         <label className="input input-bordered flex items-center gap-2">
-          <SearchIcon />
+          <SearchIcon className={undefined} />
           <input
             ref={inputRef}
             type="text"
@@ -186,10 +186,12 @@ const RecipeSearchBar = ({
             onFocus={handleSearchFocus}
             autoFocus
           />
-          <button onClick={() => {
-            handleSearch("");
-            setIsSearchOpen(false);
-          }}>
+          <button
+            onClick={() => {
+              handleSearch("");
+              setIsSearchOpen(false);
+            }}
+          >
             <X />
           </button>
         </label>
@@ -221,12 +223,12 @@ const RecipeSearchBar = ({
                     backgroundColor:
                       index === activeIndex || index === hoveredIndex
                         ? getItemBgColor(true)
-                        : 'transparent',
-                    color: getItemTextColor(index === activeIndex || index === hoveredIndex),
+                        : "transparent",
+                    color: getItemTextColor(
+                      index === activeIndex || index === hoveredIndex
+                    ),
                   }}
-                  className={
-                    'p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200'
-                  }
+                  className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
                 >
                   <img
                     src={meal.strMealThumb}
@@ -242,4 +244,5 @@ const RecipeSearchBar = ({
     </div>
   );
 };
+
 export default RecipeSearchBar;

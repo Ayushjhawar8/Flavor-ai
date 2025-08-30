@@ -11,8 +11,12 @@ function Page() {
   const [recipe, setRecipe] = useState(null);
   const [recipeImageUrl, setRecipeImageUrl] = useState(null);
   const [showRecipe, setShowRecipe] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const formResetRef = useRef();
+
+  const handleSearchFocus = () => setShowResults(true);
+  const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
   const handleReset = () => {
     setRecipe(null);
@@ -26,8 +30,15 @@ function Page() {
   
   return (
    <>
-      <Navbar />
-      <div className="min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative">
+      <Navbar
+        showResults={showResults}
+        setShowResults={setShowResults}
+        handleSearchFocus={handleSearchFocus}
+        handleBlur={handleBlur}
+      />
+      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${
+        showResults ? "opacity-80 blur-sm" : "opacity-100"
+      }`}>
         <BackButton />
         {showRecipe && recipe ? (
           <AiRecipe
