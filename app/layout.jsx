@@ -32,7 +32,6 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className} style={patrickHand}>
-        <GoogleTranslateWrapper />
         <SnakeCursor />
         {children}
         <ScrollToTop></ScrollToTop>

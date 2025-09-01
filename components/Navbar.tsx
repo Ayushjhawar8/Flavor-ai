@@ -6,6 +6,7 @@ import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { Home } from "lucide-react";
+import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 
 interface NavbarProps {
   showResults?: boolean;
@@ -125,6 +126,8 @@ export default function Navbar({
 
       {/* Right - Home Tab & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-4">
+        {/* Google Translate Widget */}
+          <GoogleTranslateWrapper />
         <div
           className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300`}
         >
