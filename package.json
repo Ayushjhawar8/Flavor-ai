@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
     "ai": "^3.3.5",
+    "axios": "^1.11.0",
     "graph-data-structure": "^4.5.0",
     "lucide-react": "^0.536.0",
     "ml-matrix": "^6.12.1",
