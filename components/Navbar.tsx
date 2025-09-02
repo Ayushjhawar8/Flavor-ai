@@ -5,8 +5,58 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Home } from "lucide-react";
+import { Menu, X, Home, Settings, User } from 'lucide-react';
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
+
+const MobileNavigation = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <>
+      {/* Mobile Hamburger Button */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="p-2 rounded-lg bg-white/10 dark:bg-black/20 border border-white/20"
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="fixed inset-0 bg-gray/50" onClick={() => setIsMenuOpen(false)} />
+          <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl">
+            <div className="flex flex-col p-4 space-y-4">
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="self-end p-2 rounded-full bg-base-100"
+              >
+                <X size={20}/>
+              </button>
+              
+              <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
+                <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+                  <Home size={20} className="text-base-100"/>
+                </div>
+                <span className="text-gray-900 dark:text-gray-100">Home</span>
+              </Link>
+              
+              <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
+                <ThemeToggle /> 
+                <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
+              </div>
+              {/* Add more navigation items here */}
+            </div>
+          </div>
+
+        </div>
+      )}
+    </>
+  );
+};
 
 interface NavbarProps {
   showResults?: boolean;
@@ -127,7 +177,9 @@ export default function Navbar({
       {/* Right - Home Tab & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-4">
         {/* Google Translate Widget */}
+        <div className="">
           <GoogleTranslateWrapper />
+        </div>
         <div
           className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
         >
@@ -135,8 +187,10 @@ export default function Navbar({
           <Home size={16} className="text-white dark:text-white" />
         </Link>
         </div>
-
-        <ThemeToggle />
+        <div className="hidden md:block">
+          <ThemeToggle />
+        </div>
+        <MobileNavigation />
       </div>
 
       {/* Mobile Search below */}
