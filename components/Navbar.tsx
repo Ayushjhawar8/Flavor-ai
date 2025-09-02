@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Menu, X, Home } from 'lucide-react';
+import { Home } from 'lucide-react';
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
+import { Menu, X,} from 'lucide-react';
 
 const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
