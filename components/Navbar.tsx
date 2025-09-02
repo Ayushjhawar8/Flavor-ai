@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Menu, X, Home, Settings, User } from 'lucide-react';
+import { Menu, X, Home } from 'lucide-react';
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 
 const MobileNavigation = () => {
@@ -27,7 +27,7 @@ const MobileNavigation = () => {
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-gray/50" onClick={() => setIsMenuOpen(false)} />
+          <div className="fixed inset-0 bg-black/50" onClick={() => setIsMenuOpen(false)} />
           <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl">
             <div className="flex flex-col p-4 space-y-4">
               <button
@@ -177,9 +177,7 @@ export default function Navbar({
       {/* Right - Home Tab & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-4">
         {/* Google Translate Widget */}
-        <div className="">
           <GoogleTranslateWrapper />
-        </div>
         <div
           className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
         >
