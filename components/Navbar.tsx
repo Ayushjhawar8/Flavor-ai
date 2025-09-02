@@ -129,7 +129,7 @@ export default function Navbar({
         {/* Google Translate Widget */}
           <GoogleTranslateWrapper />
         <div
-          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300`}
+          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
         >
         <Link href="/" aria-label="Home" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
           <Home size={16} className="text-white dark:text-white" />
