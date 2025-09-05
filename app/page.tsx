@@ -16,6 +16,24 @@ export default function Page() {
   const [filter, setFilter] = useState("All");
   const [showDiets, setShowDiets] = useState(false);
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
+    // Recently Viewed Meals
+  const [recentMeals, setRecentMeals] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = localStorage.getItem("recentMeals");
+      const list = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(list)) setRecentMeals(list);
+    } catch {
+      setRecentMeals([]);
+    }
+  }, []);
+
+  const clearRecentMeals = () => {
+    localStorage.removeItem("recentMeals");
+    setRecentMeals([]);
+  };
 
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
@@ -161,6 +179,43 @@ export default function Page() {
             </div>
           </div>
         </section>
+                {/* Recently Viewed */}
+        {recentMeals.length > 0 && (
+          <section className="w-full max-w-7xl mx-auto my-10 px-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-base-content">
+                Recently Viewed
+              </h2>
+              <button
+                onClick={clearRecentMeals}
+                className="text-sm text-red-500 underline"
+              >
+                Clear
+              </button>
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto pb-4">
+              {recentMeals.map((meal) => (
+                <Link
+                  key={meal.idMeal}
+                  href={`/meal/${meal.idMeal}`}
+                  className="min-w-[160px] bg-base-200 rounded-lg shadow-md hover:-translate-y-1 transition-transform"
+                >
+                  <Image
+                    src={meal.strMealThumb}
+                    alt={meal.strMeal}
+                    width={160}
+                    height={120}
+                    className="w-full h-32 object-cover rounded-t-lg"
+                  />
+                  <div className="p-2 text-sm font-medium text-center text-base-content">
+                    {meal.strMeal}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="divider mt-10"></div>
 
