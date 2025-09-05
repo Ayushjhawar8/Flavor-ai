@@ -99,11 +99,11 @@ export default function Page() {
 
       {/* Content */}
       <div
-        className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 ${
-          !showResults ? "opacity-100" : "opacity-80 blur-sm"
-        }`}
+        className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 transition-all duration-300 relative z-10 ${
+        !showResults ? "opacity-100" : "opacity-80 blur-sm"
+      }`}
       >
-        <section className="w-full h-screen bg-base-100 flex items-center justify-center">
+        <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
           <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8">
             <h1
               className={`text-5xl md:text-7xl font-extrabold leading-tight ${
@@ -166,7 +166,7 @@ export default function Page() {
 
         {/* Categories */}
         {showCategories && (
-          <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full">
+          <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full relative z-10">
             <h1
               className={`text-xl md:text-3xl mb-10 font-semibold text-center ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
@@ -269,7 +269,7 @@ export default function Page() {
                 .map((category) => (
                   <div
                     key={category.idCategory}
-                    className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:-translate-y-1 transition-all"
+                    className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:-translate-y-1 transition-all relative z-10"
                   >
                     <figure>
                       <Image

@@ -8,9 +8,60 @@ import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { Home } from 'lucide-react';
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { Menu, X,} from 'lucide-react';
+import { createPortal } from 'react-dom';
 
-const MobileNavigation = () => {
+
+  const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before using portal
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Add the body scroll prevention useEffect HERE
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isMenuOpen]);
+
+  const MobileMenuOverlay = () => (
+    <div className="fixed inset-0 md:hidden z-[9999]">
+      <div 
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" 
+        onClick={() => setIsMenuOpen(false)} 
+      />
+      {/* Menu Panel */}
+      <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl z-[10000]">
+        <div className="flex flex-col p-4 space-y-4 h-full overflow-y-auto">
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="self-end p-2 rounded-full bg-base-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          >
+            <X size={20}/>
+          </button>
+          
+          <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <Home size={20} className="text-white"/>
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">Home</span>
+          </Link>
+          
+          <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
+            <ThemeToggle /> 
+            <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
+          </div>
+          {/* Add more navigation items here */}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -25,39 +76,15 @@ const MobileNavigation = () => {
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setIsMenuOpen(false)} />
-          <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl">
-            <div className="flex flex-col p-4 space-y-4">
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="self-end p-2 rounded-full bg-base-100"
-              >
-                <X size={20}/>
-              </button>
-              
-              <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
-                <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-                  <Home size={20} className="text-base-100"/>
-                </div>
-                <span className="text-gray-900 dark:text-gray-100">Home</span>
-              </Link>
-              
-              <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
-                <ThemeToggle /> 
-                <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
-              </div>
-              {/* Add more navigation items here */}
-            </div>
-          </div>
-
-        </div>
+      {/* Mobile Menu Overlay - Rendered via Portal */}
+      {isMenuOpen && mounted && createPortal(
+        <MobileMenuOverlay />,
+        document.body
       )}
     </>
   );
-};
+}
+
 
 interface NavbarProps {
   showResults?: boolean;
@@ -111,7 +138,7 @@ export default function Navbar({
 
   return (
     <div
-      className={`navbar fixed top-0 left-0 right-0 z-50 shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
+      className={`navbar fixed top-0 left-0 right-0 z-40 shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
         isScrolled ? "bg-base-200/80 backdrop-blur-md" : "bg-base-100/90"
       }`}
     >
