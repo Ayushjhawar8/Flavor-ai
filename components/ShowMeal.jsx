@@ -11,9 +11,7 @@ import ShareButton from "@/components/ShareButton";
 
 // --- Self-contained helper components ---
 function HighlightedSentence({ text, isActive, wordRange }) {
-  if (!isActive || !wordRange) {
-    return <span>{text}</span>;
-  }
+  if (!isActive || !wordRange) return <span>{text}</span>;
 
   const { startChar, endChar } = wordRange;
   const before = text.substring(0, startChar);
@@ -30,15 +28,12 @@ function HighlightedSentence({ text, isActive, wordRange }) {
 }
 
 function HighlightedIngredient({ text, temp, isActive, wordRange }) {
-  if (!isActive || !wordRange) {
-    return <span>{text}</span>;
-  }
+  if (!isActive || !wordRange) return <span>{text}</span>;
+
   const { startChar, endChar } = wordRange;
   const cellEndPos = temp + text.length;
 
-  if (endChar <= temp || startChar >= cellEndPos) {
-    return <span>{text}</span>;
-  }
+  if (endChar <= temp || startChar >= cellEndPos) return <span>{text}</span>;
 
   const localStartChar = Math.max(0, startChar - temp);
   const localEndChar = Math.min(text.length, endChar - temp);
@@ -55,6 +50,7 @@ function HighlightedIngredient({ text, temp, isActive, wordRange }) {
     </span>
   );
 }
+
 function IngredientsTable({ mealData, activeIngRange }) {
   const ingredients = useMemo(
     () =>
@@ -62,17 +58,19 @@ function IngredientsTable({ mealData, activeIngRange }) {
         .map((key) => {
           if (key.startsWith("strIngredient") && mealData[key]) {
             const num = key.slice(13);
-            if (mealData[`strMeasure${num}`])
+            if (mealData[`strMeasure${num}`]) {
               return {
                 measure: mealData[`strMeasure${num}`],
                 name: mealData[key],
               };
+            }
           }
           return null;
         })
         .filter(Boolean),
     [mealData]
   );
+
   return (
     <div className="overflow-x-auto mt-2">
       <table className="table w-full">
@@ -149,12 +147,14 @@ function ShowMeal({ URL }) {
     startChar: -1,
     endChar: -1,
   });
-   const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
+
+  const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
   const [activeIngRange, setActiveIngRange] = useState({
     sentenceIndex: -1,
     startChar: -1,
     endChar: -1,
   });
+
   const utterances = useRef([]);
 
   const instructionSentences = useMemo(() => {
@@ -197,7 +197,6 @@ function ShowMeal({ URL }) {
     const ingredients = Object.keys(mealData)
       .filter((k) => k.startsWith("strIngredient") && mealData[k])
       .map((k) => mealData[k].toLowerCase());
-
     return allergenKeywords.filter((allergen) =>
       ingredients.some((ing) => ing.includes(allergen))
     );
@@ -211,7 +210,6 @@ function ShowMeal({ URL }) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
       utterance.rate = 1;
-
       utterance.onboundary = (event) => {
         if (event.name === "word") {
           setActiveWordRange({
@@ -221,11 +219,14 @@ function ShowMeal({ URL }) {
           });
         }
       };
-
       utterance.onend = () => {
         if (sentenceIndex === instructionSentences.length - 1) {
           setPlayerState("idle");
-          setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
+          setActiveWordRange({
+            sentenceIndex: -1,
+            startChar: -1,
+            endChar: -1,
+          });
         }
       };
       return utterance;
@@ -238,10 +239,7 @@ function ShowMeal({ URL }) {
     const synth = window.speechSynthesis;
 
     // stop ingredients TTS if running
-    if (
-      ingredientPlayerState === "playing" ||
-      ingredientPlayerState === "paused"
-    ) {
+    if (ingredientPlayerState === "playing" || ingredientPlayerState === "paused") {
       synth.cancel();
       setIngredientPlayerState("idle");
       setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
@@ -294,27 +292,26 @@ function ShowMeal({ URL }) {
       })
       .filter(Boolean);
   }, [mealData]);
-// Build text for clipboard: one ingredient per line
-const ingredientsCopyText = useMemo(
-  () => ingredientSentences.join("\n"),
-  [ingredientSentences]
-);
 
-const [copied, setCopied] = useState(false);
+  // Build text for clipboard: one ingredient per line
+  const ingredientsCopyText = useMemo(
+    () => ingredientSentences.join("\n"),
+    [ingredientSentences]
+  );
 
-const handleCopyIngredients = useCallback(async () => {
-  try {
-    await navigator.clipboard.writeText(ingredientsCopyText);
-    setCopied(true);
-    // toast.success("Ingredients copied!")  // if you have a toast util
-  } catch {
-    // toast.error("Could not copy.")
-  } finally {
-    setTimeout(() => setCopied(false), 1200);
-  }
-}, [ingredientsCopyText]);
+  const [copied, setCopied] = useState(false);
 
- 
+  const handleCopyIngredients = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(ingredientsCopyText);
+      setCopied(true);
+    } catch {
+      // optional: toast error
+    } finally {
+      setTimeout(() => setCopied(false), 1200);
+    }
+  }, [ingredientsCopyText]);
+
   const ingredientUtterances = useRef([]);
 
   useEffect(() => {
@@ -389,7 +386,7 @@ const handleCopyIngredients = useCallback(async () => {
     }, 100);
   }, [handleIngredientPlay, playerState]);
 
-    // --- Fetch Meal + Save to recentMeals ---
+  // --- Fetch Meal + Save to recentMeals ---
   useEffect(() => {
     let isMounted = true;
 
@@ -399,10 +396,8 @@ const handleCopyIngredients = useCallback(async () => {
         const meal = data?.meals?.[0];
         if (!isMounted || !meal) return;
 
-        // Render the meal
         setMealData(meal);
 
-        // Persist minimal data to localStorage (client-only)
         if (typeof window === "undefined") return;
 
         try {
@@ -416,7 +411,6 @@ const handleCopyIngredients = useCallback(async () => {
           const prev = raw ? JSON.parse(raw) : [];
           const list = Array.isArray(prev) ? prev : [];
 
-          // Remove duplicate by id, add to front, cap to 5
           const updated = [
             mealInfo,
             ...list.filter((m) => m.idMeal !== meal.idMeal),
@@ -424,12 +418,16 @@ const handleCopyIngredients = useCallback(async () => {
 
           localStorage.setItem("recentMeals", JSON.stringify(updated));
         } catch {
-          // If parsing fails, start fresh with this meal only
-          localStorage.setItem("recentMeals", JSON.stringify([{
-            idMeal: meal.idMeal,
-            strMeal: meal.strMeal,
-            strMealThumb: meal.strMealThumb,
-          }]));
+          localStorage.setItem(
+            "recentMeals",
+            JSON.stringify([
+              {
+                idMeal: meal.idMeal,
+                strMeal: meal.strMeal,
+                strMealThumb: meal.strMealThumb,
+              },
+            ])
+          );
         }
       })
       .catch((error) => console.error("Error fetching data:", error));
@@ -438,7 +436,6 @@ const handleCopyIngredients = useCallback(async () => {
       isMounted = false;
     };
   }, [URL]);
-
 
   if (!mealData) {
     return (
@@ -449,9 +446,11 @@ const handleCopyIngredients = useCallback(async () => {
           handleSearchFocus={handleSearchFocus}
           handleBlur={handleBlur}
         />
-        <div className={`min-h-screen mt-20 flex bg-base-100 justify-center items-center p-4 transition-all duration-300 ${
-          showResults ? "opacity-80 blur-sm" : "opacity-100"
-        }`}>
+        <div
+          className={`min-h-screen mt-20 flex bg-base-100 justify-center items-center p-4 transition-all duration-300 ${
+            showResults ? "opacity-80 blur-sm" : "opacity-100"
+          }`}
+        >
           <div className="max-w-4xl w-full p-12 my-6 skeleton bg-base-200 rounded-xl shadow-md">
             <div className="animate-pulse">
               <div className="h-10 bg-base-300 rounded-md w-60 mx-auto mb-4"></div>
@@ -486,12 +485,15 @@ const handleCopyIngredients = useCallback(async () => {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start transition-all duration-300 ${
-        showResults ? "opacity-80 blur-sm" : "opacity-100"
-      }`}>
+      <div
+        className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start transition-all duration-300 ${
+          showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}
+      >
         <BackButton />
         <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
-          <div className="p-6 md:p-12">
+          {/* mark printable area */}
+          <div className="p-6 md:p-12 print-area">
             <header className="relative text-center mb-8">
               <button
                 onClick={() =>
@@ -509,9 +511,8 @@ const handleCopyIngredients = useCallback(async () => {
               <h1 className="text-3xl md:text-5xl font-bold text-base-content">
                 {mealData.strMeal}
               </h1>
-              <p className="text-lg text-primary mt-2">
-                {mealData.strArea} Cuisine
-              </p>
+              <p className="text-lg text-primary mt-2">{mealData.strArea} Cuisine</p>
+
               {detectedAllergens.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-2 mt-2">
                   {detectedAllergens.map((allergen) => (
@@ -525,6 +526,7 @@ const handleCopyIngredients = useCallback(async () => {
                 </div>
               )}
             </header>
+
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
               <div className="md:w-1/2">
                 <img
@@ -532,85 +534,124 @@ const handleCopyIngredients = useCallback(async () => {
                   alt={mealData.strMeal}
                   className="w-full h-auto rounded-lg shadow-md mb-4"
                 />
-                <div className="flex flex-wrap items-center gap-4">
-  <span className="badge badge-lg badge-accent">
-    {mealData.strCategory}
-  </span>
 
-  {mealData.strYoutube && (
-    <Link
-      href={mealData.strYoutube}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="btn btn-error btn-sm gap-2"
-    >
-      <YoutubeIcon /> Watch
-    </Link>
-  )}
+                {/* Action toolbar (hidden in print) */}
+                <div className="flex flex-wrap items-center gap-4 no-print">
+                  <span className="badge badge-lg badge-accent">
+                    {mealData.strCategory}
+                  </span>
 
-  {/* NEW: Share button */}
-  <ShareButton title={mealData.strMeal} />
-</div>
+                  {mealData.strYoutube && (
+                    <Link
+                      href={mealData.strYoutube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-error btn-sm gap-2"
+                    >
+                      <YoutubeIcon /> Watch
+                    </Link>
+                  )}
 
+                  <ShareButton title={mealData.strMeal} />
+
+                  {/* Print / Save as PDF */}
+                  <button
+                    onClick={() => window.print()}
+                    aria-label="Print or save recipe"
+                    className="btn btn-primary btn-sm gap-2"
+                    type="button"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M6 9V2h12v7" />
+                      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                      <path d="M6 14h12v8H6z" />
+                    </svg>
+                    Print
+                  </button>
+                </div>
               </div>
+
               <div className="md:w-1/2">
                 <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
-  <div className="flex items-center">
-    <PlusIcon />
-    <span className="ml-2">Ingredients</span>
-  </div>
+                  <div className="flex items-center">
+                    <PlusIcon />
+                    <span className="ml-2">Ingredients</span>
+                  </div>
 
-  <div className="flex items-center gap-2">
-    {/* NEW: Copy Ingredients button */}
-    <button
-  onClick={handleCopyIngredients}
-  aria-label="Copy ingredients"
-  className="btn btn-ghost btn-xs tooltip"
-  data-tip={copied ? "Copied!" : "Copy list"}
-  type="button"
->
-  {/* clipboard icon / checkmark when copied */}
-  {!copied ? (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-    </svg>
-  ) : (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
-  )}
-</button>
+                  <div className="flex items-center gap-2">
+                    {/* Copy Ingredients button (icon) */}
+                    <button
+                      onClick={handleCopyIngredients}
+                      aria-label="Copy ingredients"
+                      className="btn btn-ghost btn-xs tooltip"
+                      data-tip={copied ? "Copied!" : "Copy list"}
+                      type="button"
+                    >
+                      {!copied ? (
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                      ) : (
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      )}
+                    </button>
 
-
-    {/* Existing TTS controls */}
-    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-      <button
-        onClick={
-          ingredientPlayerState === "playing"
-            ? handleIngredientPause
-            : handleIngredientPlay
-        }
-        className="btn btn-ghost btn-circle"
-      >
-        {ingredientPlayerState === "playing" ? (
-          <PauseIcon className="h-6 w-6 text-info" />
-        ) : (
-          <PlayIcon className="h-6 w-6 text-success" />
-        )}
-      </button>
-      <button
-        onClick={handleIngredientRestart}
-        className="btn btn-ghost btn-circle"
-        disabled={ingredientPlayerState === "idle"}
-      >
-        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-      </button>
-    </div>
-  </div>
-</h2>
+                    {/* TTS controls */}
+                    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+                      <button
+                        onClick={
+                          ingredientPlayerState === "playing"
+                            ? handleIngredientPause
+                            : handleIngredientPlay
+                        }
+                        className="btn btn-ghost btn-circle"
+                      >
+                        {ingredientPlayerState === "playing" ? (
+                          <PauseIcon className="h-6 w-6 text-info" />
+                        ) : (
+                          <PlayIcon className="h-6 w-6 text-success" />
+                        )}
+                      </button>
+                      <button
+                        onClick={handleIngredientRestart}
+                        className="btn btn-ghost btn-circle"
+                        disabled={ingredientPlayerState === "idle"}
+                      >
+                        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+                      </button>
+                    </div>
+                  </div>
+                </h2>
 
                 <IngredientsTable
                   mealData={mealData}
@@ -626,9 +667,7 @@ const handleCopyIngredients = useCallback(async () => {
                 </h2>
                 <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
                   <button
-                    onClick={
-                      playerState === "playing" ? handlePause : handlePlay
-                    }
+                    onClick={playerState === "playing" ? handlePause : handlePlay}
                     className="btn btn-ghost btn-circle"
                   >
                     {playerState === "playing" ? (
@@ -662,7 +701,9 @@ const handleCopyIngredients = useCallback(async () => {
           </div>
         </div>
       </div>
-      <div className="bg-base-100">
+
+      {/* Hide footer in print */}
+      <div className="bg-base-100 no-print">
         <Footer />
       </div>
     </>
