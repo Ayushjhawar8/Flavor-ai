@@ -438,7 +438,7 @@ function ShowMeal({ URL }) {
                     strMealThumb: mealData.strMealThumb,
                   })
                 }
-                className="absolute top-0 right-0 bg-black text-white rounded-full p-2 text-lg hover:bg-black hover:text-black transition"
+                className="absolute top-0 right-0 bg-black text-white rounded-full p-2 text-lg hover:bg-black hover:text-black transition w-[40px] h-[40px]"
                 aria-label="Toggle favorite"
               >
                 {isFavorite(mealData.idMeal) ? "💖" : "🤍"}
