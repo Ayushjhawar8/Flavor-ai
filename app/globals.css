@@ -96,3 +96,62 @@ html {
 .google-translate-container.hidden {
   display: none !important;
 }
+/* ===== Print / PDF styles for Recipe Card ===== */
+@page {
+  /* A4 by default; most browsers map to Letter on US locales */
+  size: A4;
+  margin: 16mm;
+}
+
+@media print {
+  /* Force light colors on paper */
+  :root { color-scheme: only light; }
+  html, body { background: #ffffff !important; }
+  body { color: #111827 !important; } /* near-black */
+
+  /* Hide non-essential UI */
+  .no-print,
+  .navbar,
+  header .btn,
+  .btn,
+  .badge,
+  [class*="btn-"],
+  [class*="badge-"] {
+    display: none !important;
+  }
+
+  /* Remove app chrome styles so it looks clean on paper */
+  .bg-base-100,
+  .bg-base-200,
+  .bg-base-300 {
+    background: #ffffff !important;
+  }
+  [class*="shadow"] { box-shadow: none !important; }
+  [class*="rounded"] { border-radius: 0 !important; }
+
+  /* Make the main content use the full printable width */
+  .max-w-4xl { max-width: 100% !important; }
+  .p-6, .p-8, .p-10, .p-12 { padding: 0 !important; }
+  .mt-20, .my-6 { margin: 0 !important; }
+
+  /* One-column flow; avoid weird breaks */
+  img { max-width: 100% !important; height: auto !important; break-inside: avoid; }
+  h1, h2, h3, h4, h5, h6 { color: #111827 !important; break-after: avoid; }
+  ol, ul, table, p, section, div { break-inside: avoid; }
+
+  /* Ingredients table: visible borders, readable spacing */
+  table { width: 100% !important; border-collapse: collapse !important; }
+  th, td {
+    border: 1px solid #e5e7eb !important; /* gray-200 */
+    padding: 6px 8px !important;
+    color: #111827 !important;
+    background: #ffffff !important;
+  }
+  thead th { font-weight: 700 !important; }
+
+  /* Don’t print highlight backgrounds from TTS */
+  .speaking-word { background: transparent !important; color: inherit !important; }
+
+  /* Links appear as normal text */
+  a, a:visited { color: #111827 !important; text-decoration: none !important; }
+}

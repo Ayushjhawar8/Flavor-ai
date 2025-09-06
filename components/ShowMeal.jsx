@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import PrintButton from "@/components/PrintButton";
 
 // --- Self-contained helper components ---
 function HighlightedSentence({ text, isActive, wordRange }) {
@@ -470,20 +471,27 @@ function ShowMeal({ URL }) {
                   className="w-full h-auto rounded-lg shadow-md mb-4"
                 />
                 <div className="flex items-center gap-4">
-                  <span className="badge badge-lg badge-accent">
-                    {mealData.strCategory}
-                  </span>
-                  {mealData.strYoutube && (
-                    <Link
-                      href={mealData.strYoutube}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-error btn-sm gap-2"
-                    >
-                      <YoutubeIcon /> Watch
-                    </Link>
-                  )}
-                </div>
+  <span className="badge badge-lg badge-accent">
+    {mealData.strCategory}
+  </span>
+
+  {mealData.strYoutube && (
+    <Link
+      href={mealData.strYoutube}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-error btn-sm gap-2 no-print"
+    >
+      <YoutubeIcon /> Watch
+    </Link>
+  )}
+
+  {/* Print button (hidden in print via CSS) */}
+  <div className="no-print">
+    <PrintButton />
+  </div>
+</div>
+
               </div>
               <div className="md:w-1/2">
                 <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
@@ -565,9 +573,10 @@ function ShowMeal({ URL }) {
           </div>
         </div>
       </div>
-      <div className="bg-base-100">
-        <Footer />
-      </div>
+      <div className="bg-base-100 no-print">
+  <Footer />
+</div>
+
     </>
   );
 }
