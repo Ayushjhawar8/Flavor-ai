@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import CopyButton from "@/components/CopyButton";
 
 // --- Self-contained helper components ---
 function HighlightedSentence({ text, isActive, wordRange }) {
@@ -487,34 +488,46 @@ function ShowMeal({ URL }) {
               </div>
               <div className="md:w-1/2">
                 <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
-                  <div className="flex items-center">
-                    <PlusIcon />
-                    <span className="ml-2">Ingredients</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-                    <button
-                      onClick={
-                        ingredientPlayerState === "playing"
-                          ? handleIngredientPause
-                          : handleIngredientPlay
-                      }
-                      className="btn btn-ghost btn-circle"
-                    >
-                      {ingredientPlayerState === "playing" ? (
-                        <PauseIcon className="h-6 w-6 text-info" />
-                      ) : (
-                        <PlayIcon className="h-6 w-6 text-success" />
-                      )}
-                    </button>
-                    <button
-                      onClick={handleIngredientRestart}
-                      className="btn btn-ghost btn-circle"
-                      disabled={ingredientPlayerState === "idle"}
-                    >
-                      <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-                    </button>
-                  </div>
-                </h2>
+  <div className="flex items-center">
+    <PlusIcon />
+    <span className="ml-2">Ingredients</span>
+  </div>
+
+  <div className="flex items-center gap-2">
+    {/* NEW: Copy Ingredients button */}
+    <CopyButton
+      textToCopy={ingredientSentences.join("\n")}
+      ariaLabel="Copy ingredients"
+      buttonText="Copy Ingredients"
+    />
+
+    {/* Existing TTS controls */}
+    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+      <button
+        onClick={
+          ingredientPlayerState === "playing"
+            ? handleIngredientPause
+            : handleIngredientPlay
+        }
+        className="btn btn-ghost btn-circle"
+      >
+        {ingredientPlayerState === "playing" ? (
+          <PauseIcon className="h-6 w-6 text-info" />
+        ) : (
+          <PlayIcon className="h-6 w-6 text-success" />
+        )}
+      </button>
+      <button
+        onClick={handleIngredientRestart}
+        className="btn btn-ghost btn-circle"
+        disabled={ingredientPlayerState === "idle"}
+      >
+        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+      </button>
+    </div>
+  </div>
+</h2>
+
                 <IngredientsTable
                   mealData={mealData}
                   activeIngRange={activeIngRange}
