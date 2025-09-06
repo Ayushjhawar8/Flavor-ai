@@ -294,6 +294,25 @@ function ShowMeal({ URL }) {
       })
       .filter(Boolean);
   }, [mealData]);
+// Build text for clipboard: one ingredient per line
+const ingredientsCopyText = useMemo(
+  () => ingredientSentences.join("\n"),
+  [ingredientSentences]
+);
+
+const [copied, setCopied] = useState(false);
+
+const handleCopyIngredients = useCallback(async () => {
+  try {
+    await navigator.clipboard.writeText(ingredientsCopyText);
+    setCopied(true);
+    // toast.success("Ingredients copied!")  // if you have a toast util
+  } catch {
+    // toast.error("Could not copy.")
+  } finally {
+    setTimeout(() => setCopied(false), 1200);
+  }
+}, [ingredientsCopyText]);
 
  
   const ingredientUtterances = useRef([]);
@@ -536,34 +555,63 @@ function ShowMeal({ URL }) {
               </div>
               <div className="md:w-1/2">
                 <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
-                  <div className="flex items-center">
-                    <PlusIcon />
-                    <span className="ml-2">Ingredients</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-                    <button
-                      onClick={
-                        ingredientPlayerState === "playing"
-                          ? handleIngredientPause
-                          : handleIngredientPlay
-                      }
-                      className="btn btn-ghost btn-circle"
-                    >
-                      {ingredientPlayerState === "playing" ? (
-                        <PauseIcon className="h-6 w-6 text-info" />
-                      ) : (
-                        <PlayIcon className="h-6 w-6 text-success" />
-                      )}
-                    </button>
-                    <button
-                      onClick={handleIngredientRestart}
-                      className="btn btn-ghost btn-circle"
-                      disabled={ingredientPlayerState === "idle"}
-                    >
-                      <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-                    </button>
-                  </div>
-                </h2>
+  <div className="flex items-center">
+    <PlusIcon />
+    <span className="ml-2">Ingredients</span>
+  </div>
+
+  <div className="flex items-center gap-2">
+    {/* NEW: Copy Ingredients button */}
+    <button
+  onClick={handleCopyIngredients}
+  aria-label="Copy ingredients"
+  className="btn btn-ghost btn-xs tooltip"
+  data-tip={copied ? "Copied!" : "Copy list"}
+  type="button"
+>
+  {/* clipboard icon / checkmark when copied */}
+  {!copied ? (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+  ) : (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  )}
+</button>
+
+
+    {/* Existing TTS controls */}
+    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+      <button
+        onClick={
+          ingredientPlayerState === "playing"
+            ? handleIngredientPause
+            : handleIngredientPlay
+        }
+        className="btn btn-ghost btn-circle"
+      >
+        {ingredientPlayerState === "playing" ? (
+          <PauseIcon className="h-6 w-6 text-info" />
+        ) : (
+          <PlayIcon className="h-6 w-6 text-success" />
+        )}
+      </button>
+      <button
+        onClick={handleIngredientRestart}
+        className="btn btn-ghost btn-circle"
+        disabled={ingredientPlayerState === "idle"}
+      >
+        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+      </button>
+    </div>
+  </div>
+</h2>
+
                 <IngredientsTable
                   mealData={mealData}
                   activeIngRange={activeIngRange}
