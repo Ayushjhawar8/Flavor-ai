@@ -65,7 +65,7 @@ export default function Navbar({
       }`}
     >
       {/* Left - Logo + GitHub */}
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-2 md:gap-3 flex-wrap">
         <Link
           href="/"
           id="main"
@@ -124,8 +124,25 @@ export default function Navbar({
         />
       </div>
 
-      {/* Right - Home Tab & Theme Toggle */}
-      <div className="ml-auto md:ml-0 flex items-center gap-4">
+      {/* Right - Community, Home Tab & Theme Toggle */}
+      <div className="ml-auto md:ml-0 flex items-center gap-2 md:gap-4">
+        <div
+          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300`}
+        >
+        <Link href="/community" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="w-5 h-5 text-white"
+            fill="currentColor"
+            >
+            {/* two person icons side-by-side */}
+            <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+            <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
+            </svg>
+        </Link>
+        </div>
+        
         {/* Google Translate Widget */}
           <GoogleTranslateWrapper />
         <div
