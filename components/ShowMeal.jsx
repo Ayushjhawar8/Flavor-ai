@@ -9,6 +9,9 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import ShareButton from "@/components/ShareButton";
 
+// NEW: shopping list helpers
+import { addItemsToShoppingList, parseMeasure } from "@/lib/shoppingList";
+
 // --- Self-contained helper components ---
 function HighlightedSentence({ text, isActive, wordRange }) {
   if (!isActive || !wordRange) return <span>{text}</span>;
@@ -79,9 +82,7 @@ function IngredientsTable({ mealData, activeIngRange }) {
             <th className="p-2 w-1/3 text-sm font-semibold text-primary">
               Quantity
             </th>
-            <th className="p-2 text-sm font-semibold text-primary">
-              Ingredient
-            </th>
+            <th className="p-2 text-sm font-semibold text-primary">Ingredient</th>
           </tr>
         </thead>
         <tbody>
@@ -91,7 +92,7 @@ function IngredientsTable({ mealData, activeIngRange }) {
                 <HighlightedIngredient
                   text={ing.measure}
                   temp={0}
-                  isActive={i == activeIngRange.sentenceIndex}
+                  isActive={i === activeIngRange.sentenceIndex}
                   wordRange={activeIngRange}
                 />
               </td>
@@ -99,7 +100,7 @@ function IngredientsTable({ mealData, activeIngRange }) {
                 <HighlightedIngredient
                   text={ing.name}
                   temp={ing.measure.length + 1}
-                  isActive={i == activeIngRange.sentenceIndex}
+                  isActive={i === activeIngRange.sentenceIndex}
                   wordRange={activeIngRange}
                 />
               </td>
@@ -147,7 +148,6 @@ function ShowMeal({ URL }) {
     startChar: -1,
     endChar: -1,
   });
-
   const [ingredientPlayerState, setIngredientPlayerState] = useState("idle");
   const [activeIngRange, setActiveIngRange] = useState({
     sentenceIndex: -1,
@@ -323,7 +323,7 @@ function ShowMeal({ URL }) {
       utterance.lang = "en-US";
       utterance.rate = 1;
       utterance.onboundary = (event) => {
-        if (event.name == "word") {
+        if (event.name === "word") {
           setActiveIngRange({
             sentenceIndex: index,
             startChar: event.charIndex,
@@ -385,6 +385,31 @@ function ShowMeal({ URL }) {
       handleIngredientPlay();
     }, 100);
   }, [handleIngredientPlay, playerState]);
+
+  // --- NEW: Shopping list helpers/state ---
+  const [addedToList, setAddedToList] = useState(false);
+
+  const buildShoppingItems = useCallback(() => {
+    if (!mealData) return [];
+    const out = [];
+    for (let n = 1; n <= 20; n++) {
+      const name = mealData[`strIngredient${n}`];
+      const measure = mealData[`strMeasure${n}`];
+      if (!name || !name.trim()) continue;
+      const { qty, unit } = parseMeasure(measure || "");
+      out.push({ name: name.trim(), qty, unit });
+    }
+    return out;
+  }, [mealData]);
+
+  const handleAddToShopping = useCallback(() => {
+    const items = buildShoppingItems();
+    if (items.length) {
+      addItemsToShoppingList(items);
+      setAddedToList(true);
+      setTimeout(() => setAddedToList(false), 1200);
+    }
+  }, [buildShoppingItems]);
 
   // --- Fetch Meal + Save to recentMeals ---
   useEffect(() => {
@@ -495,19 +520,45 @@ function ShowMeal({ URL }) {
           {/* mark printable area */}
           <div className="p-6 md:p-12 print-area">
             <header className="relative text-center mb-8">
-              <button
-                onClick={() =>
-                  toggleFavorite({
-                    idMeal: mealData.idMeal,
-                    strMeal: mealData.strMeal,
-                    strMealThumb: mealData.strMealThumb,
-                  })
-                }
-                className="absolute top-0 right-0 bg-black text-white rounded-full p-2 text-lg hover:bg-black hover:text-black transition w-[40px] h-[40px]"
-                aria-label="Toggle favorite"
-              >
-                {isFavorite(mealData.idMeal) ? "💖" : "🤍"}
-              </button>
+              {/* Top-right actions: Cart + Heart */}
+              <div className="absolute top-0 right-0 flex items-center gap-2">
+                <Link
+                  href="/shopping-list"
+                  aria-label="Open shopping list"
+                  className="btn btn-ghost btn-circle"
+                >
+                  {/* cart icon */}
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
+                </Link>
+
+                <button
+                  onClick={() =>
+                    toggleFavorite({
+                      idMeal: mealData.idMeal,
+                      strMeal: mealData.strMeal,
+                      strMealThumb: mealData.strMealThumb,
+                    })
+                  }
+                  className="btn btn-ghost btn-circle text-lg w-[40px] h-[40px]"
+                  aria-label="Toggle favorite"
+                >
+                  {isFavorite(mealData.idMeal) ? "💖" : "🤍"}
+                </button>
+              </div>
+
               <h1 className="text-3xl md:text-5xl font-bold text-base-content">
                 {mealData.strMeal}
               </h1>
@@ -552,6 +603,7 @@ function ShowMeal({ URL }) {
                     </Link>
                   )}
 
+                  {/* Share button */}
                   <ShareButton title={mealData.strMeal} />
 
                   {/* Print / Save as PDF */}
@@ -581,14 +633,24 @@ function ShowMeal({ URL }) {
               </div>
 
               <div className="md:w-1/2">
-                <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
-                  <div className="flex items-center">
-                    <PlusIcon />
-                    <span className="ml-2">Ingredients</span>
-                  </div>
+                {/* Clean heading */}
+                <h2 className="text-2xl font-bold text-base-content flex items-center gap-2 mb-2">
+                  <PlusIcon />
+                  <span>Ingredients</span>
+                </h2>
 
+                {/* Slim toolbar under the heading */}
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    {/* Copy Ingredients button (icon) */}
+                    <button
+                      onClick={handleAddToShopping}
+                      aria-label="Add all ingredients to shopping list"
+                      className="btn btn-primary btn-xs"
+                      type="button"
+                    >
+                      {addedToList ? "Added!" : "Add to list"}
+                    </button>
+
                     <button
                       onClick={handleCopyIngredients}
                       aria-label="Copy ingredients"
@@ -596,10 +658,11 @@ function ShowMeal({ URL }) {
                       data-tip={copied ? "Copied!" : "Copy list"}
                       type="button"
                     >
+                      {/* clipboard / check */}
                       {!copied ? (
                         <svg
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -612,8 +675,8 @@ function ShowMeal({ URL }) {
                         </svg>
                       ) : (
                         <svg
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -626,32 +689,40 @@ function ShowMeal({ URL }) {
                       )}
                     </button>
 
-                    {/* TTS controls */}
-                    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-                      <button
-                        onClick={
-                          ingredientPlayerState === "playing"
-                            ? handleIngredientPause
-                            : handleIngredientPlay
-                        }
-                        className="btn btn-ghost btn-circle"
-                      >
-                        {ingredientPlayerState === "playing" ? (
-                          <PauseIcon className="h-6 w-6 text-info" />
-                        ) : (
-                          <PlayIcon className="h-6 w-6 text-success" />
-                        )}
-                      </button>
-                      <button
-                        onClick={handleIngredientRestart}
-                        className="btn btn-ghost btn-circle"
-                        disabled={ingredientPlayerState === "idle"}
-                      >
-                        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-                      </button>
-                    </div>
+                    {/* On very small screens, also show an Open link here */}
+                    <Link
+                      href="/shopping-list"
+                      className="link link-primary link-hover text-xs sm:hidden"
+                    >
+                      Open list
+                    </Link>
                   </div>
-                </h2>
+
+                  {/* TTS controls on the right */}
+                  <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+                    <button
+                      onClick={
+                        ingredientPlayerState === "playing"
+                          ? handleIngredientPause
+                          : handleIngredientPlay
+                      }
+                      className="btn btn-ghost btn-circle"
+                    >
+                      {ingredientPlayerState === "playing" ? (
+                        <PauseIcon className="h-6 w-6 text-info" />
+                      ) : (
+                        <PlayIcon className="h-6 w-6 text-success" />
+                      )}
+                    </button>
+                    <button
+                      onClick={handleIngredientRestart}
+                      className="btn btn-ghost btn-circle"
+                      disabled={ingredientPlayerState === "idle"}
+                    >
+                      <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+                    </button>
+                  </div>
+                </div>
 
                 <IngredientsTable
                   mealData={mealData}
