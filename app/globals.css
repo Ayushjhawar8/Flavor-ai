@@ -5,7 +5,7 @@
 /* ===== Text-to-Speech Highlighting Style ===== */
 body {
   @apply bg-gradient-to-br from-indigo-50 to-blue-100;
-   top: 0 !important;
+  top: 0 !important;
 }
 
 body.snake-cursor-active {
@@ -55,7 +55,7 @@ html {
 }
 *::selection {
   color: rgb(255, 255, 255);
-  background-color:purple;
+  background-color: purple;
 }
 
 /* Google Translate Styles */
@@ -96,6 +96,7 @@ html {
 .google-translate-container.hidden {
   display: none !important;
 }
+
 /* ===== Print / PDF styles for Recipe Card ===== */
 @page {
   /* A4 by default; most browsers map to Letter on US locales */
@@ -154,4 +155,15 @@ html {
 
   /* Links appear as normal text */
   a, a:visited { color: #111827 !important; text-decoration: none !important; }
+}
+/* Sticky Ingredients on DESKTOP only (#263) */
+@media (min-width: 768px) {
+  .ingredients-sticky {
+    position: sticky;
+    top: 6rem;                            /* clears navbar; adjust if needed */
+    max-height: calc(100vh - 6rem);       /* independent scroll if tall */
+    overflow: auto;
+    align-self: flex-start;               /* avoid flex stretch */
+    z-index: 1;                           /* stay above backgrounds */
+  }
 }
