@@ -1,4 +1,4 @@
-//Navbar Component - by Devika Harshey
+// Navbar Component - by Devika Harshey
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,17 +8,16 @@ import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { Home, Menu, X } from "lucide-react";
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
+import ReportIssueButton from "@/components/ReportIssueButton";
 
 const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted before using portal
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Add the body scroll prevention useEffect HERE
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -30,6 +29,7 @@ const MobileNavigation = () => {
 
   const MobileMenuOverlay = () => (
     <div className="fixed inset-0 md:hidden z-[9999]">
+      {/* Dim background (click to close) */}
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
         onClick={() => setIsMenuOpen(false)}
@@ -44,9 +44,10 @@ const MobileNavigation = () => {
             <X size={20} />
           </button>
 
+          {/* Home */}
           <Link
             href="/"
-            className="flex items-center gap-3 p-2 rounded-lg border"
+            className="flex items-center gap-3 p-2 rounded-lg border hover:shadow-md"
           >
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <Home size={20} className="text-white" />
@@ -54,13 +55,19 @@ const MobileNavigation = () => {
             <span className="text-gray-900 dark:text-gray-100">Home</span>
           </Link>
 
-          <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
-            <ThemeToggle />
-            <span className="px-3 text-gray-900 dark:text-gray-100">
-              Change Theme
-            </span>
+          {/* Change Theme */}
+          <div className="flex items-center gap-3 p-2 rounded-lg border hover:shadow-md">
+            <div className="rounded-full w-10 h-10 flex items-center justify-center bg-purple-800/70">
+              <ThemeToggle />
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">Change Theme</span>
           </div>
-          {/* Add more navigation items here */}
+
+          {/* Report Issue (separate row) */}
+          <div className="flex items-center gap-3 p-2 rounded-lg border hover:shadow-md">
+            <ReportIssueButton />
+            <span className="text-gray-900 dark:text-gray-100">Report Issue</span>
+          </div>
         </div>
       </div>
     </div>
@@ -80,9 +87,7 @@ const MobileNavigation = () => {
       </div>
 
       {/* Mobile Menu Overlay - Rendered via Portal */}
-      {isMenuOpen &&
-        mounted &&
-        createPortal(<MobileMenuOverlay />, document.body)}
+      {isMenuOpen && mounted && createPortal(<MobileMenuOverlay />, document.body)}
     </>
   );
 };
@@ -139,7 +144,7 @@ export default function Navbar({
 
   return (
     <div
-      className={`navbar fixed top-0 left-0 right-0 z-40 shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
+      className={`navbar fixed top-0 left-0 right-0 z-40 overflow-visible shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
         isScrolled ? "bg-base-200/80 backdrop-blur-md" : "bg-base-100/90"
       }`}
     >
@@ -223,9 +228,14 @@ export default function Navbar({
             />
           </Link>
         </div>
+
         <div className="hidden md:block">
           <ThemeToggle />
         </div>
+
+        {/* Report Issue (desktop) */}
+        <ReportIssueButton className="hidden md:inline-flex" />
+
         <MobileNavigation />
       </div>
 
