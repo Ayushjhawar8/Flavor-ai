@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import ShareButton from "@/components/ShareButton";
 
 // --- Self-contained helper components ---
 function HighlightedSentence({ text, isActive, wordRange }) {
@@ -369,13 +370,56 @@ function ShowMeal({ URL }) {
     }, 100);
   }, [handleIngredientPlay, playerState]);
 
-  // --- Fetch Meal ---
+    // --- Fetch Meal + Save to recentMeals ---
   useEffect(() => {
+    let isMounted = true;
+
     fetch(URL)
       .then((res) => res.json())
-      .then((data) => setMealData(data.meals[0]))
+      .then((data) => {
+        const meal = data?.meals?.[0];
+        if (!isMounted || !meal) return;
+
+        // Render the meal
+        setMealData(meal);
+
+        // Persist minimal data to localStorage (client-only)
+        if (typeof window === "undefined") return;
+
+        try {
+          const mealInfo = {
+            idMeal: meal.idMeal,
+            strMeal: meal.strMeal,
+            strMealThumb: meal.strMealThumb,
+          };
+
+          const raw = localStorage.getItem("recentMeals");
+          const prev = raw ? JSON.parse(raw) : [];
+          const list = Array.isArray(prev) ? prev : [];
+
+          // Remove duplicate by id, add to front, cap to 5
+          const updated = [
+            mealInfo,
+            ...list.filter((m) => m.idMeal !== meal.idMeal),
+          ].slice(0, 5);
+
+          localStorage.setItem("recentMeals", JSON.stringify(updated));
+        } catch {
+          // If parsing fails, start fresh with this meal only
+          localStorage.setItem("recentMeals", JSON.stringify([{
+            idMeal: meal.idMeal,
+            strMeal: meal.strMeal,
+            strMealThumb: meal.strMealThumb,
+          }]));
+        }
+      })
       .catch((error) => console.error("Error fetching data:", error));
+
+    return () => {
+      isMounted = false;
+    };
   }, [URL]);
+
 
   if (!mealData) {
     return (
@@ -438,7 +482,7 @@ function ShowMeal({ URL }) {
                     strMealThumb: mealData.strMealThumb,
                   })
                 }
-                className="absolute top-0 right-0 bg-black text-white rounded-full p-2 text-lg hover:bg-black hover:text-black transition"
+                className="absolute top-0 right-0 bg-black text-white rounded-full p-2 text-lg hover:bg-black hover:text-black transition w-[40px] h-[40px]"
                 aria-label="Toggle favorite"
               >
                 {isFavorite(mealData.idMeal) ? "💖" : "🤍"}
@@ -469,21 +513,26 @@ function ShowMeal({ URL }) {
                   alt={mealData.strMeal}
                   className="w-full h-auto rounded-lg shadow-md mb-4"
                 />
-                <div className="flex items-center gap-4">
-                  <span className="badge badge-lg badge-accent">
-                    {mealData.strCategory}
-                  </span>
-                  {mealData.strYoutube && (
-                    <Link
-                      href={mealData.strYoutube}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-error btn-sm gap-2"
-                    >
-                      <YoutubeIcon /> Watch
-                    </Link>
-                  )}
-                </div>
+                <div className="flex flex-wrap items-center gap-4">
+  <span className="badge badge-lg badge-accent">
+    {mealData.strCategory}
+  </span>
+
+  {mealData.strYoutube && (
+    <Link
+      href={mealData.strYoutube}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-error btn-sm gap-2"
+    >
+      <YoutubeIcon /> Watch
+    </Link>
+  )}
+
+  {/* NEW: Share button */}
+  <ShareButton title={mealData.strMeal} />
+</div>
+
               </div>
               <div className="md:w-1/2">
                 <h2 className="text-2xl font-bold mb-2 flex items-center justify-between text-base-content">
