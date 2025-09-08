@@ -218,7 +218,7 @@ export default function Navbar({
             <Home
               size={16}
               className={`${
-                currentTheme === "dark" ? "text-white" : "text-black"
+                currentTheme === "dark" ? "text-white" : "dark:text-white text-black"
               }`}
             />
           </Link>
