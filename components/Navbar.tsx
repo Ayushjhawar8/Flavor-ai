@@ -34,7 +34,7 @@ const MobileNavigation = () => {
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
         onClick={() => setIsMenuOpen(false)}
       />
-      {/* Menu Panel */}
+      {/* Menu Panel For Mobile Screens*/}
       <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl z-[10000]">
         <div className="flex flex-col p-4 space-y-4 h-full overflow-y-auto">
           <button
@@ -60,6 +60,26 @@ const MobileNavigation = () => {
               Change Theme
             </span>
           </div>
+
+          
+          <Link
+            href="/community"
+            className="flex items-center gap-3 p-2 rounded-lg border"
+          >
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+               <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="w-5 h-5 text-white"
+            fill="currentColor"
+            >
+            {/* two person icons side-by-side */}
+            <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+            <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
+            </svg>
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">Community</span>
+          </Link>
           {/* Add more navigation items here */}
         </div>
       </div>
@@ -206,7 +226,7 @@ export default function Navbar({
       {/* Right - Community, Home Tab & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-2 md:gap-4">
         <div
-          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300`}
+          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
         >
         <Link href="/community" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
           <svg
