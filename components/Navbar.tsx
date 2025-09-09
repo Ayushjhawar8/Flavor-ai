@@ -5,12 +5,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Home , Menu, X } from 'lucide-react';
+import { Home, Menu, X } from "lucide-react";
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
-import { createPortal } from 'react-dom';
+import { createPortal } from "react-dom";
 
-
-  const MobileNavigation = () => {
+const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -22,18 +21,18 @@ import { createPortal } from 'react-dom';
   // Add the body scroll prevention useEffect HERE
   useEffect(() => {
     if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
       return () => {
-        document.body.style.overflow = 'unset';
+        document.body.style.overflow = "unset";
       };
     }
   }, [isMenuOpen]);
 
   const MobileMenuOverlay = () => (
     <div className="fixed inset-0 md:hidden z-[9999]">
-      <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" 
-        onClick={() => setIsMenuOpen(false)} 
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
+        onClick={() => setIsMenuOpen(false)}
       />
       {/* Menu Panel */}
       <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl z-[10000]">
@@ -42,19 +41,24 @@ import { createPortal } from 'react-dom';
             onClick={() => setIsMenuOpen(false)}
             className="self-end p-2 rounded-full bg-base-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           >
-            <X size={20}/>
+            <X size={20} />
           </button>
-          
-          <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
+
+          <Link
+            href="/"
+            className="flex items-center gap-3 p-2 rounded-lg border"
+          >
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-              <Home size={20} className="text-white"/>
+              <Home size={20} className="text-white" />
             </div>
             <span className="text-gray-900 dark:text-gray-100">Home</span>
           </Link>
-          
+
           <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
-            <ThemeToggle /> 
-            <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
+            <ThemeToggle />
+            <span className="px-3 text-gray-900 dark:text-gray-100">
+              Change Theme
+            </span>
           </div>
           {/* Add more navigation items here */}
         </div>
@@ -76,14 +80,12 @@ import { createPortal } from 'react-dom';
       </div>
 
       {/* Mobile Menu Overlay - Rendered via Portal */}
-      {isMenuOpen && mounted && createPortal(
-        <MobileMenuOverlay />,
-        document.body
-      )}
+      {isMenuOpen &&
+        mounted &&
+        createPortal(<MobileMenuOverlay />, document.body)}
     </>
   );
-}
-
+};
 
 interface NavbarProps {
   showResults?: boolean;
@@ -221,13 +223,22 @@ export default function Navbar({
         </div>
         
         {/* Google Translate Widget */}
-          <GoogleTranslateWrapper />
+        <GoogleTranslateWrapper />
         <div
           className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
         >
-        <Link href="/" aria-label="Home" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
-          <Home size={16} className="text-white dark:text-white" />
-        </Link>
+          <Link
+            href="/"
+            aria-label="Home"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <Home
+              size={16}
+              className={`${
+                currentTheme === "dark" ? "text-white" : "dark:text-white text-black"
+              }`}
+            />
+          </Link>
         </div>
         <div className="hidden md:block">
           <ThemeToggle />

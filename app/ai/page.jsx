@@ -67,7 +67,10 @@ const [showNutrition, setShowNutrition] = useState(false);
       <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${
         showResults ? "opacity-80 blur-sm" : "opacity-100"
       }`}>
-        <BackButton />
+        <div className="no-print">
+  <BackButton />
+</div>
+
         {showRecipe && recipe ? (
           <AiRecipe
             recipe={recipe}
