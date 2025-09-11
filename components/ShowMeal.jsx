@@ -1,3 +1,4 @@
+// components/ShowMeal.jsx
 "use client";
 
 import BackButton from "@/components/BackButton";
@@ -15,12 +16,10 @@ import { addItemsToShoppingList, parseMeasure } from "@/lib/shoppingList";
 // --- Self-contained helper components ---
 function HighlightedSentence({ text, isActive, wordRange }) {
   if (!isActive || !wordRange) return <span>{text}</span>;
-
   const { startChar, endChar } = wordRange;
   const before = text.substring(0, startChar);
   const highlighted = text.substring(startChar, endChar);
   const after = text.substring(endChar);
-
   return (
     <span>
       {before}
@@ -79,9 +78,7 @@ function IngredientsTable({ mealData, activeIngRange }) {
       <table className="table w-full">
         <thead>
           <tr className="text-left">
-            <th className="p-2 w-1/3 text-sm font-semibold text-primary">
-              Quantity
-            </th>
+            <th className="p-2 w-1/3 text-sm font-semibold text-primary">Quantity</th>
             <th className="p-2 text-sm font-semibold text-primary">Ingredient</th>
           </tr>
         </thead>
@@ -112,7 +109,8 @@ function IngredientsTable({ mealData, activeIngRange }) {
   );
 }
 
-// --- The Main Page Component ---
+/* ===================== Main ===================== */
+
 function ShowMeal({ URL }) {
   const [mealData, setMealData] = useState(null);
   const [favorites, setFavorites] = useState([]);
@@ -122,26 +120,22 @@ function ShowMeal({ URL }) {
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
   useEffect(() => {
-    const storedFavorites = localStorage.getItem("favorites");
-    if (storedFavorites) {
-      setFavorites(JSON.parse(storedFavorites));
-    }
+    const stored = localStorage.getItem("favorites");
+    if (stored) setFavorites(JSON.parse(stored));
   }, []);
 
   const toggleFavorite = (meal) => {
-    let updatedFavorites = [];
-    if (favorites.some((f) => f.idMeal === meal.idMeal)) {
-      updatedFavorites = favorites.filter((f) => f.idMeal !== meal.idMeal);
-    } else {
-      updatedFavorites = [...favorites, meal];
-    }
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    const exists = favorites.some((f) => f.idMeal === meal.idMeal);
+    const updated = exists
+      ? favorites.filter((f) => f.idMeal !== meal.idMeal)
+      : [...favorites, meal];
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
   };
 
   const isFavorite = (idMeal) => favorites.some((f) => f.idMeal === idMeal);
 
-  // --- Instruction TTS ---
+  /* ---------- Instruction TTS ---------- */
   const [playerState, setPlayerState] = useState("idle");
   const [activeWordRange, setActiveWordRange] = useState({
     sentenceIndex: -1,
@@ -245,11 +239,9 @@ function ShowMeal({ URL }) {
       setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
     }
 
-    if (playerState === "paused") {
-      synth.resume();
-    } else {
-      utterances.current.forEach((utterance) => synth.speak(utterance));
-    }
+    if (playerState === "paused") synth.resume();
+    else utterances.current.forEach((utt) => synth.speak(utt));
+
     setPlayerState("playing");
   }, [playerState, ingredientPlayerState]);
 
@@ -263,7 +255,6 @@ function ShowMeal({ URL }) {
   const handleRestart = useCallback(() => {
     const synth = window.speechSynthesis;
 
-    // stop ingredients TTS if running
     if (ingredientPlayerState !== "idle") {
       synth.cancel();
       setIngredientPlayerState("idle");
@@ -272,13 +263,10 @@ function ShowMeal({ URL }) {
 
     synth.cancel();
     setPlayerState("idle");
-
-    setTimeout(() => {
-      handlePlay();
-    }, 100);
+    setTimeout(() => handlePlay(), 100);
   }, [handlePlay, ingredientPlayerState]);
 
-  // --- Ingredient TTS ---
+  /* ---------- Ingredient TTS + Copy ---------- */
   const ingredientSentences = useMemo(() => {
     if (!mealData) return [];
     return Object.keys(mealData)
@@ -293,7 +281,6 @@ function ShowMeal({ URL }) {
       .filter(Boolean);
   }, [mealData]);
 
-  // Build text for clipboard: one ingredient per line
   const ingredientsCopyText = useMemo(
     () => ingredientSentences.join("\n"),
     [ingredientSentences]
@@ -346,18 +333,15 @@ function ShowMeal({ URL }) {
   const handleIngredientPlay = useCallback(() => {
     const synth = window.speechSynthesis;
 
-    // stop steps TTS if running
     if (playerState === "playing" || playerState === "paused") {
       synth.cancel();
       setPlayerState("idle");
       setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
     }
 
-    if (ingredientPlayerState === "paused") {
-      synth.resume();
-    } else {
-      ingredientUtterances.current.forEach((utt) => synth.speak(utt));
-    }
+    if (ingredientPlayerState === "paused") synth.resume();
+    else ingredientUtterances.current.forEach((utt) => synth.speak(utt));
+
     setIngredientPlayerState("playing");
   }, [ingredientPlayerState, playerState]);
 
@@ -371,7 +355,6 @@ function ShowMeal({ URL }) {
   const handleIngredientRestart = useCallback(() => {
     const synth = window.speechSynthesis;
 
-    // stop steps TTS if running
     if (playerState !== "idle") {
       synth.cancel();
       setPlayerState("idle");
@@ -380,10 +363,7 @@ function ShowMeal({ URL }) {
 
     synth.cancel();
     setIngredientPlayerState("idle");
-
-    setTimeout(() => {
-      handleIngredientPlay();
-    }, 100);
+    setTimeout(() => handleIngredientPlay(), 100);
   }, [handleIngredientPlay, playerState]);
 
   // --- NEW: Shopping list helpers/state ---
@@ -413,18 +393,17 @@ function ShowMeal({ URL }) {
 
   // --- Fetch Meal + Save to recentMeals ---
   useEffect(() => {
-    let isMounted = true;
+    let alive = true;
 
     fetch(URL)
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then((data) => {
         const meal = data?.meals?.[0];
-        if (!isMounted || !meal) return;
+        if (!alive || !meal) return;
 
         setMealData(meal);
 
         if (typeof window === "undefined") return;
-
         try {
           const mealInfo = {
             idMeal: meal.idMeal,
@@ -436,10 +415,7 @@ function ShowMeal({ URL }) {
           const prev = raw ? JSON.parse(raw) : [];
           const list = Array.isArray(prev) ? prev : [];
 
-          const updated = [
-            mealInfo,
-            ...list.filter((m) => m.idMeal !== meal.idMeal),
-          ].slice(0, 5);
+          const updated = [mealInfo, ...list.filter((m) => m.idMeal !== meal.idMeal)].slice(0, 5);
 
           localStorage.setItem("recentMeals", JSON.stringify(updated));
         } catch {
@@ -455,13 +431,14 @@ function ShowMeal({ URL }) {
           );
         }
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((e) => console.error("Error fetching data:", e));
 
     return () => {
-      isMounted = false;
+      alive = false;
     };
   }, [URL]);
 
+  /* ---------- Loading ---------- */
   if (!mealData) {
     return (
       <>
@@ -502,6 +479,7 @@ function ShowMeal({ URL }) {
     );
   }
 
+  /* ---------- Render ---------- */
   return (
     <>
       <Navbar
@@ -510,6 +488,7 @@ function ShowMeal({ URL }) {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
+
       <div
         className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start transition-all duration-300 ${
           showResults ? "opacity-80 blur-sm" : "opacity-100"
@@ -567,10 +546,7 @@ function ShowMeal({ URL }) {
               {detectedAllergens.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-2 mt-2">
                   {detectedAllergens.map((allergen) => (
-                    <span
-                      key={allergen}
-                      className="badge badge-sm badge-error text-white"
-                    >
+                    <span key={allergen} className="badge badge-sm badge-error text-white">
                       {allergen}
                     </span>
                   ))}
@@ -579,6 +555,7 @@ function ShowMeal({ URL }) {
             </header>
 
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
+              {/* LEFT: image + badges + steps (steps are inside this column) */}
               <div className="md:w-1/2">
                 <img
                   src={mealData.strMealThumb}
@@ -588,9 +565,7 @@ function ShowMeal({ URL }) {
 
                 {/* Action toolbar (hidden in print) */}
                 <div className="flex flex-wrap items-center gap-4 no-print">
-                  <span className="badge badge-lg badge-accent">
-                    {mealData.strCategory}
-                  </span>
+                  <span className="badge badge-lg badge-accent">{mealData.strCategory}</span>
 
                   {mealData.strYoutube && (
                     <Link
@@ -630,9 +605,48 @@ function ShowMeal({ URL }) {
                     Print
                   </button>
                 </div>
+
+                {/* Preparation Steps — INSIDE LEFT COLUMN */}
+                <section id="instructions-section" className="mt-10">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
+                    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+                      <button
+                        onClick={playerState === "playing" ? handlePause : handlePlay}
+                        className="btn btn-ghost btn-circle"
+                      >
+                        {playerState === "playing" ? (
+                          <PauseIcon className="h-6 w-6 text-info" />
+                        ) : (
+                          <PlayIcon className="h-6 w-6 text-success" />
+                        )}
+                      </button>
+                      <button
+                        onClick={handleRestart}
+                        className="btn btn-ghost btn-circle"
+                        disabled={playerState === "idle"}
+                      >
+                        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <ol className="list-decimal list-inside space-y-4 text-base-content leading-relaxed">
+                    {instructionSentences.map((sentence, index) => (
+                      <li key={index}>
+                        <HighlightedSentence
+                          text={sentence}
+                          isActive={index === activeWordRange.sentenceIndex}
+                          wordRange={activeWordRange}
+                        />
+                      </li>
+                    ))}
+                  </ol>
+                </section>
               </div>
 
-              <div className="md:w-1/2">
+              {/* RIGHT: Ingredients — sticky on desktop */}
+              <div className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-6rem)] md:overflow-auto md:z-[1]">
                 {/* Clean heading */}
                 <h2 className="text-2xl font-bold text-base-content flex items-center gap-2 mb-2">
                   <PlusIcon />
@@ -690,10 +704,7 @@ function ShowMeal({ URL }) {
                     </button>
 
                     {/* On very small screens, also show an Open link here */}
-                    <Link
-                      href="/shopping-list"
-                      className="link link-primary link-hover text-xs sm:hidden"
-                    >
+                    <Link href="/shopping-list" className="link link-primary link-hover text-xs sm:hidden">
                       Open list
                     </Link>
                   </div>
@@ -724,51 +735,9 @@ function ShowMeal({ URL }) {
                   </div>
                 </div>
 
-                <IngredientsTable
-                  mealData={mealData}
-                  activeIngRange={activeIngRange}
-                />
+                <IngredientsTable mealData={mealData} activeIngRange={activeIngRange} />
               </div>
             </div>
-
-            <section id="instructions-section">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-base-content">
-                  Preparation Steps
-                </h2>
-                <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-                  <button
-                    onClick={playerState === "playing" ? handlePause : handlePlay}
-                    className="btn btn-ghost btn-circle"
-                  >
-                    {playerState === "playing" ? (
-                      <PauseIcon className="h-6 w-6 text-info" />
-                    ) : (
-                      <PlayIcon className="h-6 w-6 text-success" />
-                    )}
-                  </button>
-                  <button
-                    onClick={handleRestart}
-                    className="btn btn-ghost btn-circle"
-                    disabled={playerState === "idle"}
-                  >
-                    <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-                  </button>
-                </div>
-              </div>
-
-              <ol className="list-decimal list-inside space-y-4 text-base-content leading-relaxed">
-                {instructionSentences.map((sentence, index) => (
-                  <li key={index}>
-                    <HighlightedSentence
-                      text={sentence}
-                      isActive={index === activeWordRange.sentenceIndex}
-                      wordRange={activeWordRange}
-                    />
-                  </li>
-                ))}
-              </ol>
-            </section>
           </div>
         </div>
       </div>
