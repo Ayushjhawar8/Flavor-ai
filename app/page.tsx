@@ -156,6 +156,11 @@ export default function Page() {
                   AI Diet Planner
                 </button>
               </Link>
+              <Link href="/ingredient-explorer">
+                <button className="btn btn-outline btn-primary text-lg">
+                  🧪 AI Ingredient Explorer
+                </button>
+              </Link>
               <Link href="/favorite">
                 <button className="btn btn-outline btn-primary text-lg">
                   ❤️ Favorites
