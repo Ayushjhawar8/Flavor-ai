@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ScrollToTop from "../components/ScrollToTop";
 import GoogleTranslateWrapper from "@/components/GoogleTranslateWrapper";
 import SnakeCursor from "@/components/SnakeCursor";
 
@@ -31,9 +32,9 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className} style={patrickHand}>
-        <GoogleTranslateWrapper />
         <SnakeCursor />
         {children}
+        <ScrollToTop></ScrollToTop>
       </body>
     </html>
   );
