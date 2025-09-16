@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; // Make sure you have react-icons v4.10+ for this!
+import { FaXTwitter } from "react-icons/fa6"; // react-icons v4.10+
 
 const Footer = () => {
   const [currentTheme, setCurrentTheme] = useState("light");
+
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
@@ -28,7 +29,6 @@ const Footer = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Social icon data + optional glow effect
   const socialLinks = [
     {
       href: "https://x.com/itsAyushJ",
@@ -58,7 +58,7 @@ const Footer = () => {
   const textColor = currentTheme === "dark" ? "text-white" : "text-amber-800";
 
   return (
-    <footer className="footer rounded-md p-10 bg-base-200 text-base-content footer-center">
+    <footer className="footer rounded-md p-10 bg-base-200 text-base-content footer-center mt-auto">
       <div className="flex flex-col md:flex-row justify-between items-center w-full max-w-4xl mx-auto space-y-4 md:space-y-0">
         {/* Left: Title & Subtitle */}
         <div className="text-center md:text-left">
@@ -69,6 +69,7 @@ const Footer = () => {
             Your AI-powered culinary companion.
           </p>
         </div>
+
         {/* Center: Author & Button */}
         <div className="flex flex-col items-center space-y-4">
           <a
@@ -87,25 +88,16 @@ const Footer = () => {
               className="btn btn-primary text-white px-4 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-2 hover:bg-primary-focus transition-colors"
               style={{ background: "#6E4B2A" }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 ${iconColor}`}
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 0c-6.626 0-12 5.373-12 12c0 5.302 3.438 9.8 8.207 11.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416c-.546-1.387-1.333-1.756-1.333-1.756c-1.089-.745.083-.729.083-.729c1.205.084 1.839 1.237 1.839 1.237c1.07 1.834 2.807 1.304 3.492.997c.107-.775.418-1.305.762-1.604c-2.665-.305-5.467-1.334-5.467-5.931c0-1.311.469-2.381 1.236-3.221c-.124-.303-.535-1.524.117-3.176c0 0 1.008-.322 3.301 1.30c.957-.266 1.983-.399 3.003-.404c1.02.005 2.047.138 3.006.404c2.291-1.552 3.297-1.30 3.297-1.30c.653 1.653.242 2.874.118 3.176c.77.84 1.235 1.911 1.235 3.221c0 4.609-2.807 5.624-5.479 5.921c.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576c4.765-1.589 8.199-6.086 8.199-11.386c0-6.627-5.373-12-12-12z" />
-              </svg>
               Contribute on GitHub
             </a>
           </div>
         </div>
+
         {/* Right: Social & Email & Copyright */}
         <div className="text-sm text-center md:text-center w-full md:w-auto">
-          {/* Social Header */}
-          <div className={`card-title text-lg md:text-xl flex items-center justify-center mb-2  ${textColor}`}>
+          <div className={`card-title text-lg md:text-xl flex items-center justify-center mb-2 ${textColor}`}>
             Connect with Ayush
           </div>
-          {/* Icons Row */}
           <div className="flex gap-4 text-xl mb-2 justify-end md:justify-center">
             {socialLinks.map(({ href, icon: Icon, label, glow }) => (
               <a
@@ -116,10 +108,7 @@ const Footer = () => {
                 className={`${iconBg} ${iconHoverBg} ${iconColor} p-2 rounded-lg flex items-center justify-center transition duration-300`}
                 title={label}
                 aria-label={label}
-                style={{
-                  filter: "none",
-                  transition: "box-shadow 0.3s, filter 0.3s",
-                }}
+                style={{ filter: "none", transition: "box-shadow 0.3s, filter 0.3s" }}
                 onMouseEnter={e => (e.currentTarget.style.filter = glow)}
                 onMouseLeave={e => (e.currentTarget.style.filter = "none")}
               >
@@ -127,7 +116,6 @@ const Footer = () => {
               </a>
             ))}
           </div>
-          {/* Email */}
           <a
             href="mailto:ayushjhawar499@gmail.com"
             className={`text-sm font-medium md:text-center ${textColor} block mb-1`}
@@ -135,7 +123,6 @@ const Footer = () => {
           >
             ayushjhawar499@gmail.com
           </a>
-          {/* Copyright */}
           <p className={`card-title text-lg md:text-xl flex items-center ${textColor}`}>
             &copy; {new Date().getFullYear()} Flavor AI. All Rights Reserved.
           </p>
@@ -144,4 +131,5 @@ const Footer = () => {
     </footer>
   );
 };
+
 export default Footer;
