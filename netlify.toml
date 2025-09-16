@@ -1,18 +1,14 @@
 [build]
+  publish = "public"
   command = "npm run build"
-  publish = ".next"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "/404"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/500"
-  to = "/500.html"
-  status = 500
+[[headers]]
+  for = "/*"
+  [headers.values]
+  X-Frame-Options = "DENY"
+  X-Content-Type-Options = "nosniff"
