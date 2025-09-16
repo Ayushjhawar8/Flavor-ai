@@ -1,0 +1,61 @@
+"use client";
+import { useState } from "react";
+
+const festivals = [
+  { id: 1, name: "Holi", dish: "Gujiya", description: "Sweet dumplings filled with khoya and dry fruits." },
+  { id: 2, name: "Diwali", dish: "Ladoo", description: "Round sweets made with flour, ghee, and sugar." },
+  { id: 3, name: "Christmas", dish: "Plum Cake", description: "Rich cake made with dry fruits and spices." },
+  { id: 4, name: "Eid", dish: "Sheer Khurma", description: "Vermicelli pudding made with milk and dates." },
+];
+
+export default function FestivalPage() {
+  const [selectedFestival, setSelectedFestival] = useState("All");
+
+  const filteredFestivals =
+    selectedFestival === "All"
+      ? festivals
+      : festivals.filter((f) => f.name === selectedFestival);
+
+  return (
+    <div className="flex flex-col min-h-screen bg-base-100">
+      <main className="flex-1 p-6">
+        <h1 className="text-3xl font-bold text-center mb-6">🎉 Festival Dishes</h1>
+
+        {/* Filter Bar */}
+        <div className="flex justify-center gap-4 mb-6 overflow-x-auto">
+          {["All", "Holi", "Diwali", "Christmas", "Eid"].map((festival) => (
+            <button
+              key={festival}
+              onClick={() => setSelectedFestival(festival)}
+              className={`px-4 py-2 rounded-full ${
+                selectedFestival === festival
+                  ? "bg-primary text-white"
+                  : "bg-gray-200"
+              }`}
+            >
+              {festival}
+            </button>
+          ))}
+        </div>
+
+        {/* Dishes Grid */}
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+          {filteredFestivals.map((item) => (
+            <div key={item.id} className="card bg-base-200 shadow-md p-4 rounded-lg">
+              <h2 className="text-xl font-semibold">{item.dish}</h2>
+              <p className="text-sm text-gray-600 mb-2">{item.name}</p>
+              <p className="text-gray-800">{item.description}</p>
+              <button className="btn btn-primary mt-3">View Recipe</button>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* Modern Footer */}
+      <footer className="bg-gray-800 text-white text-center py-4 mt-6 rounded-t-xl shadow-lg">
+        <p className="text-sm">© 2025 Flavor AI. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
