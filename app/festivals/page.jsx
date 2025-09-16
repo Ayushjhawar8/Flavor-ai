@@ -17,8 +17,8 @@ export default function FestivalPage() {
       : festivals.filter((f) => f.name === selectedFestival);
 
   return (
-    <div className="flex flex-col min-h-screen bg-base-100">
-      <main className="flex-1 p-6">
+    <div className="min-h-screen flex flex-col justify-between bg-base-100 p-6">
+      <div>
         <h1 className="text-3xl font-bold text-center mb-6">🎉 Festival Dishes</h1>
 
         {/* Filter Bar */}
@@ -49,13 +49,12 @@ export default function FestivalPage() {
             </div>
           ))}
         </div>
-      </main>
+      </div>
 
-      {/* Modern Footer */}
-      <footer className="bg-gray-800 text-white text-center py-4 mt-6 rounded-t-xl shadow-lg">
-        <p className="text-sm">© 2025 Flavor AI. All rights reserved.</p>
+      {/* Footer */}
+      <footer className="mt-6 p-4 bg-gray-800 text-white text-center">
+        © 2025 Flavor AI. All rights reserved.
       </footer>
     </div>
   );
 }
-
