@@ -14,7 +14,7 @@
     "@ai-sdk/openai": "^2.0.15",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
-    "ai": "^3.3.5",
+    "ai": "^5.0.44",
     "axios": "^1.11.0",
     "graph-data-structure": "^4.5.0",
     "lucide-react": "^0.536.0",
@@ -27,10 +27,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/next": "^8.0.7",
     "@types/node": "24.1.0",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.9",
+    "@types/react": "18.3.5",
+    "@types/react-dom": "18.3.0",
     "daisyui": "^4.11.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",

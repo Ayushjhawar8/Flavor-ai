@@ -151,6 +151,11 @@ export default function Page() {
                   Discover a Random Recipe
                 </button>
               </Link>
+              <Link href="/ideahub">
+                <button className="btn btn-outline btn-primary text-lg">
+                  Idea Hub 💡
+                </button>
+              </Link>
               <Link href="/diet-planner">
                 <button className="btn btn-outline btn-primary text-lg">
                   AI Diet Planner
