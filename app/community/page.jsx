@@ -8,6 +8,7 @@ import { getCommunityRecipes } from "@/lib/communityStorage";
 import { getCurrentUser } from "@/lib/mockAuth";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import SimpleScrollToTop from "@/components/SimpleScrollToTop";
 
 export default function CommunityPage() {
   const [recipes, setRecipes] = useState([]);
@@ -84,6 +85,7 @@ export default function CommunityPage() {
       </div>
 
       <Footer />
+      <SimpleScrollToTop />
     </>
   );
 }

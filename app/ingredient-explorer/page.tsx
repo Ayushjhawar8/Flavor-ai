@@ -5,6 +5,7 @@ import { Mic, MicOff, Plus, X, Clock, Users, ChefHat, Sparkles } from "lucide-re
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import BackButton from "@/components/BackButton"
+import SimpleScrollToTop from "@/components/SimpleScrollToTop"
 
 interface Recipe {
   id: string
@@ -1403,6 +1404,7 @@ export default function IngredientExplorer() {
         )}
       </div>
       <Footer />
+      <SimpleScrollToTop />
     </div>
   )
 }
