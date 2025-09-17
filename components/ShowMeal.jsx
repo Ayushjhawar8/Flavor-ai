@@ -1,24 +1,30 @@
 // components/ShowMeal.jsx
 "use client";
 
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import Link from "next/link";
+
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 import BackButton from "@/components/BackButton";
+import ShareButton from "@/components/ShareButton";
 import { PlusIcon, YoutubeIcon } from "@/components/Icons";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
-import Footer from "./Footer";
-import Navbar from "./Navbar";
-import ShareButton from "@/components/ShareButton";
 
-// NEW: shopping list helpers
+// Shopping list helpers
 import { addItemsToShoppingList, parseMeasure } from "@/lib/shoppingList";
 
-// NEW: unit system (metric/us)
+// Unit system (metric/us)
 import useUnitSystem from "@/hooks/useUnitSystem";
 import UnitToggle from "@/components/UnitToggle";
 import { formatMeasureForSystem } from "@/lib/units";
 
-// --- Self-contained helper components ---
+// Servings scaler
+import { useServings } from "@/hooks/useServings";
+import ServingSizeControl from "@/components/ServingSizeControl";
+
+/* ---------------- Small helpers ---------------- */
+
 function HighlightedSentence({ text, isActive, wordRange }) {
   if (!isActive || !wordRange) return <span>{text}</span>;
   const { startChar, endChar } = wordRange;
@@ -36,10 +42,8 @@ function HighlightedSentence({ text, isActive, wordRange }) {
 
 function HighlightedIngredient({ text, temp, isActive, wordRange }) {
   if (!isActive || !wordRange) return <span>{text}</span>;
-
   const { startChar, endChar } = wordRange;
   const cellEndPos = temp + text.length;
-
   if (endChar <= temp || startChar >= cellEndPos) return <span>{text}</span>;
 
   const localStartChar = Math.max(0, startChar - temp);
@@ -58,19 +62,28 @@ function HighlightedIngredient({ text, temp, isActive, wordRange }) {
   );
 }
 
-function IngredientsTable({ mealData, activeIngRange, unitSystem }) {
+/* ----- helpers for quantity text handling ----- */
+const round1 = (n) => Math.round(n * 10) / 10;
+
+/** Return text after the leading numeric qty (e.g. "tbs", "chopped", "g sugar") */
+function tailAfterQty(raw) {
+  const m = String(raw || "")
+    .trim()
+    .match(/^\s*([0-9]+(?:\.[0-9]+)?(?:\s*\/\s*[0-9]+)?)\s*(.*)$/i);
+  return m ? (m[2] || "").trim() : "";
+}
+
+/* ---------------- Ingredients table ---------------- */
+
+function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) {
   const ingredients = useMemo(
     () =>
       Object.keys(mealData)
         .map((key) => {
           if (key.startsWith("strIngredient") && mealData[key]) {
             const num = key.slice(13);
-            if (mealData[`strMeasure${num}`]) {
-              return {
-                measure: mealData[`strMeasure${num}`],
-                name: mealData[key],
-              };
-            }
+            const measure = mealData[`strMeasure${num}`];
+            if (measure) return { measure, name: mealData[key] };
           }
           return null;
         })
@@ -79,7 +92,7 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem }) {
   );
 
   return (
-    <div className="overflow-x-auto mt-2">
+    <div className="overflow-x-auto mt-3">
       <table className="table w-full">
         <thead>
           <tr className="text-left">
@@ -89,10 +102,42 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem }) {
         </thead>
         <tbody>
           {ingredients.map((ing, i) => {
-            const displayMeasure = formatMeasureForSystem(ing.measure, unitSystem);
+            const raw = (ing.measure || "").trim();
+            let displayMeasure = raw;
+
+            try {
+              const parsed = parseMeasure(raw); // { qty, unit } when recognized
+              if (parsed && Number.isFinite(parsed.qty)) {
+                const scaledQty = parsed.qty * factor;
+                const pretty = scaledQty >= 10 ? Math.round(scaledQty) : round1(scaledQty);
+
+                // keep whatever appears after the number (unit and descriptors)
+                const tail = tailAfterQty(raw);
+
+                let candidate;
+                if (parsed.unit) {
+                  // avoid duplicating the unit when tail starts with it
+                  const rx = new RegExp(`^${parsed.unit}\\b`, "i");
+                  const extra = tail.replace(rx, "").trim();
+                  candidate = `${pretty} ${parsed.unit}${extra ? ` ${extra}` : ""}`;
+                } else {
+                  // unit wasn't recognized (e.g., "tbs", "chopped") — keep it
+                  candidate = tail ? `${pretty} ${tail}` : String(pretty);
+                }
+
+                const converted = formatMeasureForSystem(candidate, unitSystem);
+                displayMeasure = converted || candidate;
+              } else {
+                // not parseable; still allow converter to normalize units text
+                displayMeasure = formatMeasureForSystem(raw, unitSystem) || raw;
+              }
+            } catch {
+              displayMeasure = formatMeasureForSystem(raw, unitSystem) || raw;
+            }
+
             return (
               <tr key={i} className="border-t border-base-300 hover:bg-base-200">
-                <td className="p-2 font-medium text-secondary">
+                <td className="p-2 font-medium text-secondary tabular-nums text-left whitespace-nowrap">
                   <HighlightedIngredient
                     text={displayMeasure}
                     temp={0}
@@ -157,8 +202,15 @@ function ShowMeal({ URL }) {
     endChar: -1,
   });
 
-  // NEW: unit system preference
+  // unit system preference
   const [unitSystem, setUnitSystem] = useUnitSystem();
+
+  // serving size scaler (baseline 2 if you don’t have a better one)
+  const baseServings = 2;
+  const { servings, setServings, factor, reset } = useServings(
+    mealData?.idMeal || "pending",
+    baseServings
+  );
 
   const utterances = useRef([]);
 
@@ -171,30 +223,10 @@ function ShowMeal({ URL }) {
   }, [mealData]);
 
   const allergenKeywords = [
-    "milk",
-    "cheese",
-    "butter",
-    "cream",
-    "egg",
-    "peanut",
-    "almond",
-    "cashew",
-    "walnut",
-    "pecan",
-    "hazelnut",
-    "wheat",
-    "barley",
-    "rye",
-    "soy",
-    "soybean",
-    "shrimp",
-    "prawn",
-    "crab",
-    "lobster",
-    "clam",
-    "mussel",
-    "oyster",
-    "fish",
+    "milk","cheese","butter","cream","egg",
+    "peanut","almond","cashew","walnut","pecan","hazelnut",
+    "wheat","barley","rye","soy","soybean",
+    "shrimp","prawn","crab","lobster","clam","mussel","oyster","fish",
   ];
 
   const detectedAllergens = useMemo(() => {
@@ -202,9 +234,7 @@ function ShowMeal({ URL }) {
     const ingredients = Object.keys(mealData)
       .filter((k) => k.startsWith("strIngredient") && mealData[k])
       .map((k) => mealData[k].toLowerCase());
-    return allergenKeywords.filter((allergen) =>
-      ingredients.some((ing) => ing.includes(allergen))
-    );
+    return allergenKeywords.filter((a) => ingredients.some((ing) => ing.includes(a)));
   }, [mealData]);
 
   useEffect(() => {
@@ -227,11 +257,7 @@ function ShowMeal({ URL }) {
       utterance.onend = () => {
         if (sentenceIndex === instructionSentences.length - 1) {
           setPlayerState("idle");
-          setActiveWordRange({
-            sentenceIndex: -1,
-            startChar: -1,
-            endChar: -1,
-          });
+          setActiveWordRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
         }
       };
       return utterance;
@@ -243,7 +269,6 @@ function ShowMeal({ URL }) {
   const handlePlay = useCallback(() => {
     const synth = window.speechSynthesis;
 
-    // stop ingredients TTS if running
     if (ingredientPlayerState === "playing" || ingredientPlayerState === "paused") {
       synth.cancel();
       setIngredientPlayerState("idle");
@@ -278,6 +303,7 @@ function ShowMeal({ URL }) {
   }, [handlePlay, ingredientPlayerState]);
 
   /* ---------- Ingredient TTS + Copy ---------- */
+
   const ingredientSentences = useMemo(() => {
     if (!mealData) return [];
     return Object.keys(mealData)
@@ -292,7 +318,6 @@ function ShowMeal({ URL }) {
       .filter(Boolean);
   }, [mealData]);
 
-  // Build text for clipboard: one ingredient per line (uses original measures)
   const ingredientsCopyText = useMemo(
     () => ingredientSentences.join("\n"),
     [ingredientSentences]
@@ -305,7 +330,7 @@ function ShowMeal({ URL }) {
       await navigator.clipboard.writeText(ingredientsCopyText);
       setCopied(true);
     } catch {
-      // optional: toast error
+      // ignore
     } finally {
       setTimeout(() => setCopied(false), 1200);
     }
@@ -378,7 +403,7 @@ function ShowMeal({ URL }) {
     setTimeout(() => handleIngredientPlay(), 100);
   }, [handleIngredientPlay, playerState]);
 
-  // --- NEW: Shopping list helpers/state ---
+  // shopping list
   const [addedToList, setAddedToList] = useState(false);
 
   const buildShoppingItems = useCallback(() => {
@@ -403,7 +428,7 @@ function ShowMeal({ URL }) {
     }
   }, [buildShoppingItems]);
 
-  // --- Fetch Meal + Save to recentMeals ---
+  // Fetch Meal + Save to recentMeals
   useEffect(() => {
     let alive = true;
 
@@ -511,17 +536,14 @@ function ShowMeal({ URL }) {
       >
         <BackButton />
         <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
-          {/* mark printable area */}
           <div className="p-6 md:p-12 print-area">
             <header className="relative text-center mb-8">
-              {/* Top-right actions: Cart + Heart */}
               <div className="absolute top-0 right-0 flex items-center gap-2">
                 <Link
                   href="/shopping-list"
                   aria-label="Open shopping list"
                   className="btn btn-ghost btn-circle"
                 >
-                  {/* cart icon */}
                   <svg
                     width="18"
                     height="18"
@@ -570,7 +592,7 @@ function ShowMeal({ URL }) {
             </header>
 
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
-              {/* LEFT: image + badges + steps (steps are inside this column) */}
+              {/* LEFT: image + badges + steps */}
               <div className="md:w-1/2">
                 <img
                   src={mealData.strMealThumb}
@@ -578,7 +600,6 @@ function ShowMeal({ URL }) {
                   className="w-full h-auto rounded-lg shadow-md mb-4"
                 />
 
-                {/* Action toolbar (hidden in print) */}
                 <div className="flex flex-wrap items-center gap-4 no-print">
                   <span className="badge badge-lg badge-accent">{mealData.strCategory}</span>
 
@@ -593,10 +614,8 @@ function ShowMeal({ URL }) {
                     </Link>
                   )}
 
-                  {/* Share button */}
                   <ShareButton title={mealData.strMeal} />
 
-                  {/* Print / Save as PDF */}
                   <button
                     onClick={() => window.print()}
                     aria-label="Print or save recipe"
@@ -621,7 +640,7 @@ function ShowMeal({ URL }) {
                   </button>
                 </div>
 
-                {/* Preparation Steps — INSIDE LEFT COLUMN */}
+                {/* Steps */}
                 <section id="instructions-section" className="mt-10">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
@@ -660,93 +679,96 @@ function ShowMeal({ URL }) {
                 </section>
               </div>
 
-              {/* RIGHT: Ingredients — sticky on desktop, airy layout */}
-<div className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]">
-  {/* Row 1: Title only */}
-{/* Header row: title on left, unit toggle on right */}
-<div className="mb-2 flex items-center justify-between">
-  <h2 className="text-2xl font-bold text-base-content flex items-center gap-2">
-    <PlusIcon />
-    <span>Ingredients</span>
-  </h2>
+              {/* RIGHT: Ingredients */}
+              <div className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]">
+                {/* Heading */}
+                <div className="mb-1">
+                  <h2 className="text-2xl font-bold text-base-content flex items-center gap-2">
+                    <PlusIcon />
+                    <span>Ingredients</span>
+                  </h2>
+                </div>
 
-  {/* Metric / US toggle moved up here for a cleaner look */}
-  <UnitToggle value={unitSystem} onChange={setUnitSystem} />
-</div>
+                {/* Row: Servings (left)  •  Unit toggle (right) */}
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <ServingSizeControl
+                    servings={servings}
+                    setServings={setServings}
+                    baseServings={baseServings}
+                    onReset={reset}
+                  />
+                  <UnitToggle value={unitSystem} onChange={setUnitSystem} />
+                </div>
 
-{/* Toolbar under the heading: list + copy (no unit toggle here) */}
-<div className="flex items-center justify-between mb-3">
-  <div className="flex items-center gap-2">
-    <button
-      onClick={handleAddToShopping}
-      aria-label="Add all ingredients to shopping list"
-      className="btn btn-primary btn-xs"
-      type="button"
-    >
-      {addedToList ? "Added!" : "Add to list"}
-    </button>
+                {/* Row: Add/Copy (left) • TTS controls (right) */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleAddToShopping}
+                      aria-label="Add all ingredients to shopping list"
+                      className="btn btn-primary btn-xs"
+                      type="button"
+                    >
+                      {addedToList ? "Added!" : "Add to list"}
+                    </button>
 
-    <button
-      onClick={handleCopyIngredients}
-      aria-label="Copy ingredients"
-      className="btn btn-ghost btn-xs tooltip"
-      data-tip={copied ? "Copied!" : "Copy list"}
-      type="button"
-    >
-      {/* clipboard / check */}
-      {!copied ? (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-      ) : (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 6L9 17l-5-5" />
-        </svg>
-      )}
-    </button>
+                    <button
+                      onClick={handleCopyIngredients}
+                      aria-label="Copy ingredients"
+                      className="btn btn-ghost btn-xs tooltip"
+                      data-tip={copied ? "Copied!" : "Copy list"}
+                      type="button"
+                    >
+                      {!copied ? (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                      ) : (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      )}
+                    </button>
 
-    {/* On very small screens, also show an Open link here */}
-    <Link href="/shopping-list" className="link link-primary link-hover text-xs sm:hidden">
-      Open list
-    </Link>
-  </div>
+                    <Link href="/shopping-list" className="link link-primary link-hover text-xs sm:hidden">
+                      Open list
+                    </Link>
+                  </div>
 
-  {/* TTS controls on the right */}
-  <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-    <button
-      onClick={
-        ingredientPlayerState === "playing"
-          ? handleIngredientPause
-          : handleIngredientPlay
-      }
-      className="btn btn-ghost btn-circle"
-    >
-      {ingredientPlayerState === "playing" ? (
-        <PauseIcon className="h-6 w-6 text-info" />
-      ) : (
-        <PlayIcon className="h-6 w-6 text-success" />
-      )}
-    </button>
-    <button
-      onClick={handleIngredientRestart}
-      className="btn btn-ghost btn-circle"
-      disabled={ingredientPlayerState === "idle"}
-    >
-      <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-    </button>
-  </div>
-</div>
+                  <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+                    <button
+                      onClick={
+                        ingredientPlayerState === "playing"
+                          ? handleIngredientPause
+                          : handleIngredientPlay
+                      }
+                      className="btn btn-ghost btn-circle"
+                    >
+                      {ingredientPlayerState === "playing" ? (
+                        <PauseIcon className="h-6 w-6 text-info" />
+                      ) : (
+                        <PlayIcon className="h-6 w-6 text-success" />
+                      )}
+                    </button>
+                    <button
+                      onClick={handleIngredientRestart}
+                      className="btn btn-ghost btn-circle"
+                      disabled={ingredientPlayerState === "idle"}
+                    >
+                      <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+                    </button>
+                  </div>
+                </div>
 
-
-  {/* Table */}
-  <IngredientsTable
-    mealData={mealData}
-    activeIngRange={activeIngRange}
-    unitSystem={unitSystem}
-  />
-</div>
-
+                {/* Table */}
+                <IngredientsTable
+                  mealData={mealData}
+                  activeIngRange={activeIngRange}
+                  unitSystem={unitSystem}
+                  factor={factor}
+                />
+              </div>
             </div>
           </div>
         </div>
