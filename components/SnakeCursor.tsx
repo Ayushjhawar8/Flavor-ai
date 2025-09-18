@@ -1,20 +1,24 @@
-"use client"
+"use client";
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef } from "react";
 
 interface TrailPoint {
-  x: number
-  y: number
-  id: number
-  timestamp: number
+  x: number;
+  y: number;
+  id: number;
+  timestamp: number;
 }
 
-export default function SnakeCursor() {
-  const [trail, setTrail] = useState<TrailPoint[]>([])
-  const [isDarkMode, setIsDarkMode] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const [animationFrame, setAnimationFrame] = useState(0)
-  const pointIdRef = useRef(0)
+interface SnakeCursorProps {
+  enabled: boolean;
+}
+
+export default function SnakeCursor({ enabled }: SnakeCursorProps) {
+  const [trail, setTrail] = useState<TrailPoint[]>([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [animationFrame, setAnimationFrame] = useState(0);
+  const pointIdRef = useRef(0);
 
   const handleMouseMove = (e: MouseEvent) => {
     const newPoint: TrailPoint = {
@@ -22,77 +26,79 @@ export default function SnakeCursor() {
       y: e.clientY,
       id: pointIdRef.current++,
       timestamp: Date.now(),
-    }
+    };
 
     setTrail((prev) => {
-      const filtered = prev.filter((pt) => Date.now() - pt.timestamp < 800)
-      return [newPoint, ...filtered].slice(0, 12)
-    })
-  }
+      const filtered = prev.filter((pt) => Date.now() - pt.timestamp < 800);
+      return [newPoint, ...filtered].slice(0, 12);
+    });
+  };
 
-  const handleMouseEnter = () => setIsVisible(true)
-  const handleMouseLeave = () => setIsVisible(false)
+  const handleMouseEnter = () => setIsVisible(true);
+  const handleMouseLeave = () => setIsVisible(false);
 
   useEffect(() => {
-    document.body.classList.add("snake-cursor-active")
+    if (!enabled) return;
 
-    let rafId: number
+    document.body.classList.add("snake-cursor-active");
+
+    let rafId: number;
     const animate = () => {
-      setAnimationFrame((prev) => prev + 1)
-      rafId = requestAnimationFrame(animate)
-    }
-    rafId = requestAnimationFrame(animate)
+      setAnimationFrame((prev) => prev + 1);
+      rafId = requestAnimationFrame(animate);
+    };
+    rafId = requestAnimationFrame(animate);
 
     const checkDarkMode = () => {
-      const theme = document.documentElement.getAttribute("data-theme")
+      const theme = document.documentElement.getAttribute("data-theme");
       const isDark =
         theme === "dark" ||
         document.documentElement.classList.contains("dark") ||
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      setIsDarkMode(isDark)
-    }
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDarkMode(isDark);
+    };
 
-    checkDarkMode()
+    checkDarkMode();
 
-    const observer = new MutationObserver(checkDarkMode)
+    const observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class", "data-theme"],
-    })
+    });
 
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
-    mediaQuery.addEventListener("change", checkDarkMode)
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", checkDarkMode);
 
-    document.addEventListener("mousemove", handleMouseMove, { passive: true })
-    document.addEventListener("mouseenter", handleMouseEnter)
-    document.addEventListener("mouseleave", handleMouseLeave)
+    document.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
     const cleanupInterval = setInterval(() => {
-      setTrail((prev) => prev.filter((pt) => Date.now() - pt.timestamp < 800))
-    }, 100)
+      setTrail((prev) => prev.filter((pt) => Date.now() - pt.timestamp < 800));
+    }, 100);
 
     return () => {
-      document.body.classList.remove("snake-cursor-active")
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseenter", handleMouseEnter)
-      document.removeEventListener("mouseleave", handleMouseLeave)
-      observer.disconnect()
-      mediaQuery.removeEventListener("change", checkDarkMode)
-      clearInterval(cleanupInterval)
-      cancelAnimationFrame(rafId)
-    }
-  }, [])
+      document.body.classList.remove("snake-cursor-active");
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      observer.disconnect();
+      mediaQuery.removeEventListener("change", checkDarkMode);
+      clearInterval(cleanupInterval);
+      cancelAnimationFrame(rafId);
+    };
+  }, [enabled]);
 
-  if (!isVisible || trail.length === 0) return null
+  if (!enabled || !isVisible || trail.length === 0) return null;
 
   return (
     <div className="fixed pointer-events-none top-0 left-0 w-full h-full" style={{ zIndex: 999999 }}>
       {trail.map((point, index) => {
-        const progress = index / Math.max(trail.length - 1, 1)
-        const age = (Date.now() - point.timestamp) / 800
-        const opacity = Math.max(0, Math.min(1, (1 - progress) * (1 - age)))
-        const baseSize = 20
-        const size = Math.max(6, baseSize * (1 - progress * 0.6) * (1 - age * 0.3))
+        const progress = index / Math.max(trail.length - 1, 1);
+        const age = (Date.now() - point.timestamp) / 800;
+        const opacity = Math.max(0, Math.min(1, (1 - progress) * (1 - age)));
+        const baseSize = 20;
+        const size = Math.max(6, baseSize * (1 - progress * 0.6) * (1 - age * 0.3));
 
         const colorSchemes = isDarkMode
           ? [
@@ -110,12 +116,12 @@ export default function SnakeCursor() {
               { r: 5, g: 150, b: 105 },
               { r: 245, g: 158, b: 11 },
               { r: 220, g: 38, b: 38 },
-            ]
+            ];
 
-        const color = colorSchemes[index % colorSchemes.length]
-        const isHead = index < 3
-        const pulseIntensity = isHead ? 1 + Math.sin(animationFrame * 0.1 + index) * 0.15 : 1
-        const smoothness = Math.min(1, opacity * 2)
+        const color = colorSchemes[index % colorSchemes.length];
+        const isHead = index < 3;
+        const pulseIntensity = isHead ? 1 + Math.sin(animationFrame * 0.1 + index) * 0.15 : 1;
+        const smoothness = Math.min(1, opacity * 2);
 
         return (
           <div
@@ -140,8 +146,8 @@ export default function SnakeCursor() {
               opacity: opacity,
             }}
           />
-        )
+        );
       })}
     </div>
-  )
+  );
 }

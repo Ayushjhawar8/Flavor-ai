@@ -1,24 +1,23 @@
-//Navbar Component - by Devika Harshey
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
 import { Home, Menu, X } from "lucide-react";
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
+import CursorToggle from "./CursorToggle";
+import SnakeCursor from "./SnakeCursor";
 
 const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted before using portal
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Add the body scroll prevention useEffect HERE
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -34,7 +33,6 @@ const MobileNavigation = () => {
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
         onClick={() => setIsMenuOpen(false)}
       />
-      {/* Menu Panel For Mobile Screens*/}
       <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl z-[10000]">
         <div className="flex flex-col p-4 space-y-4 h-full overflow-y-auto">
           <button
@@ -44,10 +42,7 @@ const MobileNavigation = () => {
             <X size={20} />
           </button>
 
-          <Link
-            href="/"
-            className="flex items-center gap-3 p-2 rounded-lg border"
-          >
+          <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <Home size={20} className="text-white" />
             </div>
@@ -56,31 +51,23 @@ const MobileNavigation = () => {
 
           <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
             <ThemeToggle />
-            <span className="px-3 text-gray-900 dark:text-gray-100">
-              Change Theme
-            </span>
+            <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
           </div>
 
-          
-          <Link
-            href="/community"
-            className="flex items-center gap-3 p-2 rounded-lg border"
-          >
+          <Link href="/community" className="flex items-center gap-3 p-2 rounded-lg border">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-               <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="w-5 h-5 text-white"
-            fill="currentColor"
-            >
-            {/* two person icons side-by-side */}
-            <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-            <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className="w-5 h-5 text-white"
+                fill="currentColor"
+              >
+                <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+                <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
+              </svg>
             </div>
             <span className="text-gray-900 dark:text-gray-100">Community</span>
           </Link>
-          {/* Add more navigation items here */}
         </div>
       </div>
     </div>
@@ -100,9 +87,7 @@ const MobileNavigation = () => {
       </div>
 
       {/* Mobile Menu Overlay - Rendered via Portal */}
-      {isMenuOpen &&
-        mounted &&
-        createPortal(<MobileMenuOverlay />, document.body)}
+      {isMenuOpen && mounted && createPortal(<MobileMenuOverlay />, document.body)}
     </>
   );
 };
@@ -122,6 +107,7 @@ export default function Navbar({
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
+  const [cursorEnabled, setCursorEnabled] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -157,6 +143,13 @@ export default function Navbar({
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    document.body.style.cursor = cursorEnabled ? "none" : "default";
+    return () => {
+      document.body.style.cursor = "default";
+    };
+  }, [cursorEnabled]);
+
   return (
     <div
       className={`navbar fixed top-0 left-0 right-0 z-40 shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
@@ -182,8 +175,7 @@ export default function Navbar({
           href="https://github.com/Ayushjhawar8/Flavor-ai"
           target="_blank"
           rel="noopener noreferrer"
-          className={`group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm md:text-base font-medium transition-all duration-300 backdrop-blur-md border hover:scale-[1.02] 
-          ${
+          className={`group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm md:text-base font-medium transition-all duration-300 backdrop-blur-md border hover:scale-[1.02] ${
             currentTheme === "dark"
               ? "bg-gradient-to-br from-base-100 via-base-300 to-base-200 text-white shadow-md hover:shadow-lg border-white/10"
               : "bg-gradient-to-br from-base-200 via-base-100 to-base-300 text-gray-900 shadow-md hover:shadow-lg border-white/10"
@@ -225,28 +217,26 @@ export default function Navbar({
 
       {/* Right - Community, Home Tab & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-2 md:gap-4">
-        <div
-          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
-        >
-        <Link href="/community" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="w-5 h-5 text-white"
-            fill="currentColor"
+        <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
+          <Link
+            href="/community"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="w-5 h-5 text-white"
+              fill="currentColor"
             >
-            {/* two person icons side-by-side */}
-            <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-            <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
+              <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
+              <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
             </svg>
-        </Link>
+          </Link>
         </div>
-        
-        {/* Google Translate Widget */}
+
         <GoogleTranslateWrapper />
-        <div
-          className={`rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block`}
-        >
+
+        <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
           <Link
             href="/"
             aria-label="Home"
@@ -255,14 +245,20 @@ export default function Navbar({
             <Home
               size={16}
               className={`${
-                currentTheme === "dark" ? "text-white" : "dark:text-white text-black"
+                currentTheme === "dark"
+                  ? "text-white"
+                  : "dark:text-white text-black"
               }`}
             />
           </Link>
         </div>
+
         <div className="hidden md:block">
           <ThemeToggle />
         </div>
+
+        <CursorToggle cursorEnabled={cursorEnabled} setCursorEnabled={setCursorEnabled} />
+
         <MobileNavigation />
       </div>
 
@@ -277,6 +273,9 @@ export default function Navbar({
           className="w-full"
         />
       </div>
+
+      {/* Animated Cursor */}
+      <SnakeCursor enabled={cursorEnabled} />
     </div>
   );
 }
