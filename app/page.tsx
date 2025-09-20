@@ -186,6 +186,11 @@ export default function Page() {
               >
                 {showCategories ? "Hide Categories" : "Show Categories"}
               </button>
+              <Link href="/ideahub">
+                <button className="btn btn-outline btn-primary text-lg">
+                  Idea Hub 💡
+                </button>
+              </Link>
             </div>
           </div>
         </section>
