@@ -16,7 +16,6 @@ export default function FestivePage() {
   const filteredDishes = selectedFestival === "All" 
     ? festivalDishes 
     : festivalDishes.filter(dish => dish.festival === selectedFestival);
-
   return (
     <>
       <Navbar
