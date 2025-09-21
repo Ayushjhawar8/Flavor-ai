@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "@/lib/mockAuth";
-import { Heart, MessageCircle, Share2, Clock, Users } from "lucide-react";
+import { Heart, MessageCircle, Share2, Clock, Users, Star } from "lucide-react";
+import StarRating from "../StarRating";
 
 export default function CommunityRecipeCard({ recipe }) {
   const [liked, setLiked] = useState(false);
@@ -56,7 +57,7 @@ export default function CommunityRecipeCard({ recipe }) {
   const handleViewRecipe = () => {
     // Store recipe in localStorage for the recipe page to access
     localStorage.setItem('current_recipe', JSON.stringify(recipe));
-    router.push('/recipe');
+    router.push(`/recipe/${recipe.id}`);
   };
 
   return (
@@ -86,6 +87,19 @@ export default function CommunityRecipeCard({ recipe }) {
         </div>
 
         <h2 className="card-title text-lg">{recipe.title}</h2>
+
+        {/* Rating Display */}
+        <div className="flex items-center gap-2 mb-2">
+          <StarRating 
+            rating={recipe.averageRating || 0} 
+            readOnly 
+            size="sm" 
+            showValue={true}
+          />
+          <span className="text-sm text-base-content/60">
+            ({recipe.totalReviews || 0} reviews)
+          </span>
+        </div>
 
         {recipe.description && (
           <p className="text-sm text-base-content/80 line-clamp-2">
