@@ -68,6 +68,13 @@ const MobileNavigation = () => {
             </div>
             <span className="text-gray-900 dark:text-gray-100">Community</span>
           </Link>
+        <Link href="/festive" className="flex items-center gap-3 p-2 rounded-lg border">
+         <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+             <span className="text-white text-lg">🎉</span>
+         </div>
+             <span className="text-gray-900 dark:text-gray-100">Festivals</span>
+        </Link>
+
         </div>
       </div>
     </div>
