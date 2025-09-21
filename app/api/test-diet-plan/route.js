@@ -66,32 +66,120 @@ export async function POST(req) {
 
     const bmi = weight / ((height / 100) ** 2);
 
-    // Return mock diet plan
-    const mockDietPlan = {
-      success: true,
-      userProfile: {
-        height,
-        weight,
-        age,
-        gender,
-        bmi: parseFloat(bmi.toFixed(1)),
-        bmr: Math.round(bmr),
-        tdee: Math.round(tdee),
-        targetCalories,
-        activityLevel,
-        goal,
-        bloodSugar,
-        bloodPressure,
-        dietaryRestrictions,
-        allergies
+    // Vegetarian detection
+    const isVegetarianUser = dietaryRestrictions.map(r => r.toLowerCase()).includes("vegetarian");
+
+    // Vegetarian meals
+    const vegetarianMeals = [
+      {
+        name: "Overnight Oats with Berries",
+        type: "breakfast",
+        calories: Math.round(targetCalories * 0.25),
+        protein: Math.round(targetCalories * 0.25 * 0.20 / 4),
+        carbs: Math.round(targetCalories * 0.25 * 0.60 / 4),
+        fat: Math.round(targetCalories * 0.25 * 0.20 / 9),
+        fiber: 8,
+        sodium: 150,
+        ingredients: [
+          { name: "Rolled oats", amount: "1/2 cup" },
+          { name: "Greek yogurt", amount: "1/4 cup" },
+          { name: "Mixed berries", amount: "1/2 cup" },
+          { name: "Chia seeds", amount: "1 tbsp" },
+          { name: "Honey", amount: "1 tsp" }
+        ],
+        instructions: [
+          "Mix oats, yogurt, and chia seeds in a jar",
+          "Add honey and stir well",
+          "Top with berries",
+          "Refrigerate overnight",
+          "Enjoy cold in the morning"
+        ],
+        healthBenefits: [
+          "High in fiber for digestive health",
+          "Protein supports muscle maintenance",
+          "Antioxidants from berries support immune system"
+        ]
       },
-      dietPlan: {
-        date: targetDate,
-        totalCalories: targetCalories,
-        totalProtein: Math.round(targetCalories * 0.25 / 4), // 25% of calories from protein
-        totalCarbs: Math.round(targetCalories * 0.45 / 4), // 45% of calories from carbs
-        totalFat: Math.round(targetCalories * 0.30 / 9), // 30% of calories from fat
-        meals: [
+      {
+        name: "Paneer & Veggie Salad",
+        type: "lunch",
+        calories: Math.round(targetCalories * 0.35),
+        protein: Math.round(targetCalories * 0.35 * 0.25 / 4),
+        carbs: Math.round(targetCalories * 0.35 * 0.50 / 4),
+        fat: Math.round(targetCalories * 0.35 * 0.25 / 9),
+        fiber: 10,
+        sodium: 300,
+        ingredients: [
+          { name: "Paneer (cottage cheese)", amount: "100g" },
+          { name: "Mixed greens", amount: "2 cups" },
+          { name: "Tomato", amount: "1/2 cup" },
+          { name: "Cucumber", amount: "1/2 cup" },
+          { name: "Olive oil", amount: "1 tbsp" },
+          { name: "Lemon juice", amount: "1 tbsp" }
+        ],
+        instructions: [
+          "Cube paneer and toss with greens, tomato, and cucumber",
+          "Drizzle with olive oil and lemon juice",
+          "Mix and serve fresh"
+        ],
+        healthBenefits: [
+          "Good protein from paneer",
+          "Rich in vitamins and minerals from veggies",
+          "Healthy fats from olive oil"
+        ]
+      },
+      {
+        name: "Dal, Brown Rice & Veggies",
+        type: "dinner",
+        calories: Math.round(targetCalories * 0.30),
+        protein: Math.round(targetCalories * 0.30 * 0.20 / 4),
+        carbs: Math.round(targetCalories * 0.30 * 0.65 / 4),
+        fat: Math.round(targetCalories * 0.30 * 0.15 / 9),
+        fiber: 8,
+        sodium: 250,
+        ingredients: [
+          { name: "Cooked brown rice", amount: "1 cup" },
+          { name: "Cooked dal (lentils)", amount: "3/4 cup" },
+          { name: "Mixed vegetables", amount: "1 cup" },
+          { name: "Spices", amount: "to taste" }
+        ],
+        instructions: [
+          "Cook dal with spices and vegetables",
+          "Serve hot with brown rice"
+        ],
+        healthBenefits: [
+          "Plant-based protein from lentils",
+          "Complex carbs for sustained energy",
+          "Rich in fiber"
+        ]
+      },
+      {
+        name: "Fruit & Nut Yogurt",
+        type: "snack",
+        calories: Math.round(targetCalories * 0.10),
+        protein: Math.round(targetCalories * 0.10 * 0.20 / 4),
+        carbs: Math.round(targetCalories * 0.10 * 0.60 / 4),
+        fat: Math.round(targetCalories * 0.10 * 0.20 / 9),
+        fiber: 3,
+        sodium: 50,
+        ingredients: [
+          { name: "Greek yogurt", amount: "1/2 cup" },
+          { name: "Chopped fruits", amount: "1/2 cup" },
+          { name: "Mixed nuts", amount: "1 tbsp" }
+        ],
+        instructions: [
+          "Mix yogurt with fruits and nuts",
+          "Enjoy as a healthy snack"
+        ],
+        healthBenefits: [
+          "Probiotics for gut health",
+          "Vitamins from fruits",
+          "Healthy fats from nuts"
+        ]
+      }
+    ];
+
+    const nonVegMeals = [
           {
             name: "Overnight Oats with Berries",
             type: "breakfast",
@@ -207,7 +295,37 @@ export async function POST(req) {
               "Protein helps maintain satiety"
             ]
           }
-        ],
+        ];
+
+    // Choose meals based on vegetarian preference
+    const meals = isVegetarianUser ? vegetarianMeals : nonVegMeals;
+
+    // Return mock diet plan
+    const mockDietPlan = {
+      success: true,
+      userProfile: {
+        height,
+        weight,
+        age,
+        gender,
+        bmi: parseFloat(bmi.toFixed(1)),
+        bmr: Math.round(bmr),
+        tdee: Math.round(tdee),
+        targetCalories,
+        activityLevel,
+        goal,
+        bloodSugar,
+        bloodPressure,
+        dietaryRestrictions,
+        allergies
+      },
+      dietPlan: {
+        date: targetDate,
+        totalCalories: targetCalories,
+        totalProtein: Math.round(targetCalories * 0.25 / 4), // 25% of calories from protein
+        totalCarbs: Math.round(targetCalories * 0.45 / 4), // 45% of calories from carbs
+        totalFat: Math.round(targetCalories * 0.30 / 9), // 30% of calories from fat
+        meals,
         healthNotes: [
           bloodSugar !== 'normal' ? "Monitor blood sugar levels and consider smaller, more frequent meals" : "Maintain stable blood sugar with balanced meals",
           bloodPressure !== 'normal' ? "Keep sodium intake moderate and focus on potassium-rich foods" : "Continue heart-healthy eating patterns",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -69,7 +69,7 @@ export default function DietPlannerPage() {
           ...formData,
           height: parseFloat(formData.height),
           weight: parseFloat(formData.weight),
-          age: parseInt(formData.age)
+          age: parseInt(formData.age),
         }),
       });
 
@@ -86,6 +86,15 @@ export default function DietPlannerPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      dietaryRestrictions: isVegetarian
+        ? Array.from(new Set([...prev.dietaryRestrictions, "vegetarian"]))
+        : prev.dietaryRestrictions.filter(r => r.toLowerCase() !== "vegetarian"),
+    }));
+  }, [isVegetarian]);
 
   return (
     <div className="min-h-screen bg-base-100 relative">
