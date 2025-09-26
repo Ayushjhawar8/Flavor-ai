@@ -145,6 +145,14 @@ const Footer = () => {
           >
             Privacy Policy
           </Link>
+
+          {/* Terms of Service link */}
+          <Link
+            href="/terms"
+            className={`text-sm underline hover:text-blue-500 block mb-1 ${textColor}`}
+          >
+            Terms of Service
+          </Link>
         </div>
       </div>
     </footer>
