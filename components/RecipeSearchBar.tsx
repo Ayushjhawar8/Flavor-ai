@@ -1,15 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
+import { festivalDishes } from "@/lib/festivalData"; // update this path
 
 export interface RecipeSearchBarProps {
   isScrolled: boolean;
   handleSearchFocus: () => void;
   showResults: boolean;
   setShowResults: React.Dispatch<React.SetStateAction<boolean>>;
-  className?: string; // ✅ Optional now
+  className?: string;
   handleBlur?: () => void;
 }
 
@@ -30,8 +32,9 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
   const [dropdownBgColor, setDropdownBgColor] = useState("rgb(55, 65, 81)");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentTheme, setCurrentTheme] = useState<string>("dark");
+  const router = useRouter();
 
-  // Blur handler (calls parentBlur if provided)
+  // Blur handler
   const handleBlur = () => {
     setIsSearchOpen(false);
     setShowResults(false);
@@ -47,7 +50,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
-          mutation.type === "attributes" &&
+          mutation.type === "attributes" && 
           mutation.attributeName === "data-theme"
         ) {
           const newTheme =
@@ -78,11 +81,21 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     return () => clearTimeout(handler);
   }, [input]);
 
-  // Fetch meals from API
+  // Combine API and custom festival dishes search
   const fetchMeals = (value: string) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((response) => response.json())
-      .then((data) => setMeals(data.meals || []));
+      .then((data) => {
+        const apiMeals = data.meals || [];
+        const customMeals = festivalDishes.filter(
+          (dish) =>
+            dish.name.toLowerCase().includes(value.toLowerCase()) ||
+            (dish.festival && dish.festival.toLowerCase().includes(value.toLowerCase())) ||
+            (dish.type && dish.type.toLowerCase().includes(value.toLowerCase())) ||
+            (dish.description && dish.description.toLowerCase().includes(value.toLowerCase()))
+        );
+        setMeals([...apiMeals, ...customMeals]);
+      });
   };
 
   // Search input state
@@ -106,7 +119,13 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
         return newIndex;
       });
     } else if (event.key === "Enter" && activeIndex >= 0) {
-      window.location.href = `/meal/${meals[activeIndex].idMeal}`;
+      const meal = meals[activeIndex];
+      if (meal.type === "Festive") {
+        localStorage.setItem("current_recipe", JSON.stringify(meal));
+        router.push("/recipe");
+      } else if (meal.idMeal) {
+        window.location.href = `/meal/${meal.idMeal}`;
+      }
     } else if (event.key === "Escape") {
       handleBlur();
     }
@@ -207,38 +226,79 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
         >
           {input &&
             meals &&
-            meals.map((meal, index) => (
-              <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`}>
-                <div
-                  onMouseEnter={() => {
-                    setActiveIndex(index);
-                    setHoveredIndex(index);
-                  }}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    window.location.href = `/meal/${meal.idMeal}`;
-                  }}
-                  style={{
-                    backgroundColor:
-                      index === activeIndex || index === hoveredIndex
-                        ? getItemBgColor(true)
-                        : "transparent",
-                    color: getItemTextColor(
-                      index === activeIndex || index === hoveredIndex
-                    ),
-                  }}
-                  className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
-                >
-                  <img
-                    src={meal.strMealThumb}
-                    alt={meal.strMeal}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <span>{meal.strMeal}</span>
-                </div>
-              </Link>
-            ))}
+            meals.map((meal, index) => {
+              // Show custom navigation for festival dishes
+              if (meal.type === "Festive") {
+                return (
+                  <div
+                    key={meal.id}
+                    className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200 cursor-pointer"
+                    style={{
+                      backgroundColor:
+                        index === activeIndex || index === hoveredIndex
+                          ? getItemBgColor(true)
+                          : "transparent",
+                      color: getItemTextColor(
+                        index === activeIndex || index === hoveredIndex
+                      ),
+                    }}
+                    onMouseEnter={() => {
+                      setActiveIndex(index);
+                      setHoveredIndex(index);
+                    }}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      localStorage.setItem("current_recipe", JSON.stringify(meal));
+                      router.push("/recipe");
+                    }}
+                  >
+                    <img
+                      src={meal.image}
+                      alt={meal.name}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div>
+                      <span>{meal.name}</span>
+                      <div className="text-xs text-gray-500">{meal.festival}</div>
+                    </div>
+                  </div>
+                );
+              }
+              // Otherwise, show API meal as before
+              return (
+                <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`}>
+                  <div
+                    onMouseEnter={() => {
+                      setActiveIndex(index);
+                      setHoveredIndex(index);
+                    }}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/meal/${meal.idMeal}`;
+                    }}
+                    style={{
+                      backgroundColor:
+                        index === activeIndex || index === hoveredIndex
+                          ? getItemBgColor(true)
+                          : "transparent",
+                      color: getItemTextColor(
+                        index === activeIndex || index === hoveredIndex
+                      ),
+                    }}
+                    className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
+                  >
+                    <img
+                      src={meal.strMealThumb}
+                      alt={meal.strMeal}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <span>{meal.strMeal}</span>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
       )}
     </div>
