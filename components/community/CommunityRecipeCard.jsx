@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "@/lib/mockAuth";
 import { Heart, MessageCircle, Share2, Clock, Users } from "lucide-react";
+import PreparationChecklist from "./preparationchecklist";
 
 export default function CommunityRecipeCard({ recipe }) {
   const [liked, setLiked] = useState(false);

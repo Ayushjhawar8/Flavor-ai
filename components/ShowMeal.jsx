@@ -1,6 +1,8 @@
 // components/ShowMeal.jsx
 "use client";
 
+import PreparationChecklist from "./preparationchecklist";
+
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
 
@@ -639,44 +641,35 @@ function ShowMeal({ URL }) {
                     Print
                   </button>
                 </div>
+<section id="instructions-section" className="mt-10">
+  <div className="flex justify-between items-center mb-4">
+    <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
+    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
+      <button
+        onClick={playerState === "playing" ? handlePause : handlePlay}
+        className="btn btn-ghost btn-circle"
+      >
+        {playerState === "playing" ? (
+          <PauseIcon className="h-6 w-6 text-info" />
+        ) : (
+          <PlayIcon className="h-6 w-6 text-success" />
+        )}
+      </button>
+      <button
+        onClick={handleRestart}
+        className="btn btn-ghost btn-circle"
+        disabled={playerState === "idle"}
+      >
+        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
+      </button>
+    </div>
+  </div>
 
-                {/* Steps */}
-                <section id="instructions-section" className="mt-10">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
-                    <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
-                      <button
-                        onClick={playerState === "playing" ? handlePause : handlePlay}
-                        className="btn btn-ghost btn-circle"
-                      >
-                        {playerState === "playing" ? (
-                          <PauseIcon className="h-6 w-6 text-info" />
-                        ) : (
-                          <PlayIcon className="h-6 w-6 text-success" />
-                        )}
-                      </button>
-                      <button
-                        onClick={handleRestart}
-                        className="btn btn-ghost btn-circle"
-                        disabled={playerState === "idle"}
-                      >
-                        <ArrowPathIcon className="h-5 w-5 text-base-content/60" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <ol className="list-decimal list-inside space-y-4 text-base-content leading-relaxed">
-                    {instructionSentences.map((sentence, index) => (
-                      <li key={index}>
-                        <HighlightedSentence
-                          text={sentence}
-                          isActive={index === activeWordRange.sentenceIndex}
-                          wordRange={activeWordRange}
-                        />
-                      </li>
-                    ))}
-                  </ol>
-                </section>
+  <PreparationChecklist
+    steps={instructionSentences}
+    checklistKey={`showmeal-steps-${mealData.idMeal}`}
+  />
+</section>
               </div>
 
               {/* RIGHT: Ingredients */}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { PlusIcon2, PlusIcon } from "@/components/Icons";
 import TextToSpeech from "./TextToSpeech";
-
+import PreparationChecklist from "./preparationchecklist";
 // /**
 //  * AiRecipe Component
 //  * 
@@ -92,27 +92,31 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
             )}
           </div>
         </div>
-        <div className="mb-4">
-          <h2 className="text-xl text-base-content font-semibold mb-2 flex items-center">
-            <PlusIcon2 />
-            Instructions
-          </h2>
-          {recipe.steps && recipe.steps.length > 0 ? (
-            (() => {
-              const cleanedSteps = recipe.steps
-                .map(step => step.replace(/^\s*\d+([.)]?)/, "").trim())
-                .filter(Boolean);
-              return (
-                <>
-                  <p className="text-base-content">{cleanedSteps.join("\n")}</p>
-                  <TextToSpeech sentences={cleanedSteps} onHighlightChange={() => {}} />
-                </>
-              );
-            })()
-          ) : (
-            <div className="text-base-content/60">No instructions available.</div>
-          )}
-        </div>
+        
+<div className="mb-4">
+  <h2 className="text-xl text-base-content font-semibold mb-2 flex items-center">
+    <PlusIcon2 />
+    Instructions
+  </h2>
+  {recipe.steps && recipe.steps.length > 0 ? (
+    (() => {
+      const cleanedSteps = recipe.steps
+        .map(step => step.replace(/^\s*\d+([.)]?)/, "").trim())
+        .filter(Boolean);
+      return (
+        <>
+          <PreparationChecklist
+            steps={cleanedSteps}
+            checklistKey={`ai-recipe-steps-${recipe.name}`}
+          />
+          <TextToSpeech sentences={cleanedSteps} onHighlightChange={() => {}} />
+        </>
+      );
+    })()
+  ) : (
+    <div className="text-base-content/60">No instructions available.</div>
+  )}
+</div>
       </div>
     </div>
   );

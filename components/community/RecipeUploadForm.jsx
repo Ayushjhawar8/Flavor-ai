@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { getCurrentUser } from "@/lib/mockAuth";
 import { saveCommunityRecipe } from "@/lib/communityStorage";
+import PreparationChecklist from "./preparationchecklist";
 
 export default function RecipeUploadForm({ onRecipeUploaded }) {
   const [formData, setFormData] = useState({
