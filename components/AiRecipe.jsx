@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { PlusIcon2, PlusIcon } from "@/components/Icons";
 import TextToSpeech from "./TextToSpeech";
-import PreparationChecklist from "./preparationchecklist";
+import PreparationChecklist from "./PreparationChecklist";
 // /**
 //  * AiRecipe Component
 //  * 
