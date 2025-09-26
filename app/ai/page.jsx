@@ -57,19 +57,54 @@ const [showNutrition, setShowNutrition] = useState(false);
 };
 
   return (
-   <>
+    <>
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${
+      
+      {/* AI Kitchen Background */}
+      <div className={`min-h-screen py-10 flex flex-col mt-20 justify-center items-center relative overflow-hidden transition-all duration-300 ${
         showResults ? "opacity-80 blur-sm" : "opacity-100"
       }`}>
+        
+        {/* Floating Kitchen Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <div className="absolute top-20 left-10 text-7xl floating-food">🍳</div>
+          <div className="absolute top-40 right-20 text-6xl animate-pulse">🥄</div>
+          <div className="absolute top-60 left-1/4 text-5xl floating-food delay-1000">🔪</div>
+          <div className="absolute bottom-40 right-10 text-7xl animate-bounce">🍽️</div>
+          <div className="absolute bottom-60 left-20 text-6xl floating-food delay-500">🧄</div>
+          <div className="absolute top-80 right-1/3 text-5xl animate-pulse delay-700">🌿</div>
+          <div className="absolute bottom-80 left-1/3 text-6xl floating-food">⚡</div>
+        </div>
+
+        {/* AI Kitchen Header */}
+        {!showRecipe && (
+          <div className="glass-card p-8 mb-8 max-w-4xl mx-auto text-center relative z-10">
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 flex items-center justify-center space-x-4">
+              <span className="text-5xl animate-pulse">🤖</span>
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">AI Kitchen</span>
+              <span className="text-5xl animate-pulse">👨‍🍳</span>
+            </h1>
+            <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
+              Welcome to the future of cooking! Our AI chef is ready to create magical recipes just for you.
+            </p>
+            <div className="flex justify-center space-x-4 mt-6">
+              <span className="text-2xl animate-bounce">✨</span>
+              <span className="text-2xl animate-pulse">🔮</span>
+              <span className="text-2xl animate-bounce delay-200">⚡</span>
+              <span className="text-2xl animate-pulse delay-300">🎯</span>
+              <span className="text-2xl animate-bounce delay-500">🚀</span>
+            </div>
+          </div>
+        )}
+
         <div className="no-print">
-  <BackButton />
-</div>
+          <BackButton />
+        </div>
 
         {showRecipe && recipe ? (
           <AiRecipe
@@ -87,99 +122,114 @@ const [showNutrition, setShowNutrition] = useState(false);
         )}
 
         {!showRecipe && (
-          <div className="flex space-x-4 mt-5">
-            {/* Only show Clear button when not showing recipe */}
+          <div className="flex space-x-4 mt-8 relative z-10">
+            {/* Enhanced Action Buttons */}
             <button
-              className="btn btn-secondary btn-sm"
+              className="glass-card px-6 py-3 text-white font-semibold rounded-full hover:bg-red-500/30 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
               onClick={handleReset}
             >
-              Clear
+              <span className="text-xl">🗑️</span>
+              <span>Clear Kitchen</span>
             </button>
 
-            {/* Only show View Recipe button when recipe exists */}
+            {/* Show Recipe Button */}
             {recipe && (
               <button
-                className="btn btn-accent btn-sm"
+                className="glass-card px-6 py-3 text-white font-semibold rounded-full hover:bg-green-500/30 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
                 onClick={() => setShowRecipe(true)}
               >
-                View Recipe
+                <span className="text-xl">👀</span>
+                <span>View Masterpiece</span>
+                <span className="text-xl">🍽️</span>
               </button>
             )}
           </div>
         )}
 
-        {/* --- Nutrition AI Section --- */}
-{/* --- Nutrition AI Section --- */}
-<div className="w-full max-w-2xl mt-10 p-6 rounded-xl shadow-lg bg-base-200 border border-base-300">
-  <h2 className="text-2xl font-bold mb-4 text-brown-700">🍎 Nutrition AI</h2>
+        {/* Nutrition AI Lab Section */}
+        <div className="w-full max-w-2xl mt-12 relative z-10">
+          <div className="glass-card p-8">
+            <h2 className="text-3xl font-bold mb-6 text-white text-center flex items-center justify-center space-x-3">
+              <span className="text-4xl animate-pulse">🍎</span>
+              <span>Nutrition AI Lab</span>
+              <span className="text-4xl animate-pulse">⚗️</span>
+            </h2>
 
-  {!showNutrition ? (
-    // ✅ Open Nutrition AI Button
-    <button
-      className="btn btn-primary hover:bg-brown-700 text-white"
-      onClick={() => setShowNutrition(true)}
-    >
-      Open Nutrition AI
-    </button>
-  ) : (
-    <>
-      <textarea
-        className="w-full p-3 border border-base-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-brown-400"
-        placeholder="Paste your recipe ingredients here..."
-        value={nutritionInput}
-        onChange={(e) => setNutritionInput(e.target.value)}
-        rows={4}
-      />
+            {!showNutrition ? (
+              <button
+                className="food-button w-full text-lg flex items-center justify-center space-x-3"
+                onClick={() => setShowNutrition(true)}
+              >
+                <span className="text-2xl">🧪</span>
+                <span>Open Nutrition Lab</span>
+                <span className="text-2xl">📊</span>
+              </button>
+            ) : (
+              <>
+                <textarea
+                  className="w-full p-4 glass-card text-white placeholder-gray-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
+                  placeholder="Paste your recipe ingredients here... 🥗"
+                  value={nutritionInput}
+                  onChange={(e) => setNutritionInput(e.target.value)}
+                  rows={4}
+                />
 
-      <div className="flex space-x-3">
-        {/* ✅ Get Nutrition Info Button */}
-        <button
-          onClick={fetchNutrition}
-          disabled={loadingNutrition}
-          className="btn btn-primary hover:bg-brown-700 text-white disabled:opacity-50"
-        >
-          {loadingNutrition ? "Analyzing..." : "Get Nutrition Info"}
-        </button>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={fetchNutrition}
+                    disabled={loadingNutrition}
+                    className="food-button flex-1 flex items-center justify-center space-x-2 disabled:opacity-50"
+                  >
+                    <span className="text-xl">⚗️</span>
+                    <span>{loadingNutrition ? "Analyzing..." : "Analyze Nutrition"}</span>
+                    {loadingNutrition && <span className="text-xl animate-spin">🔬</span>}
+                  </button>
 
-        {/* ✅ Close Button */}
-        <button
-          className="btn btn-primary hover:bg-brown-700 text-white"
-          onClick={() => {
-            setShowNutrition(false);
-            setNutrition(null);
-            setNutritionInput("");
-          }}
-        >
-          Close
-        </button>
-      </div>
+                  <button
+                    className="glass-card px-4 py-2 text-white hover:bg-red-500/30 transition-all duration-300 rounded-full flex items-center space-x-2"
+                    onClick={() => {
+                      setShowNutrition(false);
+                      setNutrition(null);
+                      setNutritionInput("");
+                    }}
+                  >
+                    <span className="text-xl">❌</span>
+                    <span>Close Lab</span>
+                  </button>
+                </div>
 
-      {nutrition && !nutrition.error && (
-        <div className="mt-6 p-4 rounded-lg bg-base-100 border border-base-300 shadow">
-          <h3 className="text-lg font-bold mb-2 text-brown-700">
-            Nutrition Facts (per serving)
-          </h3>
-          <table className="w-full border border-base-300 rounded-lg">
-            <tbody>
-              {Object.entries(nutrition).map(([key, value]) => (
-                <tr key={key} className="border-t border-base-300">
-                  <td className="p-2 font-semibold capitalize">{key}</td>
-                  <td className="p-2">{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                {nutrition && !nutrition.error && (
+                  <div className="mt-6 glass-card p-6">
+                    <h3 className="text-xl font-bold mb-4 text-white flex items-center justify-center space-x-2">
+                      <span className="text-2xl">📊</span>
+                      <span>Nutrition Analysis</span>
+                      <span className="text-2xl">🏆</span>
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {Object.entries(nutrition).map(([key, value]) => (
+                        <div key={key} className="ingredient-tag text-center">
+                          <div className="font-semibold capitalize text-sm">{key}</div>
+                          <div className="text-lg font-bold text-orange-400">{value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {nutrition?.error && (
+                  <div className="mt-4 glass-card p-4 border-2 border-red-400">
+                    <p className="text-red-300 text-center flex items-center justify-center space-x-2">
+                      <span className="text-2xl">⚠️</span>
+                      <span>{nutrition.error}</span>
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
-      )}
-
-      {nutrition?.error && (
-        <p className="text-red-500 mt-4">{nutrition.error}</p>
-      )}
-    </>
-  )}
-</div>
-
-</div>
+      </div>
+      
       <Footer />
 
       

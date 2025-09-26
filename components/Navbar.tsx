@@ -33,47 +33,57 @@ const MobileNavigation = () => {
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
         onClick={() => setIsMenuOpen(false)}
       />
-      <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl z-[10000]">
+      <div className="fixed top-0 right-0 h-full rounded-md w-64 glass-card shadow-xl z-[10000]">
         <div className="flex flex-col p-4 space-y-4 h-full overflow-y-auto">
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="self-end p-2 rounded-full bg-base-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="self-end p-2 rounded-full glass-card text-white hover:bg-red-500 transition-colors"
           >
             <X size={20} />
           </button>
 
-          <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
-            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-              <Home size={20} className="text-white" />
+          <Link href="/" className="flex items-center gap-3 p-3 rounded-lg glass-card hover:bg-orange-500/20 transition-all group">
+            <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-full w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🏠</span>
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Home</span>
+            <span className="text-white font-semibold">Home Sweet Home</span>
           </Link>
 
-          <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
+          <div className="flex flex-row items-center glass-card p-3 hover:shadow-md transition-all group">
             <ThemeToggle />
-            <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
+            <span className="px-3 text-white font-semibold flex items-center space-x-2">
+              <span className="text-xl">🎨</span>
+              <span>Theme Magic</span>
+            </span>
           </div>
 
-          <Link href="/community" className="flex items-center gap-3 p-2 rounded-lg border">
-            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                className="w-5 h-5 text-white"
-                fill="currentColor"
-              >
-                <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-                <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
-              </svg>
+          <Link href="/ai" className="flex items-center gap-3 p-3 rounded-lg glass-card hover:bg-blue-500/20 transition-all group">
+            <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-full w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🤖</span>
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Community</span>
+            <span className="text-white font-semibold">AI Chef</span>
           </Link>
-        <Link href="/festive" className="flex items-center gap-3 p-2 rounded-lg border">
-         <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-             <span className="text-white text-lg">🎉</span>
-         </div>
-             <span className="text-gray-900 dark:text-gray-100">Festivals</span>
-        </Link>
+
+          <Link href="/community" className="flex items-center gap-3 p-3 rounded-lg glass-card hover:bg-green-500/20 transition-all group">
+            <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-full w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">👥</span>
+            </div>
+            <span className="text-white font-semibold">Food Community</span>
+          </Link>
+
+          <Link href="/festive" className="flex items-center gap-3 p-3 rounded-lg glass-card hover:bg-pink-500/20 transition-all group">
+            <div className="bg-gradient-to-r from-pink-500 to-rose-500 rounded-full w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🎊</span>
+            </div>
+            <span className="text-white font-semibold">Festival Feast</span>
+          </Link>
+
+          <Link href="/random" className="flex items-center gap-3 p-3 rounded-lg glass-card hover:bg-yellow-500/20 transition-all group">
+            <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">�</span>
+            </div>
+            <span className="text-white font-semibold">Surprise Me!</span>
+          </Link>
 
         </div>
       </div>
@@ -158,24 +168,17 @@ export default function Navbar({
   }, [cursorEnabled]);
 
   return (
-    <div
-      className={`navbar fixed top-0 left-0 right-0 z-40 shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
-        isScrolled ? "bg-base-200/80 backdrop-blur-md" : "bg-base-100/90"
-      }`}
-    >
-      {/* Left - Logo + GitHub */}
+    <div className="navbar-glass fixed top-0 left-0 right-0 z-40 flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300">
+      {/* Left - Food Brand + GitHub */}
       <div className="flex items-center gap-2 md:gap-3 flex-wrap">
         <Link
           href="/"
           id="main"
-          className={`text-sm md:text-base font-bold px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-md
-          ${
-            currentTheme === "dark"
-              ? "bg-gradient-to-br from-pink-700 via-purple-800 to-pink-700 text-white hover:shadow-lg"
-              : "bg-gradient-to-br from-pink-200 via-purple-300 to-pink-200 text-gray-900 hover:shadow-md"
-          } hover:scale-[1.02] border border-white/10`}
+          className="text-sm md:text-xl font-black px-4 py-2 rounded-full transition-all duration-300 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white hover:shadow-lg hover:scale-105 border border-white/20 flex items-center space-x-2"
         >
-          Flavor AI
+          <span className="text-2xl">🍽️</span>
+          <span>Flavor AI</span>
+          <span className="text-2xl">🔥</span>
         </Link>
 
         <a
@@ -222,49 +225,53 @@ export default function Navbar({
         />
       </div>
 
-      {/* Right - Community, Home Tab & Theme Toggle */}
+      {/* Right - Food Navigation & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-2 md:gap-4">
-        <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
+        {/* Community Link */}
+        <div className="hidden md:block">
           <Link
             href="/community"
-            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+            className="w-10 h-10 flex items-center justify-center rounded-full glass-card hover:bg-green-500/30 transition-all duration-300 hover:scale-110 group"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              className={`w-5 h-5 ${
-                currentTheme === "dark"
-                  ? "text-white"
-                  : "dark:text-white text-black"
-              }`}
-              fill="currentColor"
-            >
-              <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-              <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
-            </svg>
+            <span className="text-2xl group-hover:animate-bounce">👥</span>
+          </Link>
+        </div>
+
+        {/* AI Recipe Link */}
+        <div className="hidden md:block">
+          <Link
+            href="/ai"
+            className="w-10 h-10 flex items-center justify-center rounded-full glass-card hover:bg-blue-500/30 transition-all duration-300 hover:scale-110 group"
+          >
+            <span className="text-2xl group-hover:animate-pulse">🤖</span>
+          </Link>
+        </div>
+
+        {/* Random Recipe Link */}
+        <div className="hidden md:block">
+          <Link
+            href="/random"
+            className="w-10 h-10 flex items-center justify-center rounded-full glass-card hover:bg-yellow-500/30 transition-all duration-300 hover:scale-110 group"
+          >
+            <span className="text-2xl group-hover:animate-spin">🎲</span>
           </Link>
         </div>
 
         <GoogleTranslateWrapper />
 
-        <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
+        {/* Home Link */}
+        <div className="hidden md:block">
           <Link
             href="/"
-            aria-label="Home"
-            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+            aria-label="Home Sweet Home"
+            className="w-10 h-10 flex items-center justify-center rounded-full glass-card hover:bg-orange-500/30 transition-all duration-300 hover:scale-110 group"
           >
-            <Home
-              size={16}
-              className={`${
-                currentTheme === "dark"
-                  ? "text-white"
-                  : "dark:text-white text-black"
-              }`}
-            />
+            <span className="text-2xl group-hover:animate-bounce">🏠</span>
           </Link>
         </div>
 
-        <div className="hidden md:block">
+        {/* Theme Toggle */}
+        <div className="hidden md:block glass-card p-2 rounded-full hover:bg-purple-500/30 transition-all duration-300">
           <ThemeToggle />
         </div>
 

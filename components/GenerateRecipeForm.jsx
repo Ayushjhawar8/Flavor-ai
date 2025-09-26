@@ -110,10 +110,20 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
-    >
+    <div className="w-full max-w-2xl relative z-10">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="glass-card p-8 space-y-6"
+      >
+        {/* Form Header */}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 flex items-center justify-center space-x-3">
+            <span className="text-4xl animate-pulse">🎯</span>
+            <span>Recipe Generator</span>
+            <span className="text-4xl animate-pulse">🎯</span>
+          </h2>
+          <p className="text-gray-200">Tell our AI chef what you're craving!</p>
+        </div>
       <ImageUpload
         onIngredientsAnalyzed={setAnalyzedIngredients}
         analyzedIngredients={analyzedIngredients}
@@ -157,11 +167,22 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
         register={register}
       />
 
-      <button type="submit" className="btn btn-primary w-full text-white">
-        Generate Recipe
-      </button>
-      {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>} {/* Display error */}
-    </form>
+        <button type="submit" className="food-button w-full text-xl py-4 flex items-center justify-center space-x-3">
+          <span className="text-2xl animate-bounce">🚀</span>
+          <span>Generate Magic Recipe</span>
+          <span className="text-2xl animate-bounce delay-200">✨</span>
+        </button>
+        
+        {error && (
+          <div className="glass-card p-4 border-2 border-red-400 mt-4">
+            <p className="text-red-300 text-center flex items-center justify-center space-x-2">
+              <span className="text-2xl">⚠️</span>
+              <span>{error}</span>
+            </p>
+          </div>
+        )}
+      </form>
+    </div>
   );
 }
 

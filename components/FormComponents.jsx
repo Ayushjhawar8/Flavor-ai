@@ -8,14 +8,26 @@ const SpeechRecognition =
   (window.SpeechRecognition || window.webkitSpeechRecognition);
 
 export function SelectField({ label, name, options, register }) {
+  const labelEmojis = {
+    "Type of Dish:": "🍽️",
+    "Cuisine Preference:": "🌍",
+    "Spice Level:": "🌶️"
+  };
+
   return (
-    <div className="form-control mb-4 min-w-64">
+    <div className="form-control mb-6 min-w-64">
       <label className="label">
-        <span className="label-text text-base-content font-medium">{label}</span>
+        <span className="text-white font-semibold flex items-center space-x-2">
+          <span className="text-xl">{labelEmojis[label] || "📝"}</span>
+          <span>{label}</span>
+        </span>
       </label>
-      <select {...register(name)} className="select select-bordered w-full">
+      <select 
+        {...register(name)} 
+        className="glass-card p-3 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 appearance-none bg-transparent"
+      >
         {options.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={option} className="bg-gray-800 text-white">
             {option}
           </option>
         ))}
@@ -25,15 +37,27 @@ export function SelectField({ label, name, options, register }) {
 }
 
 export function CheckboxField({ label, name, options, register, descriptions = {} }) {
+  const dietEmojis = {
+    "Vegetarian": "🥬",
+    "Vegan": "🌱",
+    "Gluten-Free": "🚫",
+    "Keto": "🥑",
+    "Low-Carb": "📉",
+    "High-Protein": "💪"
+  };
+
   return (
-    <div className="form-control mb-4 ">
+    <div className="form-control mb-6">
       <label>
-        <span className="label-text">{label}</span>
+        <span className="text-white font-semibold flex items-center space-x-2 mb-4">
+          <span className="text-xl">🍽️</span>
+          <span>{label}</span>
+        </span>
       </label>
-      <div className="grid grid-cols-2 gap-4"> 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3"> 
         {options.map((option) => (
           <label
-            className="label cursor-pointer inline-flex items-center gap-3 "
+            className="ingredient-tag cursor-pointer flex items-center gap-3 p-3 hover:bg-white/20 transition-all"
             key={option}
             title={descriptions[option] || ""}
           >
@@ -41,10 +65,11 @@ export function CheckboxField({ label, name, options, register, descriptions = {
               type="checkbox"
               value={option}
               {...register(name)}
-              className="checkbox checkbox-primary "
+              className="w-4 h-4 text-orange-500 bg-transparent border-2 border-white rounded focus:ring-orange-500 focus:ring-2"
             />
-            <div className="label-text text-base-content flex-1 ">
-              {option}
+            <div className="text-white flex-1 flex items-center space-x-2">
+              <span className="text-lg">{dietEmojis[option] || "🍽️"}</span>
+              <span>{option}</span>
               <span style={{ display: 'none' }}>
                 {descriptions[option] || ""}
               </span>
@@ -117,9 +142,12 @@ export function InputField({ label, name, register , watch }) {
   };
 
   return (
-    <div className="form-control mb-4">
+    <div className="form-control mb-6">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="text-white font-semibold flex items-center space-x-2 mb-2">
+          <span className="text-xl">💭</span>
+          <span>{label}</span>
+        </span>
       </label>
       <div className="relative w-full">
         <input
@@ -127,26 +155,31 @@ export function InputField({ label, name, register , watch }) {
           {...register(name)}
           value={inputValue}
           onChange={handleInputChange}
-          className="input input-bordered w-full pr-16 text-base-content bg-base-100 border-base-300"
+          placeholder="Tell me what you're craving... 🤤"
+          className="glass-card w-full pr-20 p-4 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
 
         <button
           type="button"
           onClick={startListening}
-          className={`absolute top-1/2 right-12 transform -translate-y-1/2 btn btn-circle btn-sm ${
-            isListening ? "btn-secondary" : "btn-primary"
+          className={`absolute top-1/2 right-12 transform -translate-y-1/2 w-8 h-8 rounded-full transition-all ${
+            isListening 
+              ? "bg-red-500 hover:bg-red-600 animate-pulse" 
+              : "glass-card hover:bg-blue-500/30"
           }`}
           disabled={isListening}
         >
-          {isListening ? <StopIcon /> : <MicrophoneIcon />}
+          <span className="text-lg">
+            {isListening ? "🛑" : "🎤"}
+          </span>
         </button>
 
         <button
           type="button"
           onClick={handleClearInput}
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 btn btn-circle btn-sm btn-error"
+          className="absolute top-1/2 right-2 transform -translate-y-1/2 w-8 h-8 rounded-full glass-card hover:bg-red-500/30 transition-all"
         >
-          <X />
+          <span className="text-lg">❌</span>
         </button>
       </div>
     </div>
