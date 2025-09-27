@@ -6,16 +6,25 @@ import Footer from "@/components/Footer";
 import FestivalDishCard from "@/components/festivals/FestivalDishCard";
 import { festivalDishes, festivalInfo, festivals } from "@/lib/festivalData";
 
+const difficulties = ["All", "Easy", "Medium", "Hard"];
+
 export default function FestivePage() {
   const [showResults, setShowResults] = useState(false);
   const [selectedFestival, setSelectedFestival] = useState("All");
-  
+  const [selectedDifficulty, setSelectedDifficulty] = useState("All");
+
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
-  const filteredDishes = selectedFestival === "All" 
-    ? festivalDishes 
-    : festivalDishes.filter(dish => dish.festival === selectedFestival);
+// Updated filter for filtering based on festivals + difficulty 
+  const filteredDishes = festivalDishes.filter((dish) => {
+    const matchesFestival =
+      selectedFestival === "All" || dish.festival === selectedFestival;
+    const matchesDifficulty =
+      selectedDifficulty === "All" || dish.difficulty === selectedDifficulty;
+    return matchesFestival && matchesDifficulty;
+  });
+
   return (
     <>
       <Navbar
@@ -40,19 +49,33 @@ export default function FestivePage() {
           </div>
 
           {/* Festival Filter Bar */}
-          <div className="flex justify-center mb-8">
-            <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="flex flex-col md:flex-col justify-center gap-4 mb-8">
+            {/* Festival Filter */}
+            <div className="flex gap-2 overflow-x-auto pb-2 justify-center">
               {festivals.map((festival) => (
                 <button
                   key={festival}
                   onClick={() => setSelectedFestival(festival)}
                   className={`btn btn-sm whitespace-nowrap ${
-                    selectedFestival === festival 
-                      ? "btn-primary" 
-                      : "btn-outline"
+                    selectedFestival === festival ? "btn-primary" : "btn-outline"
                   }`}
                 >
                   {festival}
+                </button>
+              ))}
+            </div>
+
+            {/* Difficulty Filter */}
+            <div className="flex gap-2 overflow-x-auto pb-2 justify-center">
+              {difficulties.map((level) => (
+                <button
+                  key={level}
+                  onClick={() => setSelectedDifficulty(level)}
+                  className={`btn btn-sm whitespace-nowrap ${
+                    selectedDifficulty === level ? "btn-secondary" : "btn-outline"
+                  }`}
+                >
+                  {level}
                 </button>
               ))}
             </div>
@@ -71,7 +94,7 @@ export default function FestivePage() {
               <div className="text-6xl mb-4">🍽️</div>
               <h2 className="text-2xl font-bold mb-4">No dishes found!</h2>
               <p className="text-base-content/70">
-                Try selecting a different festival.
+                Try selecting different set of options.
               </p>
             </div>
           ) : (
@@ -88,4 +111,3 @@ export default function FestivePage() {
     </>
   );
 }
-
