@@ -145,6 +145,7 @@ const Footer = () => {
           >
             Privacy Policy
           </Link>
+
           {/* Terms of Service link */}
           <Link
             href="/terms"
