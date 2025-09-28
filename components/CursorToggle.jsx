@@ -1,10 +1,22 @@
+"use client";
 import React from "react";
 import { MousePointerClick } from "lucide-react";
 
 const CursorToggle = ({ cursorEnabled, setCursorEnabled }) => {
+  const handleClick = () => {
+    const next = !cursorEnabled;
+    // Persist to localStorage
+    try {
+      localStorage.setItem("cursorEnabled", JSON.stringify(next));
+    } catch (e) {
+      console.error("Failed to save cursorEnabled to localStorage", e);
+    }
+    setCursorEnabled(next);
+  };
+
   return (
     <button
-      onClick={() => setCursorEnabled(!cursorEnabled)}
+      onClick={handleClick}
       className="relative p-3 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md ml-3"
       aria-label="Toggle animated cursor"
       title={cursorEnabled ? "Disable animated cursor" : "Enable animated cursor"}
