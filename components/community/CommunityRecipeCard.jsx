@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "@/lib/mockAuth";
 import { Heart, MessageCircle, Share2, Clock, Users } from "lucide-react";
+import RatingDisplay from "@/components/RatingDisplay";
 
 
 export default function CommunityRecipeCard({ recipe }) {
@@ -107,6 +108,17 @@ export default function CommunityRecipeCard({ recipe }) {
               <span>{recipe.servings} servings</span>
             </div>
           )}
+        </div>
+
+        {/* Rating Display */}
+        <div className="mt-3">
+          <RatingDisplay
+            recipeId={recipe.id}
+            showCount={true}
+            showAverage={false}
+            size="sm"
+            color="warning"
+          />
         </div>
 
         <div className="card-actions justify-between items-center mt-4">

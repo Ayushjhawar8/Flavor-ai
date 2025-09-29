@@ -5,6 +5,7 @@ import { Mic, MicOff, Plus, X, Clock, Users, ChefHat, Sparkles } from "lucide-re
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import BackButton from "@/components/BackButton"
+import RatingDisplay from "@/components/RatingDisplay"
 
 interface Recipe {
   id: string
@@ -1353,6 +1354,17 @@ export default function IngredientExplorer() {
                       >
                         {recipe.difficulty}
                       </div>
+                    </div>
+
+                    {/* Rating Display */}
+                    <div className="mb-4">
+                      <RatingDisplay
+                        recipeId={recipe.id}
+                        showCount={true}
+                        showAverage={false}
+                        size="sm"
+                        color="warning"
+                      />
                     </div>
                     <div className="mb-3">
                       <div className="text-sm font-medium text-base-content mb-2">You have:</div>

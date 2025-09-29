@@ -12,6 +12,7 @@ import BackButton from "@/components/BackButton";
 import ShareButton from "@/components/ShareButton";
 import { PlusIcon, YoutubeIcon } from "@/components/Icons";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
+import RecipeRatingSection from "@/components/RecipeRatingSection";
 
 // Shopping list helpers
 import { addItemsToShoppingList, parseMeasure } from "@/lib/shoppingList";
@@ -762,6 +763,15 @@ function ShowMeal({ URL }) {
                   factor={factor}
                 />
               </div>
+            </div>
+
+            {/* Rating Section */}
+            <div className="mt-12">
+              <RecipeRatingSection
+                recipeId={mealData.idMeal || `meal_${mealData.strMeal}`}
+                recipeTitle={mealData.strMeal}
+                showBreakdown={true}
+              />
             </div>
           </div>
         </div>

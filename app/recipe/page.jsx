@@ -8,6 +8,7 @@ import BackButton from "@/components/BackButton";
 import { PlusIcon } from "@/components/Icons";
 import { Clock, Users } from "lucide-react"; 
 import PreparationChecklist from "@/components/PreparationChecklist"; // IMPORT ADDED HERE
+import RecipeRatingSection from "@/components/RecipeRatingSection";
 
 export default function ViewRecipePage() {
   const [showResults, setShowResults] = useState(false);
@@ -171,6 +172,15 @@ export default function ViewRecipePage() {
                   )}
                   {/* END MODIFIED BLOCK */}
                 </div>
+              </section>
+
+              {/* Rating Section */}
+              <section className="mt-12">
+                <RecipeRatingSection
+                  recipeId={recipeData.id || `recipe_${recipeData.title}`}
+                  recipeTitle={recipeData.title}
+                  showBreakdown={true}
+                />
               </section>
             </div>
           </div>

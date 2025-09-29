@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Clock, Users } from "lucide-react";
+import RatingDisplay from "@/components/RatingDisplay";
 
 export default function FestivalDishCard({ dish }) {
   const router = useRouter();
@@ -48,6 +49,17 @@ export default function FestivalDishCard({ dish }) {
           {dish.difficulty && (
             <div className="badge badge-outline badge-sm">{dish.difficulty}</div>
           )}
+        </div>
+
+        {/* Rating Display */}
+        <div className="mt-3">
+          <RatingDisplay
+            recipeId={dish.id || `festival_${dish.name}`}
+            showCount={true}
+            showAverage={false}
+            size="sm"
+            color="warning"
+          />
         </div>
 
         <div className="card-actions justify-end mt-4">

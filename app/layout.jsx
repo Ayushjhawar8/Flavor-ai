@@ -3,6 +3,7 @@ import "./globals.css";
 import ScrollToTop from "../components/ScrollToTop";
 import GoogleTranslateWrapper from "@/components/GoogleTranslateWrapper";
 import SnakeCursor from "@/components/SnakeCursor";
+import RatingInitializer from "@/components/RatingInitializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className} style={patrickHand}>
         <SnakeCursor />
+        <RatingInitializer />
         {children}
         <ScrollToTop></ScrollToTop>
       </body>
