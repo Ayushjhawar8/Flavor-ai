@@ -44,7 +44,7 @@ const Footer = () => {
       glow: "drop-shadow(0 0 8px #6E4B2A)",
     },
     {
-      href: "https://www.linkedin.com/in/",
+      href: "https://www.linkedin.com/in/ayushjhawar8/",
       icon: FaLinkedin,
       label: "LinkedIn",
       glow: "drop-shadow(0 0 8px #30B4DB)",
