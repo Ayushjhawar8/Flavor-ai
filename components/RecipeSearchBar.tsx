@@ -1,15 +1,17 @@
+// components/RecipeSearchBar.tsx
+
 "use client";
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { SearchIcon, X } from "@/components/Icons";
+import { SearchIcon as CustomSearchIcon, X } from "@/components/Icons"; // Renamed to avoid conflict
 
 export interface RecipeSearchBarProps {
   isScrolled: boolean;
   handleSearchFocus: () => void;
   showResults: boolean;
   setShowResults: React.Dispatch<React.SetStateAction<boolean>>;
-  className?: string; // ✅ Optional now
+  className?: string;
   handleBlur?: () => void;
 }
 
@@ -31,18 +33,17 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentTheme, setCurrentTheme] = useState<string>("dark");
 
-  // Blur handler (calls parentBlur if provided)
   const handleBlur = () => {
-    setIsSearchOpen(false);
-    setShowResults(false);
-    setActiveIndex(-1);
-    setHoveredIndex(null);
-    setMeals([]);
-    inputRef.current?.blur();
+    // A small delay to allow click events on search results
+    setTimeout(() => {
+        setIsSearchOpen(false);
+        setShowResults(false);
+        setActiveIndex(-1);
+        setHoveredIndex(null);
+    }, 200);
     if (parentHandleBlur) parentHandleBlur();
   };
-
-  // Theme watcher
+  
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
@@ -66,7 +67,6 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     return () => observer.disconnect();
   }, []);
 
-  // Debounced fetch for search
   useEffect(() => {
     if (!input) {
       setMeals([]);
@@ -78,20 +78,17 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     return () => clearTimeout(handler);
   }, [input]);
 
-  // Fetch meals from API
   const fetchMeals = (value: string) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((response) => response.json())
       .then((data) => setMeals(data.meals || []));
   };
 
-  // Search input state
   const handleSearch = (value: string) => {
     setInput(value);
     if (!value) setMeals([]);
   };
 
-  // Keyboard navigation for dropdown
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown") {
       setActiveIndex((prev) => {
@@ -109,10 +106,10 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
       window.location.href = `/meal/${meals[activeIndex].idMeal}`;
     } else if (event.key === "Escape") {
       handleBlur();
+      inputRef.current?.blur();
     }
   };
-
-  // Scroll focused item into view
+  
   const scrollIntoView = (index: number) => {
     if (resultsRef.current) {
       const resultItems = resultsRef.current.children;
@@ -125,36 +122,24 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     }
   };
 
-  // Outside click closes dropdown
-  const handleClickOutside = (e: MouseEvent) => {
-    if (!(e.target as Element).closest("#searchBar")) {
-      handleBlur();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Color functions
   const getDropdownBgColor = () =>
-    currentTheme === "dark" ? "rgb(55, 65, 81)" : "rgb(255,192,203)";
+    currentTheme === "dark" ? "rgb(31, 41, 55)" : "rgb(255, 255, 255)";
   const getDropdownHoverBgColor = () =>
-    currentTheme === "dark" ? "rgb(75, 85, 99)" : "rgb(255,105,180)";
+    currentTheme === "dark" ? "rgb(55, 65, 81)" : "rgb(243, 244, 246)";
   const getItemBgColor = (isActive: boolean) =>
     isActive
       ? currentTheme === "dark"
-        ? "rgb(139, 107, 79)"
-        : "rgb(255,105,180)"
+        ? "rgb(75, 85, 99)"
+        : "rgb(229, 231, 235)"
       : "transparent";
   const getItemTextColor = (isActive: boolean) =>
     isActive
       ? currentTheme === "dark"
-        ? "#F5DEB3"
-        : "#3a003a"
+        ? "#F3F4F6"
+        : "#111827"
       : currentTheme === "dark"
-      ? "#E5E7EB"
-      : "#1a1a1a";
+      ? "#D1D5DB"
+      : "#4B5563";
 
   return (
     <div
@@ -162,49 +147,57 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
       className={`flex flex-col relative ${className || ""}`}
     >
       {!isSearchOpen ? (
-        <button
-          onClick={() => setIsSearchOpen(true)}
-          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200"
+         <button
+            onClick={() => setIsSearchOpen(true)}
+            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-200 px-3 py-2 rounded-full border border-white/30 hover:border-white/50 bg-white/10 hover:bg-white/20 backdrop-blur-sm"
         >
-          <SearchIcon className="w-5 h-5" />
-          <span className="text-base font-medium">Search dish</span>
+          <CustomSearchIcon className="w-5 h-5" />
+          <span className="text-base font-medium">Search for a dish...</span>
         </button>
       ) : (
-        <label className="input input-bordered flex items-center gap-2">
-          <SearchIcon className={undefined} />
-          <input
-            ref={inputRef}
-            type="text"
-            className="grow"
-            placeholder="Search dish..."
-            value={input}
-            onChange={(e) => {
-              handleSearch(e.target.value);
-              setShowResults(true);
-            }}
-            onKeyDown={handleKeyDown}
-            onFocus={handleSearchFocus}
-            autoFocus
-          />
-          <button
-            onClick={() => {
-              handleSearch("");
-              setIsSearchOpen(false);
-            }}
-          >
-            <X />
-          </button>
-        </label>
+        // --- THIS IS THE UPDATED SECTION ---
+        <div className="relative">
+            <span className="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-gray-300">search</span>
+            <input
+              ref={inputRef}
+              type="text"
+              className="w-full bg-white/20 dark:bg-black/20 backdrop-blur-sm text-white placeholder-gray-300 border-none rounded-full py-3 pl-12 pr-10 focus:ring-2 focus:ring-primary focus:outline-none transition"
+              placeholder="Search for a dish..."
+              value={input}
+              onChange={(e) => {
+                  handleSearch(e.target.value);
+                  setShowResults(true);
+              }}
+              onKeyDown={handleKeyDown}
+              onFocus={handleSearchFocus}
+              onBlur={handleBlur}
+              autoFocus
+            />
+            <button
+                onClick={() => {
+                  handleSearch("");
+                  setIsSearchOpen(false);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white"
+            >
+              <X />
+            </button>
+        </div>
+        // --- END OF UPDATED SECTION ---
       )}
 
       {showResults && input && isSearchOpen && (
         <div
           ref={resultsRef}
-          className="w-80 max-h-80 overflow-y-scroll no-scrollbar p-2 rounded-xl flex flex-col gap-2 absolute top-12 md:top-20 md:right-0 z-10"
-          style={{ backgroundColor: getDropdownBgColor() }}
+          className="w-full max-h-80 overflow-y-auto no-scrollbar p-2 rounded-xl shadow-lg flex flex-col gap-2 absolute top-14 z-10 border border-white/10"
+          style={{ 
+            backgroundColor: getDropdownBgColor(),
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+           }}
           onMouseEnter={() => setDropdownBgColor(getDropdownHoverBgColor())}
           onMouseLeave={() => setDropdownBgColor(getDropdownBgColor())}
-        >
+          >
           {input &&
             meals &&
             meals.map((meal, index) => (
@@ -228,12 +221,12 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
                       index === activeIndex || index === hoveredIndex
                     ),
                   }}
-                  className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
+                  className="p-2 rounded-lg flex items-center justify-start gap-4 transition-colors duration-200"
                 >
                   <img
                     src={meal.strMealThumb}
                     alt={meal.strMeal}
-                    className="w-10 h-10 rounded-full"
+                    className="w-12 h-12 rounded-md"
                   />
                   <span>{meal.strMeal}</span>
                 </div>

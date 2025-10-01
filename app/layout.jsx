@@ -1,18 +1,9 @@
-import { Inter } from "next/font/google";
+// app/layout.jsx
+
+import Script from "next/script";
 import "./globals.css";
 import ScrollToTop from "../components/ScrollToTop";
-import GoogleTranslateWrapper from "@/components/GoogleTranslateWrapper";
 import SnakeCursor from "@/components/SnakeCursor";
-
-const inter = Inter({ subsets: ["latin"] });
-
-const patrickHand = {
-  fontFamily: '"Patrick Hand", cursive',
-  fallback: [
-    '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'sans-serif'
-  ]
-};
 
 export const metadata = {
   title: "Flavor AI",
@@ -23,15 +14,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
       <head>
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍱</text></svg>"
-        />
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍱</text></svg>" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
+        
+        {/* THIS LINE NOW LOADS 'Roboto' instead of 'Lora' */}
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+        <Script
+          src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"
+          strategy="afterInteractive"
+          type="module"
+        />
       </head>
-      <body className={inter.className} style={patrickHand}>
+      {/* Set the body class to 'font-sans' to apply the default font */}
+      <body className="font-sans">
         <SnakeCursor />
         {children}
         <ScrollToTop></ScrollToTop>

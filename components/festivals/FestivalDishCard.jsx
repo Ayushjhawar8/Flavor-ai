@@ -13,15 +13,15 @@ export default function FestivalDishCard({ dish }) {
   };
 
   return (
-    <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300">
+      <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300">
       <figure className="relative">
         <img
           src={dish.image}
           alt={dish.name}
-          className="w-full h-72 object-cover"
+            className="w-full h-72 object-cover"
         />
         <div className="absolute top-2 right-2">
-          <div className="badge badge-primary">{dish.festival}</div>
+            <div className="badge badge-primary">{dish.festival}</div>
         </div>
       </figure>
 
@@ -50,12 +50,12 @@ export default function FestivalDishCard({ dish }) {
           )}
         </div>
 
-        <div className="card-actions justify-end mt-4">
-          <button className="btn btn-primary btn-sm" onClick={handleViewRecipe}>
+          <div className="card-actions justify-end mt-4">
+            <button className="btn btn-primary btn-sm" onClick={handleViewRecipe}>
             View Recipe
           </button>
         </div>
       </div>
-    </div>
+      </div>
   );
 }

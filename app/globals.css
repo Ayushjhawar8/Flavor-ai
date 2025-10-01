@@ -58,6 +58,21 @@ html {
   background-color: purple;
 }
 
+/* Subtle float animation for Spline elements */
+@keyframes floatY {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.spline-float {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.spline-float[data-delay="1"] { animation-delay: .6s; }
+.spline-float[data-delay="2"] { animation-delay: 1.2s; }
+.spline-float[data-delay="3"] { animation-delay: 1.8s; }
+
 /* Google Translate Styles */
 .google-translate-container {
   position: fixed;
@@ -166,4 +181,15 @@ html {
     align-self: flex-start;               /* avoid flex stretch */
     z-index: 1;                           /* stay above backgrounds */
   }
+}
+
+/* app/globals.css */
+
+
+
+/* Add this new class */
+.background-image {
+  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
 }

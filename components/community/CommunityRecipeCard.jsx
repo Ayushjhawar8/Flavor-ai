@@ -60,15 +60,15 @@ export default function CommunityRecipeCard({ recipe }) {
   };
 
   return (
-    <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300">
+      <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300">
       <figure className="relative">
         <img
           src={recipe.image}
           alt={recipe.title}
-          className="w-full h-48 object-cover"
+            className="w-full h-48 object-cover"
         />
         <div className="absolute top-2 right-2">
-          <div className="badge badge-primary">{recipe.difficulty}</div>
+            <div className="badge badge-primary">{recipe.difficulty}</div>
         </div>
       </figure>
 
@@ -112,7 +112,7 @@ export default function CommunityRecipeCard({ recipe }) {
           <div className="flex items-center gap-4">
             <button
               onClick={handleLike}
-              className={`btn btn-ghost btn-sm gap-2 ${
+              className={`btn btn-ghost btn-sm gap-2 rounded-xl ${
                 liked ? "text-red-500" : ""
               }`}
             >
@@ -122,13 +122,13 @@ export default function CommunityRecipeCard({ recipe }) {
 
             <button
               onClick={() => setShowComments(!showComments)}
-              className="btn btn-ghost btn-sm gap-2"
+              className="btn btn-ghost btn-sm gap-2 rounded-xl"
             >
               <MessageCircle size={18} />
               <span>{comments.length}</span>
             </button>
 
-            <button onClick={handleShare} className="btn btn-ghost btn-sm">
+            <button onClick={handleShare} className="btn btn-ghost btn-sm rounded-xl">
               <Share2 size={18} />
             </button>
           </div>
@@ -174,6 +174,6 @@ export default function CommunityRecipeCard({ recipe }) {
           </div>
         )}
       </div>
-    </div>
+      </div>
   );
 }

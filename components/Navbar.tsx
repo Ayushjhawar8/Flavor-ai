@@ -1,3 +1,5 @@
+// components/Navbar.tsx
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -159,8 +161,9 @@ export default function Navbar({
 
   return (
     <div
-      className={`navbar fixed top-0 left-0 right-0 z-40 shadow-md flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
-        isScrolled ? "bg-base-200/80 backdrop-blur-md" : "bg-base-100/90"
+      // --- THIS LINE IS THE ONLY CHANGE ---
+      className={`navbar fixed top-0 left-0 right-0 z-40 flex flex-wrap items-center justify-between gap-y-2 px-4 py-2 md:py-3 transition-all duration-300 ${
+        isScrolled ? "bg-black/10 backdrop-blur-md shadow-md" : "bg-transparent"
       }`}
     >
       {/* Left - Logo + GitHub */}
