@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaShieldAlt } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6"; // react-icons v4.10+
+import Link from "next/link";
 
 const Footer = () => {
   const [currentTheme, setCurrentTheme] = useState("light");
@@ -43,7 +44,7 @@ const Footer = () => {
       glow: "drop-shadow(0 0 8px #6E4B2A)",
     },
     {
-      href: "https://www.linkedin.com/in/",
+      href: "https://www.linkedin.com/in/ayushjhawar8/",
       icon: FaLinkedin,
       label: "LinkedIn",
       glow: "drop-shadow(0 0 8px #30B4DB)",
@@ -52,9 +53,8 @@ const Footer = () => {
 
   const iconColor = currentTheme === "dark" ? "text-white" : "text-amber-800";
   const iconBg = currentTheme === "dark" ? "bg-muted/50" : "bg-amber-200/30";
-  const iconHoverBg = currentTheme === "dark"
-    ? "hover:bg-muted"
-    : "hover:bg-amber-200/60";
+  const iconHoverBg =
+    currentTheme === "dark" ? "hover:bg-muted" : "hover:bg-amber-200/60";
   const textColor = currentTheme === "dark" ? "text-white" : "text-amber-800";
 
   return (
@@ -62,10 +62,14 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row justify-between items-center w-full max-w-4xl mx-auto space-y-4 md:space-y-0">
         {/* Left: Title & Subtitle */}
         <div className="text-center md:text-left">
-          <h3 className={`card-title text-lg md:text-xl flex items-center ${textColor}`}>
+          <h3
+            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
+          >
             Flavor AI
           </h3>
-          <p className={`card-title text-lg md:text-xl flex items-center ${textColor}`}>
+          <p
+            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
+          >
             Your AI-powered culinary companion.
           </p>
         </div>
@@ -95,7 +99,9 @@ const Footer = () => {
 
         {/* Right: Social & Email & Copyright */}
         <div className="text-sm text-center md:text-center w-full md:w-auto">
-          <div className={`card-title text-lg md:text-xl flex items-center justify-center mb-2 ${textColor}`}>
+          <div
+            className={`card-title text-lg md:text-xl flex items-center justify-center mb-2 ${textColor}`}
+          >
             Connect with Ayush
           </div>
           <div className="flex gap-4 text-xl mb-2 justify-end md:justify-center">
@@ -108,9 +114,12 @@ const Footer = () => {
                 className={`${iconBg} ${iconHoverBg} ${iconColor} p-2 rounded-lg flex items-center justify-center transition duration-300`}
                 title={label}
                 aria-label={label}
-                style={{ filter: "none", transition: "box-shadow 0.3s, filter 0.3s" }}
-                onMouseEnter={e => (e.currentTarget.style.filter = glow)}
-                onMouseLeave={e => (e.currentTarget.style.filter = "none")}
+                style={{
+                  filter: "none",
+                  transition: "box-shadow 0.3s, filter 0.3s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.filter = glow)}
+                onMouseLeave={(e) => (e.currentTarget.style.filter = "none")}
               >
                 <Icon />
               </a>
@@ -123,9 +132,19 @@ const Footer = () => {
           >
             ayushjhawar499@gmail.com
           </a>
-          <p className={`card-title text-lg md:text-xl flex items-center ${textColor}`}>
+
+          <p
+            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
+          >
             &copy; {new Date().getFullYear()} Flavor AI. All Rights Reserved.
           </p>
+          {/* Privacy Policy link */}
+          <Link
+            href="/privacy-policy"
+            className={`text-sm underline hover:text-blue-500 block mb-1 ${textColor}`}
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>
