@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { getCurrentUser } from "@/lib/mockAuth";
 import { Heart, MessageCircle, Share2, Clock, Users } from "lucide-react";
 
+
 export default function CommunityRecipeCard({ recipe }) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 50) + 5); // for now random like count
