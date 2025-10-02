@@ -4,9 +4,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-
-import { SearchIcon as CustomSearchIcon, X } from "@/components/Icons"; // keep alias
-import { festivalDishes } from "@/lib/festivalData"; // keep festival data
+import { SearchIcon as CustomSearchIcon, X } from "@/components/Icons";
+import { festivalDishes } from "@/lib/festivalData";
 
 export interface RecipeSearchBarProps {
   isScrolled: boolean;
@@ -36,6 +35,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
   const [currentTheme, setCurrentTheme] = useState<string>("dark");
   const router = useRouter();
 
+  // Blur handler
   const handleBlur = () => {
     setTimeout(() => {
       setIsSearchOpen(false);
@@ -49,8 +49,12 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === "attributes" && mutation.attributeName === "data-theme") {
-          const newTheme = document.documentElement.getAttribute("data-theme") || "dark";
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-theme"
+        ) {
+          const newTheme =
+            document.documentElement.getAttribute("data-theme") || "dark";
           setCurrentTheme(newTheme);
         }
       });
@@ -208,78 +212,81 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
           onMouseEnter={() => setDropdownBgColor(getDropdownHoverBgColor())}
           onMouseLeave={() => setDropdownBgColor(getDropdownBgColor())}
         >
-          {meals.map((meal, index) => {
-            if (meal.type === "Festive") {
-              return (
-                <div
-                  key={meal.id}
-                  className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200 cursor-pointer"
-                  style={{
-                    backgroundColor:
-                      index === activeIndex || index === hoveredIndex
-                        ? getItemBgColor(true)
-                        : "transparent",
-                    color: getItemTextColor(
-                      index === activeIndex || index === hoveredIndex
-                    ),
-                  }}
-                  onMouseEnter={() => {
-                    setActiveIndex(index);
-                    setHoveredIndex(index);
-                  }}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    localStorage.setItem("current_recipe", JSON.stringify(meal));
-                    router.push("/recipe");
-                  }}
-                >
-                  <img
-                    src={meal.image}
-                    alt={meal.name}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div>
-                    <span>{meal.name}</span>
-                    <div className="text-xs text-gray-500">{meal.festival}</div>
+          {input &&
+            meals &&
+            meals.map((meal, index) => {
+              // Show custom navigation for festival dishes
+              if (meal.type === "Festive") {
+                return (
+                  <div
+                    key={meal.id}
+                    className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200 cursor-pointer"
+                    style={{
+                      backgroundColor:
+                        index === activeIndex || index === hoveredIndex
+                          ? getItemBgColor(true)
+                          : "transparent",
+                      color: getItemTextColor(
+                        index === activeIndex || index === hoveredIndex
+                      ),
+                    }}
+                    onMouseEnter={() => {
+                      setActiveIndex(index);
+                      setHoveredIndex(index);
+                    }}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      localStorage.setItem("current_recipe", JSON.stringify(meal));
+                      router.push("/recipe");
+                    }}
+                  >
+                    <img
+                      src={meal.image}
+                      alt={meal.name}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div>
+                      <span>{meal.name}</span>
+                      <div className="text-xs text-gray-500">{meal.festival}</div>
+                    </div>
                   </div>
-                </div>
+                );
+              }
+              // Otherwise, show API meal as before
+              return (
+                <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`}>
+                  <div
+                    onMouseEnter={() => {
+                      setActiveIndex(index);
+                      setHoveredIndex(index);
+                    }}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/meal/${meal.idMeal}`;
+                    }}
+                    style={{
+                      backgroundColor:
+                        index === activeIndex || index === hoveredIndex
+                          ? getItemBgColor(true)
+                          : "transparent",
+                      color: getItemTextColor(
+                        index === activeIndex || index === hoveredIndex
+                      ),
+                    }}
+                    className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
+                  >
+                    <img
+                      src={meal.strMealThumb}
+                      alt={meal.strMeal}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <span>{meal.strMeal}</span>
+                  </div>
+                </Link>
               );
-            }
-
-            return (
-              <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`}>
-                <div
-                  onMouseEnter={() => {
-                    setActiveIndex(index);
-                    setHoveredIndex(index);
-                  }}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    window.location.href = `/meal/${meal.idMeal}`;
-                  }}
-                  style={{
-                    backgroundColor:
-                      index === activeIndex || index === hoveredIndex
-                        ? getItemBgColor(true)
-                        : "transparent",
-                    color: getItemTextColor(
-                      index === activeIndex || index === hoveredIndex
-                    ),
-                  }}
-                  className="p-1 rounded-xl flex items-center justify-start gap-3 transition-colors duration-200"
-                >
-                  <img
-                    src={meal.strMealThumb}
-                    alt={meal.strMeal}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <span>{meal.strMeal}</span>
-                </div>
-              </Link>
-            );
-          })}
+            })}
         </div>
       )}
     </div>
