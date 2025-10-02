@@ -78,9 +78,9 @@ const Footer = () => {
             <h4 className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}>✨ Features</h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span className={`${textColor} opacity-80 text-base cursor-default block text-center`}>
+                <Link href="/ai-recipe-generator" className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}>
                   🤖 AI Recipe Generator
-                </span>
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span className={`${textColor} opacity-80 text-base cursor-default block text-center`}>
