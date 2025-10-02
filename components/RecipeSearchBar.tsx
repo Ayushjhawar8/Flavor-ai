@@ -74,6 +74,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     return () => clearTimeout(handler);
   }, [input]);
 
+  // Combine API and custom festival dishes search
   const fetchMeals = (value: string) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((response) => response.json())
