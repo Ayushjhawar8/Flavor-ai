@@ -116,7 +116,32 @@ export default function Navbar({
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
-  const [cursorEnabled, setCursorEnabled] = useState(true);
+
+  // Initialize cursorEnabled changes from localStorage
+  const [cursorEnabled, setCursorEnabled] = useState<boolean>(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
+    try {
+      const stored = localStorage.getItem("cursorEnabled");
+      if (stored !== null) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      console.error("Error reading cursorEnabled from localStorage", e);
+    }
+    return true; // default if not in storage
+  });
+
+  //Changes made on cursorEnabled, set localStorage ursorEnabled(true or false)
+  useEffect(() => {
+    try {
+      localStorage.setItem("cursorEnabled", JSON.stringify(cursorEnabled));
+    } catch (e) {
+      console.error("Error writing cursorEnabled to localStorage", e);
+    }
+  }, [cursorEnabled]);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -152,12 +177,14 @@ export default function Navbar({
     return () => observer.disconnect();
   }, []);
 
+  //apply the cursor style to body
   useEffect(() => {
     document.body.style.cursor = cursorEnabled ? "none" : "default";
     return () => {
       document.body.style.cursor = "default";
     };
   }, [cursorEnabled]);
+
 
   return (
     <div
@@ -235,7 +262,11 @@ export default function Navbar({
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              className="w-5 h-5 text-white"
+              className={`w-5 h-5 ${
+                currentTheme === "dark"
+                  ? "text-white"
+                  : "dark:text-white text-black"
+              }`}
               fill="currentColor"
             >
               <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />

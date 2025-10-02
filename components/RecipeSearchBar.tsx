@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { SearchIcon as CustomSearchIcon, X } from "@/components/Icons";
 import { festivalDishes } from "@/lib/festivalData";
 
+
 export interface RecipeSearchBarProps {
   isScrolled: boolean;
   handleSearchFocus: () => void;
@@ -50,7 +51,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
-          mutation.type === "attributes" &&
+          mutation.type === "attributes" && 
           mutation.attributeName === "data-theme"
         ) {
           const newTheme =
