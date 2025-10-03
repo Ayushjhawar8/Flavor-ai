@@ -16,7 +16,6 @@ export default function Page() {
   const [filter, setFilter] = useState("All");
   const [showDiets, setShowDiets] = useState(false);
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
-    // Recently Viewed Meals
   const [recentMeals, setRecentMeals] = useState<any[]>([]);
 
   useEffect(() => {
@@ -38,7 +37,6 @@ export default function Page() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
-  // Category → Diet Map
   const categoryDietMap: Record<string, string[]> = {
     Dessert: ["Vegan", "100 Calories"],
     Vegetarian: ["Vegan", "Low Carbs"],
@@ -107,7 +105,6 @@ export default function Page() {
 
   return (
     <>
-      {/* Navbar */}
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
@@ -115,14 +112,17 @@ export default function Page() {
         handleBlur={handleBlur}
       />
 
-      {/* Content */}
       <div
         className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 transition-all duration-300 relative z-10 ${
         !showResults ? "opacity-100" : "opacity-80 blur-sm"
       }`}
       >
         <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
-          <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8">
+          {/* --- ANIMATION ADDED TO THIS PARENT DIV --- */}
+          <div 
+            data-aos="fade-up" 
+            className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8"
+          >
             <h1
               className={`text-5xl md:text-7xl font-extrabold leading-tight ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
@@ -130,6 +130,7 @@ export default function Page() {
             >
               Start Your Flavor Journey
             </h1>
+            
             <p
               className={`text-xl md:text-2xl max-w-3xl leading-relaxed ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
@@ -139,8 +140,9 @@ export default function Page() {
               suggestions, and exciting surprises.
             </p>
 
-            {/* Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div
+              className="flex flex-wrap items-center justify-center gap-4"
+            >
               <Link href="/ai">
                 <button className="btn btn-outline btn-primary text-lg">
                   Get AI-Generated Recipes
@@ -156,9 +158,9 @@ export default function Page() {
                   AI Diet Planner
                 </button>
               </Link>
-               <Link href="/festive">
+              <Link href="/festive">
                 <button className="btn btn-outline btn-primary text-lg">
-                 Festive Dishes
+                Festive Dishes
                 </button>
               </Link>
               <Link href="/ingredient-explorer">
@@ -189,9 +191,10 @@ export default function Page() {
             </div>
           </div>
         </section>
-                {/* Recently Viewed */}
+
         {recentMeals.length > 0 && (
-          <section className="w-full max-w-7xl mx-auto my-10 px-4">
+          // --- ANIMATION ADDED ---
+          <section data-aos="fade-up" className="w-full max-w-7xl mx-auto my-10 px-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-base-content">
                 Recently Viewed
@@ -229,10 +232,11 @@ export default function Page() {
 
         <div className="divider mt-10"></div>
 
-        {/* Categories */}
         {showCategories && (
           <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full relative z-10">
+            {/* --- ANIMATION ADDED --- */}
             <h1
+              data-aos="fade-up"
               className={`text-xl md:text-3xl mb-10 font-semibold text-center ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
               }`}
@@ -240,8 +244,11 @@ export default function Page() {
               A Taste for Every Mood and Moment
             </h1>
 
-            {/* Veg/Non-Veg filter */}
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
+            <div
+              data-aos="fade-up"
+              data-aos-delay="100"
+              className="flex flex-wrap gap-4 justify-center mb-8"
+            >
               {["All", "Vegetarian", "Non-Vegetarian"].map((type) => (
                 <button
                   key={type}
@@ -255,8 +262,11 @@ export default function Page() {
               ))}
             </div>
 
-            {/* Diet filter */}
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
+            <div
+              data-aos="fade-up"
+              data-aos-delay="200"
+              className="flex flex-wrap gap-4 justify-center mb-8"
+            >
               <button
                 onClick={() => setShowDiets(!showDiets)}
                 className={`btn btn-sm md:btn-md ${
@@ -268,7 +278,10 @@ export default function Page() {
             </div>
 
             {showDiets && (
-              <div className="flex flex-wrap gap-4 justify-center mb-8">
+              <div
+                data-aos="fade-up"
+                className="flex flex-wrap gap-4 justify-center mb-8"
+              >
                 {[
                   "Vegan",
                   "Keto",
@@ -298,7 +311,6 @@ export default function Page() {
               </div>
             )}
 
-            {/* Category Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
               {categories
                 .filter((category) => {
@@ -332,8 +344,10 @@ export default function Page() {
                   return true; // All
                 })
                 .map((category) => (
+                  // --- ANIMATION ADDED to each card ---
                   <div
                     key={category.idCategory}
+                    data-aos="fade-up"
                     className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:-translate-y-1 transition-all relative z-10"
                   >
                     <figure>
@@ -367,7 +381,6 @@ export default function Page() {
           </section>
         )}
 
-        {/* Footer */}
         <Footer />
       </div>
     </>
