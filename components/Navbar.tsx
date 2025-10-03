@@ -4,7 +4,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Home, Menu, X } from "lucide-react";
+// START: Added 'Info' icon for the About Us link
+import { Home, Menu, X, Info } from "lucide-react";
+// END: Added 'Info' icon for the About Us link
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
 import CursorToggle from "./CursorToggle";
@@ -68,12 +70,21 @@ const MobileNavigation = () => {
             </div>
             <span className="text-gray-900 dark:text-gray-100">Community</span>
           </Link>
-        <Link href="/festive" className="flex items-center gap-3 p-2 rounded-lg border">
-         <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
-             <span className="text-white text-lg">🎉</span>
-         </div>
-             <span className="text-gray-900 dark:text-gray-100">Festivals</span>
-        </Link>
+          <Link href="/festive" className="flex items-center gap-3 p-2 rounded-lg border">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <span className="text-white text-lg">🎉</span>
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">Festivals</span>
+          </Link>
+
+          {/* START: Added About Us link to mobile menu */}
+          <Link href="/about" className="flex items-center gap-3 p-2 rounded-lg border">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <Info size={20} className="text-white" />
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">About Us</span>
+          </Link>
+          {/* END: Added About Us link to mobile menu */}
 
         </div>
       </div>
@@ -115,7 +126,6 @@ export default function Navbar({
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
 
-  // Initialize cursorEnabled changes from localStorage
   const [cursorEnabled, setCursorEnabled] = useState<boolean>(() => {
     if (typeof window === "undefined") {
       return true;
@@ -128,10 +138,9 @@ export default function Navbar({
     } catch (e) {
       console.error("Error reading cursorEnabled from localStorage", e);
     }
-    return true; // default if not in storage
+    return true;
   });
 
-  //Changes made on cursorEnabled, set localStorage ursorEnabled(true or false)
   useEffect(() => {
     try {
       localStorage.setItem("cursorEnabled", JSON.stringify(cursorEnabled));
@@ -139,7 +148,6 @@ export default function Navbar({
       console.error("Error writing cursorEnabled to localStorage", e);
     }
   }, [cursorEnabled]);
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -175,14 +183,12 @@ export default function Navbar({
     return () => observer.disconnect();
   }, []);
 
-  //apply the cursor style to body
   useEffect(() => {
     document.body.style.cursor = cursorEnabled ? "none" : "default";
     return () => {
       document.body.style.cursor = "default";
     };
   }, [cursorEnabled]);
-
 
   return (
     <div
@@ -196,11 +202,11 @@ export default function Navbar({
           href="/"
           id="main"
           className={`text-sm md:text-base font-bold px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-md
-          ${
-            currentTheme === "dark"
-              ? "bg-gradient-to-br from-pink-700 via-purple-800 to-pink-700 text-white hover:shadow-lg"
-              : "bg-gradient-to-br from-pink-200 via-purple-300 to-pink-200 text-gray-900 hover:shadow-md"
-          } hover:scale-[1.02] border border-white/10`}
+           ${
+             currentTheme === "dark"
+               ? "bg-gradient-to-br from-pink-700 via-purple-800 to-pink-700 text-white hover:shadow-lg"
+               : "bg-gradient-to-br from-pink-200 via-purple-300 to-pink-200 text-gray-900 hover:shadow-md"
+           } hover:scale-[1.02] border border-white/10`}
         >
           Flavor AI
         </Link>
@@ -271,6 +277,25 @@ export default function Navbar({
             </svg>
           </Link>
         </div>
+        
+        {/* START: Added About Us link to desktop menu */}
+        <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
+          <Link
+            href="/about"
+            aria-label="About Us"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <Info
+              size={16}
+              className={`${
+                currentTheme === "dark"
+                  ? "text-white"
+                  : "dark:text-white text-black"
+              }`}
+            />
+          </Link>
+        </div>
+        {/* END: Added About Us link to desktop menu */}
 
         <GoogleTranslateWrapper />
 
