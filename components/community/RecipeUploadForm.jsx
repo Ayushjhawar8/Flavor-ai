@@ -301,7 +301,7 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
           </label>
         </div>
 
-        {/* Recipe Image */}
+        {/* Recipe Image section */}
         <div className="form-control">
           <label className="label">
             <span className="label-text font-semibold">Recipe Image</span>
