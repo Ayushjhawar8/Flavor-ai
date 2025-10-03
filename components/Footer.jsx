@@ -105,9 +105,9 @@ const Footer = () => {
             <h4 className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}>🧭 Explore</h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span className={`${textColor} opacity-80 text-base cursor-default block text-center`}>
+                <Link href="/ingredient-explorer" className={`${textColor} opacity-80 text-base hover:opacity-100 block text-center transition-opacity duration-200`}>
                   🥕 Ingredient Explorer
-                </span>
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span className={`${textColor} opacity-80 text-base cursor-default block text-center`}>
