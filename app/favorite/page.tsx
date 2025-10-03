@@ -1,183 +1,268 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import BackButton from "@/components/BackButton";
-import { PlusIcon } from "@/components/Icons";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { CATEGORIES_URL } from "@/lib/urls";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import { HeartIcon, TrashIcon, EyeIcon, ClockIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
-interface Meal {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  strCategory?: string;
+interface FavoriteRecipe {
+  id: string;
+  name: string;
+  image: string;
+  prepTime: string;
+  cookTime: string;
+  servings: number;
+  difficulty: string;
+  cuisine: string;
+  description: string;
+  tags: string[];
+  dateAdded: string;
 }
-
-interface Category {
-  idCategory: string;
-  strCategory: string;
-  strCategoryThumb: string;
-  strCategoryDescription: string;
-}
-
-// ✅ Function to detect meal type
-const getMealType = (mealName: string) => {
-  const nonVegKeywords = [
-    "chicken",
-    "beef",
-    "mutton",
-    "fish",
-    "prawn",
-    "egg",
-    "meat",
-    "pork",
-    "lamb",
-  ];
-  return nonVegKeywords.some((word) =>
-    mealName.toLowerCase().includes(word)
-  )
-    ? "Non-Veg"
-    : "Vegetarian";
-};
-
-// ✅ Function to filter categories
-const getCategoryType = (categoryName: string) => {
-  const vegCategories = ["Vegetarian", "Vegan", "Starter"];
-  return vegCategories.includes(categoryName) ? "Vegetarian" : "Non-Veg";
-};
 
 export default function FavoritesPage() {
-  const [showResults, setShowResults] = useState(false);
-  const [favorites, setFavorites] = useState<Meal[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteRecipe[]>([]);
   const [filter, setFilter] = useState("All");
+  const [sortBy, setSortBy] = useState("newest");
 
-  const handleSearchFocus = () => setShowResults(true);
-  const handleBlur = () => setTimeout(() => setShowResults(false), 200);
+  // Mock sample favorites for demonstration
+  const sampleFavorites: FavoriteRecipe[] = [
+    {
+      id: "1",
+      name: "Spaghetti Carbonara",
+      image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=800&h=600&fit=crop&q=80",
+      prepTime: "15 mins",
+      cookTime: "20 mins",
+      servings: 4,
+      difficulty: "Medium",
+      cuisine: "Italian",
+      description: "A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
+      tags: ["Quick", "Italian", "Comfort Food", "Pasta"],
+      dateAdded: "2024-10-01"
+    },
+    {
+      id: "2", 
+      name: "Chocolate Chip Cookies",
+      image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&h=600&fit=crop&q=80",
+      prepTime: "15 mins",
+      cookTime: "12 mins",
+      servings: 24,
+      difficulty: "Easy",
+      cuisine: "American",
+      description: "Classic, chewy chocolate chip cookies that are crispy on the edges and soft in the center.",
+      tags: ["Sweet", "Dessert", "Baking", "Kid-Friendly"],
+      dateAdded: "2024-09-28"
+    },
+    {
+      id: "3",
+      name: "Chicken Tikka Masala", 
+      image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&h=600&fit=crop&q=80",
+      prepTime: "30 mins",
+      cookTime: "40 mins",
+      servings: 6,
+      difficulty: "Medium",
+      cuisine: "Indian",
+      description: "Tender chicken in a rich, creamy tomato-based curry sauce.",
+      tags: ["Spicy", "Indian", "Comfort Food", "Curry"],
+      dateAdded: "2024-09-25"
+    }
+  ];
 
   useEffect(() => {
-    const storedFavorites = localStorage.getItem("favorites");
+    // Load favorites from localStorage
+    const storedFavorites = localStorage.getItem("flavorai_favorites");
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
+    } else {
+      // Set sample favorites if none exist
+      setFavorites(sampleFavorites);
+      localStorage.setItem("flavorai_favorites", JSON.stringify(sampleFavorites));
     }
   }, []);
 
-  useEffect(() => {
-    fetch(CATEGORIES_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.categories);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-      });
-  }, []);
-
-  const removeFavorite = (idMeal: string) => {
-    const updatedFavorites = favorites.filter((meal) => meal.idMeal !== idMeal);
+  const removeFavorite = (recipeId: string) => {
+    const updatedFavorites = favorites.filter((recipe) => recipe.id !== recipeId);
     setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    localStorage.setItem("flavorai_favorites", JSON.stringify(updatedFavorites));
   };
 
-  // ✅ Filter meals (Favorites)
-  const filteredFavorites = favorites.filter((meal) => {
-    const type = getMealType(meal.strMeal);
-    return filter === "All" || type === filter;
+  const getDifficultyColor = (difficulty: string) => {
+    switch(difficulty.toLowerCase()) {
+      case 'easy': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'hard': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const filteredFavorites = favorites.filter((recipe) => {
+    if (filter === "All") return true;
+    if (filter === "Easy") return recipe.difficulty === "Easy";
+    if (filter === "Desserts") return recipe.tags.includes("Dessert");
+    if (filter === "Quick") return recipe.tags.includes("Quick");
+    return true;
   });
 
-  // ✅ Filter categories (for "A Taste for Every Mood and Moment")
-  const filteredCategories = categories.filter((category) => {
-    const type = getCategoryType(category.strCategory);
-    return filter === "All" || type === filter;
+  const sortedFavorites = [...filteredFavorites].sort((a, b) => {
+    if (sortBy === "newest") return new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
+    if (sortBy === "oldest") return new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
+    if (sortBy === "name") return a.name.localeCompare(b.name);
+    return 0;
   });
 
   return (
-    <>
-      <Navbar
-        showResults={showResults}
-        setShowResults={setShowResults}
-        handleSearchFocus={handleSearchFocus}
-        handleBlur={handleBlur}
-      />
-      <div
-        className={`p-6 min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
-          showResults ? "opacity-80 blur-sm" : "opacity-100"
-        }`}
-      >
-        <BackButton />
-        <h1 className="text-3xl md:text-5xl font-bold text-center text-secondary mb-10">
-          Your Favorite Meals 💖
-        </h1>
-
-        {/* ✅ Filter Bar */}
-        <div className="flex justify-center gap-4 mb-8">
-          <button
-            onClick={() => setFilter("All")}
-            className={`btn ${filter === "All" ? "btn-primary" : "btn-outline"}`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter("Vegetarian")}
-            className={`btn ${
-              filter === "Vegetarian" ? "btn-primary" : "btn-outline"
-            }`}
-          >
-            Vegetarian
-          </button>
-          <button
-            onClick={() => setFilter("Non-Veg")}
-            className={`btn ${
-              filter === "Non-Veg" ? "btn-primary" : "btn-outline"
-            }`}
-          >
-            Non-Veg
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+      <BackButton />
+      
+      <div className="container mx-auto px-4 py-8 pt-20">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-amber-800 mb-4 flex items-center justify-center gap-3">
+            ❤️ My Favorite Recipes
+          </h1>
+          <p className="text-lg text-amber-600 max-w-2xl mx-auto">
+            Your personal collection of loved recipes. Save, organize, and revisit your culinary favorites!
+          </p>
         </div>
 
-        {/* ✅ Favorites Section */}
-        {favorites.length === 0 ? (
-          <p className="text-center text-lg mb-6">No favorites yet!</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center mb-16">
-            {filteredFavorites.map((meal) => (
-              <div
-                key={meal.idMeal}
-                className="relative card w-80 lg:w-96 bg-base-200 shadow-xl rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                {/* Image */}
-                <figure className="relative h-56 w-full">
-                  <Image
-                    src={meal.strMealThumb}
-                    alt={meal.strMeal}
-                    width={384}
-                    height={224}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></div>
-                  <h2 className="absolute bottom-3 left-4 text-lg md:text-xl font-bold text-white drop-shadow-lg">
-                    {meal.strMeal}
-                  </h2>
-                </figure>
+        {/* Filter and Sort Controls */}
+        <div className="flex flex-wrap gap-4 justify-center mb-8">
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setFilter("All")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                filter === "All" 
+                  ? "bg-amber-600 text-white" 
+                  : "bg-white text-amber-600 border border-amber-300 hover:bg-amber-50"
+              }`}
+            >
+              All ({favorites.length})
+            </button>
+            <button
+              onClick={() => setFilter("Easy")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                filter === "Easy" 
+                  ? "bg-amber-600 text-white" 
+                  : "bg-white text-amber-600 border border-amber-300 hover:bg-amber-50"
+              }`}
+            >
+              Easy
+            </button>
+            <button
+              onClick={() => setFilter("Quick")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                filter === "Quick" 
+                  ? "bg-amber-600 text-white" 
+                  : "bg-white text-amber-600 border border-amber-300 hover:bg-amber-50"
+              }`}
+            >
+              Quick
+            </button>
+            <button
+              onClick={() => setFilter("Desserts")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                filter === "Desserts" 
+                  ? "bg-amber-600 text-white" 
+                  : "bg-white text-amber-600 border border-amber-300 hover:bg-amber-50"
+              }`}
+            >
+              Desserts
+            </button>
+          </div>
 
-                {/* Card Body */}
-                <div className="card-body px-5 py-4">
-                  <div className="flex justify-between items-center gap-4">
-                    <Link
-                      href={`/meal/${meal.idMeal}`}
-                      className="btn btn-sm md:btn-md btn-primary text-white shadow-md"
-                    >
-                      View
-                    </Link>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 border border-amber-300 rounded-lg text-amber-700 focus:outline-none focus:border-amber-500"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="name">Name A-Z</option>
+          </select>
+        </div>
+
+        {/* Favorites Grid */}
+        {sortedFavorites.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-6">💔</div>
+            <h3 className="text-2xl font-bold text-amber-800 mb-4">No Favorites Yet!</h3>
+            <p className="text-amber-600 mb-6 max-w-md mx-auto">
+              Start exploring recipes and click the heart icon to add them to your favorites collection.
+            </p>
+            <button className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-semibold">
+              Discover Recipes
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {sortedFavorites.map((recipe) => (
+              <div key={recipe.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                <div className="relative">
+                  <img
+                    src={recipe.image}
+                    alt={recipe.name}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-3 right-3">
                     <button
-                      onClick={() => removeFavorite(meal.idMeal)}
-                      className="btn btn-sm md:btn-md btn-error shadow-md"
+                      onClick={() => removeFavorite(recipe.id)}
+                      className="p-2 bg-white/90 rounded-full hover:bg-white transition-colors"
+                      title="Remove from favorites"
                     >
-                      Remove
+                      <TrashIcon className="w-5 h-5 text-red-500" />
                     </button>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                    <div className="flex items-center gap-2 text-white text-sm">
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getDifficultyColor(recipe.difficulty)}`}>
+                        {recipe.difficulty}
+                      </span>
+                      <span className="bg-amber-500 px-2 py-1 rounded-full text-xs font-semibold">
+                        {recipe.cuisine}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4">
+                  <h3 className="text-lg font-bold text-amber-800 mb-2 line-clamp-2">{recipe.name}</h3>
+                  <p className="text-amber-600 text-sm mb-4 line-clamp-2">{recipe.description}</p>
+                  
+                  <div className="flex items-center gap-4 mb-4 text-sm text-amber-600">
+                    <div className="flex items-center gap-1">
+                      <ClockIcon className="w-4 h-4" />
+                      {recipe.prepTime}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <UsersIcon className="w-4 h-4" />
+                      {recipe.servings}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {recipe.tags.slice(0, 3).map((tag, index) => (
+                      <span key={index} className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
+                        #{tag}
+                      </span>
+                    ))}
+                    {recipe.tags.length > 3 && (
+                      <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
+                        +{recipe.tags.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button className="flex-1 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-semibold text-sm flex items-center justify-center gap-1">
+                      <EyeIcon className="w-4 h-4" />
+                      View Recipe
+                    </button>
+                    <button className="px-3 py-2 border border-amber-300 text-amber-600 rounded-lg hover:bg-amber-50 transition-colors">
+                      <HeartIconSolid className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="text-xs text-amber-500 mt-2">
+                    Added {new Date(recipe.dateAdded).toLocaleDateString()}
                   </div>
                 </div>
               </div>
@@ -185,49 +270,23 @@ export default function FavoritesPage() {
           </div>
         )}
 
-        {/* ✅ Categories Always Visible */}
-        <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-base-200 rounded-lg shadow-lg">
-          <h2 className="text-xl md:text-3xl text-base-content mb-10 font-semibold text-center">
-            A Taste for Every Mood and Moment
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
-            {filteredCategories.map((category) => (
-              <div
-                key={category.idCategory}
-                className="card card-compact w-full bg-base-100 shadow-xl rounded-lg overflow-hidden transform transition duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 cursor-pointer"
-              >
-                <figure>
-                  <img
-                    src={category.strCategoryThumb}
-                    alt={category.strCategory}
-                    className="w-full h-48 object-cover"
-                  />
-                </figure>
-                <div className="card-body p-4">
-                  <h3 className="card-title text-lg md:text-xl text-base-content flex items-center">
-                    <PlusIcon />
-                    {category.strCategory}
-                  </h3>
-                  <p className="text-sm md:text-base text-base-content">
-                    {category.strCategoryDescription.slice(0, 150) + " ..."}
-                  </p>
-                  <Link
-                    className="card-actions justify-end"
-                    href={`/category/${category.strCategory}`}
-                  >
-                    <button className="btn btn-primary text-white text-sm md:text-base shadow-md">
-                      Explore
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            ))}
+        {/* Tips Section */}
+        <div className="mt-12 bg-white rounded-2xl shadow-lg p-6">
+          <h3 className="text-xl font-bold text-amber-800 mb-4">💡 Favorites Tips</h3>
+          <div className="grid md:grid-cols-2 gap-4 text-sm text-amber-700">
+            <div className="space-y-2">
+              <p>• Click the heart icon on any recipe to save it here</p>
+              <p>• Use filters to quickly find specific types of recipes</p>
+              <p>• Sort by date to see your newest discoveries first</p>
+            </div>
+            <div className="space-y-2">
+              <p>• Export your favorites list for meal planning</p>
+              <p>• Share favorite recipes with friends and family</p>
+              <p>• Your favorites are saved locally in your browser</p>
+            </div>
           </div>
-        </section>
+        </div>
       </div>
-      <div className="bg-base-100">
-        <Footer />
-      </div>
-    </>
+    </div>
   );
 }
