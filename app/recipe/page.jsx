@@ -7,6 +7,8 @@ import { useSearchParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 import { PlusIcon } from "@/components/Icons";
 import { Clock, Users } from "lucide-react"; 
+import PreparationChecklist from "@/components/PreparationChecklist"; // IMPORT ADDED HERE
+
 export default function ViewRecipePage() {
   const [showResults, setShowResults] = useState(false);
   const [recipe, setRecipe] = useState(null);
@@ -158,13 +160,16 @@ export default function ViewRecipePage() {
                 </h2>
 
                 <div className="bg-base-100 rounded-lg p-4">
-                  <ol className="list-decimal list-inside space-y-4 text-base-content leading-relaxed">
-                    {recipeData.instructions && recipeData.instructions.map((instruction, index) => (
-                      <li key={index} className="pl-2">
-                        <span className="ml-2">{instruction}</span>
-                      </li>
-                    ))}
-                  </ol>
+                  {/* MODIFIED BLOCK: Using PreparationChecklist */}
+                  {recipeData.instructions && recipeData.instructions.length > 0 ? (
+                    <PreparationChecklist
+                      steps={recipeData.instructions}
+                      checklistKey={`community-recipe-steps-${recipeData.title}`}
+                    />
+                  ) : (
+                    <div className="text-base-content/60">No instructions available.</div>
+                  )}
+                  {/* END MODIFIED BLOCK */}
                 </div>
               </section>
             </div>

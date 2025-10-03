@@ -1,6 +1,8 @@
 // components/ShowMeal.jsx
 "use client";
 
+import PreparationChecklist from "./PreparationChecklist";
+
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
 
@@ -535,7 +537,8 @@ function ShowMeal({ URL }) {
         }`}
       >
         <BackButton />
-        <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
+        {/* --- ANIMATION ADDED --- */}
+        <div data-aos="fade-in" className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
           <div className="p-6 md:p-12 print-area">
             <header className="relative text-center mb-8">
               <div className="absolute top-0 right-0 flex items-center gap-2">
@@ -594,7 +597,9 @@ function ShowMeal({ URL }) {
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
               {/* LEFT: image + badges + steps */}
               <div className="md:w-1/2">
+                {/* --- ANIMATION ADDED --- */}
                 <img
+                  data-aos="zoom-in-up"
                   src={mealData.strMealThumb}
                   alt={mealData.strMeal}
                   className="w-full h-auto rounded-lg shadow-md mb-4"
@@ -639,9 +644,8 @@ function ShowMeal({ URL }) {
                     Print
                   </button>
                 </div>
-
-                {/* Steps */}
-                <section id="instructions-section" className="mt-10">
+                {/* --- ANIMATION ADDED --- */}
+                <section data-aos="fade-right" id="instructions-section" className="mt-10">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
                     <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
@@ -665,22 +669,16 @@ function ShowMeal({ URL }) {
                     </div>
                   </div>
 
-                  <ol className="list-decimal list-inside space-y-4 text-base-content leading-relaxed">
-                    {instructionSentences.map((sentence, index) => (
-                      <li key={index}>
-                        <HighlightedSentence
-                          text={sentence}
-                          isActive={index === activeWordRange.sentenceIndex}
-                          wordRange={activeWordRange}
-                        />
-                      </li>
-                    ))}
-                  </ol>
+                  <PreparationChecklist
+                    steps={instructionSentences}
+                    checklistKey={`showmeal-steps-${mealData.idMeal}`}
+                  />
                 </section>
               </div>
 
               {/* RIGHT: Ingredients */}
-              <div className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]">
+              {/* --- ANIMATION ADDED --- */}
+              <div data-aos="fade-left" className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]">
                 {/* Heading */}
                 <div className="mb-1">
                   <h2 className="text-2xl font-bold text-base-content flex items-center gap-2">

@@ -10,15 +10,58 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
     description: "",
     ingredients: "",
     instructions: "",
-    cookTime: "",
+    cookTimeHours: "",
+    cookTimeMinutes: "",
     servings: "",
     difficulty: "Easy"
   });
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
 
+// Validating the number of servings and cook time
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // Validates the servings
+    if (name === "servings") {
+      const numValue = parseInt(value);
+      if (value && numValue < 1) {
+        setErrors({ ...errors, servings: "Servings must be at least 1" });
+        return;
+      } else {
+        const newErrors = { ...errors };
+        delete newErrors.servings;
+        setErrors(newErrors);
+      }
+    }
+    
+    // Validate cook time hours
+    if (name === "cookTimeHours") {
+      const numValue = parseInt(value);
+      if (value && (numValue < 0 || numValue > 24)) {
+        setErrors({ ...errors, cookTimeHours: "Hours must be 0-24" });
+        return;
+      } else {
+        const newErrors = { ...errors };
+        delete newErrors.cookTimeHours;
+        setErrors(newErrors);
+      }
+    }
+    
+    // Validate cook time minutes
+    if (name === "cookTimeMinutes") {
+      const numValue = parseInt(value);
+      if (value && (numValue < 0 || numValue > 59)) {
+        setErrors({ ...errors, cookTimeMinutes: "Minutes must be 0-59" });
+        return;
+      } else {
+        const newErrors = { ...errors };
+        delete newErrors.cookTimeMinutes;
+        setErrors(newErrors);
+      }
+    }
+    
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleImageChange = (e) => {
@@ -32,6 +75,13 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // To make sure the cook time is not empty
+    if (!formData.cookTimeHours && !formData.cookTimeMinutes) {
+      setErrors({ ...errors, cookTime: "Please enter cook time" });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
@@ -47,12 +97,24 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
         .filter(line => line.trim())
         .map(line => line.trim());
 
+      // Format cook time
+      const hours = parseInt(formData.cookTimeHours) || 0;
+      const minutes = parseInt(formData.cookTimeMinutes) || 0;
+      let cookTimeStr = "";
+      if (hours > 0) {
+        cookTimeStr += `${hours} hr${hours > 1 ? 's' : ''}`;
+      }
+      if (minutes > 0) {
+        if (cookTimeStr) cookTimeStr += " ";
+        cookTimeStr += `${minutes} min${minutes > 1 ? 's' : ''}`;
+      }
+
       const recipe = {
         title: formData.title,
         description: formData.description,
         ingredients: ingredientsList,
         instructions: instructionsList,
-        cookTime: formData.cookTime,
+        cookTime: cookTimeStr,
         servings: parseInt(formData.servings),
         difficulty: formData.difficulty,
         image: imagePreview || "https://images.unsplash.com/photo-1546548970-71785318a17b?w=400&h=300&fit=crop",
@@ -71,11 +133,13 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
         description: "",
         ingredients: "",
         instructions: "",
-        cookTime: "",
+        cookTimeHours: "",
+        cookTimeMinutes: "",
         servings: "",
         difficulty: "Easy"
       });
       setImagePreview(null);
+      setErrors({});
       
       if (onRecipeUploaded) onRecipeUploaded(savedRecipe);
       
@@ -88,27 +152,27 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-base-200 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">Share Your Recipe</h2>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control">
-          <label className="label">
-            <span className="label-text font-medium">Recipe Title</span>
+          <label className="label mb-2">
+            <span className="label-text font-semibold">Recipe Title *</span>
           </label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            className="input input-bordered"
+            className="input input-bordered w-full"
             placeholder="My Amazing Recipe"
             required
           />
         </div>
 
+        {/* Description of the recipe*/}
         <div className="form-control">
           <label className="label">
-            <span className="label-text font-medium">Description</span>
+            <span className="label-text font-semibold">Description</span>
           </label>
           <textarea
             name="description"
@@ -119,44 +183,80 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
           />
         </div>
 
+        {/* Cook Time, Servings, and Difficulty Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Cook Time */}
           <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Cook Time</span>
+            <label className="label mb-2">
+              <span className="label-text font-semibold">Cook Time *</span>
             </label>
-            <input
-              type="text"
-              name="cookTime"
-              value={formData.cookTime}
-              onChange={handleInputChange}
-              className="input input-bordered"
-              placeholder="30 mins"
-            />
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <input
+                  type="number"
+                  name="cookTimeHours"
+                  min="0"
+                  max="24"
+                  value={formData.cookTimeHours}
+                  onChange={handleInputChange}
+                  className={`input input-bordered w-full ${errors.cookTimeHours ? 'input-error' : ''}`}
+                  placeholder="Hrs"
+                />
+              </div>
+              <div className="flex-1">
+                <input
+                  type="number"
+                  name="cookTimeMinutes"
+                  min="0"
+                  max="59"
+                  value={formData.cookTimeMinutes}
+                  onChange={handleInputChange}
+                  className={`input input-bordered w-full ${errors.cookTimeMinutes ? 'input-error' : ''}`}
+                  placeholder="Mins"
+                />
+              </div>
+            </div>
+            {(errors.cookTime || errors.cookTimeHours || errors.cookTimeMinutes) && (
+              <label className="label">
+                <span className="label-text-alt text-error">
+                  {errors.cookTime || errors.cookTimeHours || errors.cookTimeMinutes}
+                </span>
+              </label>
+            )}
           </div>
           
+          {/* Servings */}
           <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Servings</span>
+            <label className="label mb-2">
+              <span className="label-text font-semibold">Servings *</span>
             </label>
             <input
               type="number"
               name="servings"
+              min="1"
               value={formData.servings}
               onChange={handleInputChange}
-              className="input input-bordered"
+              className={`input input-bordered w-full ${errors.servings ? 'input-error' : ''}`}
               placeholder="4"
+              required
             />
+            {errors.servings && (
+              <label className="label">
+                <span className="label-text-alt text-error">{errors.servings}</span>
+              </label>
+            )}
           </div>
           
+          {/* Difficulty of recipe*/}
           <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Difficulty</span>
+            <label className="label mb-2">
+              <span className="label-text font-semibold">Difficulty</span>
             </label>
             <select
               name="difficulty"
               value={formData.difficulty}
               onChange={handleInputChange}
-              className="select select-bordered"
+              className="select select-bordered w-full"
             >
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
@@ -165,58 +265,85 @@ export default function RecipeUploadForm({ onRecipeUploaded }) {
           </div>
         </div>
 
+        {/* Ingredients */}
         <div className="form-control">
-          <label className="label">
-            <span className="label-text font-medium">Ingredients (one per line)</span>
+          <label className="label mb-2">
+            <span className="label-text font-semibold">Ingredients (one per line) *</span>
           </label>
           <textarea
             name="ingredients"
             value={formData.ingredients}
             onChange={handleInputChange}
-            className="textarea textarea-bordered h-32"
+            className="textarea textarea-bordered h-36 w-full resize-none font-mono text-sm"
             placeholder="2 cups flour&#10;1 tsp salt&#10;3 eggs"
             required
           />
+          <label className="label">
+            <span className="label-text-alt text-base-content/60">Press Enter after each ingredient</span>
+          </label>
         </div>
 
+        {/* Instructions */}
         <div className="form-control">
-          <label className="label">
-            <span className="label-text font-medium">Instructions (one step per line)</span>
+          <label className="label mb-2">
+            <span className="label-text font-semibold">Instructions (one step per line) *</span>
           </label>
           <textarea
             name="instructions"
             value={formData.instructions}
             onChange={handleInputChange}
             className="textarea textarea-bordered h-40"
-            placeholder="Preheat oven to 350°F&#10;Mix dry ingredients&#10;Add wet ingredients"
+            placeholder="Preheat oven to 350°F&#10;Mix dry ingredients &#10;Add wet ingredients"
             required
           />
+          <label className="label">
+            <span className="label-text-alt text-base-content/60">Press Enter after each step</span>
+          </label>
         </div>
 
+        {/* Recipe Image section */}
         <div className="form-control">
           <label className="label">
-            <span className="label-text font-medium">Recipe Image</span>
+            <span className="label-text font-semibold">Recipe Image</span>
           </label>
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="file-input file-input-bordered"
+            className="file-input file-input-bordered w-full"
           />
           {imagePreview && (
-            <div className="mt-2">
-              <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded" />
+            <div className="mt-4">
+              <div className="relative inline-block">
+                <img 
+                  src={imagePreview} 
+                  alt="Preview" 
+                  className="w-40 h-40 object-cover rounded-lg shadow-md border-2 border-base-300" 
+                />
+                <button
+                  type="button"
+                  onClick={() => setImagePreview(null)}
+                  className="btn btn-circle btn-xs btn-error absolute -top-2 -right-2"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
           )}
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`btn btn-primary w-full ${isSubmitting ? 'loading' : ''}`}
-        >
-          {isSubmitting ? 'Uploading...' : 'Share Recipe'}
-        </button>
+        {/* Submit Button */}
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={isSubmitting || Object.keys(errors).length > 0}
+            className={`btn btn-primary w-full text-base h-12 ${isSubmitting ? 'loading' : ''}`}
+          >
+            {isSubmitting ? 'Uploading Recipe...' : 'Share Recipe'}
+          </button>
+        </div>
+
+        <p className="text-left font-semibold text-sm text-base-content/60 mt-4">* Required fields</p>
       </form>
     </div>
   );
