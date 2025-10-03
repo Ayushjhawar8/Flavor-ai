@@ -12,11 +12,12 @@ export default function Page() {
   const [categories, setCategories] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
+  const [showDiets, setShowDiets] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
   const [filter, setFilter] = useState("All");
-  const [showDiets, setShowDiets] = useState(false);
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [recentMeals, setRecentMeals] = useState<any[]>([]);
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -66,7 +67,6 @@ export default function Page() {
           const bIndex = priority.findIndex((cat) =>
             b.strCategory.toLowerCase().includes(cat.toLowerCase())
           );
-
           if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
           if (aIndex !== -1) return -1;
           if (bIndex !== -1) return 1;
@@ -103,6 +103,17 @@ export default function Page() {
     }
   }, []);
 
+  // Close More Options dropdown on click away
+  useEffect(() => {
+    if (!showMoreOptions) return;
+    const handler = (e: MouseEvent) => {
+      const mo = document.getElementById("more-options-dropdown");
+      if (mo && !mo.contains(e.target as Node)) setShowMoreOptions(false);
+    };
+    window.addEventListener("mousedown", handler);
+    return () => window.removeEventListener("mousedown", handler);
+  }, [showMoreOptions]);
+
   return (
     <>
       <Navbar
@@ -114,13 +125,12 @@ export default function Page() {
 
       <div
         className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 transition-all duration-300 relative z-10 ${
-        !showResults ? "opacity-100" : "opacity-80 blur-sm"
-      }`}
+          !showResults ? "opacity-100" : "opacity-80 blur-sm"
+        }`}
       >
         <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
-          {/* --- ANIMATION ADDED TO THIS PARENT DIV --- */}
-          <div 
-            data-aos="fade-up" 
+          <div
+            data-aos="fade-up"
             className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8"
           >
             <h1
@@ -130,7 +140,6 @@ export default function Page() {
             >
               Start Your Flavor Journey
             </h1>
-            
             <p
               className={`text-xl md:text-2xl max-w-3xl leading-relaxed ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
@@ -140,9 +149,8 @@ export default function Page() {
               suggestions, and exciting surprises.
             </p>
 
-            <div
-              className="flex flex-wrap items-center justify-center gap-4"
-            >
+            {/* --- Main and More Options buttons --- */}
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/ai">
                 <button className="btn btn-outline btn-primary text-lg">
                   Get AI-Generated Recipes
@@ -160,41 +168,55 @@ export default function Page() {
               </Link>
               <Link href="/festive">
                 <button className="btn btn-outline btn-primary text-lg">
-                Festive Dishes
+                  Festive Dishes
                 </button>
               </Link>
-              <Link href="/ingredient-explorer">
-                <button className="btn btn-outline btn-primary text-lg">
-                  🧪 AI Ingredient Explorer
+              <div className="relative">
+                <button
+                  className="btn btn-outline btn-secondary text-lg"
+                  onClick={() => setShowMoreOptions((v) => !v)}
+                  style={{ cursor: "pointer" }}
+                >
+                  More Options
                 </button>
-              </Link>
-              <Link href="/favorite">
-                <button className="btn btn-outline btn-primary text-lg">
-                  ❤️ Favorites
-                </button>
-              </Link>
-              <button
-                className="btn btn-outline btn-primary text-lg"
-                onClick={() => {
-                  setShowCategories((prev) => !prev);
-                  if (!showCategories) {
-                    setTimeout(() => {
-                      document
-                        .querySelector(".categories-section")
-                        ?.scrollIntoView({ behavior: "smooth" });
-                    }, 100);
-                  }
-                }}
-              >
-                {showCategories ? "Hide Categories" : "Show Categories"}
-              </button>
+                {showMoreOptions && (
+                  <div
+                    id="more-options-dropdown"
+                    className="absolute top-12 left-0 z-30 bg-base-200 rounded-lg shadow-lg p-4 flex flex-col gap-2 w-56"
+                  >
+                    <Link href="/ingredient-explorer" onClick={() => setShowMoreOptions(false)}>
+                      <span className="block py-2 px-3 hover:bg-base-300 rounded text-left cursor-pointer">🧪 AI Ingredient Explorer</span>
+                    </Link>
+                    <Link href="/favorite" onClick={() => setShowMoreOptions(false)}>
+                      <span className="block py-2 px-3 hover:bg-base-300 rounded text-left cursor-pointer">❤️ Favorites</span>
+                    </Link>
+                    <button
+                      className="w-full text-left py-2 px-3 hover:bg-base-300 rounded"
+                      onClick={() => {
+                        setShowCategories((prev) => !prev);
+                        setShowMoreOptions(false);
+                        // Improved scroll with longer timeout for visual comfort
+                        setTimeout(() => {
+                          document
+                            .querySelector(".categories-section")
+                            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 250);
+                      }}
+                    >
+                      {showCategories ? "Hide Categories" : "Show Categories"}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
 
         {recentMeals.length > 0 && (
-          // --- ANIMATION ADDED ---
-          <section data-aos="fade-up" className="w-full max-w-7xl mx-auto my-10 px-4">
+          <section
+            data-aos="fade-up"
+            className="w-full max-w-7xl mx-auto my-10 px-4"
+          >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-base-content">
                 Recently Viewed
@@ -234,7 +256,6 @@ export default function Page() {
 
         {showCategories && (
           <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full relative z-10">
-            {/* --- ANIMATION ADDED --- */}
             <h1
               data-aos="fade-up"
               className={`text-xl md:text-3xl mb-10 font-semibold text-center ${
@@ -344,7 +365,6 @@ export default function Page() {
                   return true; // All
                 })
                 .map((category) => (
-                  // --- ANIMATION ADDED to each card ---
                   <div
                     key={category.idCategory}
                     data-aos="fade-up"
