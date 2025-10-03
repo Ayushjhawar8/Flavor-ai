@@ -58,7 +58,8 @@ const Footer = () => {
   const textColor = currentTheme === "dark" ? "text-white" : "text-amber-800";
 
   return (
-    <footer className="footer rounded-md p-10 bg-base-200 text-base-content footer-center mt-auto">
+    // --- ANIMATION ADDED ---
+    <footer data-aos="fade-up" className="footer rounded-md p-10 bg-base-200 text-base-content footer-center mt-auto">
       <div className="flex flex-col md:flex-row justify-between items-center w-full max-w-4xl mx-auto space-y-4 md:space-y-0">
         {/* Left: Title & Subtitle */}
         <div className="text-center md:text-left">
