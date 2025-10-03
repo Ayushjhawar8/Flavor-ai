@@ -88,9 +88,9 @@ const Footer = () => {
                 </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span className={`${textColor} opacity-80 text-base cursor-default block text-center`}>
+                <Link href="/recipe-search" className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}>
                   🔍 Recipe Search
-                </span>
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span className={`${textColor} opacity-80 text-base cursor-default block text-center`}>
