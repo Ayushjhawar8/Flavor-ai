@@ -86,33 +86,37 @@ const Footer = () => {
               ✨ Features
             </h4>
             <ul className="space-y-3">
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
+                <Link
+                  href="/ai-recipe-generator"
+                  className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
                   🤖 AI Recipe Generator
-                </span>
+                </Link>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
+                <Link
+                  href="/diet-planner-ai"
+                  className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
                   📋 Diet Planner
-                </span>
+                </Link>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
+                <Link
+                  href="/recipe-search"
+                  className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
                   🔍 Recipe Search
-                </span>
+                </Link>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
+                <Link
+                  href="/upload-recipe-new"
+                  className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
                   📤 Upload Recipe
-                </span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -125,28 +129,28 @@ const Footer = () => {
               🧭 Explore
             </h4>
             <ul className="space-y-3">
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🥕 Ingredient Explorer
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🔗 Ingredient Similarity
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🎲 Random Recipe
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
@@ -164,28 +168,28 @@ const Footer = () => {
               👥 Community
             </h4>
             <ul className="space-y-3">
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🍽️ Community Recipes
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🎉 Festive Recipes
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🥬 Vegetarian Recipes
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
@@ -195,7 +199,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Tools */}
+          {/* Tools & Support */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
               className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
@@ -203,28 +207,28 @@ const Footer = () => {
               🛠️ Tools & Support
             </h4>
             <ul className="space-y-3">
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   🛒 Shopping List
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   💡 Help Center
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
                   📖 About Us
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
@@ -252,8 +256,7 @@ const Footer = () => {
                 </a>
               </p>
               <p className={`${textColor} opacity-70 text-base`}>
-                &copy; {new Date().getFullYear()} Flavor AI. All Rights
-                Reserved.
+                &copy; {new Date().getFullYear()} Flavor AI. All Rights Reserved.
               </p>
             </div>
 
@@ -293,7 +296,7 @@ const Footer = () => {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${iconBg} ${iconHoverBg} ${iconColor} p-3 rounded-lg transition duration-300 hover:scale-110`}
+                    className={`${iconBg} ${iconHoverBg} ${iconColor} p-3 rounded-lg transition duration-300 hover:transform hover:scale-110`}
                     title={label}
                     aria-label={label}
                     style={{
