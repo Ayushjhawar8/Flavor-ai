@@ -1,8 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ScrollToTop from "../components/ScrollToTop";
-import GoogleTranslateWrapper from "@/components/GoogleTranslateWrapper";
 import SnakeCursor from "@/components/SnakeCursor";
+import AOSInitializer from "@/components/AOSInitializer"; // <-- 1. IMPORT the AOS Initializer
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +32,7 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className} style={patrickHand}>
+        <AOSInitializer /> {/* <-- 2. ADD the Initializer component here */}
         <SnakeCursor />
         {children}
         <ScrollToTop></ScrollToTop>
