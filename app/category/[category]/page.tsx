@@ -24,7 +24,7 @@ export default function Page({ params }: PageProps) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Meal[]>([]);
-  const [filter, setFilter] = useState("All"); 
+  const [filter, setFilter] = useState("All");
   const [showResults, setShowResults] = useState(false);
 
   const handleSearchFocus = () => setShowResults(true);
@@ -99,12 +99,14 @@ export default function Page({ params }: PageProps) {
       }`}>
         <BackButton />
 
-        <h1 className="text-4xl md:text-6xl text-secondary mb-5 capitalize">
+        {/* --- ANIMATION ADDED --- */}
+        <h1 data-aos="fade-down" className="text-4xl md:text-6xl text-secondary mb-5 capitalize">
           {params.category} 🍽
         </h1>
 
         {/* Filter Buttons */}
-        <div className="flex gap-4 mb-10">
+        {/* --- ANIMATION ADDED --- */}
+        <div data-aos="fade-down" data-aos-delay="100" className="flex gap-4 mb-10">
           {["All", "Veg", "Non-Veg"].map((type) => (
             <button
               key={type}
@@ -121,9 +123,12 @@ export default function Page({ params }: PageProps) {
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => <Loading key={i} />)
           ) : (
-            filteredMeals.map((meal) => (
+            filteredMeals.map((meal, index) => (
+              // --- ANIMATION ADDED to each card ---
               <div
                 key={meal.idMeal}
+                data-aos="fade-up"
+                data-aos-delay={index * 50} // Staggered delay
                 className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
               >
                 <figure className="relative">
