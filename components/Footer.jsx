@@ -56,56 +56,25 @@ const Footer = () => {
   const iconHoverBg =
     currentTheme === "dark" ? "hover:bg-muted" : "hover:bg-amber-200/60";
   const textColor = currentTheme === "dark" ? "text-white" : "text-amber-800";
-
+  const hoverColor=currentTheme === "dark" ? "hover:text-[#5ba4fd]" : "hover:text-[#4b2508]";
+  const colorbuttoncontri=currentTheme === "dark" ? "#5ba4fd" : "#4b2508";
   return (
     // --- ANIMATION ADDED ---
-    <footer data-aos="fade-up" className="footer rounded-md p-10 bg-base-200 text-base-content footer-center mt-auto">
-      <div className="flex flex-col md:flex-row justify-between items-center w-full max-w-4xl mx-auto space-y-4 md:space-y-0">
+    <footer data-aos="fade-up" className="footer rounded-md pl-20 pr-20 pt-8 pb-8 bg-base-200 text-base-content footer-center mt-auto">
+      <div className="flex flex-col md:flex-row justify-between items-start w-full max-w-full mx-auto space-y-4 md:space-y-0">
         {/* Left: Title & Subtitle */}
-        <div className="text-center md:text-left">
+        <div className="text-center md:text-left max-w-64">
           <h3
-            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
+            className={`card-title text-lg md:text-2xl flex items-center ${textColor}`}
           >
             Flavor AI
           </h3>
           <p
-            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
+            className={`card-title text-base md:text-lg flex items-center ${textColor}`}
           >
-            Your AI-powered culinary companion.
+            Your AI-powered culinary companion that offers a range of intelligent features to streamline your cooking and meal planning. It uses AI-Curated Recipes and an AI Diet Planner for personalized meals tailored to your health and goals.
           </p>
-        </div>
-
-        {/* Center: Author & Button */}
-        <div className="flex flex-col items-center space-y-4">
-          <a
-            href="https://x.com/itsAyushJ"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
-          >
-            Ayush Jhawar
-          </a>
-          <div className="flex flex-col sm:flex-row gap-2 items-center">
-            <a
-              href="https://github.com/Ayushjhawar8/Flavor-ai/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary text-white px-4 py-1 rounded-full text-sm font-medium shadow-md flex items-center gap-2 hover:bg-primary-focus transition-colors"
-              style={{ background: "#6E4B2A" }}
-            >
-              Contribute on GitHub
-            </a>
-          </div>
-        </div>
-
-        {/* Right: Social & Email & Copyright */}
-        <div className="text-sm text-center md:text-center w-full md:w-auto">
-          <div
-            className={`card-title text-lg md:text-xl flex items-center justify-center mb-2 ${textColor}`}
-          >
-            Connect with Ayush
-          </div>
-          <div className="flex gap-4 text-xl mb-2 justify-end md:justify-center">
+          <div className="flex gap-4 text-xl pt-2 mb-1 justify-start">
             {socialLinks.map(({ href, icon: Icon, label, glow }) => (
               <a
                 key={href}
@@ -126,26 +95,92 @@ const Footer = () => {
               </a>
             ))}
           </div>
+        </div>
+
+        {/* Center: Useful Links */}
+        <div className={`flex flex-col text-base md:text-lg  items-start space-y-2 ${textColor}`} >
+          <h3
+            className={`card-title text-lg md:text-2xl flex justify-center items-center ${textColor}`}
+          >
+            Useful Links
+          </h3>
+    
+          <Link href="/ai" className={`${hoverColor}`}>
+            Get AI-Generated Recipes
+          </Link>
+          <Link href="/random" className={`${hoverColor}`}>
+            Discover a Random Recipe
+          </Link>
+          <Link href="/diet-planner" className={`${hoverColor}`}>
+            AI Diet Planner
+          </Link>
+          <Link href="/festive" className={`${hoverColor}`}>
+            Festive Dishes
+          </Link>
+          <Link href="/ingredient-explorer" className={`${hoverColor}`}>
+            AI Ingredient Explorer
+          </Link>
+          <Link href="/favorite" className={`${hoverColor}`}>
+            Favorites
+          </Link>
+          
+                        
+          
+          
+        </div>
+
+        {/* Right: Social & Email & Copyright */}
+        <div className="text-sm text-center md:text-start w-full md:w-auto">
+          <a
+            href="https://x.com/itsAyushJ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`card-title text-lg md:text-xl flex items-start justify-start mb-2 ${textColor}`}
+          >
+            Ayush Jhawar
+          </a>
+          <div className="flex flex-col sm:flex-row  items-start justify-start mb-5">
+            <a
+              href="https://github.com/Ayushjhawar8/Flavor-ai/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary text-white px-4 py-1 rounded-full text-sm font-medium shadow-md flex items-center justify-center mb-2 hover:bg-primary-focus transition-colors"
+              style={{ background: `${colorbuttoncontri}` }}
+            >
+              Contribute on GitHub
+            </a>
+          </div>
+          
+          
+          <div
+            className={`card-title text-lg md:text-xl flex items-start justify-start mb-2 ${textColor}`}
+          >
+            Connect with Ayush
+          </div>
+          
+          
           <a
             href="mailto:ayushjhawar499@gmail.com"
-            className={`text-sm font-medium md:text-center ${textColor} block mb-1`}
+            className={`text-base font-medium md:text-start ${textColor} block mb-5 ${hoverColor}`}
             style={{ wordBreak: "break-all" }}
           >
             ayushjhawar499@gmail.com
           </a>
+          
 
           <p
-            className={`card-title text-lg md:text-xl flex items-center ${textColor}`}
+            className={`card-title text-lg md:text-xl flex items-start ${textColor}`}
           >
             &copy; {new Date().getFullYear()} Flavor AI. All Rights Reserved.
           </p>
           {/* Privacy Policy link */}
           <Link
             href="/privacy-policy"
-            className={`text-sm underline hover:text-blue-500 block mb-1 ${textColor}`}
+            className={`text-sm underline block mb-1 ${textColor} ${hoverColor}`}
           >
             Privacy Policy
           </Link>
+          
         </div>
       </div>
     </footer>
