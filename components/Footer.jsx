@@ -210,13 +210,16 @@ const Footer = () => {
                   🛒 Shopping List
                 </span>
               </li>
-              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+              {/* START: ADDED FEEDBACK LINK */}
+              <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition">
+                <Link
+                  href="/feedback"
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100`}
                 >
-                  💡 Help Center
-                </span>
+                  ✉️ Feedback & Support
+                </Link>
               </li>
+              {/* END: ADDED FEEDBACK LINK */}
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
