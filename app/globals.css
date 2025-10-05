@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+/* Prevent flash of default background on hard reload */
+html[data-theme='light'] {
+  background-color: #FFF8E7; /* beige/cream */
+}
+
+html[data-theme='dark'] {
+  background-color: #1F2937; /* dark background (matches DaisyUI dark base-100) */
+}
+
+/* Also ensure body always inherits html background immediately */
+body {
+  background-color: inherit;
+}
+
 /* ===== Text-to-Speech Highlighting Style ===== */
 body {
   @apply bg-gradient-to-br from-indigo-50 to-blue-100;

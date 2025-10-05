@@ -21,7 +21,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" data-theme="light" style={{ backgroundColor: "#FFF8E7" }} >
+
       <head>
         <link
           rel="icon"
