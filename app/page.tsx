@@ -18,6 +18,17 @@ export default function Page() {
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [recentMeals, setRecentMeals] = useState<any[]>([]);
 
+ const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+  const theme = document.documentElement.getAttribute('data-theme') || 'light';
+  if (theme === 'light') {
+    document.body.style.backgroundColor = '#FFF8E7'; // beige
+  } else {
+    document.body.style.backgroundColor = '#60A5FA'; // blue
+  }
+}, []);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -113,10 +124,10 @@ export default function Page() {
       />
 
       <div
-        className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 transition-all duration-300 relative z-10 ${
-        !showResults ? "opacity-100" : "opacity-80 blur-sm"
-      }`}
-      >
+       className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 ${
+        loaded ? "transition-all duration-300" : "transition-none"
+        } relative z-10 ${!showResults ? "opacity-100" : "opacity-80 blur-sm"}`}
+        >
         <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
           {/* --- ANIMATION ADDED TO THIS PARENT DIV --- */}
           <div 
