@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Mic, MicOff, Plus, X, Clock, Users, ChefHat, Sparkles } from "lucide-react"
 import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import BackButton from "@/components/BackButton"
 
 interface Recipe {
@@ -1395,14 +1394,13 @@ export default function IngredientExplorer() {
         {ingredients.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🥘</div>
-            <h3 className="text-xl font-semibold text-base-content mb-2">Start by adding your ingredients</h3>
-            <p className="text-base-content/70">
+            <h3 className="text-xl font-semibold text-amber-800 mb-2">Start by adding your ingredients</h3>
+            <p className="text-amber-600">
               Type them in{speechSupported ? ", use voice input," : ""} or load a saved set to get started!
             </p>
           </div>
         )}
       </div>
-      <Footer />
     </div>
   )
 }

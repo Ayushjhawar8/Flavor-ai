@@ -130,25 +130,28 @@ const Footer = () => {
             </h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+                <Link
+                  href="/ingredient-explorer"
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   🥕 Ingredient Explorer
-                </span>
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+                <Link
+                  href="/ingredient-similarity"
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   🔗 Ingredient Similarity
-                </span>
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span
-                  className={`${textColor} opacity-80 text-base cursor-default block text-center`}
+                <Link
+                  href="/random"
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   🎲 Random Recipe
-                </span>
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
@@ -214,7 +217,6 @@ const Footer = () => {
                   🛒 Shopping List
                 </span>
               </li>
-              {/* START: ADDED FEEDBACK LINK */}
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition">
                 <Link
                   href="/feedback"
@@ -223,7 +225,6 @@ const Footer = () => {
                   ✉️ Feedback & Support
                 </Link>
               </li>
-              {/* END: ADDED FEEDBACK LINK */}
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
@@ -307,12 +308,8 @@ const Footer = () => {
                       filter: "none",
                       transition: "all 0.3s",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.filter = glow)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.filter = "none")
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.filter = glow)}
+                    onMouseLeave={(e) => (e.currentTarget.style.filter = "none")}
                   >
                     <Icon size={18} />
                   </a>
