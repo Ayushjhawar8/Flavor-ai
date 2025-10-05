@@ -141,6 +141,10 @@ export default function FavoritesPage() {
         {/* ✅ Favorites Section */}
         {favorites.length === 0 ? (
           <p className="text-center text-lg mb-6">No favorites yet!</p>
+        ) : filteredFavorites.length === 0 ? (
+          <p className="text-center text-lg mb-6">
+            No {filter === "Vegetarian" ? "vegetarian" : "non-vegetarian"} favorites yet!
+          </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center mb-16">
             {filteredFavorites.map((meal) => (
