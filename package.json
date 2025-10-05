@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
     "ai": "^3.3.5",
+    "aos": "^2.3.4",
     "axios": "^1.11.0",
     "graph-data-structure": "^4.5.0",
     "lucide-react": "^0.536.0",
@@ -27,6 +28,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/next": "^8.0.7",
     "@types/node": "24.1.0",
     "@types/react": "^19.1.8",
