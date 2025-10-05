@@ -38,11 +38,12 @@ export default function GoogleTranslateWrapper() {
 
       {/* Dropdown */}
       <div
-        className={`absolute top-12 right-0 z-[9999] rounded-lg p-3 min-w-[250px] transition-all duration-200 ${
-          isDropdownOpen
-            ? 'opacity-100 visible transform translate-y-0'
-            : 'opacity-0 invisible transform -translate-y-2'
-        }`}
+       className={`absolute top-28 -mt-9 -right-12 z-[9999] rounded-lg p-3 min-w-[250px] transition-all duration-200 ${
+  isDropdownOpen
+    ? 'opacity-100 visible transform translate-y-0'
+    : 'opacity-0 invisible transform -translate-y-2'
+}`}
+
       >
         {!isTranslateLoaded && (
           <p className="text-sm text-gray-400">Loading translator...</p>
