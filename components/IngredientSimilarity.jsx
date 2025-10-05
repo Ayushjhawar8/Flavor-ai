@@ -70,44 +70,44 @@ export default function IngredientSimilarity() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-base-100 rounded-lg shadow-lg p-6">
-        <div className="flex items-center gap-2 mb-6">
-          <SparklesIcon className="h-8 w-8 text-purple-600" />
-          <h1 className="text-2xl font-bold text-base-content">
-            Graph-Based Ingredient Similarity
-          </h1>
-        </div>
-
-        <p className="text-base-content/60 mb-6">
+    <div className="max-w-4xl mx-auto">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-amber-800 mb-4 flex items-center justify-center gap-3">
+          <SparklesIcon className="h-8 w-8 text-amber-600" />
+          Ingredient Similarity Explorer
+        </h1>
+        <p className="text-lg text-amber-600 max-w-2xl mx-auto">
           Discover ingredient pairings, substitutes, and complementary flavors using our 
-          graph-based similarity model. Enter ingredients separated by commas to get AI-powered suggestions.
+          graph-based similarity model. Enter ingredients to get AI-powered suggestions! 🔗
         </p>
+      </div>
+      
+      <div className="bg-white rounded-2xl shadow-xl p-8">
 
-        <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+        <form onSubmit={handleSubmit} className="space-y-6 mb-8">
           <div>
-            <label htmlFor="ingredients" className="block text-sm font-medium text-base-content mb-2">
-              Ingredients
+            <label htmlFor="ingredients" className="block text-sm font-semibold text-amber-700 mb-2">
+              Ingredients *
             </label>
             <textarea
               id="ingredients"
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               placeholder="Enter ingredients separated by commas (e.g., tomato, onion, garlic)"
-              className="w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-base-content bg-base-100"
+              className="w-full p-4 border-2 border-amber-200 rounded-lg focus:outline-none focus:border-amber-500 text-gray-700 resize-none"
               rows={3}
             />
           </div>
 
           <div>
-            <label htmlFor="action" className="block text-sm font-medium text-base-content mb-2">
+            <label htmlFor="action" className="block text-sm font-semibold text-amber-700 mb-2">
               Analysis Type
             </label>
             <select
               id="action"
               value={action}
               onChange={(e) => setAction(e.target.value)}
-              className="w-full px-3 py-2 border border-base-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-base-content bg-base-100"
+              className="w-full p-4 border-2 border-amber-200 rounded-lg focus:outline-none focus:border-amber-500 text-gray-700"
             >
               <option value="pairing">Complete Pairing Analysis</option>
               <option value="complementary">Complementary Ingredients</option>
@@ -115,11 +115,11 @@ export default function IngredientSimilarity() {
             </select>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-4 justify-center">
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-8 py-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
             >
               {loading ? (
                 <ArrowPathIcon className="h-5 w-5 animate-spin" />
@@ -131,7 +131,7 @@ export default function IngredientSimilarity() {
             <button
               type="button"
               onClick={handleClear}
-              className="px-4 py-2 bg-base-300 text-base-content rounded-md hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-base-400 focus:ring-offset-2"
+              className="px-6 py-4 border-2 border-amber-300 text-amber-700 rounded-lg hover:bg-amber-50 focus:outline-none transition-colors font-semibold"
             >
               Clear
             </button>
@@ -139,22 +139,22 @@ export default function IngredientSimilarity() {
         </form>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-800">{error}</p>
+          <div className="mb-8 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <p>{error}</p>
           </div>
         )}
 
         {results && (
           <div className="space-y-6">
-            <div className="bg-base-200 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-base-content mb-2">
-                Base Ingredients
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
+              <h3 className="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
+                🥄 Base Ingredients
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {results.baseIngredients.map((ingredient, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium"
+                    className="px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold border border-amber-300"
                   >
                     {ingredient}
                   </span>
@@ -163,16 +163,16 @@ export default function IngredientSimilarity() {
             </div>
 
             {results.complementary && results.complementary.length > 0 && (
-              <div className="bg-green-50 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-green-900 mb-2">
-                  Complementary Ingredients
+              <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                  ✨ Complementary Ingredients
                 </h3>
-                <div className="space-y-2">
+                <div className="grid gap-3">
                   {results.complementary.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-green-800 font-medium">{item.ingredient}</span>
-                      <span className="text-green-600 text-sm">
-                        {Math.round(item.score * 100)}% similarity
+                    <div key={index} className="flex justify-between items-center p-3 bg-green-100 rounded-lg border border-green-200">
+                      <span className="text-green-800 font-semibold">{item.ingredient}</span>
+                      <span className="text-green-700 text-sm font-medium bg-green-200 px-2 py-1 rounded-full">
+                        {Math.round(item.score * 100)}% match
                       </span>
                     </div>
                   ))}
@@ -181,16 +181,16 @@ export default function IngredientSimilarity() {
             )}
 
             {results.substitutes && results.substitutes.length > 0 && (
-              <div className="bg-blue-50 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                  Substitute Ingredients
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">
+                  🔄 Substitute Ingredients
                 </h3>
-                <div className="space-y-2">
+                <div className="grid gap-3">
                   {results.substitutes.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-blue-800 font-medium">{item.ingredient}</span>
-                      <span className="text-blue-600 text-sm">
-                        {Math.round(item.score * 100)}% similarity
+                    <div key={index} className="flex justify-between items-center p-3 bg-blue-100 rounded-lg border border-blue-200">
+                      <span className="text-blue-800 font-semibold">{item.ingredient}</span>
+                      <span className="text-blue-700 text-sm font-medium bg-blue-200 px-2 py-1 rounded-full">
+                        {Math.round(item.score * 100)}% match
                       </span>
                     </div>
                   ))}
@@ -199,32 +199,32 @@ export default function IngredientSimilarity() {
             )}
 
             {results.reasoning && (
-              <div className="bg-yellow-50 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-yellow-900 mb-2">
-                  AI Reasoning
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-yellow-800 mb-4 flex items-center gap-2">
+                  🧠 AI Reasoning
                 </h3>
-                <p className="text-yellow-800">{results.reasoning}</p>
+                <p className="text-yellow-800 leading-relaxed">{results.reasoning}</p>
               </div>
             )}
           </div>
         )}
 
-        <div className="mt-8 p-4 bg-base-200 rounded-lg">
-          <h3 className="text-lg font-semibold text-base-content mb-2">
-            How It Works
+        <div className="mt-8 p-6 bg-amber-50 border border-amber-200 rounded-xl">
+          <h3 className="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
+            📊 How It Works
           </h3>
-          <div className="text-sm text-base-content/60 space-y-2">
-            <p>
-              <strong>Graph Structure:</strong> Each ingredient is a node in the graph, connected by 
-              edges representing flavor compatibility, culinary traditions, and substitutability.
+          <div className="text-sm text-amber-700 space-y-3">
+            <p className="flex items-start gap-2">
+              <span className="text-amber-600 font-bold">•</span>
+              <span><strong>Graph Structure:</strong> Each ingredient is a node connected by edges representing flavor compatibility, culinary traditions, and substitutability.</span>
             </p>
-            <p>
-              <strong>Similarity Calculation:</strong> Uses graph traversal algorithms to find the 
-              shortest path between ingredients and calculate similarity scores based on edge weights.
+            <p className="flex items-start gap-2">
+              <span className="text-amber-600 font-bold">•</span>
+              <span><strong>Similarity Calculation:</strong> Uses graph traversal algorithms to find paths between ingredients and calculate similarity scores.</span>
             </p>
-            <p>
-              <strong>Pairing Logic:</strong> Combines flavor profiles, culinary traditions, and 
-              co-occurrence patterns to suggest innovative yet accessible ingredient combinations.
+            <p className="flex items-start gap-2">
+              <span className="text-amber-600 font-bold">•</span>
+              <span><strong>Pairing Logic:</strong> Combines flavor profiles, culinary traditions, and co-occurrence patterns for innovative suggestions.</span>
             </p>
           </div>
         </div>

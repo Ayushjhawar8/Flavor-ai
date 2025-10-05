@@ -76,7 +76,7 @@ const Footer = () => {
         </div>
 
         {/* 5 Columns Section (brand moved to top) */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-16 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-16 items-stretch">
           {/* Features */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs md:max-w-md min-h-[260px] flex flex-col justify-between h-full">
             <h4
@@ -131,7 +131,7 @@ const Footer = () => {
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <Link
                   href="/ingredient-explorer"
-                  className={`${textColor} opacity-80 text-base block text-center transition-opacity duration-200`}
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   🥕 Ingredient Explorer
                 </Link>
@@ -139,7 +139,7 @@ const Footer = () => {
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <Link
                   href="/ingredient-similarity"
-                  className={`${textColor} opacity-80 text-base block text-center transition-opacity duration-200`}
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   🔗 Ingredient Similarity
                 </Link>
@@ -147,7 +147,7 @@ const Footer = () => {
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <Link
                   href="/random"
-                  className={`${textColor} opacity-80 text-base block text-center transition-opacity duration-200`}
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   🎲 Random Recipe
                 </Link>
@@ -155,15 +155,13 @@ const Footer = () => {
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <Link
                   href="/favorite"
-                  className={`${textColor} opacity-80 text-base block text-center transition-opacity duration-200`}
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
                   ❤️ My Favorites
                 </Link>
               </li>
             </ul>
           </div>
-
-          {/* removed center block - title is now at top */}
 
           {/* Community */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs md:max-w-md min-h-[260px] flex flex-col justify-between h-full">
@@ -221,11 +219,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
-                <span
-                  className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
+                <Link
+                  href="/feedback"
+                  className={`${textColor} opacity-80 text-base block text-center hover:opacity-100 transition-opacity duration-200`}
                 >
-                  💡 Help Center
-                </span>
+                  ✉️ Feedback & Support
+                </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <Link
@@ -243,7 +242,6 @@ const Footer = () => {
                   📞 Contact
                 </Link>
               </li>
-              {/* Contact removed here to avoid duplicate; use Quick Links Contact above */}
             </ul>
           </div>
         </div>
