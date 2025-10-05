@@ -76,9 +76,9 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* 4 Columns Section */}
+        {/* Main Links Section - 4 Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 justify-items-center">
-          {/* Features */}
+          {/* Features & Planning Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
               className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
@@ -121,7 +121,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Explore */}
+          {/* Explore & Analysis Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
               className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
@@ -160,7 +160,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Community */}
+          {/* Community & Festival Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
               className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
@@ -199,7 +199,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Tools & Support */}
+          {/* Tools & Support Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
               className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
@@ -242,7 +242,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-opacity-20 pt-12">
           <div className="flex flex-col lg:flex-row justify-center items-center space-y-8 lg:space-y-0 lg:space-x-16">
-            {/* Author */}
+            {/* Author Info */}
             <div className="text-center order-2 lg:order-1">
               <p className={`${textColor} text-lg font-semibold mb-3`}>
                 Created with ❤️ by{" "}
@@ -256,7 +256,8 @@ const Footer = () => {
                 </a>
               </p>
               <p className={`${textColor} opacity-70 text-base`}>
-                &copy; {new Date().getFullYear()} Flavor AI. All Rights Reserved.
+                &copy; {new Date().getFullYear()} Flavor AI. All Rights
+                Reserved.
               </p>
             </div>
 
@@ -317,7 +318,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Contact */}
+          {/* Contact Email */}
           <div className="text-center mt-10 pt-6 border-t border-opacity-10">
             <a
               href="mailto:ayushjhawar499@gmail.com"
