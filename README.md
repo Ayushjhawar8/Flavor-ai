@@ -2,7 +2,7 @@
 
 ![GSSoC'25](https://img.shields.io/badge/GirlScript%20Summer%20of%20Code-2025-orange?style=for-the-badge)
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+![----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 # **Flavor AI**
 
