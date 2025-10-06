@@ -320,7 +320,6 @@ export default function Navbar({
           <ThemeToggle />
         </div>
 
-        <CursorToggle cursorEnabled={cursorEnabled} setCursorEnabled={setCursorEnabled} />
 
         <MobileNavigation />
       </div>
