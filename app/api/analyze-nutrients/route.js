@@ -8,6 +8,8 @@ export async function POST(req) {
       return NextResponse.json({ error: "No recipe provided" }, { status: 400 });
     }
 
+    const apiKey = process.env.NINJAS_API_KEY;
+    if (!apiKey) throw new Error("API Ninjas key missing");
     // Call API Ninjas Nutrition API
     const response = await fetch(
       `https://api.api-ninjas.com/v1/nutrition?query=${encodeURIComponent(recipe)}`,
