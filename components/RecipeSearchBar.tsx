@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "@/components/Icons";
+import { DynamicIcon } from 'lucide-react/dynamic';
 import { festivalDishes } from "@/lib/festivalData"; // update this path
 
 export interface RecipeSearchBarProps {
@@ -32,6 +33,8 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
   const [dropdownBgColor, setDropdownBgColor] = useState("rgb(55, 65, 81)");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentTheme, setCurrentTheme] = useState<string>("dark");
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
   const router = useRouter();
 
   // Blur handler
@@ -50,7 +53,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
-          mutation.type === "attributes" && 
+          mutation.type === "attributes" &&
           mutation.attributeName === "data-theme"
         ) {
           const newTheme =
@@ -172,54 +175,123 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
         ? "#F5DEB3"
         : "#3a003a"
       : currentTheme === "dark"
-      ? "#E5E7EB"
-      : "#1a1a1a";
+        ? "#E5E7EB"
+        : "#1a1a1a";
+
+        //  Voice Input recognition
+  const initializeRecognition = () => {
+    const SpeechRecognition =
+      typeof window !== 'undefined' &&
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Sorry, your browser does not support Speech Recognition.');
+      return null;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        const transcriptPart = event.results[i][0].transcript;
+        console.log("Transc", transcriptPart);
+        console.log("Final", event.results[i].isFinal);
+        if (event.results[i].isFinal) {
+          setInput((prev) => prev + transcriptPart + ' ');
+          console.log("Trans", transcriptPart);
+        } else {
+          interimTranscript += transcriptPart;
+        }
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+    };
+
+    return recognition;
+  };
+
+  // Toggle the icon based on voice button click
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      recognitionRef.current = initializeRecognition();
+    }
+
+    if (!recognitionRef.current) return;
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      console.log("Stopped listening");
+    } else {
+      recognitionRef.current.start();
+      console.log("Started listening");
+    }
+
+    setIsListening((prev) => !prev);
+  };
 
   return (
     <div
       id="searchBar"
-      className={`flex flex-col relative ${className || ""}`}
+      className={`flex flex-col relative w-full max-w-md ${className || ""}`}
     >
-      {!isSearchOpen ? (
-        <button
-          onClick={() => setIsSearchOpen(true)}
-          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200"
-        >
-          <SearchIcon className="w-5 h-5" />
-          <span className="text-base font-medium">Search dish</span>
-        </button>
-      ) : (
-        <label className="input input-bordered flex items-center gap-2">
-          <SearchIcon className={undefined} />
-          <input
-            ref={inputRef}
-            type="text"
-            className="grow"
-            placeholder="Search dish..."
-            value={input}
-            onChange={(e) => {
-              handleSearch(e.target.value);
-              setShowResults(true);
-            }}
-            onKeyDown={handleKeyDown}
-            onFocus={handleSearchFocus}
-            autoFocus
-          />
+      <label className="input input-bordered flex items-center gap-2 w-full">
+        <SearchIcon className="w-5 h-5 text-base-content" />
+
+        <input
+          ref={inputRef}
+          type="text"
+          className="grow text-base text-base-content placeholder:text-gray-400"
+          placeholder="Search dish..."
+          value={input}
+          onChange={(e) => {
+            handleSearch(e.target.value);
+            setShowResults(true);
+          }}
+          onKeyDown={handleKeyDown}
+          onFocus={handleSearchFocus}
+          autoFocus
+        />
+        {input && (
           <button
+            type="button"
             onClick={() => {
               handleSearch("");
-              setIsSearchOpen(false);
+              inputRef.current?.blur();
             }}
+            className="p-1 rounded hover:bg-base-200"
+            aria-label="Clear search"
           >
             <X />
           </button>
-        </label>
-      )}
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            toggleListening();
+            setShowResults(true);
+          }}
+          className="p-1 rounded hover:bg-base-200"
+          aria-label="Voice input"
+        >
+          <DynamicIcon
+            name={isListening ? "mic" : "mic-off"}
+            color="red"
+            size={20}
+          />
+        </button>
 
-      {showResults && input && isSearchOpen && (
+      </label>
+
+      {showResults && input && (
         <div
           ref={resultsRef}
-          className="w-80 max-h-80 overflow-y-scroll no-scrollbar p-2 rounded-xl flex flex-col gap-2 absolute top-12 md:top-20 md:right-0 z-10"
+          className="w-full max-h-80 overflow-y-scroll no-scrollbar p-2 rounded-xl flex flex-col gap-2 absolute top-12 z-10"
           style={{ backgroundColor: getDropdownBgColor() }}
           onMouseEnter={() => setDropdownBgColor(getDropdownHoverBgColor())}
           onMouseLeave={() => setDropdownBgColor(getDropdownBgColor())}
@@ -299,8 +371,10 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
                 </Link>
               );
             })}
+
         </div>
       )}
+
     </div>
   );
 };
