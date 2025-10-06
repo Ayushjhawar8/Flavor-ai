@@ -126,26 +126,27 @@ export default function Navbar({
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
 
-  const [cursorEnabled, setCursorEnabled] = useState<boolean>(() => {
-    if (typeof window === "undefined") {
+  const getInitialCursorEnabled = (): boolean => {
+    if (typeof window === "undefined") return true;
+
+    try {
+      const storedValue = localStorage.getItem("cursorEnabled");
+      return storedValue ? JSON.parse(storedValue) : true;
+    } catch (error) {
+      console.error("Error reading cursorEnabled from localStorage:", error);
       return true;
     }
-    try {
-      const stored = localStorage.getItem("cursorEnabled");
-      if (stored !== null) {
-        return JSON.parse(stored);
-      }
-    } catch (e) {
-      console.error("Error reading cursorEnabled from localStorage", e);
-    }
-    return true;
-  });
+  };
+
+  const [cursorEnabled, setCursorEnabled] = useState<boolean>(
+    getInitialCursorEnabled
+  );
 
   useEffect(() => {
     try {
       localStorage.setItem("cursorEnabled", JSON.stringify(cursorEnabled));
-    } catch (e) {
-      console.error("Error writing cursorEnabled to localStorage", e);
+    } catch (error) {
+      console.error("Error saving cursorEnabled to localStorage:", error);
     }
   }, [cursorEnabled]);
 
