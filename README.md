@@ -19,22 +19,6 @@
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-***:movie_camera: Demo***
-[![YouTube](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/homepage.png)](https://www.youtube.com/watch?v=OYd8R6s_UZs)
-
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
-
-**🔗 Links**
-
-- [Live Demo](https://flavorai.netlify.app/ai)
-- [GitHub Repository](https://github.com/Ayushjhawar8/flavor-ai)
-
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
-<div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=00C853&center=true&vCenter=true&width=900&lines=Thanks+for+visiting+Flavor-ai!+🙌;Start+the+repo+✅;Share+it+with+others+🌍;Contribute+and+grow+🛠️;Happy+Coding+✨!" alt="Thanks Banner Typing SVG" />
-</div>
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
-
 **📊 Project Insights**
 
 <table align="center">
@@ -215,6 +199,12 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - UI components from [DaisyUI](https://daisyui.com/)
 - AI powered by [Groq](https://groq.com/)
 
+
+***:movie_camera: Demo***
+[![YouTube](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/homepage.png)](https://www.youtube.com/watch?v=OYd8R6s_UZs)
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
+
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
 **📜 Code of Conduct**
@@ -332,3 +322,6 @@ This project is licensed under the MIT License - see the [`License`](https://git
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=65&section=footer"/>
 
 **Ready to show off your coding achievements? Get started with Flavor-ai today! 🚀**
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=00C853&center=true&vCenter=true&width=900&lines=Thanks+for+visiting+Flavor-ai!+🙌;Start+the+repo+✅;Share+it+with+others+🌍;Contribute+and+grow+🛠️;Happy+Coding+✨!" alt="Thanks Banner Typing SVG" />
+</div>
