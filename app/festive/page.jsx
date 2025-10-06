@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FestivalDishCard from "@/components/festivals/FestivalDishCard";
 import { festivalDishes, festivalInfo, festivals } from "@/lib/festivalData";
+import BackButton from "@/components/BackButton";
 
 const difficulties = ["All", "Easy", "Medium", "Hard"];
 
@@ -33,15 +34,19 @@ export default function FestivePage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      
+      <div className="absolute">
+          <BackButton/>
+      </div>
+        
       <div className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
         showResults ? "opacity-80 blur-sm" : "opacity-100"
       }`}>
+     
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary mb-2">
-              Festival Recipes
+              Festival Recipes 
             </h1>
             <p className="text-base-content/70">
               Celebrate traditions with authentic festival dishes

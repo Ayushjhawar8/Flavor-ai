@@ -4,24 +4,16 @@ import { useState, useEffect } from "react";
 import { PlusIcon2, PlusIcon } from "@/components/Icons";
 import TextToSpeech from "./TextToSpeech";
 import PreparationChecklist from "./PreparationChecklist";
-// /**
-//  * AiRecipe Component
-//  * 
-//  * Displays recipe details including ingredients, instructions, and image
-//  * 
-//  * Props:
-//  * @param {Object} recipe - Recipe data including name, ingredients, steps, area, category
-//  * @param {Function} setShowRecipe - Controls visibility of the recipe display
-//  * @param {string} recipeImageUrl - URL of the generated recipe image
-//  */
 
 export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
   const [error, setError] = useState(null);
 
-  // Validate recipe data on mount
   useEffect(() => {
-    if (!recipe || !recipe.name || !recipe.ingredients || !recipe.steps) {
-      setError("Recipe data is unavailable. Please ensure all API keys are set and try again.");
+    // We can remove the error check for ingredients here, as the new rendering logic is more flexible.
+    if (!recipe || !recipe.name || !recipe.steps) {
+      setError("Recipe data is incomplete. Please try generating the recipe again.");
+    } else {
+      setError(null); // Clear previous errors if new valid recipe is passed
     }
   }, [recipe]);
 
@@ -46,7 +38,7 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
   return (
     <div className="max-w-96 md:max-w-7xl w-full bg-base-100 text-base-content shadow-md rounded-lg overflow-hidden">
       <button
-        className="absolute top-10 right-10 btn btn-sm btn-secondary"
+        className="absolute top-10 right-10 btn btn-sm btn-secondary no-print"
         onClick={() => setShowRecipe(false)}
       >
         Close
@@ -69,6 +61,13 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
             <div className="flex items-center space-x-4 mb-4">
               {recipe.area && <span className="badge badge-primary">{recipe.area}</span>}
               {recipe.category && <span className="badge badge-success">{recipe.category}</span>}
+              <button
+                onClick={() => window.print()}
+                className="btn btn-sm btn-outline ml-auto"
+                title="Print or save as PDF"
+              >
+                🖨️ Print Recipe
+              </button>
             </div>
           </div>
           <div>
@@ -76,47 +75,66 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
               <PlusIcon />
               <span className="ml-2">Ingredients</span>
             </h2>
+            {/* ✨ START: UPDATED INGREDIENT RENDERING LOGIC ✨ */}
             {recipe.ingredients && recipe.ingredients.length > 0 ? (
               <table className="w-full mb-4">
                 <tbody>
-                  {recipe.ingredients.map(({ name, amount }, index) => (
-                    <tr key={index}>
-                      <td className="py-1 pr-4">{name}</td>
-                      <td className="py-1">{amount}</td>
-                    </tr>
-                  ))}
+                  {recipe.ingredients.map((ingredient, index) => {
+                    // Handle if ingredient is a simple string
+                    if (typeof ingredient === 'string') {
+                      return (
+                        <tr key={index}>
+                          <td className="py-1" colSpan="2">{ingredient}</td>
+                        </tr>
+                      );
+                    }
+                    
+                    // Handle if ingredient is an object (flexible keys)
+                    if (typeof ingredient === 'object' && ingredient !== null) {
+                      const values = Object.values(ingredient);
+                      return (
+                        <tr key={index}>
+                          <td className="py-1 pr-4">{values[0]}</td>
+                          <td className="py-1">{values[1]}</td>
+                        </tr>
+                      );
+                    }
+
+                    return null; // Don't render if format is unknown
+                  })}
                 </tbody>
               </table>
             ) : (
               <div className="text-base-content/60">No ingredients available.</div>
             )}
+            {/* ✨ END: UPDATED LOGIC ✨ */}
           </div>
         </div>
         
-<div className="mb-4">
-  <h2 className="text-xl text-base-content font-semibold mb-2 flex items-center">
-    <PlusIcon2 />
-    Instructions
-  </h2>
-  {recipe.steps && recipe.steps.length > 0 ? (
-    (() => {
-      const cleanedSteps = recipe.steps
-        .map(step => step.replace(/^\s*\d+([.)]?)/, "").trim())
-        .filter(Boolean);
-      return (
-        <>
-          <PreparationChecklist
-            steps={cleanedSteps}
-            checklistKey={`ai-recipe-steps-${recipe.name}`}
-          />
-          <TextToSpeech sentences={cleanedSteps} onHighlightChange={() => {}} />
-        </>
-      );
-    })()
-  ) : (
-    <div className="text-base-content/60">No instructions available.</div>
-  )}
-</div>
+        <div className="mb-4">
+          <h2 className="text-xl text-base-content font-semibold mb-2 flex items-center">
+            <PlusIcon2 />
+            Instructions
+          </h2>
+          {recipe.steps && recipe.steps.length > 0 ? (
+            (() => {
+              const cleanedSteps = recipe.steps
+                .map(step => String(step).replace(/^\s*\d+([.)]?)/, "").trim())
+                .filter(Boolean);
+              return (
+                <>
+                  <PreparationChecklist
+                    steps={cleanedSteps}
+                    checklistKey={`ai-recipe-steps-${recipe.name}`}
+                  />
+                  <TextToSpeech sentences={cleanedSteps} onHighlightChange={() => {}} />
+                </>
+              );
+            })()
+          ) : (
+            <div className="text-base-content/60">No instructions available.</div>
+          )}
+        </div>
       </div>
     </div>
   );
