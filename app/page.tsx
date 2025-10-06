@@ -7,6 +7,13 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar"; // Reusable Navbar
 import { CATEGORIES_URL } from "@/lib/urls";
 import { PlusIcon } from "@/components/Icons";
+import {
+  GiDiceSixFacesFour,
+  GiMushroom,
+  GiNotebook,
+  GiPartyPopper,
+} from "react-icons/gi";
+import { FaFolder, FaFolderOpen, FaHeart, FaRobot } from "react-icons/fa";
 
 export default function Page() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -114,13 +121,13 @@ export default function Page() {
 
       <div
         className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 transition-all duration-300 relative z-10 ${
-        !showResults ? "opacity-100" : "opacity-80 blur-sm"
-      }`}
+          !showResults ? "opacity-100" : "opacity-80 blur-sm"
+        }`}
       >
         <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
           {/* --- ANIMATION ADDED TO THIS PARENT DIV --- */}
-          <div 
-            data-aos="fade-up" 
+          <div
+            data-aos="fade-up"
             className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8"
           >
             <h1
@@ -130,7 +137,7 @@ export default function Page() {
             >
               Start Your Flavor Journey
             </h1>
-            
+
             <p
               className={`text-xl md:text-2xl max-w-3xl leading-relaxed ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
@@ -140,41 +147,44 @@ export default function Page() {
               suggestions, and exciting surprises.
             </p>
 
-            <div
-              className="flex flex-wrap items-center justify-center gap-4"
-            >
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/ai">
                 <button className="btn btn-outline btn-primary text-lg">
-                  Get AI-Generated Recipes
+                  <FaRobot className="text-xl" color="#9B5DE5" /> Get
+                  AI-Generated Recipes
                 </button>
               </Link>
               <Link href="/random">
                 <button className="btn btn-outline btn-primary text-lg">
+                  <GiDiceSixFacesFour className="text-xl" color="#FF6347" />
                   Discover a Random Recipe
                 </button>
               </Link>
               <Link href="/diet-planner">
                 <button className="btn btn-outline btn-primary text-lg">
-                  AI Diet Planner
+                  <GiNotebook className="text-xl" color="#00C9A7" /> AI Diet
+                  Planner
                 </button>
               </Link>
               <Link href="/festive">
                 <button className="btn btn-outline btn-primary text-lg">
-                Festive Dishes
+                  <GiPartyPopper className="text-xl" color="#F39C12" /> Festive
+                  Dishes
                 </button>
               </Link>
               <Link href="/ingredient-explorer">
                 <button className="btn btn-outline btn-primary text-lg">
-                  🧪 AI Ingredient Explorer
+                  <GiMushroom className="text-xl" color="#E67E22" /> AI
+                  Ingredient Explorer
                 </button>
               </Link>
               <Link href="/favorite">
                 <button className="btn btn-outline btn-primary text-lg">
-                  ❤️ Favorites
+                  <FaHeart className="text-xl" color="#E74C3C" /> Favorites
                 </button>
               </Link>
               <button
-                className="btn btn-outline btn-primary text-lg"
+                className="btn btn-outline btn-primary text-lg flex items-center gap-2"
                 onClick={() => {
                   setShowCategories((prev) => !prev);
                   if (!showCategories) {
@@ -186,7 +196,23 @@ export default function Page() {
                   }
                 }}
               >
-                {showCategories ? "Hide Categories" : "Show Categories"}
+                {showCategories ? (
+                  <>
+                    <FaFolderOpen
+                      className="h-5 w-5 align-middle"
+                      color="#F39C12"
+                    />
+                    Hide Categories
+                  </>
+                ) : (
+                  <>
+                    <FaFolder 
+                      className="h-5 w-5 align-middle"
+                      color="#F39C12"
+                    />
+                    Show Categories
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -194,7 +220,10 @@ export default function Page() {
 
         {recentMeals.length > 0 && (
           // --- ANIMATION ADDED ---
-          <section data-aos="fade-up" className="w-full max-w-7xl mx-auto my-10 px-4">
+          <section
+            data-aos="fade-up"
+            className="w-full max-w-7xl mx-auto my-10 px-4"
+          >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-base-content">
                 Recently Viewed

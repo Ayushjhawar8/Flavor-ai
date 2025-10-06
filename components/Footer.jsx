@@ -1,8 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaGlobe, FaHeart, FaLink, FaLinkedin, FaRobot, FaRocket, FaSearch, FaTools } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6"; // react-icons v4.10+
 import Link from "next/link";
+import { MdAutoAwesome } from "react-icons/md";
+import { GiBroccoli, GiCupcake, GiDiceSixFacesFour, GiForkKnifeSpoon, GiMushroom, GiNotebook, GiPartyPopper, GiShoppingCart } from "react-icons/gi";
+import { BiSearchAlt } from "react-icons/bi";
+import { FiShare } from "react-icons/fi";
+import { HiOutlineBookOpen, HiOutlineMail, HiOutlinePhone } from "react-icons/hi";
 
 const Footer = () => {
   const [currentTheme, setCurrentTheme] = useState("light");
@@ -81,9 +86,9 @@ const Footer = () => {
           {/* Features & Planning Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
-              className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
+              className={`flex items-center justify-center gap-2 font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
             >
-              ✨ Features
+              <MdAutoAwesome className="text-2xl" color="#F1C40F"/> Features
             </h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
@@ -91,7 +96,8 @@ const Footer = () => {
                   href="/ai-recipe-generator"
                   className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
-                  🤖 AI Recipe Generator
+                  <span className="flex items-center justify-center gap-2"><FaRobot className="text-xl pb-0.5" color="#9B5DE5" /> AI Recipe Generator</span>
+                  
                 </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
@@ -99,7 +105,8 @@ const Footer = () => {
                   href="/diet-planner-ai"
                   className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
-                  📋 Diet Planner
+                  <span className="flex items-center justify-center gap-1"><GiNotebook className="text-xl pb-0.5" color="#00C9A7" />Diet Planner </span>
+                  
                 </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
@@ -107,7 +114,7 @@ const Footer = () => {
                   href="/recipe-search"
                   className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
-                  🔍 Recipe Search
+                  <span className="flex items-center justify-center gap-1"><BiSearchAlt className="text-xl pb-0.5" color="#1E90FF" />Recipe Search </span>
                 </Link>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
@@ -115,7 +122,7 @@ const Footer = () => {
                   href="/upload-recipe-new"
                   className={`${textColor} opacity-80 hover:opacity-100 text-base block text-center transition-all duration-300 hover:scale-105`}
                 >
-                  📤 Upload Recipe
+                 <span className="flex items-center justify-center gap-1"><FiShare className="text-xl pb-0.5" color="#FF7F50" /> Upload Recipe  </span>
                 </Link>
               </li>
             </ul>
@@ -124,37 +131,37 @@ const Footer = () => {
           {/* Explore & Analysis Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
-              className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
+              className={`flex items-center justify-center gap-2 font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
             >
-              🧭 Explore
+              <FaRocket className="text-xl" color="#FF6B35" /> Explore 
             </h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🥕 Ingredient Explorer
+                  <span className="flex items-center justify-center gap-1"><GiMushroom className="text-xl pb-0.5" color="#E67E22" />  Ingredient Explorer  </span>
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🔗 Ingredient Similarity
+                  <span className="flex items-center justify-center gap-1"><FaLink className="text-xl pb-0.5" color="#4682B4" />  Ingredient Similarity  </span>
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🎲 Random Recipe
+                  <span className="flex items-center justify-center gap-1"><GiDiceSixFacesFour className="text-xl pb-0.5" color="#FF6347" />Random Recipe</span>
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  ❤️ My Favorites
+                   <span className="flex items-center justify-center gap-1"><FaHeart className="text-xl pb-0.5" color="#E74C3C" />Favorites</span>
                 </span>
               </li>
             </ul>
@@ -163,37 +170,37 @@ const Footer = () => {
           {/* Community & Festival Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
-              className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
+              className={`flex items-center justify-center gap-2 font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
             >
-              👥 Community
+              <FaGlobe className="text-xl" color="#1E90FF"/> Community
             </h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🍽️ Community Recipes
+                  <span className="flex items-center justify-center gap-1"><GiForkKnifeSpoon className="text-xl pb-0.5" color="#B0C4DE"/>Community Recipes</span> 
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🎉 Festive Recipes
+                  <span className="flex items-center justify-center gap-1"><GiPartyPopper className="text-xl pb-0.5" color="#F39C12" /> Festive Recipes</span> 
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🥬 Vegetarian Recipes
+                  <span className="flex items-center justify-center gap-1"><GiBroccoli className="text-xl pb-0.5" color="#27AE60" /> Vegetarian Recipes</span>
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🍰 Dessert Recipes
+                  <span className="flex items-center justify-center gap-1"><GiCupcake className="text-xl pb-0.5" color="#E74C3C" /> Dessert Recipes</span>
                 </span>
               </li>
             </ul>
@@ -202,16 +209,16 @@ const Footer = () => {
           {/* Tools & Support Column */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full max-w-xs">
             <h4
-              className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
+              className={`flex items-center justify-center gap-2 font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
             >
-              🛠️ Tools & Support
+              <FaTools className="text-xl" color="#7F8C8D"/> Tools & Support
             </h4>
             <ul className="space-y-3">
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  🛒 Shopping List
+                  <span className="flex items-center justify-center gap-1"><GiShoppingCart className="text-2xl pb-0.5" color="#00BFFF" /> Shopping List</span>
                 </span>
               </li>
               {/* START: ADDED FEEDBACK LINK */}
@@ -220,7 +227,7 @@ const Footer = () => {
                   href="/feedback"
                   className={`${textColor} opacity-80 text-base block text-center hover:opacity-100`}
                 >
-                  ✉️ Feedback & Support
+                  <span className="flex items-center justify-center gap-1"><HiOutlineMail className={`${currentTheme === "dark"? "text-white" : "text-gray-800"} text-xl`}/> Feedback & Support</span>
                 </Link>
               </li>
               {/* END: ADDED FEEDBACK LINK */}
@@ -228,14 +235,15 @@ const Footer = () => {
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  📖 About Us
+                  <span className="flex items-center justify-center gap-1"><HiOutlineBookOpen className={`${currentTheme === "dark"? "text-white" : "text-gray-800"} text-xl`}/> About Us</span>
                 </span>
               </li>
               <li className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200">
                 <span
                   className={`${textColor} opacity-80 text-base cursor-default block text-center`}
                 >
-                  📞 Contact Us
+                  <span className="flex items-center justify-center gap-1"><HiOutlinePhone className={`${currentTheme === "dark"? "text-red-400" : "text-red-800"} text-xl`}/> Contact Us <span/>
+                </span> 
                 </span>
               </li>
             </ul>
