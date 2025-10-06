@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar'; // Correct import based on your path
 import Footer from '@/components/Footer'; // Correct import based on your path
+import BackButton from '@/components/BackButton';
 
 const FeedbackPage = () => {
   // State to hold form data
@@ -69,10 +70,14 @@ const FeedbackPage = () => {
     // This parent div wraps the entire page, including layout components.
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <div className='relative mt-10'>
+        <BackButton/>
+      </div>
       {/* The main content area grows to fill available space. Increased padding-top to give more space below Navbar. */}
       <main className="flex-grow bg-base-300 flex items-center justify-center p-4 sm:p-6 lg:p-8 pt-32">
+
         <div className="w-full max-w-2xl bg-base-100 rounded-2xl shadow-xl p-8 space-y-6 transition-all duration-300 ease-in-out">
-          
+      
           {/* Header Section */}
           <div className="text-center">
             <h1 className="text-4xl font-bold text-primary">Share Your Thoughts</h1>

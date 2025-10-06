@@ -8,6 +8,7 @@ import { getCommunityRecipes } from "@/lib/communityStorage";
 import { getCurrentUser } from "@/lib/mockAuth";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import BackButton from "@/components/BackButton";
 
 export default function CommunityPage() {
   const [recipes, setRecipes] = useState([]);
@@ -35,6 +36,7 @@ export default function CommunityPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
+      <div className="absolute"><BackButton/></div>
 
       <div
         className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
