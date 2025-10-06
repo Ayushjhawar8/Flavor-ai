@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className} style={patrickHand}>
         <AOSInitializer /> {/* <-- 2. ADD the Initializer component here */}
-        <SnakeCursor />
+        <SnakeCursor enabled={false}/>
         {children}
         <ScrollToTop></ScrollToTop>
       </body>

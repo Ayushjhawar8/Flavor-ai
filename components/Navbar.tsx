@@ -8,7 +8,7 @@ import { Home, Menu, X } from "lucide-react";
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
 import CursorToggle from "./CursorToggle";
-import SnakeCursor from "./SnakeCursor";
+// import SnakeCursor from "./SnakeCursor";
 
 const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -313,7 +313,7 @@ export default function Navbar({
       </div>
 
       {/* Animated Cursor */}
-      <SnakeCursor enabled={cursorEnabled} />
+      {/* <SnakeCursor enabled={false} /> */}
     </div>
   );
 }
