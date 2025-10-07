@@ -24,9 +24,16 @@ export default function Page() {
   const [showDiets, setShowDiets] = useState(false);
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [recentMeals, setRecentMeals] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // Background color fix
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    document.body.style.backgroundColor = theme === 'light' ? '#FFF8E7' : '#60A5FA';
+
+    // Load recent meals
     try {
       const raw = localStorage.getItem("recentMeals");
       const list = raw ? JSON.parse(raw) : [];
@@ -86,28 +93,20 @@ export default function Page() {
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      const newTheme =
-        document.documentElement.getAttribute("data-theme") || "light";
-      setCurrentTheme(newTheme);
+      setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
     });
-
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
-
-    setCurrentTheme(
-      document.documentElement.getAttribute("data-theme") || "light"
-    );
+    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     const navbar = document.querySelector(".navbar");
     const content = document.querySelector(".content") as HTMLElement | null;
-    if (navbar && content) {
-      content.style.marginTop = `${(navbar as HTMLElement).offsetHeight}px`;
-    }
+    if (navbar && content) content.style.marginTop = `${(navbar as HTMLElement).offsetHeight}px`;
   }, []);
 
   return (
@@ -125,7 +124,6 @@ export default function Page() {
         }`}
       >
         <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
-          {/* --- ANIMATION ADDED TO THIS PARENT DIV --- */}
           <div
             data-aos="fade-up"
             className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8"
@@ -137,45 +135,38 @@ export default function Page() {
             >
               Start Your Flavor Journey
             </h1>
-
             <p
               className={`text-xl md:text-2xl max-w-3xl leading-relaxed ${
                 currentTheme === "dark" ? "text-white" : "text-amber-800"
               }`}
             >
-              Unlock a world of flavors with AI-curated recipes, personalized
-              suggestions, and exciting surprises.
+              Unlock a world of flavors with AI-curated recipes, personalized suggestions, and exciting surprises.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/ai">
                 <button className="btn btn-outline btn-primary text-lg">
-                  <FaRobot className="text-xl" color="#9B5DE5" /> Get
-                  AI-Generated Recipes
+                  <FaRobot className="text-xl" color="#9B5DE5" /> Get AI-Generated Recipes
                 </button>
               </Link>
               <Link href="/random">
                 <button className="btn btn-outline btn-primary text-lg">
-                  <GiDiceSixFacesFour className="text-xl" color="#FF6347" />
-                  Discover a Random Recipe
+                  <GiDiceSixFacesFour className="text-xl" color="#FF6347" /> Discover a Random Recipe
                 </button>
               </Link>
               <Link href="/diet-planner">
                 <button className="btn btn-outline btn-primary text-lg">
-                  <GiNotebook className="text-xl" color="#00C9A7" /> AI Diet
-                  Planner
+                  <GiNotebook className="text-xl" color="#00C9A7" /> AI Diet Planner
                 </button>
               </Link>
               <Link href="/festive">
                 <button className="btn btn-outline btn-primary text-lg">
-                  <GiPartyPopper className="text-xl" color="#F39C12" /> Festive
-                  Dishes
+                  <GiPartyPopper className="text-xl" color="#F39C12" /> Festive Dishes
                 </button>
               </Link>
               <Link href="/ingredient-explorer">
                 <button className="btn btn-outline btn-primary text-lg">
-                  <GiMushroom className="text-xl" color="#E67E22" /> AI
-                  Ingredient Explorer
+                  <GiMushroom className="text-xl" color="#E67E22" /> AI Ingredient Explorer
                 </button>
               </Link>
               <Link href="/favorite">
@@ -198,19 +189,11 @@ export default function Page() {
               >
                 {showCategories ? (
                   <>
-                    <FaFolderOpen
-                      className="h-5 w-5 align-middle"
-                      color="#F39C12"
-                    />
-                    Hide Categories
+                    <FaFolderOpen className="h-5 w-5 align-middle" color="#F39C12" /> Hide Categories
                   </>
                 ) : (
                   <>
-                    <FaFolder 
-                      className="h-5 w-5 align-middle"
-                      color="#F39C12"
-                    />
-                    Show Categories
+                    <FaFolder className="h-5 w-5 align-middle" color="#F39C12" /> Show Categories
                   </>
                 )}
               </button>
@@ -219,40 +202,17 @@ export default function Page() {
         </section>
 
         {recentMeals.length > 0 && (
-          // --- ANIMATION ADDED ---
-          <section
-            data-aos="fade-up"
-            className="w-full max-w-7xl mx-auto my-10 px-4"
-          >
+          <section data-aos="fade-up" className="w-full max-w-7xl mx-auto my-10 px-4">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-base-content">
-                Recently Viewed
-              </h2>
-              <button
-                onClick={clearRecentMeals}
-                className="text-sm text-red-500 underline"
-              >
-                Clear
-              </button>
+              <h2 className="text-2xl font-bold text-base-content">Recently Viewed</h2>
+              <button onClick={clearRecentMeals} className="text-sm text-red-500 underline">Clear</button>
             </div>
 
             <div className="flex gap-4 overflow-x-auto pb-4">
               {recentMeals.map((meal) => (
-                <Link
-                  key={meal.idMeal}
-                  href={`/meal/${meal.idMeal}`}
-                  className="min-w-[160px] bg-base-200 rounded-lg shadow-md hover:-translate-y-1 transition-transform"
-                >
-                  <Image
-                    src={meal.strMealThumb}
-                    alt={meal.strMeal}
-                    width={160}
-                    height={120}
-                    className="w-full h-32 object-cover rounded-t-lg"
-                  />
-                  <div className="p-2 text-sm font-medium text-center text-base-content">
-                    {meal.strMeal}
-                  </div>
+                <Link key={meal.idMeal} href={`/meal/${meal.idMeal}`} className="min-w-[160px] bg-base-200 rounded-lg shadow-md hover:-translate-y-1 transition-transform">
+                  <Image src={meal.strMealThumb} alt={meal.strMeal} width={160} height={120} className="w-full h-32 object-cover rounded-t-lg" />
+                  <div className="p-2 text-sm font-medium text-center text-base-content">{meal.strMeal}</div>
                 </Link>
               ))}
             </div>
@@ -263,144 +223,53 @@ export default function Page() {
 
         {showCategories && (
           <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full relative z-10">
-            {/* --- ANIMATION ADDED --- */}
-            <h1
-              data-aos="fade-up"
-              className={`text-xl md:text-3xl mb-10 font-semibold text-center ${
-                currentTheme === "dark" ? "text-white" : "text-amber-800"
-              }`}
-            >
+            <h1 data-aos="fade-up" className={`text-xl md:text-3xl mb-10 font-semibold text-center ${currentTheme === "dark" ? "text-white" : "text-amber-800"}`}>
               A Taste for Every Mood and Moment
             </h1>
 
-            <div
-              data-aos="fade-up"
-              data-aos-delay="100"
-              className="flex flex-wrap gap-4 justify-center mb-8"
-            >
+            <div data-aos="fade-up" data-aos-delay="100" className="flex flex-wrap gap-4 justify-center mb-8">
               {["All", "Vegetarian", "Non-Vegetarian"].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setFilter(type)}
-                  className={`btn btn-sm md:btn-md ${
-                    filter === type ? "btn-primary" : "btn-outline"
-                  }`}
-                >
-                  {type}
-                </button>
+                <button key={type} onClick={() => setFilter(type)} className={`btn btn-sm md:btn-md ${filter === type ? "btn-primary" : "btn-outline"}`}>{type}</button>
               ))}
             </div>
 
-            <div
-              data-aos="fade-up"
-              data-aos-delay="200"
-              className="flex flex-wrap gap-4 justify-center mb-8"
-            >
-              <button
-                onClick={() => setShowDiets(!showDiets)}
-                className={`btn btn-sm md:btn-md ${
-                  showDiets ? "btn-primary" : "btn-outline"
-                }`}
-              >
-                Diet Based
-              </button>
+            <div data-aos="fade-up" data-aos-delay="200" className="flex flex-wrap gap-4 justify-center mb-8">
+              <button onClick={() => setShowDiets(!showDiets)} className={`btn btn-sm md:btn-md ${showDiets ? "btn-primary" : "btn-outline"}`}>Diet Based</button>
             </div>
 
             {showDiets && (
-              <div
-                data-aos="fade-up"
-                className="flex flex-wrap gap-4 justify-center mb-8"
-              >
-                {[
-                  "Vegan",
-                  "Keto",
-                  "100 Calories",
-                  "Low Carbs",
-                  "High Protein",
-                  "Gluten Free",
-                ].map((diet) => (
-                  <button
-                    key={diet}
-                    onClick={() =>
-                      setSelectedDiets((prev) =>
-                        prev.includes(diet)
-                          ? prev.filter((d) => d !== diet)
-                          : [...prev, diet]
-                      )
-                    }
-                    className={`btn btn-sm md:btn-md ${
-                      selectedDiets.includes(diet)
-                        ? "btn-primary"
-                        : "btn-outline"
-                    }`}
-                  >
-                    {diet}
-                  </button>
+              <div data-aos="fade-up" className="flex flex-wrap gap-4 justify-center mb-8">
+                {["Vegan","Keto","100 Calories","Low Carbs","High Protein","Gluten Free"].map((diet) => (
+                  <button key={diet} onClick={() => setSelectedDiets(prev => prev.includes(diet) ? prev.filter(d => d !== diet) : [...prev,diet])} className={`btn btn-sm md:btn-md ${selectedDiets.includes(diet) ? "btn-primary" : "btn-outline"}`}>{diet}</button>
                 ))}
               </div>
             )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
               {categories
-                .filter((category) => {
+                .filter(category => {
                   const lowerName = category.strCategory.toLowerCase();
-                  const vegetarianKeywords = [
-                    "vegetarian",
-                    "vegan",
-                    "dessert",
-                    "pasta",
-                    "starter",
-                  ];
+                  const vegetarianKeywords = ["vegetarian","vegan","dessert","pasta","starter"];
 
-                  if (filter === "Vegetarian") {
-                    return vegetarianKeywords.some((keyword) =>
-                      lowerName.includes(keyword)
-                    );
-                  }
-
-                  if (filter === "Non-Vegetarian") {
-                    return !vegetarianKeywords.some((keyword) =>
-                      lowerName.includes(keyword)
-                    );
-                  }
-
-                  if (selectedDiets.length > 0) {
-                    return selectedDiets.some((diet) =>
-                      categoryDietMap[category.strCategory]?.includes(diet)
-                    );
-                  }
-
-                  return true; // All
+                  if(filter === "Vegetarian") return vegetarianKeywords.some(keyword => lowerName.includes(keyword));
+                  if(filter === "Non-Vegetarian") return !vegetarianKeywords.some(keyword => lowerName.includes(keyword));
+                  if(selectedDiets.length > 0) return selectedDiets.some(diet => categoryDietMap[category.strCategory]?.includes(diet));
+                  return true;
                 })
-                .map((category) => (
-                  // --- ANIMATION ADDED to each card ---
-                  <div
-                    key={category.idCategory}
-                    data-aos="fade-up"
-                    className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:-translate-y-1 transition-all relative z-10"
-                  >
+                .map(category => (
+                  <div key={category.idCategory} data-aos="fade-up" className="card card-compact w-72 lg:w-96 bg-base-200 shadow-xl hover:-translate-y-1 transition-all relative z-10">
                     <figure>
-                      <Image
-                        src={category.strCategoryThumb}
-                        alt={category.strCategory}
-                        width={384}
-                        height={216}
-                        className="w-full h-48 object-cover"
-                      />
+                      <Image src={category.strCategoryThumb} alt={category.strCategory} width={384} height={216} className="w-full h-48 object-cover" />
                     </figure>
                     <div className="card-body">
                       <h2 className="card-title text-lg md:text-xl flex items-center gap-2">
                         <PlusIcon />
                         {category.strCategory}
                       </h2>
-                      <p className="text-sm">
-                        {category.strCategoryDescription.slice(0, 80)}...
-                      </p>
+                      <p className="text-sm">{category.strCategoryDescription.slice(0,80)}...</p>
                       <div className="card-actions justify-end">
                         <Link href={`/category/${category.strCategory}`}>
-                          <button className="btn btn-primary text-sm md:text-base">
-                            Show Recipes 🍽️
-                          </button>
+                          <button className="btn btn-primary text-sm md:text-base">Show Recipes 🍽️</button>
                         </Link>
                       </div>
                     </div>
