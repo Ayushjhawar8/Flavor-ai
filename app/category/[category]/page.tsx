@@ -32,7 +32,7 @@ export default function Page({ params }: PageProps) {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
-  // Fetch meals for the given category (not beverages)
+  // Fetch meals for the given category 
   useEffect(() => {
     setLoadingMeals(true);
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${params.category}`)
