@@ -46,10 +46,10 @@ const Footer = () => {
     {
       title: "👥 Community",
       links: [
-        { label: "🍽️ Community Recipes", icon: <GiForkKnifeSpoon /> },
-        { label: "🎉 Festive Recipes", icon: <GiPartyPopper /> },
-        { label: "🥬 Vegetarian Recipes", icon: <GiBroccoli /> },
-        { label: "🍰 Dessert Recipes", icon: <GiCupcake /> },
+        { label: "🍽️ Community Recipes", href: "/community", icon: <GiForkKnifeSpoon /> },
+        { label: "🎉 Festive Recipes", href: "/festive", icon: <GiPartyPopper /> },
+        { label: "🥬 Vegetarian Recipes", href: "/category/vegetarian", icon: <GiBroccoli /> },
+        { label: "🍰 Dessert Recipes", href: "category/dessert", icon: <GiCupcake /> },
       ],
     },
     {
