@@ -60,6 +60,11 @@
 - **Voice Input**: Use voice commands to describe your desired recipe.
 - **Text-to-Speech**: Listen to recipe instructions while cooking.
 - **Smart Filtering**: Filter recipes by dietary restrictions and cuisine types.
+- **Festive Recipe**: Get recipes of festivals 
+- **Favourites**: You can save your favourite recipes
+- **Toggle Theme**: Seamlessly switch between light and dark modes for good viewing experience.
+- **Language Selector**: Easily switch the app’s language for a personalized experience supports native languages too.
+- **Community Recipes**:xplore and contribute user-submitted recipe and discover dishes.
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
@@ -87,6 +92,7 @@
    - Category-based browsing
    - Random recipe discovery
    - Detailed recipe views
+   - voice support for recipe serch
 
 4. **Accessibility Features**
    - Voice input for hands-free operation
@@ -121,11 +127,11 @@ Here are some screenshots of the project in action:
 
 | Screenshot 1 | Screenshot 2 |
 |--------------|--------------|
-| ![Screenshot 1](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/homepage.png) | ![Screenshot 2](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/aiGenerateRecipe.png) |
+| ![Screenshot 1](./app/screenshots/homepage.png) | ![Screenshot 2](./app/screenshots/aigenerated.png) |
 
 | Screenshot 3 | Screenshot 4 |
 |--------------|--------------|
-| ![Screenshot 3](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/Category.png) | ![Screenshot 4](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/RandomRecipe.png) |
+| ![Screenshot 3](./app/screenshots/categories.png) | ![Screenshot 4](./app/screenshots/community.png) |
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
