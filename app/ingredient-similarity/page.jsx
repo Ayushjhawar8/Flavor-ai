@@ -1,5 +1,6 @@
 import IngredientSimilarity from '@/components/IngredientSimilarity';
 import BackButton from '@/components/BackButton';
+import Footer from '@/components/Footer';
 
 export default function IngredientSimilarityPage() {
   return (
@@ -8,6 +9,7 @@ export default function IngredientSimilarityPage() {
       <div className="container mx-auto px-4 py-8 pt-20">
         <IngredientSimilarity />
       </div>
+      <Footer />
     </div>
   );
 } 

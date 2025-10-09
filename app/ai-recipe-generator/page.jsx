@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
+import Footer from "../../components/Footer";
 
 export default function AIRecipeGenerator() {
   const [formData, setFormData] = useState({
@@ -322,6 +323,7 @@ export default function AIRecipeGenerator() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

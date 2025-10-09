@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { Mic, MicOff, Plus, X, Clock, Users, ChefHat, Sparkles } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import BackButton from "@/components/BackButton"
+import Footer from "@/components/Footer"
 
 interface Recipe {
   id: string
@@ -1401,6 +1402,7 @@ export default function IngredientExplorer() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   )
 }

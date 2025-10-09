@@ -19,10 +19,10 @@ const Footer = () => {
     return () => observer.disconnect();
   }, []);
 
-  const textColor = currentTheme === 'dark' ? 'text-white' : 'text-gray-800';
-  const iconBg = currentTheme === 'dark' ? 'bg-white/20' : 'bg-white/40';
-  const iconHoverBg = currentTheme === 'dark' ? 'hover:bg-white/30' : 'hover:bg-white/60';
-  const iconColor = currentTheme === 'dark' ? 'text-white' : 'text-gray-700';
+  const textColor = currentTheme === 'dark' ? 'text-base-content' : 'text-base-content';
+  const iconBg = currentTheme === 'dark' ? 'bg-base-200' : 'bg-base-200';
+  const iconHoverBg = currentTheme === 'dark' ? 'hover:bg-base-300' : 'hover:bg-base-300';
+  const iconColor = currentTheme === 'dark' ? 'text-base-content' : 'text-base-content';
 
   const socialLinks = [
     {
@@ -85,7 +85,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className={`mt-auto relative overflow-hidden   `}>
+    <footer className={`mt-auto relative overflow-hidden ${currentTheme === 'dark' ? 'bg-base-100' : 'bg-base-100'}`}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -110,11 +110,11 @@ const Footer = () => {
         </div>
 
         {/* Horizontal Links Grid */}
-        <div className={`${currentTheme === 'dark' ? 'bg-blue-600/20 backdrop-blur-sm border border-blue-400/30' : 'bg-white/60 backdrop-blur-sm border border-indigo-200/50'} rounded-2xl p-8 shadow-xl mb-16`}>
+        <div className={`${currentTheme === 'dark' ? 'bg-base-200 border border-base-300' : 'bg-base-200 border border-base-300'} backdrop-blur-sm rounded-2xl p-8 shadow-xl mb-16`}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {sections.map(({ title, links }, index) => (
               <div key={title} className="space-y-4">
-                <h4 className={`font-bold text-lg ${textColor} border-b ${currentTheme === 'dark' ? 'border-blue-400/40' : 'border-indigo-300/60'} pb-2`}>
+                <h4 className={`font-bold text-lg ${textColor} border-b ${currentTheme === 'dark' ? 'border-base-300' : 'border-base-300'} pb-2`}>
                   {title}
                 </h4>
                 <ul className="space-y-2">
@@ -122,7 +122,7 @@ const Footer = () => {
                     <li key={label}>
                       <Link
                         href={href}
-                        className={`${textColor} opacity-75 hover:opacity-100 text-sm transition-all duration-300 hover:text-primary hover:translate-x-1 inline-block`}
+                        className={`${textColor} opacity-80 hover:opacity-100 text-sm transition-all duration-300 hover:text-primary hover:translate-x-1 inline-block`}
                       >
                         {label}
                       </Link>
@@ -135,7 +135,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className={`border-t ${currentTheme === 'dark' ? 'border-blue-400/30' : 'border-indigo-300/50'} pt-8`}>
+        <div className={`border-t ${currentTheme === 'dark' ? 'border-base-300' : 'border-base-300'} pt-8`}>
           {/* Social Media & Legal Links Row */}
           <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-8">
             {/* Social Media */}
