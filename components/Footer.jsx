@@ -1,14 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTwitter, FaHeart, FaCode } from "react-icons/fa";
 
 const Footer = () => {
-  const textColor = "text-base-content";
-  const iconBg = "bg-white/10";
-  const iconHoverBg = "hover:bg-white/20";
-  const iconColor = "text-base-content";
+  const [currentTheme, setCurrentTheme] = useState("light");
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+    return () => observer.disconnect();
+  }, []);
+
+  const textColor = currentTheme === 'dark' ? 'text-white' : 'text-gray-800';
+  const iconBg = currentTheme === 'dark' ? 'bg-white/20' : 'bg-white/40';
+  const iconHoverBg = currentTheme === 'dark' ? 'hover:bg-white/30' : 'hover:bg-white/60';
+  const iconColor = currentTheme === 'dark' ? 'text-white' : 'text-gray-700';
 
   const socialLinks = [
     {
@@ -71,123 +85,125 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="footer rounded-md p-10 bg-base-200 text-base-content mt-auto">
-      <div className="max-w-7xl mx-auto px-6 py-16 flex flex-col items-center">
-        {/* Brand */}
-        <div className="text-center mb-12">
-          <h3 className={`text-4xl font-extrabold ${textColor} tracking-tight`}>
+    <footer className={`mt-auto relative overflow-hidden   `}>
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}></div>
+      </div>
+      
+      <div className="relative max-w-7xl mx-auto px-6 py-20">
+        {/* Brand Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-focus mb-6 shadow-lg">
+            <span className="text-3xl">🍱</span>
+          </div>
+          <h3 className={`text-5xl font-bold ${textColor} tracking-tight mb-4 bg-gradient-to-r from-primary to-primary-focus bg-clip-text text-transparent`}>
             Flavor AI
           </h3>
-          <p className={`${textColor} opacity-85 mt-2 max-w-2xl`}>
-            Your AI-powered culinary companion for recipes, nutrition, meal
-            planning & more
+          <p className={`${textColor} opacity-80 text-xl max-w-3xl mx-auto leading-relaxed`}>
+            Your AI-powered culinary companion for recipes, nutrition, meal planning & more. 
+            <br className="hidden sm:block" />
+            <span className="text-primary font-semibold">Blending technology with taste</span>
           </p>
         </div>
 
-        {/* Columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 w-full items-start">
-          {sections.map(({ title, links }) => (
-            <div
-              key={title}
-              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300 w-full h-full flex flex-col"
-            >
-              <h4
-                className={`font-bold text-xl mb-6 ${textColor} text-center border-b border-white/20 pb-3`}
-              >
-                {title}
-              </h4>
-
-              {/* Align all links vertically */}
-              <ul className="space-y-3 flex flex-col items-center flex-grow justify-start">
-                {links.map(({ label, href }) => (
-                  <li
-                    key={label}
-                    className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all duration-200 text-center w-full"
-                  >
-                    <Link
-                      href={href}
-                      className={`${textColor} opacity-80 hover:opacity-100 text-base transition-all duration-300 hover:scale-105 inline-block w-full`}
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        {/* Horizontal Links Grid */}
+        <div className={`${currentTheme === 'dark' ? 'bg-blue-600/20 backdrop-blur-sm border border-blue-400/30' : 'bg-white/60 backdrop-blur-sm border border-indigo-200/50'} rounded-2xl p-8 shadow-xl mb-16`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {sections.map(({ title, links }, index) => (
+              <div key={title} className="space-y-4">
+                <h4 className={`font-bold text-lg ${textColor} border-b ${currentTheme === 'dark' ? 'border-blue-400/40' : 'border-indigo-300/60'} pb-2`}>
+                  {title}
+                </h4>
+                <ul className="space-y-2">
+                  {links.map(({ label, href }, linkIndex) => (
+                    <li key={label}>
+                      <Link
+                        href={href}
+                        className={`${textColor} opacity-75 hover:opacity-100 text-sm transition-all duration-300 hover:text-primary hover:translate-x-1 inline-block`}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-opacity-20 pt-12 w-full text-center flex flex-col items-center gap-4">
-          <div className="flex flex-wrap justify-center gap-6 text-base">
-            <Link
-              href="/about"
-              className={`${textColor} opacity-70 hover:opacity-90 transition-opacity`}
-            >
-              About Us
-            </Link>
-            <Link
-              href="/privacy-policy"
-              className={`${textColor} opacity-70 hover:opacity-90 transition-opacity`}
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms-of-service"
-              className={`${textColor} opacity-70 hover:opacity-90 transition-opacity`}
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/contact"
-              className={`${textColor} opacity-70 hover:opacity-90 transition-opacity`}
-            >
-              Contact
-            </Link>
+        <div className={`border-t ${currentTheme === 'dark' ? 'border-blue-400/30' : 'border-indigo-300/50'} pt-8`}>
+          {/* Social Media & Legal Links Row */}
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-8">
+            {/* Social Media */}
+            <div className="flex items-center gap-4">
+              <span className={`${textColor} text-sm font-medium`}>Connect:</span>
+              {socialLinks.map(({ href, icon: Icon, label, glow }, index) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group relative ${iconBg} ${iconHoverBg} ${iconColor} p-3 rounded-lg transition-all duration-300 hover:transform hover:scale-110 hover:-translate-y-1`}
+                  title={label}
+                  aria-label={label}
+                >
+                  <Icon size={18} className="group-hover:scale-110 transition-transform duration-300" />
+                </a>
+              ))}
+            </div>
+
+            {/* Legal Links */}
+            <div className="flex flex-wrap justify-center gap-6 text-sm">
+              {[
+                { label: "About Us", href: "/about" },
+                { label: "Privacy Policy", href: "/privacy-policy" },
+                { label: "Terms of Service", href: "/terms-of-service" },
+                { label: "Contact", href: "/contact" },
+              ].map(({ label, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`${textColor} opacity-70 hover:opacity-100 hover:text-primary transition-all duration-300 hover:underline`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <div className="flex gap-3 justify-center">
-            {socialLinks.map(({ href, icon: Icon, label, glow }) => (
+          {/* Creator Info & Copyright Row */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
+            <div className={`${textColor} flex items-center gap-2`}>
+              <span>Created with</span>
+              <FaHeart className="text-red-500 animate-pulse" />
+              <span>by</span>
               <a
-                key={href}
-                href={href}
+                href="https://x.com/itsAyushJ"
                 target="_blank"
-                rel="noopener noreferrer"
-                className={`${iconBg} ${iconHoverBg} ${iconColor} p-3 rounded-lg transition duration-300 hover:transform hover:scale-110`}
-                title={label}
-                aria-label={label}
-                style={{ filter: "none", transition: "all 0.3s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.filter = glow)}
-                onMouseLeave={(e) => (e.currentTarget.style.filter = "none")}
+                rel="noreferrer"
+                className="text-primary hover:text-primary-focus transition-colors duration-300 hover:underline"
               >
-                <Icon size={18} />
+                Ayush Jhawar
               </a>
-            ))}
-          </div>
+            </div>
 
-          <div className={`${textColor} text-lg font-semibold mt-4`}>
-            Created with <span className="text-red-500">❤️</span> by{" "}
-            <a
-              href="https://x.com/itsAyushJ"
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              Ayush Jhawar
-            </a>
-          </div>
-
-          <div className={`${textColor} opacity-70 text-sm`}>
-            &copy; {new Date().getFullYear()} Flavor AI. All Rights Reserved.
-          </div>
-
-          <div className="mt-4">
-            <a
-              href="mailto:ayushjhawar499@gmail.com"
-              className={`${textColor} opacity-70 hover:opacity-100 text-base transition-all duration-300 hover:underline`}
-            >
-              📧 ayushjhawar499@gmail.com
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href="mailto:ayushjhawar499@gmail.com"
+                className={`${textColor} opacity-70 hover:opacity-100 transition-all duration-300 hover:text-primary hover:underline flex items-center gap-1`}
+              >
+                <span>📧</span>
+                <span>Contact</span>
+              </a>
+              <div className={`${textColor} opacity-60 flex items-center gap-1`}>
+                <FaCode className="text-primary" />
+                <span>&copy; {new Date().getFullYear()} Flavor AI</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
