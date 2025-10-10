@@ -26,6 +26,7 @@ import { useServings } from "@/hooks/useServings";
 import ServingSizeControl from "@/components/ServingSizeControl";
 
 /* ---------------- Small helpers ---------------- */
+// ... (all your existing helper functions like HighlightedSentence, etc. remain here)
 
 function HighlightedSentence({ text, isActive, wordRange }) {
   if (!isActive || !wordRange) return <span>{text}</span>;
@@ -67,7 +68,6 @@ function HighlightedIngredient({ text, temp, isActive, wordRange }) {
 /* ----- helpers for quantity text handling ----- */
 const round1 = (n) => Math.round(n * 10) / 10;
 
-/** Return text after the leading numeric qty (e.g. "tbs", "chopped", "g sugar") */
 function tailAfterQty(raw) {
   const m = String(raw || "")
     .trim()
@@ -76,7 +76,7 @@ function tailAfterQty(raw) {
 }
 
 /* ---------------- Ingredients table ---------------- */
-
+// ... (Your existing IngredientsTable component remains here)
 function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) {
   const ingredients = useMemo(
     () =>
@@ -164,6 +164,7 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) 
   );
 }
 
+
 /* ===================== Main ===================== */
 
 function ShowMeal({ URL }) {
@@ -171,9 +172,15 @@ function ShowMeal({ URL }) {
   const [favorites, setFavorites] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
+  // ====== NEW STATE FOR HEALTHIER FEATURE ======
+  const [healthierSuggestions, setHealthierSuggestions] = useState(null);
+  const [isHealthierLoading, setIsHealthierLoading] = useState(false);
+  // ===========================================
+
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
-
+  
+  // ... (Your existing useEffect for favorites, toggleFavorite, and isFavorite functions remain here)
   useEffect(() => {
     const stored = localStorage.getItem("favorites");
     if (stored) setFavorites(JSON.parse(stored));
@@ -190,7 +197,39 @@ function ShowMeal({ URL }) {
 
   const isFavorite = (idMeal) => favorites.some((f) => f.idMeal === idMeal);
 
+
+  // ====== NEW HANDLER FOR HEALTHIER FEATURE ======
+  const handleMakeHealthier = async () => {
+    if (!mealData) return;
+    setIsHealthierLoading(true);
+    setHealthierSuggestions(null);
+
+    try {
+      const response = await fetch('/api/make-healthier', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recipe: mealData }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get suggestions from the server.');
+      }
+
+      const data = await response.json();
+      setHealthierSuggestions(data.suggestions);
+    } catch (error) {
+      console.error(error);
+      setHealthierSuggestions("Sorry, we couldn't generate suggestions at this time.");
+    } finally {
+      setIsHealthierLoading(false);
+    }
+  };
+  // =============================================
+
   /* ---------- Instruction TTS ---------- */
+  // ... (all your existing TTS, unit, servings, and other hooks/logic remain unchanged)
   const [playerState, setPlayerState] = useState("idle");
   const [activeWordRange, setActiveWordRange] = useState({
     sentenceIndex: -1,
@@ -482,6 +521,7 @@ function ShowMeal({ URL }) {
 
   /* ---------- Loading ---------- */
   if (!mealData) {
+    // ... (Your existing loading skeleton remains unchanged)
     return (
       <>
         <Navbar
@@ -537,9 +577,9 @@ function ShowMeal({ URL }) {
         }`}
       >
         <BackButton />
-        {/* --- ANIMATION ADDED --- */}
         <div data-aos="fade-in" className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
           <div className="p-6 md:p-12 print-area">
+            {/* ... (Your existing header remains unchanged) */}
             <header className="relative text-center mb-8">
               <div className="absolute top-0 right-0 flex items-center gap-2">
                 <Link
@@ -594,10 +634,10 @@ function ShowMeal({ URL }) {
               )}
             </header>
 
+
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
               {/* LEFT: image + badges + steps */}
               <div className="md:w-1/2">
-                {/* --- ANIMATION ADDED --- */}
                 <img
                   data-aos="zoom-in-up"
                   src={mealData.strMealThumb}
@@ -620,6 +660,22 @@ function ShowMeal({ URL }) {
                   )}
 
                   <ShareButton title={mealData.strMeal} />
+                  
+                  {/* ====== NEW HEALTHIER BUTTON ADDED HERE ====== */}
+                  <button
+                    onClick={handleMakeHealthier}
+                    disabled={isHealthierLoading}
+                    className="btn btn-secondary btn-sm gap-2"
+                    type="button"
+                  >
+                    {isHealthierLoading ? (
+                      <span className="loading loading-spinner loading-xs"></span>
+                    ) : (
+                      '✨'
+                    )}
+                    {isHealthierLoading ? "Generating..." : "Make it Healthier"}
+                  </button>
+                  {/* ============================================== */}
 
                   <button
                     onClick={() => window.print()}
@@ -644,9 +700,19 @@ function ShowMeal({ URL }) {
                     Print
                   </button>
                 </div>
-                {/* --- ANIMATION ADDED --- */}
+                
+                {/* ====== NEW SUGGESTIONS BOX ADDED HERE ====== */}
+                {healthierSuggestions && (
+                  <div className="mt-4 p-4 border border-secondary rounded-lg bg-base-100">
+                    <h3 className="font-bold text-secondary mb-2">Healthier Alternatives:</h3>
+                    <p className="text-base-content text-sm">{healthierSuggestions}</p>
+                  </div>
+                )}
+                {/* ============================================= */}
+
                 <section data-aos="fade-right" id="instructions-section" className="mt-10">
-                  <div className="flex justify-between items-center mb-4">
+                  {/* ... (Your existing Preparation Steps section remains unchanged) */}
+                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
                     <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
                       <button
@@ -677,7 +743,7 @@ function ShowMeal({ URL }) {
               </div>
 
               {/* RIGHT: Ingredients */}
-              {/* --- ANIMATION ADDED --- */}
+              {/* ... (Your existing Ingredients section remains unchanged) */}
               <div data-aos="fade-left" className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]">
                 {/* Heading */}
                 <div className="mb-1">
