@@ -1,5 +1,6 @@
 // app/contact/page.jsx
 import React from 'react';
+import Footer from '../../components/Footer';
 
 const ContactPage = () => {
   return (
@@ -55,6 +56,7 @@ const ContactPage = () => {
           Send Message
         </button>
       </form>
+      <Footer />
     </div>
   );
 };
