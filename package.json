@@ -12,6 +12,7 @@
     "@ai-sdk/google": "^1.2.22",
     "@ai-sdk/mistral": "^2.0.5",
     "@ai-sdk/openai": "^2.0.15",
+    "@google/generative-ai": "^0.24.1",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
