@@ -104,7 +104,7 @@
 
 ![GSSoC Logo](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/screenshots/gssoc%20logo.png)
 
-**🌟 Exciting News...**
+## 🌟 Exciting News...
 
 🚀 This project is now an official part of GirlScript Summer of Code – GSSoC'25! 💃🎉💻 We're thrilled to welcome contributors from all over India and beyond to collaborate, build, and grow Flavor-ai! Let’s make learning and career development smarter – together! 🌟👨‍💻👩‍💻
 
@@ -145,32 +145,26 @@ Here are some screenshots of the project in action:
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## 📦 Installation
+## 📦 Installation & Setup
 
-1. Clone the repository:
+- Clone repository
+git clone https://github.com/Ayushjhawar8/flavor-ai.git
 
-   ```bash
-   git clone https://github.com/Ayushjhawar8/flavor-ai.git
-   ```
+- Navigate to project folder
+cd flavor-ai
 
-2. Add Your Groq and Gemini Api key in `.env.sample` file and change file name to `.env.local`:
+- Install dependencies
+npm install
 
-   ```bash
-   GROQ_API_KEY=your_api_key_here
-   GOOGLE_GENERATIVE_AI_API_KEY=your_google_gemini_api_key_here
-   ```
+- Add environment keys
+cp .env.sample .env.local
+- Then add:
+ GROQ_API_KEY=your_api_key_here
+- GOOGLE_GENERATIVE_AI_API_KEY=your_google_gemini_api_key_here
 
-3. Install dependencies:
+- Run development server
+npm run dev
 
-   ```bash
-   cd Flavor-ai && npm install
-   ```
-
-4. Run the development server:
-
-   ```bash
-   npm run dev
-   ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
@@ -180,14 +174,53 @@ Here are some screenshots of the project in action:
 
 ```bash
 flavor-ai/
-├── app/                  # Next.js app directory
-│   ├── ai/              # AI recipe generation
-│   ├── category/        # Category pages
-│   ├── meal/            # Individual meal pages
-│   └── random/          # Random recipe page
-├── components/          # Reusable components
-├── lib/                 # Utility functions
-└── public/             # Static assets
+├── public/                     # Static assets (images, icons, logos)
+│   └── ...
+│
+├── src/
+│   ├── app/                    # Core Next.js routing and pages
+│   │   ├── (features)/         # Grouped feature routes
+│   │   │   ├── ai-generator/   # AI recipe generation pages
+│   │   │   ├── diet-planner/   # AI diet planner interface
+│   │   │   ├── discovery/      # Random recipe + search
+│   │   │   └── community/      # User-shared recipes
+│   │   ├── api/                # API routes (server functions)
+│   │   ├── layout.tsx          # Main layout wrapper
+│   │   └── page.tsx            # Homepage
+│   │
+│   ├── components/             # Global UI components
+│   │   ├── ui/                 # Base UI (buttons, inputs, cards)
+│   │   ├── common/             # Navbar, Footer, Sidebar, etc.
+│   │   └── modals/             # Dialogs, alerts, etc.
+│   │
+│   ├── features/               # Independent functional modules
+│   │   ├── ai-generator/       # Components & hooks for AI recipe creation
+│   │   ├── diet-planner/       # Components, services, hooks for meal plans
+│   │   ├── recipe-discovery/   # Search, FilterPanel, RecipeCards
+│   │   └── community/          # Recipe upload, validation, display
+│   │
+│   ├── hooks/                  # Reusable custom React hooks
+│   │   ├── useTheme.ts         # Light/Dark mode management
+│   │   ├── useVoiceInput.ts    # Handle microphone inputs
+│   │   └── useSpeech.ts        # Manage text-to-speech
+│   │
+│   ├── lib/                    # Utility modules and constants
+│   │   ├── api/                # Groq/Gemini API handlers
+│   │   ├── utils.ts            # Shared helper functions
+│   │   └── constants.ts        # App-wide constants
+│   │
+│   ├── styles/                 # Global Tailwind and custom styles
+│   │   └── globals.css
+│   │
+│   └── types/                  # Global TypeScript definitions
+│       ├── recipe.ts           # Recipe-related types
+│       ├── user.ts             # User and profile interfaces
+│       └── index.ts
+│
+├── .env.local                  # API keys and environment variables
+├── next.config.mjs
+├── package.json
+└── tsconfig.json
 ```
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
@@ -213,13 +246,13 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-**📜 Code of Conduct**
+## 📜 Code of Conduct
 
 Please refer to the [`Code of Conduct`](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/CODE_OF_CONDUCT.md) for details on contributing guidelines and community standards.
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-**🤝👤 Contribution Guidelines**
+## 🤝👤 Contribution Guidelines
 
 We love our contributors! If you'd like to help, please check out our [`CONTRIBUTE.md`](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/CONTRIBUTING.md) file for guidelines.
 
@@ -245,25 +278,25 @@ See the full list of contributors and their contributions on the [`GitHub Contri
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
 
-**💡 Suggestions & Feedback**
+## 💡 Suggestions & Feedback
 
 Feel free to open issues or discussions if you have any feedback, feature suggestions, or want to collaborate!
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
 
-**🙌 Support & Star**
+## 🙌 Support & Star
 
 ***If you find this project helpful, please give it a star ⭐ to support more such educational initiatives!***
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-**📄 License**
+## 📄 License
 
 This project is licensed under the MIT License - see the [`License`](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/LICENSE) file for details.
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
 
-**⭐ Stargazers**
+## ⭐ Stargazers
 
 <div align="center">
   <a href="https://github.com/Ayushjhawar8/Flavor-ai/stargazers">
@@ -273,7 +306,7 @@ This project is licensed under the MIT License - see the [`License`](https://git
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
 
-**🍴 Forkers**
+## 🍴 Forkers
 
 <div align="center">
   <a href="https://github.com/Ayushjhawar8/Flavor-ai/network/members">
@@ -293,7 +326,7 @@ This project is licensed under the MIT License - see the [`License`](https://git
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-**👨‍🏫 Mentors – Flavor-ai (GSSoC'25)**
+## 👨‍🏫 Mentors – Flavor-ai (GSSoC'25)
 
 | Role          | Name               | GitHub Profile                                      | LinkedIn Profile                                                        |
 | ------------- | ------------------ | --------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -313,7 +346,7 @@ This project is licensed under the MIT License - see the [`License`](https://git
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
 
-**👨‍💻 Built with ❤️ by Flavor-ai Team**
+👨‍💻 Built with ❤️ by Flavor-ai Team
 
 **❤️ Ayush Jhawar and Contributors ❤️** [open an issue](https://github.com/Ayushjhawar8/Flavor-ai/issues) | [Watch Demo](https://flavorai.netlify.app/ai)
 
