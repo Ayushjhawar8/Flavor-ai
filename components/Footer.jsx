@@ -26,7 +26,7 @@ const Footer = () => {
 
   const socialLinks = [
     {
-      href: "https://github.com/Ayushjhawar/flavor-ai",
+      href: "https://github.com/Ayushjhawar8/Flavor-ai",
       icon: FaGithub,
       label: "GitHub",
       glow: "drop-shadow(0 0 6px rgba(255,255,255,0.6))",
