@@ -66,6 +66,13 @@ const MobileNavigation = () => {
             <span className="text-gray-900 dark:text-gray-100">Festivals</span>
           </Link>
 
+          <Link href="/nutrition-ai" className="flex items-center gap-3 p-2 rounded-lg border">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <span className="text-white text-lg">🧬</span>
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">Nutrition AI</span>
+          </Link>
+
           <Link href="/about" className="flex items-center gap-3 p-2 rounded-lg border">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <Info size={20} className="text-white" />
@@ -236,6 +243,17 @@ export default function Navbar({
             className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
           >
             <HelpCircle size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
+          </Link>
+        </div>
+
+        {/* Nutrition AI */}
+        <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
+          <Link
+            href="/nutrition-ai"
+            aria-label="Nutrition AI"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <span className="text-sm">🧬</span>
           </Link>
         </div>
 
