@@ -44,10 +44,19 @@ const MobileNavigation = () => {
             <span className="text-gray-900 dark:text-gray-100">Home</span>
           </Link>
 
-          <div className="flex flex-row items-center border rounded-lg p-2 hover:shadow-md">
-            <ThemeToggle />
-            <span className="px-3 text-gray-900 dark:text-gray-100">Change Theme</span>
+          <div
+            onClick={() => {
+              const button = document.querySelector("#theme-toggle-btn") as HTMLButtonElement | null;
+              button?.click(); // simulate click on the ThemeToggle button
+            }}
+            className="flex items-center gap-3 p-2 rounded-lg border cursor-pointer"
+          >
+            <div className="bg-gray-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <ThemeToggle />
+            </div>
+            <span className="text-gray-900 dark:text-gray-100">Change Theme</span>
           </div>
+
 
           <Link href="/community" className="flex items-center gap-3 p-2 rounded-lg border">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
