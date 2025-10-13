@@ -36,7 +36,12 @@ export default function CommunityPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className="absolute"><BackButton/></div>
+      <div style={{
+        position: 'absolute',
+        top: '-55px',
+        left: '-24px',
+        // position:'sticky'
+      }} className="absolute"><BackButton/></div>
 
       <div
         className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
