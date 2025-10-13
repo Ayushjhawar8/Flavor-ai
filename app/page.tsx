@@ -154,10 +154,10 @@ export default function Page() {
                   <GiDiceSixFacesFour className="text-xl" color="#FF6347" /> Discover a Random Recipe
                 </button>
               </Link>
-              <Link href="/diet-planner">
-                <button className="btn btn-outline btn-primary text-lg">
-                  <GiNotebook className="text-xl" color="#00C9A7" /> AI Diet Planner
-                </button>
+              <Link href="/diet-planner-ai">
+                 <button className="btn btn-outline btn-primary text-lg">
+                    <GiNotebook className="text-xl" color="#00C9A7" /> AI Diet Planner
+                 </button>
               </Link>
               <Link href="/festive">
                 <button className="btn btn-outline btn-primary text-lg">
