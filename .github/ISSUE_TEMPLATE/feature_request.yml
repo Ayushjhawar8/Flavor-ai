@@ -1,7 +1,7 @@
 name: Feature Request
 description: Suggest a new feature or improvement
 title: "[FEAT] Feature title"
-labels: [enhancement]
+labels: [enhancement, gssoc25, hacktoberfest]
 body:
   - type: textarea
     id: idea

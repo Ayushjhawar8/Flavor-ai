@@ -23,7 +23,7 @@ export async function POST(req) {
       },
       body: JSON.stringify({
         messages: [{ role: "user", content: prompt }],
-        model: "gemma2-9b-it",
+        model: "llama-3.1-8b-instant",
         response_format: { type: "json_object" },
       }),
     });
