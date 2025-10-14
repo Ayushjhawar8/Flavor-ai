@@ -1,61 +1,147 @@
-// app/contact/page.jsx
-import React from 'react';
-import Footer from '../../components/Footer';
+'use client';
+
+import React, { useState } from 'react';
+import Footer from '../../components/Footer'; 
+import Navbar from '../../components/Navbar'; 
+import BackButton from '../../components/BackButton'; 
+import { FiTwitter, FiInstagram, FiMail, FiGithub } from 'react-icons/fi'; // Import icons
 
 const ContactPage = () => {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-      <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
-      <p className="mb-4 text-center max-w-xl">
-        Have a question or feedback? Reach out to us via email at{' '}
-        <a href="mailto:support@flavourai.com" className="text-purple-600 hover:underline">
-          support@flavourai.com
-        </a>
-        , or follow us on our social media channels:
-      </p>
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  
+  const [status, setStatus] = useState(null);
 
-      <div className="flex justify-center gap-6 mb-6">
-        <a
-          href="https://twitter.com/itsAyushJ"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:text-blue-600 font-semibold"
-        >
-          Twitter
-        </a>
-        <a
-          href="https://instagram.com/circuitbreakerss"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-pink-500 hover:text-pink-600 font-semibold"
-        >
-          Instagram
-        </a>
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus('All fields are required!');
+      return;
+    }
+    
+    setStatus('Sending...');
+    
+    try {
+      console.log('Form submitted:', formData);
+      
+      setStatus('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' }); 
+    } catch (error) {
+      setStatus('Something went wrong. Please try again later.');
+    }
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-base-300">
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Back Button */}
+      <div className="relative mt-10">
+        <BackButton />
       </div>
 
-      <form className="w-full max-w-md flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Your Name"
-          className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <input
-          type="email"
-          placeholder="Your Email"
-          className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <textarea
-          placeholder="Your Message"
-          rows="5"
-          className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-        ></textarea>
-        <button
-          type="submit"
-          className="bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors"
-        >
-          Send Message
-        </button>
-      </form>
+      {/* Main Content */}
+      <main className="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-8 pt-32">
+        <div className="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 transition-all duration-300 ease-in-out">
+          {/* Header Section */}
+          <div className="text-center">
+            <h1 className="text-3xl sm:text-4xl font-bold text-primary">Contact Us</h1>
+            <p className="text-base-content/70 mt-2 text-sm sm:text-base">
+              Have any questions or feedback? Reach out to us via email, or follow us on our social media channels.
+            </p>
+          </div>
+
+          
+          <div className="flex justify-center gap-8 mb-8 flex-wrap">
+            {/* Email */}
+            <a
+              href="mailto:ayushjhawar499@gmail.com"
+              className="text-purple-600 hover:text-purple-700 font-semibold text-lg flex items-center gap-2"
+            >
+              <FiMail size={30} className="text-purple-600" />
+              <span>Email Us</span>
+            </a>
+
+            {/* GitHub */}
+            <a
+              href="https://github.com/Ayushjhawar8/Flavor-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 font-bold text-lg flex items-center gap-2"
+            >
+              <FiGithub size={30} className="text-red-600 dark:text-red-400" />
+              <span>GitHub</span>
+            </a>
+
+            {/* Twitter */}
+            <a
+              href="https://twitter.com/itsAyushJ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-600 transition-colors duration-300 flex items-center gap-2"
+            >
+              <FiTwitter size={30} />
+              <span>Twitter</span>
+            </a>
+          </div>
+
+          {/* Status Message */}
+          {status && (
+            <div className="text-center text-sm mt-4 text-red-500">
+              {status}
+            </div>
+          )}
+
+          {/* Form Section */}
+          <form className="w-full max-w-md mx-auto space-y-6" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-600 transition-all duration-300"
+            />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-600 transition-all duration-300"
+            />
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Your Message"
+              rows="5"
+              className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-600 transition-all duration-300"
+            ></textarea>
+            <button
+              type="submit"
+              className="w-full py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-800 transition-colors duration-300"
+            >
+              {status === 'Sending...' ? 'Sending...' : 'Send Message'}
+            </button>
+          </form>
+        </div>
+      </main>
+
+      {/* Footer */}
       <Footer />
     </div>
   );
