@@ -4,6 +4,8 @@ import ScrollToTop from "../components/ScrollToTop";
 import SnakeCursor from "@/components/SnakeCursor";
 import AOSInitializer from "@/components/AOSInitializer"; // <-- 1. IMPORT the AOS Initializer
 
+import { Toaster } from "sonner";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const patrickHand = {
@@ -32,6 +34,7 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className} style={patrickHand}>
+        <Toaster position="top-right" richColors />
         <AOSInitializer /> {/* <-- 2. ADD the Initializer component here */}
         <SnakeCursor enabled={false}/>
         {children}
