@@ -83,7 +83,7 @@ const ContactPage = () => {
     setErrors({ name: "", email: "", message: "" });
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-50   dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
       <p className="mb-4 text-center max-w-xl">
         Have a question or feedback? Reach out to us via email at{" "}
@@ -126,7 +126,7 @@ const ContactPage = () => {
             placeholder="Your Name"
             value={form.name}
             onChange={handleChange}
-            className={`p-3 border rounded-md w-full focus:outline-none focus:ring-2 ${
+            className={`p-3 border rounded-md w-full focus:outline-none focus:ring-2 text-gray-800 ${
               errors.name
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-purple-500"
@@ -144,7 +144,7 @@ const ContactPage = () => {
             placeholder="Your Email"
             value={form.email}
             onChange={handleChange}
-            className={`p-3 border rounded-md w-full focus:outline-none focus:ring-2 ${
+            className={`p-3 border text-gray-800 rounded-md w-full focus:outline-none focus:ring-2 ${
               errors.email
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-purple-500"
@@ -162,7 +162,7 @@ const ContactPage = () => {
             rows="5"
             value={form.message}
             onChange={handleChange}
-            className={`p-3 border rounded-md w-full focus:outline-none focus:ring-2 ${
+            className={`p-3 border rounded-md w-full focus:outline-none focus:ring-2 text-gray-800 ${
               errors.message
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-purple-500"
