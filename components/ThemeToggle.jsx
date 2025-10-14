@@ -28,6 +28,7 @@ export default function ThemeToggle() {
   return (
     <div className={`rounded-full p-1 ${theme === "light" ? "bg-purple-400" : "bg-purple-800"} transition-colors duration-300`}>
       <button
+        id="theme-toggle-btn"
         onClick={toggleTheme}
         className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
         aria-label="Toggle theme"
