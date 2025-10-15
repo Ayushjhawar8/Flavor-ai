@@ -1,7 +1,7 @@
 "use client";
 
 import { MicrophoneIcon, StopIcon, X } from "@/components/Icons";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const SpeechRecognition =
   typeof window !== "undefined" &&
@@ -30,7 +30,7 @@ export function CheckboxField({ label, name, options, register, descriptions = {
       <label>
         <span className="label-text">{label}</span>
       </label>
-      <div className="grid grid-cols-2 gap-4"> 
+      <div className="grid grid-cols-2 gap-4">
         {options.map((option) => (
           <label
             className="label cursor-pointer inline-flex items-center gap-3 "
@@ -67,11 +67,11 @@ export function CheckboxField({ label, name, options, register, descriptions = {
  * @param {string} name - The name attribute for the input field.
  * @param {Function} register - The register function for form handling.
  */
-export function InputField({ label, name, register , watch }) {
+export function InputField({ label, name, register, watch }) {
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
 
-   const watchedValue = watch ? watch(name) : "";
+  const watchedValue = watch ? watch(name) : "";
   useEffect(() => {
     setInputValue(watchedValue || "");
   }, [watchedValue]);
@@ -121,7 +121,9 @@ export function InputField({ label, name, register , watch }) {
       <label className="label">
         <span className="label-text">{label}</span>
       </label>
-      <div className="relative w-full">
+
+      <div className="relative w-full flex items-center">
+
         <input
           type="text"
           {...register(name)}
@@ -129,14 +131,11 @@ export function InputField({ label, name, register , watch }) {
           onChange={handleInputChange}
           className="input input-bordered w-full pr-16 text-base-content bg-base-100 border-base-300"
         />
-
         <button
           type="button"
           onClick={startListening}
-          className={`absolute top-1/2 right-12 transform -translate-y-1/2 btn btn-circle btn-sm ${
-            isListening ? "btn-secondary" : "btn-primary"
-          }`}
-          disabled={isListening}
+          className={`absolute right-12 btn btn-circle btn-sm ${isListening ? "btn-secondary" : "btn-primary"
+            }`}
         >
           {isListening ? <StopIcon /> : <MicrophoneIcon />}
         </button>
@@ -144,11 +143,13 @@ export function InputField({ label, name, register , watch }) {
         <button
           type="button"
           onClick={handleClearInput}
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 btn btn-circle btn-sm btn-error"
+          className="absolute right-2 btn btn-circle btn-sm btn-error"
         >
           <X />
         </button>
+
       </div>
+
     </div>
   );
 }
