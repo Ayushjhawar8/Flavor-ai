@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import Navbar from "@/components/Navbar";
+import BackButton from "@/components/BackButton";
 
 /**
  * AI Diet Planner Component
@@ -146,21 +148,21 @@ export default function DietPlannerAI() {
   const bmiInfo = bmi ? getBMICategory(bmi) : null;
 
   return (
-    // Background color: Beige (neutral-100)
-    // Font: Inter (modern sans-serif)
-    <div className="min-h-screen bg-neutral-100 py-8 font-['Inter',_sans-serif]">
+
+    <> 
+
+    <Navbar />
+
+    {/* // Background color: Beige (neutral-100)
+    // Font: Inter (modern sans-serif) */}
+    <div className="min-h-screen bg-amber-50 py-8 font-['Inter',_sans-serif] mt-[40px]">
+    {/* Back Button */}
+    <div >
+        <BackButton/>
+    </div>
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8">
-          {/* Back Button - Brown accent color */}
-          <div className="text-left mb-4">
-            <button className="flex items-center text-amber-700 hover:text-amber-900 font-semibold p-2 rounded-lg transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back to Dashboard
-            </button>
-          </div> 
-          
+
           <div className="text-center mt-6">
             {/* Title - Deep Brown text */}
             <h1 className="text-4xl font-extrabold text-stone-900 mb-4 tracking-tight">📋 AI Diet Planner</h1>
@@ -360,11 +362,24 @@ export default function DietPlannerAI() {
           <div className="xl:col-span-1">
             {/* Section Title - Stone text */}
             <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">Your Personalized Diet Plan</h2>
+
+
+
+
             <div className="bg-white rounded-xl shadow-lg p-8 sticky top-8 border border-stone-200">
+
+
+
               {generatedPlans.length === 0 ? (
                 <div className="text-center p-10 bg-amber-50 rounded-lg border border-amber-200">
+
+
+
                     {/* Placeholder content and icon using Amber/Stone theme */}
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-2h2v2zm0-4H9V7h2v6zm5-1.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S13.67 11 14.5 11s1.5.67 1.5 1.5z"/></svg>
+
+
+
                     <p className="text-amber-700 font-medium">✨ Fill out your health profile to get your personalized diet plan!</p>
                 </div>
               ) : (
@@ -411,6 +426,8 @@ export default function DietPlannerAI() {
         </div>
       </div>
     </div>
+    </>
+
   );
 }
 
