@@ -202,7 +202,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
             setIsSearchOpen(true);
             handleSearchFocus();
           }}
-          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200 w-full justify-start"
+          className="flex items-center gap-2 text-base-content hover:text-primary transition-colors duration-200 px-3 py-[11px]  rounded-lg border border-base-300 hover:border-primary bg-base-100 hover:bg-base-200 w-full justify-start"
         >
           <SearchIcon className="w-5 h-5" />
           <span className="text-base font-medium">Search dish</span>
