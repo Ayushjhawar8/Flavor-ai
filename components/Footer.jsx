@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaGithub, FaLinkedin, FaTwitter, FaHeart, FaCode } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   const [currentTheme, setCurrentTheme] = useState("light");
@@ -38,11 +39,12 @@ const Footer = () => {
       glow: "drop-shadow(0 0 6px rgba(10,102,194,0.6))",
     },
     {
-      href: "https://x.com/itsAyushJ",
-      icon: FaTwitter,
-      label: "Twitter",
-      glow: "drop-shadow(0 0 6px rgba(29,155,240,0.6))",
-    },
+  href: "https://x.com/itsAyushJ",
+  icon: FaXTwitter,
+  label: "X (Twitter)",
+  glow: "drop-shadow(0 0 6px rgba(29,155,240,0.6))",
+},
+
   ];
 
   const sections = [
