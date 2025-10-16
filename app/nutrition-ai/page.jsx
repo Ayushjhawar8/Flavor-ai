@@ -49,14 +49,16 @@ function NutritionAIPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${
-        showResults ? "opacity-80 blur-sm" : "opacity-100"
-      }`}>
+      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}>
         <div className="no-print">
           <BackButton />
         </div>
 
         {/* Main Nutrition AI Section */}
+
+        <h1 className="text-3xl font-bold mb-[50px] text-brown-800">AI-Powered Nutrition Analyzer</h1>
+
         <div className="w-full max-w-2xl p-6 rounded-xl shadow-lg bg-base-200 border border-base-300">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold mb-2 text-brown-700">🧬 Nutrition AI</h1>

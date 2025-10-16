@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import Footer from '../../components/Footer'; 
-import Navbar from '../../components/Navbar'; 
-import BackButton from '../../components/BackButton'; 
-import { FiTwitter, FiInstagram, FiMail, FiGithub } from 'react-icons/fi'; // Import icons
+import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar';
+import BackButton from '../../components/BackButton';
+import { FiInstagram, FiMail, FiGithub } from 'react-icons/fi';
+import { FaXTwitter } from 'react-icons/fa6'; // ✅ Updated import for new "X" logo
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const ContactPage = () => {
     email: '',
     message: ''
   });
-  
+
   const [status, setStatus] = useState(null);
 
   const handleChange = (e) => {
@@ -22,22 +23,21 @@ const ContactPage = () => {
     });
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.message) {
       setStatus('All fields are required!');
       return;
     }
-    
+
     setStatus('Sending...');
-    
+
     try {
       console.log('Form submitted:', formData);
-      
+
       setStatus('Message sent successfully!');
-      setFormData({ name: '', email: '', message: '' }); 
+      setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       setStatus('Something went wrong. Please try again later.');
     }
@@ -64,7 +64,7 @@ const ContactPage = () => {
             </p>
           </div>
 
-          
+          {/* Social Links */}
           <div className="flex justify-center gap-8 mb-8 flex-wrap">
             {/* Email */}
             <a
@@ -86,14 +86,14 @@ const ContactPage = () => {
               <span>GitHub</span>
             </a>
 
-            {/* Twitter */}
+            {/* X (Twitter) */}
             <a
-              href="https://twitter.com/itsAyushJ"
+              href="https://x.com/itsAyushJ"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 transition-colors duration-300 flex items-center gap-2"
+              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300 flex items-center gap-2"
             >
-              <FiTwitter size={30} />
+              <FaXTwitter size={30} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300" />
               <span>Twitter</span>
             </a>
           </div>

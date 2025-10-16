@@ -28,20 +28,20 @@ const MobileNavigation = () => {
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
         onClick={() => setIsMenuOpen(false)}
       />
-      <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-white dark:bg-gray-900 shadow-xl z-[10000]">
+      <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-base-100 shadow-xl z-[10000]">
         <div className="flex flex-col p-4 space-y-4 h-full overflow-y-auto">
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="self-end p-2 rounded-full bg-base-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="self-end p-2 rounded-full bg-base-200 hover:bg-base-300 transition-colors"
           >
             <X size={20} />
           </button>
 
-          <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border">
+          <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <Home size={20} className="text-white" />
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Home</span>
+            <span>Home</span>
           </Link>
 
           <div
@@ -49,52 +49,52 @@ const MobileNavigation = () => {
               const button = document.querySelector("#theme-toggle-btn") as HTMLButtonElement | null;
               button?.click(); // simulate click on the ThemeToggle button
             }}
-            className="flex items-center gap-3 p-2 rounded-lg border cursor-pointer"
+            className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors cursor-pointer"
           >
             <div className="bg-gray-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <ThemeToggle />
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Change Theme</span>
+            <span>Change Theme</span>
           </div>
 
 
-          <Link href="/community" className="flex items-center gap-3 p-2 rounded-lg border">
+          <Link href="/community" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="currentColor">
                 <path d="M9 11a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
                 <path d="M2 20c0-2.5 3-4 7-4s7 1.5 7 4v1H2v-1zm14 0c0-1.5.8-2.6 2-3.3 1.2.7 2 1.8 2 3.3v1h-4v-1z" />
               </svg>
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Community</span>
+            <span>Community</span>
           </Link>
 
-          <Link href="/festive" className="flex items-center gap-3 p-2 rounded-lg border">
+          <Link href="/festive" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <span className="text-white text-lg">🎉</span>
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Festivals</span>
+            <span>Festivals</span>
           </Link>
 
-          <Link href="/nutrition-ai" className="flex items-center gap-3 p-2 rounded-lg border">
+          <Link href="/nutrition-ai" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <span className="text-white text-lg">🧬</span>
             </div>
-            <span className="text-gray-900 dark:text-gray-100">Nutrition AI</span>
+            <span>Nutrition AI</span>
           </Link>
 
-          <Link href="/about" className="flex items-center gap-3 p-2 rounded-lg border">
+          <Link href="/about" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <Info size={20} className="text-white" />
             </div>
-            <span className="text-gray-900 dark:text-gray-100">About Us</span>
+            <span>About Us</span>
           </Link>
 
           {/* FAQ Link */}
-          <Link href="/FAQ" className="flex items-center gap-3 p-2 rounded-lg border">
+          <Link href="/FAQ" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
               <HelpCircle size={20} className="text-white" />
             </div>
-            <span className="text-gray-900 dark:text-gray-100">FAQ</span>
+            <span>FAQ</span>
           </Link>
         </div>
       </div>

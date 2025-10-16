@@ -123,83 +123,122 @@ export default function Page() {
           !showResults ? "opacity-100" : "opacity-80 blur-sm"
         }`}
       >
-        <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">
-          <div
-            data-aos="fade-up"
-            className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center space-y-8"
-          >
-            <h1
-              className={`text-5xl md:text-7xl font-extrabold leading-tight ${
-                currentTheme === "dark" ? "text-white" : "text-amber-800"
-              }`}
-            >
-              Start Your Flavor Journey
-            </h1>
-            <p
-              className={`text-xl md:text-2xl max-w-3xl leading-relaxed ${
-                currentTheme === "dark" ? "text-white" : "text-amber-800"
-              }`}
-            >
-              Unlock a world of flavors with AI-curated recipes, personalized suggestions, and exciting surprises.
-            </p>
+      <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">{/* Floating background shapes */}
+ 
+        <div className={`absolute top-0 left-0 w-72 h-72 rounded-full filter blur-3xl animate-blob1 mix-blend-multiply ${
+          currentTheme === "dark" ? "bg-purple-700/30" : "bg-purple-400/30"
+        }`}></div>
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/ai">
-                <button className="btn btn-outline btn-primary text-lg">
-                  <FaRobot className="text-xl" color="#9B5DE5" /> Get AI-Generated Recipes
-                </button>
-              </Link>
-              <Link href="/random">
-                <button className="btn btn-outline btn-primary text-lg">
-                  <GiDiceSixFacesFour className="text-xl" color="#FF6347" /> Discover a Random Recipe
-                </button>
-              </Link>
-              <Link href="/diet-planner-ai">
-                 <button className="btn btn-outline btn-primary text-lg">
-                    <GiNotebook className="text-xl" color="#00C9A7" /> AI Diet Planner
-                 </button>
-              </Link>
-              <Link href="/festive">
-                <button className="btn btn-outline btn-primary text-lg">
-                  <GiPartyPopper className="text-xl" color="#F39C12" /> Festive Dishes
-                </button>
-              </Link>
-              <Link href="/ingredient-explorer">
-                <button className="btn btn-outline btn-primary text-lg">
-                  <GiMushroom className="text-xl" color="#E67E22" /> AI Ingredient Explorer
-                </button>
-              </Link>
-              <Link href="/favorite">
-                <button className="btn btn-outline btn-primary text-lg">
-                  <FaHeart className="text-xl" color="#E74C3C" /> Favorites
-                </button>
-              </Link>
-              <button
-                className="btn btn-outline btn-primary text-lg flex items-center gap-2"
-                onClick={() => {
-                  setShowCategories((prev) => !prev);
-                  if (!showCategories) {
-                    setTimeout(() => {
-                      document
-                        .querySelector(".categories-section")
-                        ?.scrollIntoView({ behavior: "smooth" });
-                    }, 100);
-                  }
-                }}
-              >
-                {showCategories ? (
-                  <>
-                    <FaFolderOpen className="h-5 w-5 align-middle" color="#F39C12" /> Hide Categories
-                  </>
-                ) : (
-                  <>
-                    <FaFolder className="h-5 w-5 align-middle" color="#F39C12" /> Show Categories
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </section>
+        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full filter blur-3xl animate-blob2 mix-blend-multiply ${
+          currentTheme === "dark" ? "bg-pink-700/30" : "bg-pink-400/30"
+        }`}></div>
+
+        <div className={`absolute top-1/2 left-1/3 w-60 h-60 rounded-full filter blur-2xl animate-blob3 mix-blend-multiply ${
+          currentTheme === "dark" ? "bg-yellow-600/20" : "bg-yellow-300/20"
+        }`}></div>
+
+      <div
+        data-aos="fade-up"
+        className="relative max-w-5xl mx-auto px-6 py-16 flex flex-col items-center text-center space-y-10"
+      >
+    {/* Heading */}
+      <h1
+        className={`text-5xl md:text-7xl font-extrabold leading-tight tracking-tight bg-clip-text text-transparent ${
+          currentTheme === "dark"
+            ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+            : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600"
+        }`}
+      >
+        Start Your Flavor Journey
+      </h1>
+
+      {/* Subheading */}
+      <p
+        className={`text-lg md:text-2xl max-w-3xl leading-relaxed text-center ${
+          currentTheme === "dark" ? "text-gray-200" : "text-gray-800"
+        }`}
+      >
+        Unlock a world of flavors with AI-curated recipes, personalized suggestions, and exciting surprises.
+      </p>
+
+    {/* Buttons */}
+    <div className="flex flex-wrap items-center justify-center gap-5">
+      {[
+        {
+          href: "/ai",
+          icon: <FaRobot className="text-2xl" color="#9B5DE5" />,
+          label: "Get AI-Generated Recipes",
+        },
+        {
+          href: "/random",
+          icon: <GiDiceSixFacesFour className="text-2xl" color="#FF6347" />,
+          label: "Discover a Random Recipe",
+        },
+        {
+          href: "/diet-planner-ai",
+          icon: <GiNotebook className="text-2xl" color="#00C9A7" />,
+          label: "AI Diet Planner",
+        },
+        {
+          href: "/festive",
+          icon: <GiPartyPopper className="text-2xl" color="#F39C12" />,
+          label: "Festive Dishes",
+        },
+        {
+          href: "/ingredient-explorer",
+          icon: <GiMushroom className="text-2xl" color="#E67E22" />,
+          label: "AI Ingredient Explorer",
+        },
+        {
+          href: "/favorite",
+          icon: <FaHeart className="text-2xl" color="#E74C3C" />,
+          label: "Favorites",
+        },
+      ].map((btn) => (
+        <Link key={btn.href} href={btn.href}>
+          <button
+          className="flex items-center gap-2 px-6 py-4 text-lg rounded-full 
+             bg-white/20 dark:bg-black/20 
+             border border-gray-800/50 dark:border-purple-400/50 
+             backdrop-blur-md shadow-lg 
+             hover:scale-105 hover:shadow-xl transition-all duration-300"
+            >
+          {btn.icon} {btn.label}
+          </button>
+
+        </Link>
+      ))}
+
+      {/* Toggle Categories */}
+      <button
+        className="flex items-center gap-2 px-6 py-4 text-lg rounded-full bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/20 backdrop-blur-md shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+        onClick={() => {
+          setShowCategories((prev) => !prev);
+          if (!showCategories) {
+            setTimeout(() => {
+              document
+                .querySelector(".categories-section")
+                ?.scrollIntoView({ behavior: "smooth" });
+            }, 100);
+          }
+        }}
+      >
+        {showCategories ? (
+          <>
+            <FaFolderOpen className="text-2xl" color="#F39C12" /> Hide Categories
+          </>
+        ) : (
+          <>
+            <FaFolder className="text-2xl" color="#F39C12" /> Show Categories
+          </>
+        )}
+      </button>
+    </div>
+  </div>
+
+  
+</section>
+
 
         {recentMeals.length > 0 && (
           <section data-aos="fade-up" className="w-full max-w-7xl mx-auto my-10 px-4">

@@ -69,7 +69,7 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
         console.error("Image generation failed, but showing recipe anyway.");
         setRecipeImageUrl(""); // Clear or set a fallback image
       }
-      
+
       setShowRecipe(true); // Show the new recipe
 
     } catch (err) {
@@ -89,60 +89,65 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
-    >
-      <ImageUpload
-        onIngredientsAnalyzed={setAnalyzedIngredients}
-        analyzedIngredients={analyzedIngredients}
-      />
-      <InputField
-        label="Describe the dish you want:"
-        name="userPrompt"
-        register={register}
-        watch={watch}
-        placeholder="e.g., a quick evening snack, low-carb"
-      />
-      <div className="flex flex-col sm:flex-row gap-4 w-full">
-        <SelectField
-          label="Type of Dish:"
-          name="dishType"
-          options={["Snack", "Appetizer", "Main Course", "Dessert", "Beverage"]}
+
+    <>
+      <h1 className="text-3xl font-bold mb-[20px] text-brown-800">AI-Powered Recipe Generator</h1>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
+      >
+        <ImageUpload
+          onIngredientsAnalyzed={setAnalyzedIngredients}
+          analyzedIngredients={analyzedIngredients}
+        />
+        <InputField
+          label="Describe the dish you want:"
+          name="userPrompt"
           register={register}
+          watch={watch}
+          placeholder="e.g., a quick evening snack, low-carb"
+        />
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <SelectField
+            label="Type of Dish:"
+            name="dishType"
+            options={["Snack", "Appetizer", "Main Course", "Dessert", "Beverage"]}
+            register={register}
+          />
+          <SelectField
+            label="Cuisine Preference:"
+            name="cuisine"
+            options={["Indian", "Italian", "Mexican", "Chinese", "American", "Mediterranean"]}
+            register={register}
+          />
+        </div>
+        <CheckboxField
+          label="Dietary Restrictions:"
+          name="dietaryRestrictions"
+          options={["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free", "Halal"]}
+          register={register}
+          descriptions={dietaryDescriptions}
         />
         <SelectField
-          label="Cuisine Preference:"
-          name="cuisine"
-          options={["Indian", "Italian", "Mexican", "Chinese", "American", "Mediterranean"]}
+          label="Spice Level:"
+          name="spiceLevel"
+          options={["Spicy", "Mild", "Medium", "Extra Spicy"]}
           register={register}
         />
-      </div>
-      <CheckboxField
-        label="Dietary Restrictions:"
-        name="dietaryRestrictions"
-        options={["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free", "Halal"]}
-        register={register}
-        descriptions={dietaryDescriptions}
-      />
-      <SelectField
-        label="Spice Level:"
-        name="spiceLevel"
-        options={["Spicy", "Mild", "Medium", "Extra Spicy"]}
-        register={register}
-      />
-      <button type="submit" className="btn btn-primary w-full text-white" disabled={isLoading}>
-        {isLoading ? (
-          <>
-            <span className="loading loading-spinner"></span>
-            Generating...
-          </>
-        ) : (
-          "Generate Recipe"
-        )}
-      </button>
-      {error && <div className="text-red-500 text-center mt-2">{`Error: ${error}`}</div>}
-    </form>
+        <button type="submit" className="btn btn-primary w-full text-white" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <span className="loading loading-spinner"></span>
+              Generating...
+            </>
+          ) : (
+            "Generate Recipe"
+          )}
+        </button>
+        {error && <div className="text-red-500 text-center mt-2">{`Error: ${error}`}</div>}
+      </form>
+
+    </>
   );
 }
 

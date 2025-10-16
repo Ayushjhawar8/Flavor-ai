@@ -36,13 +36,13 @@ function getRandomPrepCookTimes() {
 function getDifficultyColor(diff: string) {
   switch (diff.toLowerCase()) {
     case "easy":
-      return "bg-green-100 text-green-800";
+      return "badge badge-success";
     case "medium":
-      return "bg-yellow-100 text-yellow-800";
+      return "badge badge-warning";
     case "hard":
-      return "bg-red-100 text-red-800";
+      return "badge badge-error";
     default:
-      return "bg-gray-100 text-gray-800";
+      return "badge badge-outline";
   }
 }
 
@@ -62,9 +62,9 @@ export default function RandomRecipePage() {
   }, []);
 
   const toggleFavorite = (idMeal: string) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const next = prev.includes(idMeal)
-        ? prev.filter(x => x !== idMeal)
+        ? prev.filter((x) => x !== idMeal)
         : [...prev, idMeal];
       localStorage.setItem("favorites", JSON.stringify(next));
       return next;
@@ -87,11 +87,12 @@ export default function RandomRecipePage() {
           prepTime,
           cookTime,
           servings,
-          difficulty: meal.strTags && meal.strTags.toLowerCase().includes("easy")
-            ? "Easy"
-            : meal.strTags && meal.strTags.toLowerCase().includes("hard")
-            ? "Hard"
-            : "Medium",
+          difficulty:
+            meal.strTags && meal.strTags.toLowerCase().includes("easy")
+              ? "Easy"
+              : meal.strTags && meal.strTags.toLowerCase().includes("hard")
+              ? "Hard"
+              : "Medium",
         });
       } else {
         setError("No recipe data received. Try again!");
@@ -103,34 +104,36 @@ export default function RandomRecipePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-base-100">
       <BackButton />
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-amber-800 mb-4 flex items-center justify-center gap-3">
+          <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3 text-base-content">
             🎲 Random Recipe Generator
           </h1>
-          <p className="text-lg text-amber-600 max-w-2xl mx-auto mb-6">
-            Feeling adventurous? Discover new flavors with our random recipe generator! 
-            Perfect for when you can't decide what to cook.
+          <p className="text-lg max-w-2xl mx-auto mb-6 text-base-content/70">
+            Feeling adventurous? Discover new flavors with our random recipe
+            generator! Perfect for when you can't decide what to cook.
           </p>
           <button
             onClick={getRandomRecipe}
             disabled={loading}
-            className="px-8 py-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 mx-auto font-semibold"
+            className="px-8 py-4 bg-primary text-primary-content rounded-lg hover:bg-primary-focus transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 mx-auto font-semibold"
           >
             <ArrowPathIcon className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
             {loading ? "Finding Recipe..." : "Get Random Recipe"}
           </button>
         </div>
+
         {error && (
-          <div className="max-w-4xl mx-auto mb-8 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <div className="max-w-4xl mx-auto mb-8 p-4 bg-error/20 text-error border border-error rounded-lg">
             {error}
           </div>
         )}
+
         {recipe && (
           <div className="max-w-6xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+            <div className="bg-base-200 rounded-2xl shadow-xl overflow-hidden mb-8">
               <div className="relative">
                 <img
                   src={recipe.strMealThumb}
@@ -140,86 +143,82 @@ export default function RandomRecipePage() {
                 <div className="absolute top-4 right-4">
                   <button
                     onClick={() => toggleFavorite(recipe.idMeal)}
-                    className="p-3 bg-white/90 rounded-full hover:bg-white transition-colors"
+                    className="p-3 bg-base-100/90 rounded-full hover:bg-base-100 transition-colors"
                     aria-label={`Toggle favorite for ${recipe.strMeal}`}
                   >
                     {favorites.includes(recipe.idMeal) ? (
-                      <HeartIconSolid className="w-6 h-6 text-red-500" />
+                      <HeartIconSolid className="w-6 h-6 text-error" />
                     ) : (
-                      <HeartIcon className="w-6 h-6 text-gray-600" />
+                      <HeartIcon className="w-6 h-6 text-base-content/70" />
                     )}
                   </button>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
-                  <h2 className="text-3xl font-bold text-white mb-2">{recipe.strMeal}</h2>
-                  <p className="text-amber-100">{recipe.strCategory} | {recipe.strArea}</p>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-base-content/60 to-transparent p-6">
+                  <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">
+                    {recipe.strMeal}
+                  </h2>
+                  <p className="text-gray-200/90 drop-shadow">
+                    {recipe.strCategory} | {recipe.strArea}
+                  </p>
                 </div>
               </div>
               <div className="p-8">
                 <div className="grid md:grid-cols-4 gap-4 mb-8">
-                  <div className="flex items-center gap-2 p-4 bg-amber-50 rounded-lg">
-                    <ClockIcon className="w-5 h-5 text-amber-600" />
-                    <div>
-                      <div className="text-sm text-amber-600">Prep Time</div>
-                      <div className="font-semibold text-amber-800">{recipe.prepTime}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 p-4 bg-orange-50 rounded-lg">
-                    <ClockIcon className="w-5 h-5 text-orange-600" />
-                    <div>
-                      <div className="text-sm text-orange-600">Cook Time</div>
-                      <div className="font-semibold text-orange-800">{recipe.cookTime}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 p-4 bg-green-50 rounded-lg">
-                    <UsersIcon className="w-5 h-5 text-green-600" />
-                    <div>
-                      <div className="text-sm text-green-600">Servings</div>
-                      <div className="font-semibold text-green-800">{recipe.servings}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 p-4 bg-blue-50 rounded-lg">
-                    <div className="w-5 h-5 text-blue-600 flex items-center justify-center text-sm">👨‍🍳</div>
-                    <div>
-                      <div className="text-sm text-blue-600">Difficulty</div>
-                      <div className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getDifficultyColor(recipe.difficulty)}`}>
-                        {recipe.difficulty}
+                  {[
+                    { label: "Prep Time", value: recipe.prepTime, icon: <ClockIcon className="w-5 h-5 text-primary" /> },
+                    { label: "Cook Time", value: recipe.cookTime, icon: <ClockIcon className="w-5 h-5 text-primary" /> },
+                    { label: "Servings", value: recipe.servings, icon: <UsersIcon className="w-5 h-5 text-primary" /> },
+                    { label: "Difficulty", value: recipe.difficulty, icon: <div className="w-5 h-5 text-primary flex items-center justify-center text-sm">👨‍🍳</div>, isBadge: true },
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2 p-4 bg-base-100 rounded-lg">
+                      {item.icon}
+                      <div>
+                        <div className="text-sm text-base-content/70">{item.label}</div>
+                        {item.isBadge ? (
+                          <div className={getDifficultyColor(item.value)}>{item.value}</div>
+                        ) : (
+                          <div className="font-semibold text-base-content/90">{item.value}</div>
+                        )}
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
+
                 {recipe.strTags && (
                   <div className="mb-8">
-                    <h3 className="text-xl font-bold text-amber-800 mb-4">Tags</h3>
+                    <h3 className="text-xl font-bold mb-4 text-base-content/90">Tags</h3>
                     <div className="flex flex-wrap gap-2">
-                      {recipe.strTags
-                        .split(",")
-                        .map((tag: string) => (
-                          <span key={tag} className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">
-                            #{tag.trim()}
-                          </span>
-                        ))}
+                      {recipe.strTags.split(",").map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="px-3 py-1 bg-base-300 text-base-content/80 rounded-full text-sm font-medium"
+                        >
+                          #{tag.trim()}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 )}
+
                 <div className="grid lg:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="text-2xl font-bold text-amber-800 mb-4 flex items-center gap-2">
+                    <h3 className="text-2xl font-bold mb-4 text-base-content/90 flex items-center gap-2">
                       🛒 Ingredients
                     </h3>
-                    <div className="bg-amber-50 rounded-lg p-4">
+                    <div className="bg-base-100 rounded-lg p-4">
                       <ul className="space-y-2">
                         {recipe.ingredients.map((ingredient: string, index: number) => (
                           <li key={index} className="flex items-start gap-2">
-                            <span className="text-amber-600 mt-1">•</span>
-                            <span className="text-gray-700">{ingredient}</span>
+                            <span className="text-primary mt-1">•</span>
+                            <span className="text-base-content/80">{ingredient}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
+
                   <div>
-                    <h3 className="text-2xl font-bold text-amber-800 mb-4 flex items-center gap-2">
+                    <h3 className="text-2xl font-bold mb-4 text-base-content/90 flex items-center gap-2">
                       👨‍🍳 Instructions
                     </h3>
                     <div className="space-y-4">
@@ -228,27 +227,30 @@ export default function RandomRecipePage() {
                         .filter((s: string) => s.trim())
                         .map((step: string, idx: number) => (
                           <div key={idx} className="flex gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                            <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-content rounded-full flex items-center justify-center text-sm font-bold">
                               {idx + 1}
                             </div>
-                            <p className="text-gray-700 leading-relaxed pt-1">{step.trim()}</p>
+                            <p className="text-base-content/80 leading-relaxed pt-1">
+                              {step.trim()}
+                            </p>
                           </div>
                         ))}
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-4 justify-center mt-8 pt-8 border-t border-amber-200">
+
+                <div className="flex flex-wrap gap-4 justify-center mt-8 pt-8 border-t border-base-300">
                   <button
                     onClick={getRandomRecipe}
-                    className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center gap-2 font-semibold"
+                    className="px-6 py-3 bg-primary text-primary-content rounded-lg hover:bg-primary-focus transition-colors flex items-center gap-2 font-semibold"
                   >
                     <ArrowPathIcon className="w-5 h-5" />
                     Try Another Recipe
                   </button>
-                  <button className="px-6 py-3 border-2 border-amber-600 text-amber-600 rounded-lg hover:bg-amber-50 transition-colors font-semibold">
+                  <button className="px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-base-200 transition-colors font-semibold">
                     Share Recipe
                   </button>
-                  <button className="px-6 py-3 border-2 border-amber-600 text-amber-600 rounded-lg hover:bg-amber-50 transition-colors font-semibold">
+                  <button className="px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-base-200 transition-colors font-semibold">
                     Add to Shopping List
                   </button>
                 </div>
@@ -256,12 +258,13 @@ export default function RandomRecipePage() {
             </div>
           </div>
         )}
-        {/* Always visible tips section */}
-        <div className="max-w-4xl mx-auto mt-8 bg-white rounded-2xl shadow-lg p-6">
-          <h3 className="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
-            <span className="text-amber-600">💡</span> Random Recipe Tips
+
+        {/* Tips section */}
+        <div className="max-w-4xl mx-auto mt-8 bg-base-200 rounded-2xl shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-base-content/90">
+            <span className="text-primary">💡</span> Random Recipe Tips
           </h3>
-          <div className="grid md:grid-cols-2 gap-4 text-sm text-amber-700">
+          <div className="grid md:grid-cols-2 gap-4 text-sm text-base-content/80">
             <div className="space-y-2">
               <p>• Keep clicking for different cuisines and difficulty levels</p>
               <p>• Check your pantry before starting to cook</p>
