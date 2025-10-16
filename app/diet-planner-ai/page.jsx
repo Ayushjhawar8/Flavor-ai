@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 /**
  * AI Diet Planner Component
@@ -26,6 +27,7 @@ export default function DietPlannerAI() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPlans, setGeneratedPlans] = useState([]);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   // Handler for all input changes
   const handleInputChange = (e) => {
@@ -152,7 +154,7 @@ export default function DietPlannerAI() {
         <div className="mb-8">
           {/* Back Button - Brown accent color */}
           <div className="text-left mb-4">
-            <button className="flex items-center text-amber-700 hover:text-amber-900 font-semibold p-2 rounded-lg transition-colors">
+            <button type="button" onClick={() => router.push('/')} className="flex items-center text-amber-700 hover:text-amber-900 font-semibold p-2 rounded-lg transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
@@ -361,10 +363,10 @@ export default function DietPlannerAI() {
             <h2 className="text-xl font-bold text-base-content mb-4 px-2">Your Personalized Diet Plan</h2>
             <div className="bg-base-100 dark:bg-base-800 rounded-xl shadow-lg p-8 sticky top-8 border border-base-300 dark:border-base-700">
                 {generatedPlans.length === 0 ? (
-                <div className="text-center p-10 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                    {/* Placeholder content and icon using Amber/Stone theme */}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-2h2v2zm0-4H9V7h2v6zm5-1.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S13.67 11 14.5 11s1.5.67 1.5 1.5z"/></svg>
-                    <p className="text-amber-700 font-medium">✨ Fill out your health profile to get your personalized diet plan!</p>
+        <div className="text-center p-10 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+          {/* Placeholder content and icon using Amber/Stone theme */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-2h2v2zm0-4H9V7h2v6zm5-1.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S13.67 11 14.5 11s1.5.67 1.5 1.5z"/></svg>
+          <p className="text-amber-700 dark:text-amber-300 font-medium">✨ Fill out your health profile to get your personalized diet plan!</p>
                 </div>
               ) : (
                 generatedPlans.map((plan, idx) => (
@@ -398,9 +400,9 @@ export default function DietPlannerAI() {
                     <div className="mt-4">
                         {/* H4 titles - Amber accent color */}
                         <h4 className="font-bold text-amber-800 mb-2">💡 Nutrition Tips:</h4>
-                        <ul className="list-disc list-inside text-sm text-stone-700 space-y-1 ml-4">
-                            {plan.tips.map((tip, i) => <li key={i}>{tip}</li>)}
-                        </ul>
+            <ul className="list-disc list-inside text-sm text-neutral-700 dark:text-neutral-300 space-y-1 ml-4">
+              {plan.tips.map((tip, i) => <li key={i}>{tip}</li>)}
+            </ul>
                     </div>
                   </div>
                 ))
