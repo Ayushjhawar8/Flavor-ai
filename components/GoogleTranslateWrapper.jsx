@@ -1,54 +1,51 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import GoogleTranslate from './GoogleTranslate';
+import { useState, useRef, useEffect } from 'react';
 import { Globe } from 'lucide-react';
+import GoogleTranslateDropdown from './GoogleTranslate';
 
 export default function GoogleTranslateWrapper() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isTranslateLoaded, setIsTranslateLoaded] = useState(false);
+  const dropdownRef = useRef();
 
-  // Toggle dropdown
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
-  // Close dropdown on outside click
+  // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.translate-wrapper')) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
         setIsDropdownOpen(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () =>
+      document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
-    <div className="relative translate-wrapper">
-      {/* Globe Button */}
+    <div className="relative" ref={dropdownRef}>
+     
       <button
         onClick={toggleDropdown}
-        className={`rounded-full w-10 h-10 bg-purple-800/50 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-purple-800/70 ${
-          isDropdownOpen ? 'bg-purple-800/70 scale-110' : ''
-        }`}
         aria-label="Open language selector"
-        type="button"
+        className={`rounded-full w-10 h-10 bg-purple-700 flex items-center justify-center transition-transform duration-300 hover:scale-110 ${
+          isDropdownOpen ? 'bg-purple-800 scale-110' : ''
+        }`}
       >
         <Globe size={18} className="text-white" />
       </button>
 
-      {/* Dropdown */}
       <div
-       className={`absolute top-28 -mt-9 -right-12 z-[9999] rounded-lg p-3 min-w-[250px] transition-all duration-200 ${
-  isDropdownOpen
-    ? 'opacity-100 visible transform translate-y-0'
-    : 'opacity-0 invisible transform -translate-y-2'
-}`}
-
+        className={`absolute right-0 mt-2 w-48 bg-purple-700 rounded-md shadow-lg z-50 transition-opacity duration-200 ${
+          isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
       >
-        {!isTranslateLoaded && (
-          <p className="text-sm text-gray-400">Loading translator...</p>
-        )}
-        <GoogleTranslate onLoad={() => setIsTranslateLoaded(true)} />
+        <GoogleTranslateDropdown />
       </div>
     </div>
   );
