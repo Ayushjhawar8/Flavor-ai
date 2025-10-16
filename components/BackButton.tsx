@@ -75,7 +75,7 @@ function BackButton({ fallbackUrl = "/" }) {
                 btn btn-circle 
                 bg-base-200 hover:bg-base-300 
                 active:bg-base-300
-                absolute top-5 md:top-10 left-3 md:left-10 
+                absolute top-9 left-3 md:left-10 
                 z-0
                 transition-all duration-150 ease-in-out
                 select-none
