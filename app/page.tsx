@@ -118,12 +118,14 @@ export default function Page() {
         handleBlur={handleBlur}
       />
 
-      <div
-        className={`content flex flex-col items-center justify-center p-5 md:p-1 w-full bg-base-100 transition-all duration-300 relative z-10 ${
+      {/* Main container for all page content */}
+      <main className={`flex flex-col items-center justify-center w-full bg-base-100 transition-all duration-300 relative z-10 ${
           !showResults ? "opacity-100" : "opacity-80 blur-sm"
         }`}
       >
-      <section className="w-full h-screen bg-base-100 flex items-center justify-center relative z-10">{/* Floating background shapes */}
+
+     
+      <section className="w-full min-h-screen bg-base-100 flex items-center justify-center relative z-10">{/* Floating background shapes */}
  
         <div className={`absolute top-0 left-0 w-72 h-72 rounded-full filter blur-3xl animate-blob1 mix-blend-multiply ${
           currentTheme === "dark" ? "bg-purple-700/30" : "bg-purple-400/30"
@@ -318,8 +320,9 @@ export default function Page() {
           </section>
         )}
 
+      </main>
         <Footer />
-      </div>
+
     </>
   );
 }
