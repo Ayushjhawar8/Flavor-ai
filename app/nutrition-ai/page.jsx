@@ -3,7 +3,7 @@
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function NutritionAIPage() {
   const [nutrition, setNutrition] = useState(null);
@@ -13,6 +13,19 @@ function NutritionAIPage() {
 
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
+  const [currentTheme, setCurrentTheme] = useState("light");
+  
+    useEffect(() => {
+      const observer = new MutationObserver(() => {
+        setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+      setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+      return () => observer.disconnect();
+    }, []);
 
   const fetchNutrition = async () => {
     if (!nutritionInput.trim()) return;
@@ -57,12 +70,16 @@ function NutritionAIPage() {
 
         {/* Main Nutrition AI Section */}
 
-        <h1 className="text-3xl font-bold mb-[50px] text-brown-800">AI-Powered Nutrition Analyzer</h1>
+        <h1 className={`text-3xl font-bold mb-[50px] text-transparent bg-clip-text ${  currentTheme === "dark"
+            ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+            : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600"
+        }`}
+        >AI-Powered Nutrition Analyzer</h1>
 
         <div className="w-full max-w-2xl p-6 rounded-xl shadow-lg bg-base-200 border border-base-300">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold mb-2 text-brown-700">🧬 Nutrition AI</h1>
-            <p className="text-gray-600">Analyze the nutritional content of your recipes and ingredients</p>
+            <p className={`text-base-content/70`}>Analyze the nutritional content of your recipes and ingredients</p>
           </div>
 
           <textarea
@@ -77,15 +94,17 @@ function NutritionAIPage() {
             {/* Get Nutrition Info Button */}
             <button
               onClick={fetchNutrition}
-              disabled={loadingNutrition || !nutritionInput.trim()}
-              className="btn btn-primary hover:bg-brown-700 text-white disabled:opacity-50 flex-1"
+             disabled={loadingNutrition || !nutritionInput.trim()}
+              className={`btn btn-primary hover:bg-brown-700 text-white 
+              ${currentTheme === "dark" ? "disabled:text-slate-500" : "disabled:text-black disabled:opacity-60"} flex-1`}
             >
               {loadingNutrition ? "Analyzing..." : "Get Nutrition Info"}
             </button>
 
             {/* Clear Button */}
             <button
-              className="btn btn-secondary"
+              className={`btn btn-primary text-white
+               ${currentTheme === "dark" ? "disabled:text-slate-500" : "disabled:text-black disabled:opacity-60"} `}
               onClick={handleReset}
               disabled={!nutritionInput && !nutrition}
             >
@@ -137,3 +156,4 @@ function NutritionAIPage() {
 }
 
 export default NutritionAIPage;
+
