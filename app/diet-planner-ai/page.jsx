@@ -1,5 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
+import BackButton from "../../components/BackButton";
+import Footer from "../../components/Footer";
+import Navbar from "@/components/Navbar"; 
 
 /**
  * AI Diet Planner Component
@@ -146,25 +150,21 @@ export default function DietPlannerAI() {
   const bmiInfo = bmi ? getBMICategory(bmi) : null;
 
   return (
-    // Background color: Beige (neutral-100)
-    // Font: Inter (modern sans-serif)
-    <div className="min-h-screen bg-neutral-100 py-8 font-['Inter',_sans-serif]">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="mb-8">
-          {/* Back Button - Brown accent color */}
-          <div className="text-left mb-4">
-            <button className="flex items-center text-amber-700 hover:text-amber-900 font-semibold p-2 rounded-lg transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back to Dashboard
-            </button>
-          </div> 
-          
+     
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-8">  
+          <header className="bg-base-300 z-50">       
+            <Navbar />
+          </header>
+           <div className="max-w-4xl mx-auto px-4">
+             <div className="mb-8 mt-20">
+            <div className="relative mt-10">
+              <BackButton />
+            </div>
           <div className="text-center mt-6">
-            {/* Title - Deep Brown text */}
-            <h1 className="text-4xl font-extrabold text-stone-900 mb-4 tracking-tight">📋 AI Diet Planner</h1>
-            {/* Subtitle - Stone text */}
+            <h1 className="text-4xl font-bold text-amber-800 mb-4">
+             📋 AI Diet Planner
+            </h1>
+           
             <p className="text-md text-stone-700 max-w-3xl mx-auto">
               Get a personalized diet plan based on your goals, preferences, and lifestyle!
             </p>
@@ -410,6 +410,7 @@ export default function DietPlannerAI() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
