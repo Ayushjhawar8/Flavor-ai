@@ -9,6 +9,7 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import RecipeNotes from "@/components/RecipeNotes";
 
 function extractIngredients(meal: any): string[] {
   const result: string[] = [];
@@ -256,6 +257,11 @@ export default function RandomRecipePage() {
                 </div>
               </div>
             </div>
+
+            {/* Recipe Notes Section */}
+            <section className="mt-8">
+              <RecipeNotes recipeId={recipe.idMeal} />
+            </section>
           </div>
         )}
 
