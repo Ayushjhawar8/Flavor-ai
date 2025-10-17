@@ -9,13 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.2.22",
+    "@ai-sdk/google": "^2.0.23",
     "@ai-sdk/mistral": "^2.0.5",
     "@ai-sdk/openai": "^2.0.15",
+    "@ai-sdk/provider": "^2.0.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.0",
-    "ai": "^3.3.5",
+    "ai": "^5.0.72",
     "aos": "^2.3.4",
     "axios": "^1.11.0",
     "graph-data-structure": "^4.5.0",
