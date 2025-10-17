@@ -29,10 +29,6 @@ export default function Page() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Background color fix
-    const theme = document.documentElement.getAttribute('data-theme') || 'light';
-    document.body.style.backgroundColor = theme === 'light' ? '#FFF8E7' : '#60A5FA';
-
     // Load recent meals
     try {
       const raw = localStorage.getItem("recentMeals");
