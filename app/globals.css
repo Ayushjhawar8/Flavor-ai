@@ -168,3 +168,34 @@ html {
     z-index: 1;                           /* stay above backgrounds */
   }
 }
+
+
+/* PROGRESS BAR CSS */
+/* Add these animations to your globals.css */
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shine {
+  animation: shine 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar for the progress section */
+.progress-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.progress-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.progress-section::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.progress-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

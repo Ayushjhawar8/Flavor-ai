@@ -81,8 +81,10 @@ export default function ViewRecipePage() {
             showResults ? "opacity-80 blur-sm" : "opacity-100"
           }`}
         >
+          
           <BackButton />
-          <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
+          
+          <div className="relative mt-14 md:mt-0 max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
             <div className="p-6 md:p-12">
               <header className="relative text-center mb-8">
                 <h1 className="text-3xl md:text-5xl font-bold text-base-content">
