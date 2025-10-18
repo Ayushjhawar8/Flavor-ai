@@ -6,8 +6,9 @@ import Footer from "@/components/Footer";
 import { useSearchParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 import { PlusIcon } from "@/components/Icons";
-import { Clock, Users } from "lucide-react"; 
+import { Clock, Users } from "lucide-react";
 import PreparationChecklist from "@/components/PreparationChecklist"; // IMPORT ADDED HERE
+import RecipeNotes from "@/components/RecipeNotes";
 
 export default function ViewRecipePage() {
   const [showResults, setShowResults] = useState(false);
@@ -173,6 +174,10 @@ export default function ViewRecipePage() {
                   )}
                   {/* END MODIFIED BLOCK */}
                 </div>
+              </section>
+
+              <section className="mt-8">
+                <RecipeNotes recipeId={recipeData.id} />
               </section>
             </div>
           </div>
