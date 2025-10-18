@@ -20,6 +20,23 @@ interface PageProps {
   };
 }
 
+
+const TryIcon = () => (
+  <svg 
+    width="20" 
+    height="20" 
+    viewBox="0 0 36 36" 
+    fill="currentColor"
+    aria-hidden="true" 
+    role="img" 
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <path 
+      d="M19 1.5a1.5 1.5 0 1 0-3 0V11a1 1 0 0 1-2 0V1.5a1.5 1.5 0 1 0-3 0V11a1 1 0 0 1-2 0V1.5a1.5 1.5 0 1 0-3 0v9c0 .127.021.249.051.367c-.03.207-.051.417-.051.633c0 2.316 1.75 5.957 4 6.442V33.5a2.5 2.5 0 1 0 5 0V17.942c2.25-.485 4-4.126 4-6.442c0-.216-.021-.426-.051-.633c.03-.118.051-.24.051-.367v-9zM27.5 0c-.104 0-.204.019-.306.031C27.13.021 27.067 0 27 0c-2.209 0-5 5.477-5 11c0 4.658 1.275 8.56 3 9.672V33.5a2.5 2.5 0 1 0 5 0v-31A2.5 2.5 0 0 0 27.5 0z"
+    />
+  </svg>
+);
+
 export default function Page({ params }: PageProps) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [beverages, setBeverages] = useState<Meal[]>([]);
@@ -71,7 +88,7 @@ export default function Page({ params }: PageProps) {
   const isFavorite = (idMeal: string) =>
     favorites.some((f) => f.idMeal === idMeal);
 
-  // Determine if meal is Non-Veg or Veg based on keywords
+
   const getMealType = (mealName: string) => {
     const lowerName = mealName.toLowerCase();
     if (
@@ -89,9 +106,8 @@ export default function Page({ params }: PageProps) {
     return "Veg";
   };
 
-  // Depending on filter, set the meals to display
+
   let displayMeals: Meal[] = [];
-  // If filter is beverages, show beverages dataset
   if (filter === "Beverages") {
     displayMeals = beverages;
   } else if (filter === "All") {
@@ -100,7 +116,6 @@ export default function Page({ params }: PageProps) {
     displayMeals = meals.filter((meal) => getMealType(meal.strMeal) === filter);
   }
 
-  // Overall loading state
   const loading = filter === "Beverages" ? loadingBeverages : loadingMeals;
 
   return (
@@ -111,9 +126,8 @@ export default function Page({ params }: PageProps) {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`flex flex-col items-center mt-20 justify-center p-5 md:p-10 w-full min-h-screen bg-base-100 transition-all duration-300 ${
-        showResults ? "opacity-80 blur-sm" : "opacity-100"
-      }`}>
+      <div className={`flex flex-col items-center mt-20 justify-center p-5 md:p-10 w-full min-h-screen bg-base-100 transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}>
         <BackButton />
 
         <h1 data-aos="fade-down" className="text-4xl md:text-6xl text-secondary mb-5 capitalize">
@@ -133,9 +147,9 @@ export default function Page({ params }: PageProps) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-          {loading 
+          {loading
             ? Array.from({ length: 6 }).map((_, i) => <Loading key={i} />)
-            : displayMeals.length === 0 
+            : displayMeals.length === 0
               ? <div className="text-lg text-base-content col-span-full">No items found.</div>
               : displayMeals.map((meal, index) => (
                 <div
@@ -168,8 +182,8 @@ export default function Page({ params }: PageProps) {
                     </h2>
                     <div className="card-actions justify-end">
                       <Link href={`/meal/${meal.idMeal}`}>
-                        <button className="btn btn-primary text-sm md:text-base">
-                          Try 🍴
+                        <button className="btn btn-primary text-sm md:text-base flex items-center gap-2">
+                          Try <TryIcon />
                         </button>
                       </Link>
                     </div>
@@ -187,7 +201,7 @@ export default function Page({ params }: PageProps) {
   );
 }
 
-// Loading skeleton component
+
 function Loading() {
   return <div className="skeleton w-72 lg:w-96 h-[408px] lg:h-[504px]" />;
 }
