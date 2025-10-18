@@ -1,58 +1,65 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-let scriptLoadingPromise = null; // cache script so it loads only once
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'hi', label: 'हिंदी' },
+  { code: 'mr', label: 'मराठी' },
+  { code: 'ta', label: 'தமிழ்' },
+  { code: 'te', label: 'తెలుగు' },
+  { code: 'gu', label: 'ગુજરાતી' },
+  { code: 'pa', label: 'ਪੰਜਾਬੀ' },
+  { code: 'bn', label: 'বাংলা' },
+  { code: 'ur', label: 'اردو' },
+  { code: 'fr', label: 'Français' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'es', label: 'Español' },
+  { code: 'zh-CN', label: '中文' },
+  { code: 'ja', label: '日本語' },
+  { code: 'ru', label: 'Русский' },
+];
 
-const GoogleTranslate = ({ onLoad }) => {
-  const [isVisible, setIsVisible] = useState(false);
+function setLanguage(langCode) {
+  document.cookie = `googtrans=/en/${langCode};path=/;domain=${window.location.hostname}`;
+  window.location.reload();
+}
 
+export default function GoogleTranslateDropdown() {
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    const script = document.createElement('script');
+    script.src =
+      'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.body.appendChild(script);
 
-    const initGoogleTranslate = () => {
-      if (window.google?.translate?.TranslateElement) {
-        // Prevent re-rendering if it's already there
-        if (!document.getElementById('google_element').hasChildNodes()) {
-          new window.google.translate.TranslateElement(
-            {
-              pageLanguage: 'en',
-              includedLanguages:
-                'en,hi,mr,sa,ta,te,kn,ml,gu,pa,bn,ur,or,as,ne,sd,si,fr,de,es,zh,ja,ru',
-              layout: window.google.translate.TranslateElement.InlineLayout.HORIZONTAL,
-              autoDisplay: false,
-            },
-            'google_element'
-          );
-        }
-        setIsVisible(true);
-        if (onLoad) onLoad();
-      }
+    // Init function required by Google
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: 'en',
+          autoDisplay: false,
+        },
+        'google_translate_element'
+      );
     };
-
-    // Load the script only once globally
-    if (!scriptLoadingPromise) {
-      scriptLoadingPromise = new Promise((resolve) => {
-        window.googleTranslateInit = () => {
-          initGoogleTranslate();
-          resolve();
-        };
-        const script = document.createElement('script');
-        script.id = 'google_translate_script';
-        script.src =
-          'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
-        script.async = true;
-        script.onerror = () => console.error('Google Translate failed to load');
-        document.body.appendChild(script);
-      });
-    } else {
-      scriptLoadingPromise.then(initGoogleTranslate);
-    }
-  }, [onLoad]);
+  }, []);
 
   return (
-    <div id="google_element" className={`google-translate-container ${isVisible ? '' : 'hidden'}`} />
-  );
-};
+    <>
+      <select
+        onChange={(e) => setLanguage(e.target.value)}
+        className="w-full p-2 rounded-md bg-purple-700 text-white text-sm shadow focus:outline-none"
+      >
+        <option value="en">🌐 Select Language</option>
+        {languages.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.label}
+          </option>
+        ))}
+      </select>
 
-export default GoogleTranslate;
+      <div id="google_translate_element" style={{ display: 'none' }} />
+    </>
+  );
+}
