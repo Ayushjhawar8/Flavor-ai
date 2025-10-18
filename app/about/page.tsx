@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import React, { useEffect, useState } from 'react';
 
 const AboutUsPage = () => {
-  const [currentTheme, setCurrentTheme] = useState("light");
+  const [currentTheme, setCurrentTheme] = useState('light');
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+      setCurrentTheme(document.documentElement.getAttribute('data-theme') || 'light');
     });
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme"],
+      attributeFilter: ['data-theme'],
     });
-    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+    setCurrentTheme(document.documentElement.getAttribute('data-theme') || 'light');
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div className={`flex flex-col min-h-screen ${currentTheme === 'dark' ? 'bg-base-100' : 'bg-white'}`}>
+    <div className={`flex flex-col min-h-screen ${currentTheme === 'dark' ? 'bg-base-100 text-base-content' : 'bg-white text-gray-900'}`}>
       <Navbar />
 
       <main className={`flex-grow pt-16 ${currentTheme === 'dark' ? 'text-base-content' : 'text-gray-900'}`}>
@@ -53,10 +53,10 @@ const AboutUsPage = () => {
               <p className={`mt-4 text-2xl font-semibold ${currentTheme === 'dark' ? 'text-base-content/90' : 'text-gray-800'}`}>
                 From Kitchen Dreams to AI Reality
               </p>
-              <p className={`mt-6 text-lg ${currentTheme === 'dark' ? 'text-base-content/80' : 'text-gray-700'}`}>
+              <p className={`mt-6 text-lg ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                 We began as chefs and coders driven by a shared vision — to bring AI into the kitchen. After countless nights of testing, debugging, and tasting, Flavor AI came to life.
               </p>
-              <p className={`mt-6 text-lg ${currentTheme === 'dark' ? 'text-base-content/80' : 'text-gray-700'}`}>
+              <p className={`mt-6 text-lg ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                 Our mission continues to be simple: empower creativity and personalization in every dish.
               </p>
             </div>
@@ -76,7 +76,7 @@ const AboutUsPage = () => {
             <h2 className={`text-5xl font-display font-bold ${currentTheme === 'dark' ? 'text-base-content' : 'text-gray-900'}`}>
               Our Philosophy
             </h2>
-            <p className={`mt-6 max-w-3xl mx-auto text-xl sm:text-2xl leading-relaxed ${currentTheme === 'dark' ? 'text-base-content/70' : 'text-gray-700'}`}>
+            <p className={`mt-6 max-w-3xl mx-auto text-xl sm:text-2xl leading-relaxed ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
               We’re guided by principles that define our pursuit of culinary innovation—pushing boundaries, fostering connection, and embracing openness.
             </p>
 
@@ -104,7 +104,7 @@ const AboutUsPage = () => {
                   <h3 className="text-2xl font-bold font-display mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-400">
                     Innovation
                   </h3>
-                  <p className="text-lg leading-relaxed transition-colors duration-300 text-gray-500 dark:text-base-content/80">
+                  <p className={`text-lg leading-relaxed transition-colors duration-300 ${currentTheme === 'dark' ? 'text-white' : 'text-gray-500'}`}>
                     We illuminate new paths in AI-driven cooking, transforming sparks of creativity into practical innovation.
                   </p>
                 </div>
@@ -125,13 +125,13 @@ const AboutUsPage = () => {
                   }`}>
                     {/* 👥 People Network Icon */}
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 6.5a2.5 2.5 0 115 0 2.5 2.5 0 01-5 0zM4 18a4 4 0 014-4h8a4 4 0 014 4M3 10a2 2 0 012-2h2M19 8h2a2 2 0 012 2M2 18h20" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 6.5a2.5 2.5 0 115 0 2.5 2.5 0 01-5 0zM4 18a4 4 0 014-4h8a4 4 0 014 4M3 10a2 2 0 012-2h2M19 8h2a2 2 0 012 2M2 18h20"/>
                     </svg>
                   </div>
                   <h3 className="text-2xl font-bold font-display mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                     Community
                   </h3>
-                  <p className="text-lg leading-relaxed transition-colors text-gray-500 dark:text-base-content/80">
+                  <p className={`text-lg leading-relaxed transition-colors ${currentTheme === 'dark' ? 'text-white' : 'text-gray-500'}`}>
                     We build bridges between developers, chefs, and creators, cultivating collaboration around AI and flavor.
                   </p>
                 </div>
@@ -152,13 +152,13 @@ const AboutUsPage = () => {
                   }`}>
                     {/* 💻 Code Brackets Icon */}
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 9l3 3-3 3m-9-6l-3 3 3 3m4.5-9l-1.5 12" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 9l3 3-3 3m-9-6l-3 3 3 3m4.5-9l-1.5 12"/>
                     </svg>
                   </div>
                   <h3 className="text-2xl font-bold font-display mb-3 group-hover:text-green-600 dark:group-hover:text-green-400">
                     Open Source
                   </h3>
-                  <p className="text-lg leading-relaxed text-gray-500 dark:text-base-content/80">
+                  <p className={`text-lg leading-relaxed ${currentTheme === 'dark' ? 'text-white' : 'text-gray-500'}`}>
                     We grow faster together—sharing our code and ideas to make culinary AI accessible to everyone.
                   </p>
                 </div>
@@ -171,7 +171,7 @@ const AboutUsPage = () => {
         {/* CTA */}
         <section className={`py-16 sm:py-24 ${currentTheme === 'dark' ? 'bg-primary/10' : 'bg-base-200'}`}>
           <div className="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold">Help Us Shape the Future of Food</h2>
+            <h2 className="text-4xl font-display font-bold">{`Help Us Shape the Future of Food`}</h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-base-content/70">
               Join the Flavor AI community and contribute to the next wave of intelligent culinary creation.
             </p>
