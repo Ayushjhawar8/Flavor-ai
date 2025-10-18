@@ -118,13 +118,13 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
           />
           <label
             htmlFor="ingredient-image"
-            className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
+            className="flex flex-col items-center bg-neutral/50 justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-input-bg hover:bg-gray-100 transition-colors "
           >
             <PhotoIcon className="w-8 h-8 text-gray-400 mb-2" />
-            <span className="text-sm text-gray-500">
+            <span className="text-sm">
               Click to upload ingredient image
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs ">
               PNG, JPG up to 5MB
             </span>
           </label>
