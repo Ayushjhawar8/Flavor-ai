@@ -1,67 +1,67 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { BackIcon } from '@/components/Icons';
-import { useState, useEffect } from 'react';
-import React from 'react';
+import { useRouter } from "next/navigation";
+import { BackIcon } from "@/components/Icons";
+import { useState, useEffect } from "react";
+import React from "react";
 
 function BackButton({ fallbackUrl = "/" }) {
-    const router = useRouter();
-    const [isPressed, setIsPressed] = useState(false);
-    const [canGoBack, setCanGoBack] = useState(false);
+  const router = useRouter();
+  const [isPressed, setIsPressed] = useState(false);
+  const [canGoBack, setCanGoBack] = useState(false);
 
-    useEffect(() => {
-        setCanGoBack(window.history.length > 1);
-    }, []);
+  useEffect(() => {
+    setCanGoBack(window.history.length > 1);
+  }, []);
 
-    const handleBack = async (e) => {
-        
-        e.preventDefault();
-        e.stopPropagation();
-        setIsPressed(true);
+  const handleBack = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsPressed(true);
 
-        try {
-            if (canGoBack && window.history.length > 1) {
-                window.history.back();
-            } else {
-                await router.push(fallbackUrl);
-            }
-        } catch (error) {
-            console.error('Back navigation failed:', error);
-            window.location.href = fallbackUrl;
-        }
+    try {
+      if (canGoBack && window.history.length > 1) {
+        window.history.back();
+      } else {
+        await router.push(fallbackUrl);
+      }
+    } catch (error) {
+      console.error("Back navigation failed:", error);
+      window.location.href = fallbackUrl;
+    }
 
-        setTimeout(() => setIsPressed(false), 200);
-    };
+    setTimeout(() => setIsPressed(false), 200);
+  };
 
-    return (
-        <button
-            className={`
-                btn btn-circle 
-                bg-base-200 hover:bg-base-300 
-                active:bg-base-300
-                transition-all duration-150 ease-in-out
-                select-none
-                ${isPressed ? 'scale-90 bg-base-300 shadow-inner' : 'scale-100 shadow-lg'}
-                text-base-content
-            `}
-            onClick={handleBack}
-            style={{
-                minWidth: '48px',
-                minHeight: '48px',
-                WebkitTapHighlightColor: 'transparent',
-                WebkitTouchCallout: 'none',
-                WebkitUserSelect: 'none',
-                touchAction: 'manipulation',
-                transform: 'translateZ(0)',
-                willChange: 'transform',
-            }}
-            aria-label="Go back to previous page"
-            type="button"
-        >
-            <BackIcon />
-        </button>
-    );
+  return (
+    <button
+      className={`
+        btn btn-circle 
+        bg-base-200 hover:bg-base-300 
+        active:bg-base-300
+        transition-all duration-150 ease-in-out
+        select-none cursor-pointer
+        ${isPressed ? "scale-90 bg-base-300 shadow-inner" : "scale-100 shadow-lg"}
+        text-base-content
+        mt-10 ml-3 md:ml-10
+      `}
+      onClick={handleBack}
+      style={{
+        minWidth: "48px",
+        minHeight: "48px",
+        WebkitTapHighlightColor: "transparent",
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        touchAction: "manipulation",
+        transform: "translateZ(0)",
+        willChange: "transform",
+      }}
+      aria-label="Go back to previous page"
+      type="button"
+    >
+      <BackIcon />
+    </button>
+  );
 }
 
 export default BackButton;
