@@ -83,7 +83,7 @@ function NutritionAIPage() {
           </div>
 
           <textarea
-            className="w-full p-3 border border-base-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-brown-400"
+            className="w-full p-3 border border-base-300 rounded-lg mb-4 focus:outline-none bg-primary/5 focus:border-primary resize-none text-base-content "
             placeholder="Paste your recipe ingredients here..."
             value={nutritionInput}
             onChange={(e) => setNutritionInput(e.target.value)}
@@ -139,9 +139,9 @@ function NutritionAIPage() {
           )}
 
           {/* Instructions */}
-          <div className="mt-6 p-4 rounded-lg bg-blue-50 border border-blue-200">
-            <h4 className="font-semibold text-blue-800 mb-2">How to use:</h4>
-            <ul className="text-sm text-blue-700 space-y-1">
+          <div className="mt-6 p-4 rounded-lg bg-primary/10 border border-blue-200">
+            <h4 className="font-semibold text-white mb-2">How to use:</h4>
+            <ul className="text-sm text-brown-700 space-y-1">
               <li>• Paste your recipe ingredients in the text area above</li>
               <li>• Include quantities and measurements for accurate results</li>
               <li>• Click "Get Nutrition Info" to analyze the nutritional content</li>
