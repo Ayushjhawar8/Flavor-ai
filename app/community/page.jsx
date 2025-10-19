@@ -29,7 +29,7 @@ export default function CommunityPage() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
@@ -40,11 +40,10 @@ export default function CommunityPage() {
         position: 'absolute',
         top: '-55px',
         left: '-24px',
-        // position:'sticky'
       }} className="absolute"><BackButton/></div>
 
       <div
-        className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
+        className={`flex-grow mt-20 bg-base-100 transition-all duration-300 ${
           showResults ? "opacity-80 blur-sm" : "opacity-100"
         }`}
       >
@@ -91,6 +90,6 @@ export default function CommunityPage() {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

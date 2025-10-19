@@ -106,7 +106,7 @@ export default function Page() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
@@ -115,7 +115,7 @@ export default function Page() {
       />
 
       {/* Main container for all page content */}
-      <main className={`flex flex-col items-center justify-center w-full bg-base-100 transition-all duration-300 relative z-10 ${
+      <main className={`flex-grow flex flex-col items-center justify-center w-full bg-base-100 transition-all duration-300 relative z-10 ${
           !showResults ? "opacity-100" : "opacity-80 blur-sm"
         }`}
       >
@@ -317,8 +317,8 @@ export default function Page() {
         )}
 
       </main>
-        <Footer />
-
-    </>
+      
+      <Footer />
+    </div>
   );
 }
