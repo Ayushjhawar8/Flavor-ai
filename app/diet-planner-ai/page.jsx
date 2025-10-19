@@ -161,6 +161,7 @@ export default function DietPlannerAI() {
               <BackButton />
             </div>
           <div className="text-center mt-6">
+            <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2">go back to the dashboard page</p>
             <h1 className="text-4xl font-bold text-amber-800 mb-4">
              📋 AI Diet Planner
             </h1>
