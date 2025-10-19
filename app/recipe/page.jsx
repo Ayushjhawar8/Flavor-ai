@@ -6,8 +6,9 @@ import Footer from "@/components/Footer";
 import { useSearchParams } from "next/navigation";
 import BackButton from "@/components/BackButton";
 import { PlusIcon } from "@/components/Icons";
-import { Clock, Users } from "lucide-react"; 
+import { Clock, Users } from "lucide-react";
 import PreparationChecklist from "@/components/PreparationChecklist"; // IMPORT ADDED HERE
+import RecipeNotes from "@/components/RecipeNotes";
 
 export default function ViewRecipePage() {
   const [showResults, setShowResults] = useState(false);
@@ -81,8 +82,10 @@ export default function ViewRecipePage() {
             showResults ? "opacity-80 blur-sm" : "opacity-100"
           }`}
         >
+          
           <BackButton />
-          <div className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
+          
+          <div className="relative mt-14 md:mt-0 max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
             <div className="p-6 md:p-12">
               <header className="relative text-center mb-8">
                 <h1 className="text-3xl md:text-5xl font-bold text-base-content">
@@ -171,6 +174,10 @@ export default function ViewRecipePage() {
                   )}
                   {/* END MODIFIED BLOCK */}
                 </div>
+              </section>
+
+              <section className="mt-8">
+                <RecipeNotes recipeId={recipeData.id} />
               </section>
             </div>
           </div>

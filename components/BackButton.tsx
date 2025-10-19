@@ -14,6 +14,7 @@ function BackButton({ fallbackUrl = "/" }) {
     setCanGoBack(window.history.length > 1);
   }, []);
 
+  // Handles back navigation
   const handleBack = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -33,6 +34,27 @@ function BackButton({ fallbackUrl = "/" }) {
     setTimeout(() => setIsPressed(false), 200);
   };
 
+  // Mouse / touch press feedback
+  const handleMouseDown = (e) => {
+    e.stopPropagation();
+    setIsPressed(true);
+  };
+
+  const handleMouseUp = (e) => {
+    e.stopPropagation();
+    setTimeout(() => setIsPressed(false), 100);
+  };
+
+  const handleTouchStart = (e) => {
+    e.stopPropagation();
+    setIsPressed(true);
+  };
+
+  const handleTouchEnd = (e) => {
+    e.stopPropagation();
+    setTimeout(() => setIsPressed(false), 100);
+  };
+
   return (
     <button
       className={`
@@ -46,6 +68,10 @@ function BackButton({ fallbackUrl = "/" }) {
         mt-10 ml-3 md:ml-10
       `}
       onClick={handleBack}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       style={{
         minWidth: "48px",
         minHeight: "48px",

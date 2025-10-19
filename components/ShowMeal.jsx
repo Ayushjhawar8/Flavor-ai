@@ -12,6 +12,7 @@ import BackButton from "@/components/BackButton";
 import ShareButton from "@/components/ShareButton";
 import { PlusIcon, YoutubeIcon } from "@/components/Icons";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
+import RecipeNotes from "@/components/RecipeNotes";
 
 // Shopping list helpers
 import { addItemsToShoppingList, parseMeasure } from "@/lib/shoppingList";
@@ -771,6 +772,11 @@ function ShowMeal({ URL }) {
           </div>
         </div>
       </div>
+
+      {/* Recipe Notes Section */}
+      <section className="mt-8">
+        <RecipeNotes recipeId={mealData.idMeal} />
+      </section>
 
       {/* Hide footer in print */}
       <div className="bg-base-100 no-print">
