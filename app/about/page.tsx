@@ -86,7 +86,7 @@ const AboutUsPage = () => {
               {/* Card 1 - Innovation */}
               <div className={`relative group overflow-hidden rounded-2xl border shadow-xl transition-all duration-500 ${
                 currentTheme === 'dark'
-                  ? 'bg-neutral-900 border-neutral-700 text-base-content'
+                  ? 'bg-base-300 border-neutral-700 text-base-content'
                   : 'bg-white border-gray-200 text-gray-900'
               }`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -113,7 +113,7 @@ const AboutUsPage = () => {
               {/* Card 2 - Community */}
               <div className={`relative group overflow-hidden rounded-2xl border shadow-xl transition-all duration-500 ${
                 currentTheme === 'dark'
-                  ? 'bg-neutral-900 border-neutral-700 text-base-content'
+                  ? 'bg-base-300 border-neutral-700 text-base-content'
                   : 'bg-white border-gray-200 text-gray-900'
               }`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -140,7 +140,7 @@ const AboutUsPage = () => {
               {/* Card 3 - Open Source */}
               <div className={`relative group overflow-hidden rounded-2xl border shadow-xl transition-all duration-500 ${
                 currentTheme === 'dark'
-                  ? 'bg-neutral-900 border-neutral-700 text-base-content'
+                  ? 'bg-base-300 border-neutral-700 text-base-content'
                   : 'bg-white border-gray-200 text-gray-900'
               }`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
