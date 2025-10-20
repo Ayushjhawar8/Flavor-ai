@@ -62,7 +62,7 @@ const ContactPage = () => {
       </div>
 
       {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-8 pt-32">
+      <main className="flex-grow flex items-center justify-center p-4  mt-6 sm:p-6 lg:p-8 pt-32">
         <div className="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 transition-all duration-300 ease-in-out">
           {/* Header Section */}
           <div className="text-center">

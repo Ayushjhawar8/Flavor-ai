@@ -68,18 +68,19 @@ const FeedbackPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-base-300 transition-colors duration-300">
-      {/* Navbar should blend with same background */}
+      {/* Navbar */}
       <header className="bg-base-300 z-50">
         <Navbar />
       </header>
 
-      {/* Back Button */}
-      <div className="relative mt-10">
-        <BackButton />
-      </div>
+      {/* Main Content Wrapper with equal top and bottom spacing */}
+      <main className="flex-grow flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 mt-24 mb-24 bg-base-300 transition-colors duration-300">
+        {/* Back Button */}
+        <div className="self-start mb-6">
+          <BackButton />
+        </div>
 
-      {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-8 pt-32 bg-base-300 transition-colors duration-300">
+        {/* Feedback Form Container */}
         <div className="w-full max-w-2xl bg-base-100 rounded-2xl shadow-xl p-8 space-y-6 border border-base-300 transition-all duration-300 ease-in-out">
           {/* Header Section */}
           <div className="text-center">

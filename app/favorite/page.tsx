@@ -23,7 +23,7 @@ interface Category {
   strCategoryDescription: string;
 }
 
-// ✅ Function to detect meal type
+
 const getMealType = (mealName: string) => {
   const nonVegKeywords = [
     "chicken",
@@ -43,10 +43,10 @@ const getMealType = (mealName: string) => {
     : "Vegetarian";
 };
 
-// ✅ Function to filter categories
+
 const getCategoryType = (categoryName: string) => {
-  const vegCategories = ["Vegetarian", "Vegan", "Starter"];
-  return vegCategories.includes(categoryName) ? "Vegetarian" : "Non-Veg";
+  const vegCategories = ["vegetarian", "vegan", "starter"];
+  return vegCategories.includes(categoryName.toLowerCase()) ? "Vegetarian" : "Non-Veg";
 };
 
 export default function FavoritesPage() {
@@ -56,7 +56,7 @@ export default function FavoritesPage() {
   const [filter, setFilter] = useState("All");
 
   const handleSearchFocus = () => setShowResults(true);
-  const handleBlur = () => setTimeout(() => setShowResults(false), 200);
+  const handleBlur = () => setShowResults(false);
 
   // dynamic tab title      
     useEffect(()=>{
@@ -67,34 +67,45 @@ export default function FavoritesPage() {
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     if (storedFavorites) {
-      setFavorites(JSON.parse(storedFavorites));
+      try {
+        setFavorites(JSON.parse(storedFavorites));
+      } catch (err) {
+        console.error("Error parsing favorites:", err);
+        localStorage.removeItem("favorites");
+      }
     }
   }, []);
 
+
   useEffect(() => {
-    fetch(CATEGORIES_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.categories);
-      })
-      .catch((error) => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(CATEGORIES_URL);
+        if (!res.ok) throw new Error("Network response was not ok");
+        const data = await res.json();
+        setCategories(data.categories || []);
+      } catch (error) {
         console.error("Error fetching categories:", error);
-      });
+        setCategories([]); 
+      }
+    };
+    fetchCategories();
   }, []);
 
+ 
   const removeFavorite = (idMeal: string) => {
     const updatedFavorites = favorites.filter((meal) => meal.idMeal !== idMeal);
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
-  // ✅ Filter meals (Favorites)
+
   const filteredFavorites = favorites.filter((meal) => {
     const type = getMealType(meal.strMeal);
     return filter === "All" || type === filter;
   });
 
-  // ✅ Filter categories (for "A Taste for Every Mood and Moment")
+  
   const filteredCategories = categories.filter((category) => {
     const type = getCategoryType(category.strCategory);
     return filter === "All" || type === filter;
@@ -118,33 +129,20 @@ export default function FavoritesPage() {
           Your Favorite Meals 💖
         </h1>
 
-        {/* ✅ Filter Bar */}
+      
         <div className="flex justify-center gap-4 mb-8">
-          <button
-            onClick={() => setFilter("All")}
-            className={`btn ${filter === "All" ? "btn-primary" : "btn-outline"}`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter("Vegetarian")}
-            className={`btn ${
-              filter === "Vegetarian" ? "btn-primary" : "btn-outline"
-            }`}
-          >
-            Vegetarian
-          </button>
-          <button
-            onClick={() => setFilter("Non-Veg")}
-            className={`btn ${
-              filter === "Non-Veg" ? "btn-primary" : "btn-outline"
-            }`}
-          >
-            Non-Veg
-          </button>
+          {["All", "Vegetarian", "Non-Veg"].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFilter(type)}
+              className={`btn ${filter === type ? "btn-primary" : "btn-outline"}`}
+            >
+              {type}
+            </button>
+          ))}
         </div>
 
-        {/* ✅ Favorites Section */}
+      
         {favorites.length === 0 ? (
           <p className="text-center text-lg mb-6">No favorites yet!</p>
         ) : filteredFavorites.length === 0 ? (
@@ -158,7 +156,7 @@ export default function FavoritesPage() {
                 key={meal.idMeal}
                 className="relative card w-80 lg:w-96 bg-base-200 shadow-xl rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
               >
-                {/* Image */}
+             
                 <figure className="relative h-56 w-full">
                   <Image
                     src={meal.strMealThumb}
@@ -195,7 +193,7 @@ export default function FavoritesPage() {
           </div>
         )}
 
-        {/* ✅ Categories Always Visible */}
+        
         <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-base-200 rounded-lg shadow-lg">
           <h2 className="text-xl md:text-3xl text-base-content mb-10 font-semibold text-center">
             A Taste for Every Mood and Moment
