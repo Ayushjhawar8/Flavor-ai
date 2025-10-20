@@ -27,13 +27,11 @@ export default function GoogleTranslateWrapper() {
       {/* Globe Button */}
       <button
         onClick={toggleDropdown}
-        className={`rounded-full w-10 h-10 bg-purple-800/50 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-purple-800/70 ${
-          isDropdownOpen ? 'bg-purple-800/70 scale-110' : ''
-        }`}
+        className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/60"
         aria-label="Open language selector"
         type="button"
       >
-        <Globe size={18} className="text-white" />
+        <Globe size={16} className="text-black dark:text-white" />
       </button>
 
       {/* Dropdown */}
