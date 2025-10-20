@@ -71,7 +71,7 @@ const Footer = () => {
       links: [
         { label: "🍽️ Community Recipes", href: "/community" },
         { label: "🎉 Festive Recipes", href: "/festive" },
-        { label: "🥬 Vegetarian Recipes", href: "/" },
+        { label: "🥬 Vegetarian Recipes", href: "/category/Vegetarian" },
         { label: "🍰 Dessert Recipes", href: "/festive" },
       ],
     },
