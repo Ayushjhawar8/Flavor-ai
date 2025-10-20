@@ -115,6 +115,14 @@ const FAQItem = ({ faq, isOpen, onClick }) => {
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
+
+  // dynamic tab title
+    
+      useEffect(()=>{
+        document.title='Flavor AI-FAQ'
+      },[])
+
+
   return (
     <div className="flex flex-col min-h-screen bg-base-300">
       <Navbar />

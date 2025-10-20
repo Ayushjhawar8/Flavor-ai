@@ -18,6 +18,13 @@ export default function CommunityPage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
+
+  // dynamic tab title
+
+  useEffect(()=>{
+    document.title='Flavor AI-Community'
+  },[])
+
   useEffect(() => {
     // Seed sample data on first visit
     import("@/lib/seedCommunityData").then(({ seedSampleRecipes }) => {
@@ -27,6 +34,8 @@ export default function CommunityPage() {
     
     setCurrentUser(getCurrentUser());
   }, []);
+
+
 
   return (
     <>

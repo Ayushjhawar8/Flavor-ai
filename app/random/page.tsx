@@ -53,6 +53,11 @@ export default function RandomRecipePage() {
   const [error, setError] = useState<string>("");
   const [favorites, setFavorites] = useState<string[]>([]);
 
+  // dynamic tab title     
+  useEffect(()=>{
+    document.title='Flavor AI-Random Recipes'
+  },[])
+
   useEffect(() => {
     const favs = localStorage.getItem("favorites");
     if (favs) setFavorites(JSON.parse(favs));

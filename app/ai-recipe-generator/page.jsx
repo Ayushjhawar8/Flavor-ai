@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
 import Footer from "../../components/Footer";
@@ -17,6 +17,12 @@ export default function AIRecipeGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedRecipe, setGeneratedRecipe] = useState(null);
   const [error, setError] = useState("");
+
+  // dynamic tab title     
+    useEffect(()=>{
+      document.title='Flavor AI-Recipe Generator'
+    },[])
+    
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

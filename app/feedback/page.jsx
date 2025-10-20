@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
@@ -14,6 +14,12 @@ const FeedbackPage = () => {
   });
 
   const [status, setStatus] = useState('');
+
+  // dynamic tab title
+                  
+    useEffect(()=>{
+      document.title='Flavor AI-Feedback'
+    },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;

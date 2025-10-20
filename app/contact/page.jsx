@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 import BackButton from '../../components/BackButton';
@@ -23,6 +23,13 @@ const ContactPage = () => {
     });
   };
 
+  // dynamic tab title
+        
+  useEffect(()=>{
+    document.title='Flavor AI-Contact Us'
+  },[])
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -30,6 +37,7 @@ const ContactPage = () => {
       setStatus('All fields are required!');
       return;
     }
+
 
     setStatus('Sending...');
 

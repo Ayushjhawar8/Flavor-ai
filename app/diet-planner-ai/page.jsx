@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
 import Footer from "../../components/Footer";
@@ -30,6 +30,11 @@ export default function DietPlannerAI() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPlans, setGeneratedPlans] = useState([]);
   const [error, setError] = useState("");
+
+  // dynamic tab title     
+  useEffect(()=>{
+    document.title='Flavor AI-Diet Planner'
+  },[])
 
   // Handler for all input changes
   const handleInputChange = (e) => {

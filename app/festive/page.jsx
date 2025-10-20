@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FestivalDishCard from "@/components/festivals/FestivalDishCard";
@@ -16,6 +16,13 @@ export default function FestivePage() {
 
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
+
+
+  // dynamic tab title
+          
+  useEffect(()=>{
+    document.title='Flavor AI-Festive Dishes'
+  },[])
 
 // Updated filter for filtering based on festivals + difficulty 
   const filteredDishes = festivalDishes.filter((dish) => {

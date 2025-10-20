@@ -117,6 +117,13 @@ export default function RecipeSearch() {
     }
   ];
 
+  // dynamic tab title
+            
+    useEffect(()=>{
+      document.title='Flavor AI-Recipe Search'
+    },[])
+
+
   const handleSearch = async (query = searchQuery) => {
     setIsSearching(true);
     setHasSearched(true);

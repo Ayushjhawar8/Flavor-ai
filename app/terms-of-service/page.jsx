@@ -1,11 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
 
 const TermsPage = () => {
+  // dynamic tab title
+      
+    useEffect(()=>{
+      document.title='Flavor AI-Terms of Service'
+    },[])
+
   return (
     <div className="flex flex-col min-h-screen bg-base-300 transition-colors duration-300">
       {/* Navbar */}

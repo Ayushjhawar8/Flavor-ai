@@ -14,6 +14,12 @@ export default function UploadRecipePage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
+  // dynamic tab title
+              
+      useEffect(()=>{
+        document.title='Flavor AI-Share Your Recipes'
+      },[])
+
   const handleRecipeUploaded = (recipe) => {
     // Show success message and redirect
     alert(`Recipe "${recipe.title}" uploaded successfully!`);

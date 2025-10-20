@@ -27,6 +27,14 @@ function NutritionAIPage() {
       return () => observer.disconnect();
     }, []);
 
+
+    // dynamic tab title
+        
+          useEffect(()=>{
+            document.title='Flavor AI-Nutrition-AI'
+          },[])
+    
+
   const fetchNutrition = async () => {
     if (!nutritionInput.trim()) return;
     setLoadingNutrition(true);
