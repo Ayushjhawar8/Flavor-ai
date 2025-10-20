@@ -90,8 +90,8 @@ const AboutUsPage = () => {
                   : 'bg-white border-gray-200 text-gray-900'
               }`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative z-10 p-10">
-                  <div className={`flex h-16 w-16 items-center justify-center rounded-xl transition-all duration-300 mb-6 ${
+                <div className="relative z-10 p-10 h-full flex flex-col">
+                  <div className={`flex h-16 w-16 items-center justify-center rounded-xl transition-all duration-300 mx-auto mb-6 ${
                     currentTheme === 'dark'
                       ? 'bg-amber-800/30 text-amber-300 group-hover:scale-110'
                       : 'bg-amber-100 text-amber-600 group-hover:scale-110'
@@ -117,8 +117,8 @@ const AboutUsPage = () => {
                   : 'bg-white border-gray-200 text-gray-900'
               }`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative z-10 p-10">
-                  <div className={`flex h-16 w-16 items-center justify-center rounded-xl mb-6 transition-all duration-300 ${
+                <div className="relative z-10 p-10 h-full flex flex-col">
+                  <div className={`flex h-16 w-16 items-center justify-center rounded-xl transition-all duration-300 mx-auto mb-6 ${
                     currentTheme === 'dark'
                       ? 'bg-blue-900/30 text-blue-300 group-hover:scale-110'
                       : 'bg-blue-100 text-blue-600 group-hover:scale-110'
@@ -144,8 +144,8 @@ const AboutUsPage = () => {
                   : 'bg-white border-gray-200 text-gray-900'
               }`}>
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative z-10 p-10">
-                  <div className={`flex h-16 w-16 items-center justify-center rounded-xl mb-6 transition-all duration-300 ${
+                <div className="relative z-10 p-10 h-full flex flex-col">
+                  <div className={`flex h-16 w-16 items-center justify-center rounded-xl transition-all duration-300 mx-auto mb-6 ${
                     currentTheme === 'dark'
                       ? 'bg-green-900/30 text-green-300 group-hover:scale-110'
                       : 'bg-green-100 text-green-600 group-hover:scale-110'
