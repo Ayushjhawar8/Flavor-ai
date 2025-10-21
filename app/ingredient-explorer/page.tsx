@@ -42,6 +42,11 @@ export default function IngredientExplorer() {
     setTimeout(() => setShowResults(false), 200)
   }
 
+   // dynamic tab title     
+    useEffect(()=>{
+      document.title='Flavor AI-Ingredient Explorer'
+    },[])
+
   useEffect(() => {
     try {
       if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {

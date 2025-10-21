@@ -7,6 +7,13 @@ import React, { useEffect, useState } from 'react';
 const AboutUsPage = () => {
   const [currentTheme, setCurrentTheme] = useState('light');
 
+  // dynamic tab title
+  
+    useEffect(()=>{
+      document.title='Flavor AI-About Us'
+    },[])
+  
+
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setCurrentTheme(document.documentElement.getAttribute('data-theme') || 'light');

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,6 +13,12 @@ export default function UploadRecipePage() {
 
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
+
+  // dynamic tab title
+              
+      useEffect(()=>{
+        document.title='Flavor AI-Share Your Recipes'
+      },[])
 
   const handleRecipeUploaded = (recipe) => {
     // Show success message and redirect
@@ -34,7 +40,6 @@ export default function UploadRecipePage() {
       }`}>
         <div className="container mx-auto px-4 py-8">
           <BackButton />
-          
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary mb-2">
               Share Your Recipe

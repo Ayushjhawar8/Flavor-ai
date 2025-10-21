@@ -5,7 +5,7 @@ import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import GenerateRecipeForm from "@/components/GenerateRecipeForm";
 import Navbar from "@/components/Navbar";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Page() {
   const [recipe, setRecipe] = useState(null);
@@ -13,7 +13,10 @@ function Page() {
   const [showRecipe, setShowRecipe] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
-
+  // dynamic tab title     
+      useEffect(()=>{
+        document.title='Flavor AI-AI Powered Recipe Generator'
+      },[])
 
   const formResetRef = useRef();
 

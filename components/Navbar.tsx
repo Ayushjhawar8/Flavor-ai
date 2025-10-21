@@ -8,9 +8,12 @@ import { Home, Menu, X, Info, HelpCircle, Users } from "lucide-react"; // Added 
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
 import CursorToggle from "./CursorToggle";
-import Tooltip from "@/components/Tooltip";
+import Logo from "./Logo";
+import SocialLinks from "./SocialLinks";
+import Tooltip from "@/components/Tooltip"
 
-const MobileNavigation = () => {
+
+const MobileNavigation = ({currentTheme}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -31,12 +34,15 @@ const MobileNavigation = () => {
       />
       <div className="fixed top-0 right-0 h-full rounded-md w-64 bg-base-100 shadow-xl z-[10000]">
         <div className="flex flex-col p-4 space-y-4 h-full overflow-y-auto">
-          <button
-            onClick={() => setIsMenuOpen(false)}
-            className="self-end p-2 rounded-full bg-base-200 hover:bg-base-300 transition-colors"
-          >
+          <div className="flex justify-between items-center">
+             <Logo currentTheme={currentTheme}/>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="self-end p-2 rounded-full bg-base-200 hover:bg-base-300 transition-colors">
             <X size={20} />
-          </button>
+            </button>
+          </div>
+          
 
           <Link href="/" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
             <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
@@ -97,6 +103,11 @@ const MobileNavigation = () => {
             </div>
             <span>FAQ</span>
           </Link>
+        </div>
+
+        {/* social links */}
+        <div className="absolute bottom-2 left-0 text-center w-full">
+          <SocialLinks currentTheme={currentTheme}/>
         </div>
       </div>
     </div>
@@ -179,17 +190,7 @@ export default function Navbar({
       }`}>
       {/* Left - Logo + GitHub */}
       <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-        <Link
-          href="/"
-          id="main"
-          className={`text-sm md:text-base font-bold px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-md ${currentTheme === "dark"
-            ? "bg-gradient-to-br from-pink-700 via-purple-800 to-pink-700 text-white hover:shadow-lg"
-            : "bg-gradient-to-br from-pink-200 via-purple-300 to-pink-200 text-gray-900 hover:shadow-md"
-            } hover:scale-[1.02] border border-white/10`}
-        >
-          Flavor AI
-        </Link>
-
+        <Logo currentTheme={currentTheme}/>
         <a
           href="https://github.com/Ayushjhawar8/Flavor-ai"
           target="_blank"
@@ -345,7 +346,7 @@ export default function Navbar({
 
         </div>
 
-        <MobileNavigation />
+        <MobileNavigation currentTheme={currentTheme}/>
       </div>
 
       {/* Mobile Search below */}

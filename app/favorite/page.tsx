@@ -58,6 +58,12 @@ export default function FavoritesPage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setShowResults(false);
 
+  // dynamic tab title      
+    useEffect(()=>{
+      document.title='Flavor AI-Favorite Meals'
+    },[])
+    
+
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     if (storedFavorites) {

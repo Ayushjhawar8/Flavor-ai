@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaGithub, FaLinkedin, FaTwitter, FaHeart, FaCode } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import SocialLinks from "./SocialLinks";
+import { FaCode, FaHeart } from "react-icons/fa";
 
 const Footer = () => {
   const [currentTheme, setCurrentTheme] = useState("light");
@@ -21,31 +21,8 @@ const Footer = () => {
   }, []);
 
   const textColor = currentTheme === 'dark' ? 'text-base-content' : 'text-base-content';
-  const iconBg = currentTheme === 'dark' ? 'bg-base-200' : 'bg-base-200';
-  const iconHoverBg = currentTheme === 'dark' ? 'hover:bg-base-300' : 'hover:bg-base-300';
-  const iconColor = currentTheme === 'dark' ? 'text-base-content' : 'text-base-content';
 
-  const socialLinks = [
-    {
-      href: "https://github.com/Ayushjhawar8/Flavor-ai",
-      icon: FaGithub,
-      label: "GitHub",
-      glow: "drop-shadow(0 0 6px rgba(255,255,255,0.6))",
-    },
-    {
-      href: "https://linkedin.com/in/ayushjhawar",
-      icon: FaLinkedin,
-      label: "LinkedIn",
-      glow: "drop-shadow(0 0 6px rgba(10,102,194,0.6))",
-    },
-    {
-  href: "https://x.com/itsAyushJ",
-  icon: FaXTwitter,
-  label: "X (Twitter)",
-  glow: "drop-shadow(0 0 6px rgba(29,155,240,0.6))",
-},
-
-  ];
+  
 
   const sections = [
     {
@@ -143,19 +120,7 @@ const Footer = () => {
             {/* Social Media */}
             <div className="flex items-center gap-4">
               <span className={`${textColor} text-sm font-medium`}>Connect:</span>
-              {socialLinks.map(({ href, icon: Icon, label, glow }, index) => (
-                <a
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group relative ${iconBg} ${iconHoverBg} ${iconColor} p-3 rounded-lg transition-all duration-300 hover:transform hover:scale-110 hover:-translate-y-1`}
-                  title={label}
-                  aria-label={label}
-                >
-                  <Icon size={18} className="group-hover:scale-110 transition-transform duration-300" />
-                </a>
-              ))}
+              <SocialLinks currentTheme={currentTheme}/>
             </div>
 
             {/* Legal Links */}

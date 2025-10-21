@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
 
@@ -32,6 +32,12 @@ export default function UploadRecipeNew() {
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+   // dynamic tab title
+              
+      useEffect(()=>{
+        document.title='Flavor AI-Share Your Recipes'
+      },[])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
