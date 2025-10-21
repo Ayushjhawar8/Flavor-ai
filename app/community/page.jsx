@@ -38,7 +38,7 @@ export default function CommunityPage() {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative flex flex-col min-h-screen">
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
@@ -47,16 +47,16 @@ export default function CommunityPage() {
       />
       <div style={{
         position: 'absolute',
-        top: '-55px',
-        left: '-24px',
+        top: '85px',
+        left: '3px',
       }} className="absolute"><BackButton/></div>
 
       <div
-        className={`flex-grow mt-20 bg-base-100 transition-all duration-300 ${
+        className={`flex-grow bg-base-100 transition-all duration-300 ${
           showResults ? "opacity-80 blur-sm" : "opacity-100"
         }`}
       >
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 mt-40">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl font-bold text-primary mb-2">

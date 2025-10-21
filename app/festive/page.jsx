@@ -34,22 +34,24 @@ export default function FestivePage() {
   });
 
   return (
-    <>
+    <div className="relative flex flex-col min-h-screen">
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className="absolute">
-          <BackButton/>
-      </div>
+      <div style={{
+        position: 'absolute',
+        top: '85px',
+        left: '3px',
+      }} className="absolute"><BackButton/></div>
         
-      <div className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
+      <div className={`min-h-screen bg-base-100 transition-all duration-300 ${
         showResults ? "opacity-80 blur-sm" : "opacity-100"
       }`}>
      
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 mt-36">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary mb-2">
@@ -120,6 +122,6 @@ export default function FestivePage() {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

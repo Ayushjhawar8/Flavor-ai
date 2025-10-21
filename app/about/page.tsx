@@ -1,5 +1,6 @@
 'use client';
 
+import BackButton from '@/components/BackButton';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import React, { useEffect, useState } from 'react';
@@ -27,10 +28,10 @@ const AboutUsPage = () => {
   }, []);
 
   return (
-    <div className={`flex flex-col min-h-screen ${currentTheme === 'dark' ? 'bg-base-100 text-base-content' : 'bg-white text-gray-900'}`}>
+    <div className={`relative flex flex-col min-h-screen ${currentTheme === 'dark' ? 'bg-base-100 text-base-content' : 'bg-white text-gray-900'}`}>
       <Navbar />
 
-      <main className={`flex-grow pt-16 ${currentTheme === 'dark' ? 'text-base-content' : 'text-gray-900'}`}>
+      <main className={`flex-grow pt-[74px] ${currentTheme === 'dark' ? 'text-base-content' : 'text-gray-900'}`}>
 
         {/* Hero Section */}
         <section

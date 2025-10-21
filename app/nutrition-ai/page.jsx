@@ -63,18 +63,20 @@ function NutritionAIPage() {
   };
 
   return (
-    <>
+    <div className="relative flex flex-col min-h-screen">
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
+      <div className={`min-h-screen py-10 bg-base-100 flex flex-col pt-44 justify-center items-center relative transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
         }`}>
-        <div className="no-print">
-          <BackButton />
-        </div>
+        <div style={{
+        position: 'absolute',
+        top: '85px',
+        left: '3px',
+      }} className="absolute"><BackButton/></div>
 
         {/* Main Nutrition AI Section */}
 
@@ -159,7 +161,7 @@ function NutritionAIPage() {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 
