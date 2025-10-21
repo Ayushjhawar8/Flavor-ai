@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import GoogleTranslate from './GoogleTranslate';
 import { Globe } from 'lucide-react';
 
-export default function GoogleTranslateWrapper() {
+export default function GoogleTranslateWrapper({ className = "" }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isTranslateLoaded, setIsTranslateLoaded] = useState(false);
 
@@ -27,7 +27,10 @@ export default function GoogleTranslateWrapper() {
       {/* Globe Button */}
       <button
         onClick={toggleDropdown}
-        className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/60"
+        className={`${className} ${
+          isDropdownOpen ? 'bg-purple-800/70 scale-110' : ''
+        }`}
+
         aria-label="Open language selector"
         type="button"
       >
