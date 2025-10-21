@@ -30,10 +30,11 @@ export default function GoogleTranslateWrapper({ className = "" }) {
         className={`${className} ${
           isDropdownOpen ? 'bg-purple-800/70 scale-110' : ''
         }`}
+
         aria-label="Open language selector"
         type="button"
       >
-        <Globe size={18} className="text-white" />
+        <Globe size={16} className="text-black dark:text-white" />
       </button>
 
       {/* Dropdown */}

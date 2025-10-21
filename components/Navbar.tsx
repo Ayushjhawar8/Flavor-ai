@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Home, Menu, X, Info, HelpCircle } from "lucide-react"; // Added HelpCircle
+import { Home, Menu, X, Info, HelpCircle, Users } from "lucide-react"; // Added HelpCircle and Users
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
 import CursorToggle from "./CursorToggle";
+import Tooltip from "@/components/Tooltip";
 
 const MobileNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -237,6 +238,7 @@ export default function Navbar({
         </div>
 
         {/* Community */}
+
         <div
           className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
           style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
@@ -340,6 +342,7 @@ export default function Navbar({
           <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
             Theme
           </span>
+
         </div>
 
         <MobileNavigation />
