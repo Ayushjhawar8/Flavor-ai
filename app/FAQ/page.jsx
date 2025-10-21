@@ -80,22 +80,35 @@ const FAQItem = ({ faq, isOpen, onClick }) => {
     }
   }, [isOpen]);
   return (
-    <div className="bg-base-200 rounded-2xl shadow-sm border border-base-300 overflow-hidden transition-all duration-500">
-      <button
-        onClick={onClick}
-        className={`w-full flex items-center justify-between p-4 text-lg font-semibold text-base-content cursor-pointer rounded-2xl focus:outline-none ${
-          isOpen ? "text-primary bg-base-300" : ""
-        }`}
-        aria-expanded={isOpen}
-        type="button"
-      >
-        {faq.question}
-        <ChevronDown
-          className={`w-6 h-6 transition-transform duration-300 ${
-            isOpen ? "rotate-180 text-primary" : ""
-          }`}
-        />
-      </button>
+  <div
+  className="rounded-2xl shadow-sm border border-base-300 overflow-hidden transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
+  style={{
+    backgroundImage: 'linear-gradient(45deg, rgba(235, 163, 108, 0.3), rgba(246, 214, 170, 0.2), rgba(251, 225, 193, 0.2), rgba(255, 218, 179, 0.3), rgba(48, 21, 1, 0.2))',
+  }}
+>
+    <button
+  onClick={onClick}
+  className={`w-full flex items-center justify-between p-4 text-lg font-semibold text-base-content cursor-pointer rounded-2xl focus:outline-none border transition-all duration-300 ease-in-out
+    ${isOpen ? "text-primary bg-base-300 border-brown-500" : "border-brown-300 hover:border-brown-500 hover:bg-base-200"}`}
+  aria-expanded={isOpen}
+  type="button"
+>
+  {faq.question}
+<div
+  className="w-6 h-6 flex items-center justify-center rounded-full [background-image:linear-gradient(135deg,#3B1F0B,#ffffff)] transition-transform duration-300"
+>
+<ChevronDown
+  strokeWidth={4} 
+  className={`w-3 h-3 transition-transform duration-300 ${
+    isOpen ? "rotate-180 text-white" : "text-white"
+  }`}
+/>
+</div>
+
+
+
+</button>
+
       <div
         ref={contentRef}
         style={{
@@ -115,25 +128,49 @@ const FAQItem = ({ faq, isOpen, onClick }) => {
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
+
   return (
-    <div className="flex flex-col min-h-screen bg-base-300 ">
-      <Navbar />
-      <div className="relative mt-10"><BackButton /></div>
-      <main className="flex-grow flex items-center justify-center p-4 mt-6 sm:p-6 lg:p-8 pt-32">
-        <div className="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl p-8 space-y-6 transition-all duration-300">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-primary">Frequently Asked Questions</h1>
-            <p className="text-base-content/70 mt-2">Find quick answers to common questions about Flavor AI.</p>
+    <>
+      <style>{`
+        @keyframes smoothBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-smoothBounce {
+          animation: smoothBounce 3s ease-in-out infinite;
+        }
+      `}</style>
+
+      <div className="flex flex-col min-h-screen bg-base-300 ">
+        <Navbar />
+        <div className="relative mt-10"><BackButton /></div>
+        <main className="flex-grow flex items-center justify-center p-4 mt-6 sm:p-6 lg:p-8 pt-32">
+          <div className="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl p-8 space-y-6 transition-all duration-300">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-primary">
+                Frequently Asked <span className="text-orange-300">Questions</span>
+              </h1>
+
+              <h1 className="text-4xl text-orange-600 flex justify-center items-center mt-10 animate-smoothBounce">
+                ❓
+              </h1>
+
+              <p
+                className="font-semibold text-base-content/70 mt-8 mb-8 px-4 py-2 rounded-[25px] bg-[rgba(160,110,60,0.3)] backdrop-blur-md border border-[rgba(160,110,60,0.4)]"
+              >
+                Find quick answers to common questions about Flavor AI.
+              </p>
+            </div>
+            <div className="space-y-4">
+              {faqs.map((faq, i) => (
+                <FAQItem key={i} faq={faq} isOpen={openIndex === i} onClick={() => toggle(i)} />
+              ))}
+            </div>
           </div>
-          <div className="space-y-4">
-            {faqs.map((faq, i) => (
-              <FAQItem key={i} faq={faq} isOpen={openIndex === i} onClick={() => toggle(i)} />
-            ))}
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 
