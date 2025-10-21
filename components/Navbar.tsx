@@ -133,6 +133,7 @@ export default function Navbar({
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
+  const [showTranslateTooltip, setShowTranslateTooltip] = useState(false);
   const [cursorEnabled, setCursorEnabled] = useState<boolean>(() => {
     if (typeof window === "undefined") return true;
     try {
@@ -222,75 +223,126 @@ export default function Navbar({
 
       {/* Right - Community, Home Tab & Theme Toggle */}
       <div className="ml-auto md:ml-0 flex items-center gap-2 md:gap-4">
-        {/* Community */}
-    <Tooltip label="Community">
-          <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
-            <Link
-              href="/community"
-              className="w-8 h-8 flex items-center justify-center leading-none rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
-            >
-              <Users size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
-            </Link>
-          </div>
-        </Tooltip>
 
+        {/* Home */}
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          <Link href="/" aria-label="Home" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
+            <Home size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
+          </Link>
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            Home
+          </span>
+        </div>
+
+        {/* Community */}
+
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          <Link href="/community" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" className={`w-5 h-5 ${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} fill="currentColor">
+              <path d="M8.5 3.5a2.25 2.25 0 1 0 0 4.5a2.25 2.25 0 0 0 0-4.5ZM4.75 5.75a3.75 3.75 0 1 1 7.5 0a3.75 3.75 0 0 1-7.5 0ZM2 12.982C2 11.887 2.887 11 3.982 11h5.6a4.728 4.728 0 0 0-.326 1.5H3.982a.482.482 0 0 0-.482.482v.393c0 .172.002 1.213.607 2.197c.52.844 1.554 1.759 3.753 1.907a2.993 2.993 0 0 0-1.136 1.368c-2.005-.371-3.207-1.372-3.894-2.49C2 15.01 2 13.618 2 13.378v-.395ZM18.417 11c.186.468.3.973.326 1.5h5.275c.266 0 .482.216.482.482v.393c0 .172-.002 1.213-.608 2.197c-.519.844-1.552 1.759-3.752 1.907c.505.328.904.805 1.136 1.368c2.005-.371 3.207-1.372 3.894-2.49c.83-1.348.83-2.74.83-2.98v-.395A1.982 1.982 0 0 0 24.018 11h-5.6ZM19.5 3.5a2.25 2.25 0 1 0 0 4.5a2.25 2.25 0 0 0 0-4.5Zm-3.75 2.25a3.75 3.75 0 1 1 7.5 0a3.75 3.75 0 0 1-7.5 0ZM7.5 19.982C7.5 18.887 8.387 18 9.482 18h9.036c1.095 0 1.982.887 1.982 1.982v.395c0 .24 0 1.632-.83 2.98C18.8 24.773 17.106 26 14 26s-4.8-1.228-5.67-2.642c-.83-1.349-.83-2.74-.83-2.981v-.395Zm1.982-.482a.482.482 0 0 0-.482.482v.393c0 .172.002 1.213.607 2.197c.568.922 1.749 1.928 4.393 1.928c2.644 0 3.825-1.006 4.392-1.928c.606-.983.608-2.025.608-2.197v-.393a.482.482 0 0 0-.482-.482H9.482Zm2.268-6.75a2.25 2.25 0 1 1 4.5 0a2.25 2.25 0 0 1-4.5 0ZM14 9a3.75 3.75 0 1 0 0 7.5A3.75 3.75 0 0 0 14 9Z" />
+            </svg>
+          </Link>
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            Community
+          </span>
+        </div>
 
         {/* About Us */}
-        <Tooltip label="About">
-          <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
-            <Link
-              href="/about"
-              aria-label="About Us"
-              className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
-            >
-              <Info size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
-            </Link>
-          </div>
-        </Tooltip>
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          <Link
+            href="/about"
+            aria-label="About Us"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <Info size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
+          </Link>
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            About
+          </span>
+        </div>
 
         {/* FAQ */}
-        <Tooltip label="FAQ">
-          <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
-            <Link
-              href="/FAQ"
-              aria-label="FAQ"
-              className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
-            >
-              <HelpCircle size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
-            </Link>
-          </div>
-        </Tooltip>
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          <Link
+            href="/FAQ"
+            aria-label="FAQ"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <HelpCircle size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
+          </Link>
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            FAQ
+          </span>
+        </div>
 
         {/* Nutrition AI */}
-        <Tooltip label="Nutrition AI">
-          <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
-            <Link
-              href="/nutrition-ai"
-              aria-label="Nutrition AI"
-              className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
-            >
-              <span className="text-sm">🧬</span>
-            </Link>
-          </div>
-        </Tooltip>
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          <Link
+            href="/nutrition-ai"
+            aria-label="Nutrition AI"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <span className="text-sm">🧬</span>
+          </Link>
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            Nutrition AI
+          </span>
+        </div>
 
-        <Tooltip label="Translate">
-          <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300">
-            <GoogleTranslateWrapper />
-          </div>
-        </Tooltip>
-        <Tooltip label="Home">
-          <div className="rounded-full p-1 dark:bg-purple-800 transition-colors duration-300 hidden md:block">
-            <Link href="/" aria-label="Home" className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
-              <Home size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
-            </Link>
-          </div>
-        </Tooltip>
 
-        <div className="hidden md:block">
-          <Tooltip label="Theme">
+        {/* Google Translate Button (Styled to Match Home) */}
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+          onMouseEnter={() => setShowTranslateTooltip(true)}
+          onMouseLeave={() => setShowTranslateTooltip(false)}
+          onClick={() => setShowTranslateTooltip(false)}
+        >
+          {/* CRITICAL: You must ensure your GoogleTranslateWrapper renders its widget/container
+             with the following className to match the Home button's size and appearance: */}
+          <GoogleTranslateWrapper
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          />
+
+          <span className={`pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 transition-opacity duration-150 ${showTranslateTooltip ? 'opacity-100' : 'opacity-0'}`}>
+            Translate
+          </span>
+        </div>
+
+
+        {/* Theme Toggle */}
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          {/* This inner div needs the exact class styling of the <Link> component used for FAQ */}
+          <div
+            id="theme-toggle-btn-wrapper" // Keep the wrapper ID consistent
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            {/* The ThemeToggle component is called here */}
             <ThemeToggle />
-          </Tooltip>
+          </div>
+
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            Theme
+          </span>
+
         </div>
 
         <MobileNavigation />
