@@ -1,5 +1,19 @@
 // Flavor-ai/components/PreparationChecklist.jsx
 import React, { useEffect, useState } from "react";
+import { ChefHat, Flame, Timer, Utensils, Thermometer, Scissors, Droplet, Eye } from "lucide-react";
+
+// Helper function to detect step type and return appropriate icon
+const getStepIcon = (step) => {
+  const lowerStep = step.toLowerCase();
+  if (lowerStep.includes('heat') || lowerStep.includes('boil') || lowerStep.includes('simmer')) return Flame;
+  if (lowerStep.includes('cut') || lowerStep.includes('chop') || lowerStep.includes('slice') || lowerStep.includes('dice')) return Scissors;
+  if (lowerStep.includes('mix') || lowerStep.includes('stir') || lowerStep.includes('whisk') || lowerStep.includes('combine')) return Utensils;
+  if (lowerStep.includes('wait') || lowerStep.includes('rest') || lowerStep.includes('minutes') || lowerStep.includes('hours')) return Timer;
+  if (lowerStep.includes('temperature') || lowerStep.includes('degrees') || lowerStep.includes('°')) return Thermometer;
+  if (lowerStep.includes('add') || lowerStep.includes('pour') || lowerStep.includes('drizzle')) return Droplet;
+  if (lowerStep.includes('check') || lowerStep.includes('watch') || lowerStep.includes('monitor')) return Eye;
+  return ChefHat; // Default icon
+};
 
 const PreparationChecklist = ({ steps, checklistKey }) => {
   const [checked, setChecked] = useState([]);
@@ -98,59 +112,68 @@ const PreparationChecklist = ({ steps, checklistKey }) => {
         </div>
       </div>
 
-      {/* Checklist Items - UNCHANGED */}
-      <ul className="space-y-3">
-        {steps.map((step, idx) => (
-          <li 
-            key={idx} 
-            className={`
-              rounded-lg transition-all duration-200
-              ${checked[idx] 
-                ? 'bg-success/10 border-l-4 border-success' 
-                : 'bg-base-100 border-l-4 border-base-300 hover:bg-base-200'
-              }
-            `}
-          >
-            <label 
+      {/* Checklist Items - Enhanced with Icons */}
+      <ul className="space-y-4">
+        {steps.map((step, idx) => {
+          const StepIcon = getStepIcon(step);
+          return (
+            <li 
+              key={idx} 
               className={`
-                flex items-start gap-3 p-4 cursor-pointer select-none
+                rounded-lg transition-all duration-200 shadow-sm
                 ${checked[idx] 
-                  ? 'text-success-content' 
-                  : 'text-base-content'
+                  ? 'bg-green-50 dark:bg-success/10 border-l-4 border-green-600 dark:border-success' 
+                  : 'bg-base-100 border-l-4 border-purple-500 hover:bg-base-200 hover:shadow-md'
                 }
               `}
             >
-              {/* Stable Checkbox */}
-              <input
-                type="checkbox"
-                checked={checked[idx] || false}
-                onChange={() => handleCheck(idx)}
-                className="checkbox checkbox-primary checkbox-md mt-1 flex-shrink-0"
-              />
-              
-              {/* Step Content */}
-              <div className="flex-1">
-                <span className={`text-sm leading-relaxed ${checked[idx] ? 'line-through opacity-75' : ''}`}>
-                  {step}
-                </span>
+              <label 
+                className="flex items-start gap-4 p-5 cursor-pointer select-none"
+              >
+                {/* Contextual Icon */}
+                <div className={`flex-shrink-0 mt-0.5 ${
+                  checked[idx] 
+                    ? 'text-green-600 dark:text-success/60' 
+                    : 'text-purple-600 dark:text-purple-400'
+                }`}>
+                  <StepIcon size={22} />
+                </div>
                 
-                {/* Step Number */}
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-xs text-base-content/50">
-                    Step {idx + 1}
+                {/* Checkbox */}
+                <input
+                  type="checkbox"
+                  checked={checked[idx] || false}
+                  onChange={() => handleCheck(idx)}
+                  className="checkbox checkbox-primary checkbox-md mt-1 flex-shrink-0"
+                />
+                
+                {/* Step Content */}
+                <div className="flex-1">
+                  <span className={`text-base leading-relaxed font-medium ${
+                    checked[idx] 
+                      ? 'line-through text-gray-600 dark:text-gray-400 decoration-2 decoration-green-600 dark:decoration-success' 
+                      : 'text-base-content'
+                  }`}>
+                    {step}
                   </span>
                   
-                  {/* Simple Completion Indicator */}
-                  {checked[idx] && (
-                    <span className="text-xs text-success font-medium">
-                      ✓ Done
+                  {/* Step Number and Status */}
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="text-xs font-semibold text-base-content/60 bg-base-200 px-2 py-1 rounded">
+                      Step {idx + 1} of {totalSteps}
                     </span>
-                  )}
+                    
+                    {checked[idx] && (
+                      <span className="text-xs text-green-600 dark:text-success font-semibold flex items-center gap-1">
+                        <span className="text-base">✓</span> Completed
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </label>
-          </li>
-        ))}
+              </label>
+            </li>
+          );
+        })}
       </ul>
 
       {/* Quick Actions - UNCHANGED */}
