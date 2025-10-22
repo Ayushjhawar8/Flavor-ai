@@ -92,13 +92,19 @@ export default function SnakeCursor({ enabled }: SnakeCursorProps) {
   if (!enabled || !isVisible || trail.length === 0) return null;
 
   return (
-    <div className="fixed pointer-events-none top-0 left-0 w-full h-full" style={{ zIndex: 999999 }}>
+    <div
+      className="fixed pointer-events-none top-0 left-0 w-full h-full"
+      style={{ zIndex: 999999 }}
+    >
       {trail.map((point, index) => {
         const progress = index / Math.max(trail.length - 1, 1);
         const age = (Date.now() - point.timestamp) / 800;
         const opacity = Math.max(0, Math.min(1, (1 - progress) * (1 - age)));
         const baseSize = 20;
-        const size = Math.max(6, baseSize * (1 - progress * 0.6) * (1 - age * 0.3));
+        const size = Math.max(
+          6,
+          baseSize * (1 - progress * 0.6) * (1 - age * 0.3),
+        );
 
         const colorSchemes = isDarkMode
           ? [
@@ -120,7 +126,9 @@ export default function SnakeCursor({ enabled }: SnakeCursorProps) {
 
         const color = colorSchemes[index % colorSchemes.length];
         const isHead = index < 3;
-        const pulseIntensity = isHead ? 1 + Math.sin(animationFrame * 0.1 + index) * 0.15 : 1;
+        const pulseIntensity = isHead
+          ? 1 + Math.sin(animationFrame * 0.1 + index) * 0.15
+          : 1;
         const smoothness = Math.min(1, opacity * 2);
 
         return (

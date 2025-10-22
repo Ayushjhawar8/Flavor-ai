@@ -24,7 +24,7 @@ export default function ViewRecipePage() {
   useEffect(() => {
     // Call this once to reseed with IDs
     seedSampleRecipes(true);
-    
+
     try {
       const storedRecipe = localStorage.getItem("current_recipe");
 
@@ -40,15 +40,18 @@ export default function ViewRecipePage() {
       const allRecipes = getCommunityRecipes();
       console.log("All recipes:", allRecipes);
       console.log("Current recipe:", parsedRecipe);
-      
+
       const similar = getSimilarRecipes(parsedRecipe, allRecipes);
       console.log("Similar recipes found:", similar);
-      
+
       setSimilarRecipes(similar);
 
-      setTimeout(() => {
-        localStorage.removeItem("current_recipe");
-      }, 5 * 60 * 1000);
+      setTimeout(
+        () => {
+          localStorage.removeItem("current_recipe");
+        },
+        5 * 60 * 1000,
+      );
     } catch (err) {
       console.error("Error parsing stored recipe:", err);
       setError("Invalid recipe data");
@@ -167,7 +170,9 @@ export default function ViewRecipePage() {
                       {recipeData.ingredients?.map((ingredient, index) => (
                         <li key={index} className="flex items-start gap-2">
                           <span className="text-primary font-medium">•</span>
-                          <span className="text-base-content">{ingredient}</span>
+                          <span className="text-base-content">
+                            {ingredient}
+                          </span>
                         </li>
                       ))}
                     </ul>

@@ -9,7 +9,12 @@ import {
 } from "@/components/FormComponents";
 import ImageUpload from "@/components/ImageUpload";
 
-function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onResetRef }) {
+function GenerateRecipeForm({
+  setRecipe,
+  setShowRecipe,
+  setRecipeImageUrl,
+  onResetRef,
+}) {
   const [analyzedIngredients, setAnalyzedIngredients] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +76,6 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
       }
 
       setShowRecipe(true); // Show the new recipe
-
     } catch (err) {
       setError(err.message); // Set the specific error message
     } finally {
@@ -89,9 +93,10 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
   };
 
   return (
-
     <>
-      <h1 className="text-3xl font-bold mb-[20px] text-brown-800">AI-Powered Recipe Generator</h1>
+      <h1 className="text-3xl font-bold mb-[20px] text-brown-800">
+        AI-Powered Recipe Generator
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-xl p-6 rounded-lg shadow-xl bg-white dark:bg-base-200 space-y-4"
@@ -111,20 +116,40 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
           <SelectField
             label="Type of Dish:"
             name="dishType"
-            options={["Snack", "Appetizer", "Main Course", "Dessert", "Beverage"]}
+            options={[
+              "Snack",
+              "Appetizer",
+              "Main Course",
+              "Dessert",
+              "Beverage",
+            ]}
             register={register}
           />
           <SelectField
             label="Cuisine Preference:"
             name="cuisine"
-            options={["Indian", "Italian", "Mexican", "Chinese", "American", "Mediterranean"]}
+            options={[
+              "Indian",
+              "Italian",
+              "Mexican",
+              "Chinese",
+              "American",
+              "Mediterranean",
+            ]}
             register={register}
           />
         </div>
         <CheckboxField
           label="Dietary Restrictions:"
           name="dietaryRestrictions"
-          options={["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free", "Halal"]}
+          options={[
+            "Vegetarian",
+            "Vegan",
+            "Gluten-Free",
+            "Dairy-Free",
+            "Nut-Free",
+            "Halal",
+          ]}
           register={register}
           descriptions={dietaryDescriptions}
         />
@@ -134,7 +159,11 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
           options={["Spicy", "Mild", "Medium", "Extra Spicy"]}
           register={register}
         />
-        <button type="submit" className="btn btn-primary w-full text-white" disabled={isLoading}>
+        <button
+          type="submit"
+          className="btn btn-primary w-full text-white"
+          disabled={isLoading}
+        >
           {isLoading ? (
             <>
               <span className="loading loading-spinner"></span>
@@ -144,9 +173,10 @@ function GenerateRecipeForm({ setRecipe, setShowRecipe, setRecipeImageUrl, onRes
             "Generate Recipe"
           )}
         </button>
-        {error && <div className="text-red-500 text-center mt-2">{`Error: ${error}`}</div>}
+        {error && (
+          <div className="text-red-500 text-center mt-2">{`Error: ${error}`}</div>
+        )}
       </form>
-
     </>
   );
 }

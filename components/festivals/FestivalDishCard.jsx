@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { Clock, Users } from "lucide-react";
 
 export default function FestivalDishCard({ dish }) {
@@ -8,8 +8,8 @@ export default function FestivalDishCard({ dish }) {
 
   const handleViewRecipe = () => {
     // Store recipe in localStorage for the recipe page to access
-    localStorage.setItem('current_recipe', JSON.stringify(dish));
-    router.push('/recipe');
+    localStorage.setItem("current_recipe", JSON.stringify(dish));
+    router.push("/recipe");
   };
 
   return (
@@ -27,7 +27,7 @@ export default function FestivalDishCard({ dish }) {
 
       <div className="card-body p-6">
         <h2 className="card-title text-lg">{dish.name}</h2>
-        
+
         <p className="text-sm text-base-content/80 line-clamp-2">
           {dish.description}
         </p>
@@ -46,7 +46,9 @@ export default function FestivalDishCard({ dish }) {
             </div>
           )}
           {dish.difficulty && (
-            <div className="badge badge-outline badge-sm">{dish.difficulty}</div>
+            <div className="badge badge-outline badge-sm">
+              {dish.difficulty}
+            </div>
           )}
         </div>
 

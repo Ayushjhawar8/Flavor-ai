@@ -2,7 +2,7 @@
 
 Please describe your changes and what this PR addresses.
 
-## 🔗 Related Issue IMP*
+## 🔗 Related Issue IMP\*
 
 Closes #[ENTER YOUR ISSUE_NUMBER]
 

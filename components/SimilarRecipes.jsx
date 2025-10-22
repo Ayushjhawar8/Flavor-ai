@@ -1,25 +1,25 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function SimilarRecipes({ recipes }) {
   if (!recipes || recipes.length === 0) {
-    console.log('No similar recipes found');
+    console.log("No similar recipes found");
     return null;
   }
 
-  console.log('Rendering similar recipes:', recipes);
+  console.log("Rendering similar recipes:", recipes);
 
   return (
     <div className="mt-10">
       <h2 className="text-2xl font-semibold mb-4">More Recipes You'll Love</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {recipes.map((recipe) => (
-          <div 
-            key={recipe.id} 
+          <div
+            key={recipe.id}
             className="bg-white border rounded-lg p-4 hover:shadow-lg transition cursor-pointer"
             onClick={() => {
               // Store the recipe directly in localStorage for viewing
-              localStorage.setItem('current_recipe', JSON.stringify(recipe));
-              window.location.href = '/recipe';
+              localStorage.setItem("current_recipe", JSON.stringify(recipe));
+              window.location.href = "/recipe";
             }}
           >
             <img
@@ -36,8 +36,12 @@ export default function SimilarRecipes({ recipes }) {
               </div>
             </div>
             <div className="flex items-center gap-2 mt-2">
-              <span className="badge badge-sm badge-primary">{recipe.difficulty}</span>
-              <span className="text-xs text-gray-500">{recipe.servings} servings</span>
+              <span className="badge badge-sm badge-primary">
+                {recipe.difficulty}
+              </span>
+              <span className="text-xs text-gray-500">
+                {recipe.servings} servings
+              </span>
             </div>
           </div>
         ))}

@@ -11,7 +11,9 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
   useEffect(() => {
     // We can remove the error check for ingredients here, as the new rendering logic is more flexible.
     if (!recipe || !recipe.name || !recipe.steps) {
-      setError("Recipe data is incomplete. Please try generating the recipe again.");
+      setError(
+        "Recipe data is incomplete. Please try generating the recipe again.",
+      );
     } else {
       setError(null); // Clear previous errors if new valid recipe is passed
     }
@@ -32,7 +34,7 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
   }
 
   if (!recipe) {
-    return null; 
+    return null;
   }
 
   return (
@@ -56,11 +58,17 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
                 className="max-w-72 md:max-w-xl h-auto rounded-lg mb-4"
               />
             ) : (
-              <div className="text-base-content/60 mb-4">No image available for this recipe.</div>
+              <div className="text-base-content/60 mb-4">
+                No image available for this recipe.
+              </div>
             )}
             <div className="flex items-center space-x-4 mb-4">
-              {recipe.area && <span className="badge badge-primary">{recipe.area}</span>}
-              {recipe.category && <span className="badge badge-success">{recipe.category}</span>}
+              {recipe.area && (
+                <span className="badge badge-primary">{recipe.area}</span>
+              )}
+              {recipe.category && (
+                <span className="badge badge-success">{recipe.category}</span>
+              )}
               <button
                 onClick={() => window.print()}
                 className="btn btn-sm btn-outline ml-auto"
@@ -81,16 +89,18 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
                 <tbody>
                   {recipe.ingredients.map((ingredient, index) => {
                     // Handle if ingredient is a simple string
-                    if (typeof ingredient === 'string') {
+                    if (typeof ingredient === "string") {
                       return (
                         <tr key={index}>
-                          <td className="py-1" colSpan="2">{ingredient}</td>
+                          <td className="py-1" colSpan="2">
+                            {ingredient}
+                          </td>
                         </tr>
                       );
                     }
-                    
+
                     // Handle if ingredient is an object (flexible keys)
-                    if (typeof ingredient === 'object' && ingredient !== null) {
+                    if (typeof ingredient === "object" && ingredient !== null) {
                       const values = Object.values(ingredient);
                       return (
                         <tr key={index}>
@@ -105,12 +115,14 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
                 </tbody>
               </table>
             ) : (
-              <div className="text-base-content/60">No ingredients available.</div>
+              <div className="text-base-content/60">
+                No ingredients available.
+              </div>
             )}
             {/* ✨ END: UPDATED LOGIC ✨ */}
           </div>
         </div>
-        
+
         <div className="mb-4">
           <h2 className="text-xl text-base-content font-semibold mb-2 flex items-center">
             <PlusIcon2 />
@@ -119,7 +131,11 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
           {recipe.steps && recipe.steps.length > 0 ? (
             (() => {
               const cleanedSteps = recipe.steps
-                .map(step => String(step).replace(/^\s*\d+([.)]?)/, "").trim())
+                .map((step) =>
+                  String(step)
+                    .replace(/^\s*\d+([.)]?)/, "")
+                    .trim(),
+                )
                 .filter(Boolean);
               return (
                 <>
@@ -127,12 +143,17 @@ export default function AiRecipe({ recipe, setShowRecipe, recipeImageUrl }) {
                     steps={cleanedSteps}
                     checklistKey={`ai-recipe-steps-${recipe.name}`}
                   />
-                  <TextToSpeech sentences={cleanedSteps} onHighlightChange={() => {}} />
+                  <TextToSpeech
+                    sentences={cleanedSteps}
+                    onHighlightChange={() => {}}
+                  />
                 </>
               );
             })()
           ) : (
-            <div className="text-base-content/60">No instructions available.</div>
+            <div className="text-base-content/60">
+              No instructions available.
+            </div>
           )}
         </div>
       </div>

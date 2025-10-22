@@ -29,7 +29,10 @@ export function useServings(recipeId: string, baseServings: number) {
     } catch {}
   }, [recipeId, servings]);
 
-  const factor = useMemo(() => servings / baseServings, [servings, baseServings]);
+  const factor = useMemo(
+    () => servings / baseServings,
+    [servings, baseServings],
+  );
 
   const reset = useCallback(() => setServings(baseServings), [baseServings]);
   return { servings, setServings, factor, reset };

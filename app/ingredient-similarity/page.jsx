@@ -1,16 +1,15 @@
-"use client"
-import IngredientSimilarity from '@/components/IngredientSimilarity';
-import BackButton from '@/components/BackButton';
-import Footer from '@/components/Footer';
-import { useEffect } from 'react';
+"use client";
+import IngredientSimilarity from "@/components/IngredientSimilarity";
+import BackButton from "@/components/BackButton";
+import Footer from "@/components/Footer";
+import { useEffect } from "react";
 
 export default function IngredientSimilarityPage() {
   // dynamic tab title
-                
-  useEffect(()=>{
-    document.title='Flavor AI-Ingredient Similarity'
-  },[])
 
+  useEffect(() => {
+    document.title = "Flavor AI-Ingredient Similarity";
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
@@ -21,4 +20,4 @@ export default function IngredientSimilarityPage() {
       <Footer />
     </div>
   );
-} 
+}

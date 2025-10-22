@@ -40,7 +40,7 @@ function toNumberLoose(s: string): number {
     "⅓": "1/3",
     "⅔": "2/3",
   };
-  let t = s.replace(/[¼½¾⅓⅔]/g, m => fracMap[m] ?? m).trim();
+  let t = s.replace(/[¼½¾⅓⅔]/g, (m) => fracMap[m] ?? m).trim();
 
   // mixed number "2 1/2"
   const mixed = t.match(/^(\d+(?:[.,]\d+)?)\s+(\d+)\/(\d+)$/);
@@ -63,9 +63,10 @@ function toNumberLoose(s: string): number {
 }
 
 /** Parse free-form measure into qty/unit if possible.  */
-export function parseMeasure(
-  measure: string | null | undefined
-): { qty: number | null; unit: string | null } {
+export function parseMeasure(measure: string | null | undefined): {
+  qty: number | null;
+  unit: string | null;
+} {
   if (!measure) return { qty: null, unit: null };
   const m = measure.trim();
   if (!m) return { qty: null, unit: null };
@@ -102,19 +103,22 @@ export function parseMeasure(
 /** Merge by name; if same unit and both numeric → sum qty; else keep extra line.
  *  Returns the updated list (handy for state).
  */
-export function addItemsToShoppingList(newItems: ShoppingItem[]): ShoppingItem[] {
+export function addItemsToShoppingList(
+  newItems: ShoppingItem[],
+): ShoppingItem[] {
   const list = getShoppingList();
   const out: ShoppingItem[] = [...list];
 
   for (const item of newItems) {
-    const i = out.findIndex(x => norm(x.name) === norm(item.name));
+    const i = out.findIndex((x) => norm(x.name) === norm(item.name));
     if (i === -1) {
       out.push(item);
       continue;
     }
     const a = out[i];
     const sameUnit =
-      (a.unit || "").trim().toLowerCase() === (item.unit || "").trim().toLowerCase();
+      (a.unit || "").trim().toLowerCase() ===
+      (item.unit || "").trim().toLowerCase();
     if (sameUnit && a.qty !== null && item.qty !== null) {
       out[i] = { ...a, qty: a.qty + item.qty };
     } else {
@@ -141,7 +145,7 @@ export function clearShoppingList(): ShoppingItem[] {
 /** Produce a friendly text blob for copy/download */
 export function formatAsText(list: ShoppingItem[]): string {
   return list
-    .map(i => {
+    .map((i) => {
       const qtyPart = i.qty !== null ? `${i.qty}` : "";
       const unitPart = i.unit ? (qtyPart ? ` ${i.unit}` : i.unit) : "";
       const left = (qtyPart + unitPart).trim();

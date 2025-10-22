@@ -10,29 +10,48 @@ const google = createGoogleGenerativeAI({
 
 // Schema for ingredient analysis result
 const ingredientAnalysisSchema = z.object({
-  ingredients: z.array(z.object({
-    name: z.string().describe('The name of the ingredient identified in the image'),
-    confidence: z.number().describe('Confidence level of identification (0-1)'),
-    quantity: z.string().optional().describe('Estimated quantity if visible'),
-    condition: z.string().optional().describe('Condition of the ingredient (fresh, ripe, etc.)'),
-  })).describe('List of ingredients identified in the image'),
-  suggestions: z.array(z.string()).describe('Cooking suggestions based on the available ingredients'),
+  ingredients: z
+    .array(
+      z.object({
+        name: z
+          .string()
+          .describe("The name of the ingredient identified in the image"),
+        confidence: z
+          .number()
+          .describe("Confidence level of identification (0-1)"),
+        quantity: z
+          .string()
+          .optional()
+          .describe("Estimated quantity if visible"),
+        condition: z
+          .string()
+          .optional()
+          .describe("Condition of the ingredient (fresh, ripe, etc.)"),
+      }),
+    )
+    .describe("List of ingredients identified in the image"),
+  suggestions: z
+    .array(z.string())
+    .describe("Cooking suggestions based on the available ingredients"),
 });
 
 /**
  * API Route: POST /api/analyze-ingredients
  * Analyzes uploaded images to identify available ingredients using Google Gemini Vision
- * 
+ *
  * Request body should include:
  * - image: Base64 encoded image data
- * 
+ *
  * Returns identified ingredients and cooking suggestions
  */
 export async function POST(req) {
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     return NextResponse.json(
-      { error: "Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file." },
-      { status: 400 }
+      {
+        error:
+          "Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file.",
+      },
+      { status: 400 },
     );
   }
 
@@ -77,7 +96,7 @@ export async function POST(req) {
     console.error("Error analyzing ingredients:", error);
     return NextResponse.json(
       { error: "Failed to analyze ingredients from image" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

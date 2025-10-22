@@ -50,18 +50,60 @@ export default function DietPlannerAI() {
   };
 
   const generateWeeklyPlan = () => {
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
     let mealTypes = ["Breakfast", "Lunch", "Dinner"];
 
     if (formData.mealsPerDay === "4") mealTypes.push("Snack");
     if (formData.mealsPerDay === "5") mealTypes.push("Snack", "Evening Snack");
 
     const sampleMeals = {
-      Breakfast: ["Oatmeal with berries", "Greek yogurt with granola", "Avocado toast", "Smoothie bowl", "Cereal with milk", "Scrambled eggs", "Pancakes"],
-      Lunch: ["Grilled chicken salad", "Quinoa bowl", "Turkey sandwich", "Lentil soup", "Fish with veggies", "Veg stir-fry with rice", "Pasta with sauce"],
-      Dinner: ["Salmon with sweet potato", "Chicken curry with rice", "Veg pasta", "Beef stir-fry", "Grilled fish with quinoa", "Tofu with veggies", "Lean meat with salad"],
-      Snack: ["Mixed nuts", "Greek yogurt", "Veg sticks with hummus", "Apple with peanut butter", "Protein smoothie"],
-      "Evening Snack": ["Herbal tea with crackers", "Small fruit bowl", "Low-fat cheese with crackers"],
+      Breakfast: [
+        "Oatmeal with berries",
+        "Greek yogurt with granola",
+        "Avocado toast",
+        "Smoothie bowl",
+        "Cereal with milk",
+        "Scrambled eggs",
+        "Pancakes",
+      ],
+      Lunch: [
+        "Grilled chicken salad",
+        "Quinoa bowl",
+        "Turkey sandwich",
+        "Lentil soup",
+        "Fish with veggies",
+        "Veg stir-fry with rice",
+        "Pasta with sauce",
+      ],
+      Dinner: [
+        "Salmon with sweet potato",
+        "Chicken curry with rice",
+        "Veg pasta",
+        "Beef stir-fry",
+        "Grilled fish with quinoa",
+        "Tofu with veggies",
+        "Lean meat with salad",
+      ],
+      Snack: [
+        "Mixed nuts",
+        "Greek yogurt",
+        "Veg sticks with hummus",
+        "Apple with peanut butter",
+        "Protein smoothie",
+      ],
+      "Evening Snack": [
+        "Herbal tea with crackers",
+        "Small fruit bowl",
+        "Low-fat cheese with crackers",
+      ],
     };
 
     const planLength = parseInt(formData.duration) || 7;
@@ -72,7 +114,13 @@ export default function DietPlannerAI() {
         type: mealType,
         meal: sampleMeals[mealType][i % sampleMeals[mealType].length],
         calories:
-          mealType === "Breakfast" ? 400 : mealType === "Lunch" ? 500 : mealType === "Dinner" ? 600 : 200,
+          mealType === "Breakfast"
+            ? 400
+            : mealType === "Lunch"
+              ? 500
+              : mealType === "Dinner"
+                ? 600
+                : 200,
       })),
     }));
   };
@@ -82,8 +130,15 @@ export default function DietPlannerAI() {
     setIsGenerating(true);
     setError("");
 
-    if (!formData.age || !formData.gender || !formData.height || !formData.weight) {
-      setError("Please fill in all required fields (Age, Gender, Height, Weight).");
+    if (
+      !formData.age ||
+      !formData.gender ||
+      !formData.height ||
+      !formData.weight
+    ) {
+      setError(
+        "Please fill in all required fields (Age, Gender, Height, Weight).",
+      );
       setIsGenerating(false);
       return;
     }
@@ -131,9 +186,12 @@ export default function DietPlannerAI() {
     <div className="min-h-screen bg-neutral-100 py-8 font-['Inter',_sans-serif]">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mt-6 mb-8">
-          <h1 className="text-4xl font-extrabold text-stone-900 mb-4 tracking-tight">📋 AI Diet Planner</h1>
+          <h1 className="text-4xl font-extrabold text-stone-900 mb-4 tracking-tight">
+            📋 AI Diet Planner
+          </h1>
           <p className="text-md text-stone-700 max-w-3xl mx-auto">
-            Get a personalized diet plan based on your goals, preferences, and lifestyle!
+            Get a personalized diet plan based on your goals, preferences, and
+            lifestyle!
           </p>
         </div>
 
@@ -150,42 +208,77 @@ export default function DietPlannerAI() {
                   disabled={isGenerating}
                   className="w-full bg-gradient-to-r from-amber-700 to-orange-800 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:from-amber-800 hover:to-orange-900 disabled:opacity-50 transition-all duration-300 transform hover:scale-[1.005]"
                 >
-                  {isGenerating ? "Generating Plan..." : "🎯 Generate My Diet Plan"}
+                  {isGenerating
+                    ? "Generating Plan..."
+                    : "🎯 Generate My Diet Plan"}
                 </button>
-                {error && <p className="text-red-500 text-center font-medium mt-4">{error}</p>}
+                {error && (
+                  <p className="text-red-500 text-center font-medium mt-4">
+                    {error}
+                  </p>
+                )}
               </form>
             </div>
           </div>
 
           {/* Right: Plans */}
           <div className="xl:col-span-1">
-            <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">Your Personalized Diet Plan</h2>
+            <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">
+              Your Personalized Diet Plan
+            </h2>
             <div className="bg-white rounded-xl shadow-lg p-8 sticky top-8 border border-stone-200">
               {generatedPlans.length === 0 ? (
                 <div className="text-center p-10 bg-amber-50 rounded-lg border border-amber-200">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48..."/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 text-amber-500 mx-auto mb-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48..." />
+                  </svg>
                   <p className="text-amber-700 font-medium">
-                    ✨ Fill out your health profile to get your personalized diet plan!
+                    ✨ Fill out your health profile to get your personalized
+                    diet plan!
                   </p>
                 </div>
               ) : (
                 generatedPlans.map((plan, idx) => (
                   <div key={idx} className="mb-6 border-b pb-4 last:border-b-0">
-                    <h3 className="text-lg font-bold text-amber-800 mb-2">{plan.title}</h3>
+                    <h3 className="text-lg font-bold text-amber-800 mb-2">
+                      {plan.title}
+                    </h3>
                     <div className="space-y-1 text-sm text-stone-700 mb-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
-                      <p><span className="font-semibold">Daily Calories:</span> {plan.dailyCalories} kcal</p>
-                      <p><span className="font-semibold">Macros:</span> Protein {plan.macros.protein}, Carbs {plan.macros.carbs}, Fats {plan.macros.fats}</p>
+                      <p>
+                        <span className="font-semibold">Daily Calories:</span>{" "}
+                        {plan.dailyCalories} kcal
+                      </p>
+                      <p>
+                        <span className="font-semibold">Macros:</span> Protein{" "}
+                        {plan.macros.protein}, Carbs {plan.macros.carbs}, Fats{" "}
+                        {plan.macros.fats}
+                      </p>
                     </div>
 
                     <div className="mt-4">
-                      <h4 className="font-bold text-amber-800 mb-2">📅 Weekly Plan Overview:</h4>
+                      <h4 className="font-bold text-amber-800 mb-2">
+                        📅 Weekly Plan Overview:
+                      </h4>
                       <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                         {plan.weeklyPlan.map((day) => (
-                          <div key={day.day} className="border border-stone-200 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
-                            <strong className="block text-stone-800 mb-1">{day.day}</strong>
+                          <div
+                            key={day.day}
+                            className="border border-stone-200 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                          >
+                            <strong className="block text-stone-800 mb-1">
+                              {day.day}
+                            </strong>
                             {day.meals.map((meal, i) => (
                               <div key={i} className="text-xs text-stone-700">
-                                <span className="font-medium text-amber-700">{meal.type}:</span> {meal.meal} ({meal.calories} kcal)
+                                <span className="font-medium text-amber-700">
+                                  {meal.type}:
+                                </span>{" "}
+                                {meal.meal} ({meal.calories} kcal)
                               </div>
                             ))}
                           </div>
@@ -194,7 +287,9 @@ export default function DietPlannerAI() {
                     </div>
 
                     <div className="mt-4">
-                      <h4 className="font-bold text-amber-800 mb-2">💡 Tips:</h4>
+                      <h4 className="font-bold text-amber-800 mb-2">
+                        💡 Tips:
+                      </h4>
                       <ul className="list-disc list-inside text-sm text-stone-700 space-y-1">
                         {plan.tips.map((tip, i) => (
                           <li key={i}>{tip}</li>
@@ -212,15 +307,13 @@ export default function DietPlannerAI() {
   );
 }
 
-
-
 // "use client";
 
 // import { useState, useEffect} from "react";
 // import Link from "next/link";
 // import Footer from "@/components/Footer";
 // import Navbar from "@/components/Navbar";
-// import BackButton from "@/components/BackButton"; 
+// import BackButton from "@/components/BackButton";
 
 // export default function DietPlannerPage() {
 //   const [isVegetarian, setIsVegetarian] = useState(false);
@@ -316,7 +409,7 @@ export default function DietPlannerAI() {
 //     <div className="min-h-screen bg-base-100 relative">
 //       {/* Back Button */}
 //       <BackButton fallbackUrl="/" />
-      
+
 //       {/* Navigation */}
 //       <Navbar
 //         showResults={showResults}
@@ -377,7 +470,7 @@ export default function DietPlannerAI() {
 //       {isVegetarian ? "Showing only vegetarian dishes" : "Showing all dishes"}
 //     </span>
 //   </div>
-// </div>     
+// </div>
 //               <form onSubmit={handleSubmit} className="space-y-4">
 //                 {/* Basic Info */}
 //                 <div className="grid grid-cols-2 gap-4">

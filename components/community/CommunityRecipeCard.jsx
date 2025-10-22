@@ -1,14 +1,15 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "@/lib/mockAuth";
 import { Heart, MessageCircle, Share2, Clock, Users } from "lucide-react";
 
-
 export default function CommunityRecipeCard({ recipe }) {
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 50) + 5); // for now random like count
+  const [likeCount, setLikeCount] = useState(
+    Math.floor(Math.random() * 50) + 5,
+  ); // for now random like count
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -24,18 +25,18 @@ export default function CommunityRecipeCard({ recipe }) {
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
-  
+
   const handleComment = (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    
+
     const comment = {
       id: `comment_${Date.now()}`,
       userId: currentUser.id,
       comment: newComment,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
+
     setComments([comment, ...comments]);
     setNewComment("");
   };
@@ -46,7 +47,7 @@ export default function CommunityRecipeCard({ recipe }) {
       navigator.share({
         title: recipe.title,
         text: shareText,
-        url: window.location.href
+        url: window.location.href,
       });
     } else {
       navigator.clipboard.writeText(`${shareText}\n${window.location.href}`);
@@ -56,8 +57,8 @@ export default function CommunityRecipeCard({ recipe }) {
 
   const handleViewRecipe = () => {
     // Store recipe in localStorage for the recipe page to access
-    localStorage.setItem('current_recipe', JSON.stringify(recipe));
-    router.push('/recipe');
+    localStorage.setItem("current_recipe", JSON.stringify(recipe));
+    router.push("/recipe");
   };
 
   return (

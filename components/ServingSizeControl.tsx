@@ -6,8 +6,8 @@ export default function ServingSizeControl({
   servings,
   setServings,
   baseServings,
-  onReset,            // optional
-  showReset = false,  // set true if you want a Reset button rendered
+  onReset, // optional
+  showReset = false, // set true if you want a Reset button rendered
   min = 0.5,
   max = 12,
   step = 1,
@@ -22,9 +22,12 @@ export default function ServingSizeControl({
 
   const glyph = (n) => {
     const close = (a, b) => Math.abs(a - b) < 0.001;
-    if (close(n % 1, 0.5)) return `${Math.floor(n) ? Math.floor(n) + " " : ""}½`;
-    if (close(n % 1, 0.25)) return `${Math.floor(n) ? Math.floor(n) + " " : ""}¼`;
-    if (close(n % 1, 0.75)) return `${Math.floor(n) ? Math.floor(n) + " " : ""}¾`;
+    if (close(n % 1, 0.5))
+      return `${Math.floor(n) ? Math.floor(n) + " " : ""}½`;
+    if (close(n % 1, 0.25))
+      return `${Math.floor(n) ? Math.floor(n) + " " : ""}¼`;
+    if (close(n % 1, 0.75))
+      return `${Math.floor(n) ? Math.floor(n) + " " : ""}¾`;
     return Number.isInteger(n) ? String(n) : String(round(n, 1));
   };
 
@@ -34,7 +37,10 @@ export default function ServingSizeControl({
       role="group"
       aria-label="Serving size"
     >
-      <label htmlFor={id} className="hidden sm:inline text-sm text-base-content/70">
+      <label
+        htmlFor={id}
+        className="hidden sm:inline text-sm text-base-content/70"
+      >
         Servings
       </label>
 

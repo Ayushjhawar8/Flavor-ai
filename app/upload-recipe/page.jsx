@@ -15,10 +15,10 @@ export default function UploadRecipePage() {
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
   // dynamic tab title
-              
-      useEffect(()=>{
-        document.title='Flavor AI-Share Your Recipes'
-      },[])
+
+  useEffect(() => {
+    document.title = "Flavor AI-Share Your Recipes";
+  }, []);
 
   const handleRecipeUploaded = (recipe) => {
     // Show success message and redirect
@@ -34,10 +34,12 @@ export default function UploadRecipePage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      
-      <div className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
-        showResults ? "opacity-80 blur-sm" : "opacity-100"
-      }`}>
+
+      <div
+        className={`min-h-screen mt-20 bg-base-100 transition-all duration-300 ${
+          showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}
+      >
         <div className="container mx-auto px-4 py-8">
           <BackButton />
           <div className="text-center mb-8">
@@ -52,7 +54,7 @@ export default function UploadRecipePage() {
           <RecipeUploadForm onRecipeUploaded={handleRecipeUploaded} />
         </div>
       </div>
-      
+
       <Footer />
     </>
   );

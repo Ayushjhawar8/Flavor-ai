@@ -5,7 +5,10 @@ export async function POST(req) {
     const { recipe } = await req.json();
 
     if (!recipe) {
-      return NextResponse.json({ error: "No recipe provided" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No recipe provided" },
+        { status: 400 },
+      );
     }
 
     // Call API Ninjas Nutrition API
@@ -15,7 +18,7 @@ export async function POST(req) {
         headers: {
           "X-Api-Key": process.env.API_NINJAS_KEY, // key in .env.local
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -25,7 +28,10 @@ export async function POST(req) {
     const data = await response.json();
 
     // 🚀 Debug raw response
-    console.log("🍽️ Raw Nutrition API Response:", JSON.stringify(data, null, 2));
+    console.log(
+      "🍽️ Raw Nutrition API Response:",
+      JSON.stringify(data, null, 2),
+    );
 
     // ✅ Aggregate nutrition info
     let nutrition = {
@@ -56,7 +62,7 @@ export async function POST(req) {
     console.error("🔥 Nutrition API error:", error);
     return NextResponse.json(
       { error: "Failed to fetch nutrition" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

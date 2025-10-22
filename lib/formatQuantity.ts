@@ -4,10 +4,17 @@ export type UnitStyle = "auto" | "fraction" | "decimal";
 
 /** Units that look nice as fractions (spoons/cups/oz). Extend as you wish. */
 const FRACTION_UNITS = new Set([
-  "tsp","teaspoon","teaspoons",
-  "tbsp","tablespoon","tablespoons",
-  "cup","cups",
-  "oz","ounce","ounces",
+  "tsp",
+  "teaspoon",
+  "teaspoons",
+  "tbsp",
+  "tablespoon",
+  "tablespoons",
+  "cup",
+  "cups",
+  "oz",
+  "ounce",
+  "ounces",
 ]);
 
 const GLYPH: Record<string, string> = {
@@ -19,16 +26,16 @@ const GLYPH: Record<string, string> = {
 };
 
 const FRIENDLY_FRACTIONS: Array<[number, number]> = [
-  [1,4],
-  [1,3],
-  [1,2],
-  [2,3],
-  [3,4],
+  [1, 4],
+  [1, 3],
+  [1, 2],
+  [2, 3],
+  [3, 4],
 ];
 
 /** Returns {intPart, fracGlyph | null} or null if not a friendly fraction */
 function nearestFriendlyFraction(frac: number, tolerance = 0.06) {
-  let best: {num: number; den: number; diff: number} | null = null;
+  let best: { num: number; den: number; diff: number } | null = null;
   for (const [num, den] of FRIENDLY_FRACTIONS) {
     const v = num / den;
     const diff = Math.abs(frac - v);
@@ -43,13 +50,14 @@ function nearestFriendlyFraction(frac: number, tolerance = 0.06) {
 export function formatQuantity(
   qty: number,
   style: UnitStyle = "auto",
-  unit?: string
+  unit?: string,
 ): string {
   if (!Number.isFinite(qty)) return "";
 
   const preferFractions =
     style === "fraction" ||
-    (style === "auto" && (unit ? FRACTION_UNITS.has(unit.toLowerCase()) : false));
+    (style === "auto" &&
+      (unit ? FRACTION_UNITS.has(unit.toLowerCase()) : false));
 
   // Round very close to whole numbers (e.g., 0.99 → 1)
   if (Math.abs(qty - Math.round(qty)) < 0.02) {
@@ -61,8 +69,8 @@ export function formatQuantity(
     const frac = qty - whole;
     const glyph = nearestFriendlyFraction(frac);
     if (glyph) {
-      if (whole === 0) return glyph;        // e.g., ½
-      return `${whole} ${glyph}`;           // e.g., 1 ¼
+      if (whole === 0) return glyph; // e.g., ½
+      return `${whole} ${glyph}`; // e.g., 1 ¼
     }
   }
 

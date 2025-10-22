@@ -5,6 +5,7 @@
 ![----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 # **Flavor AI**
+
 <p align="center">
   <img src="assets/logos/logo.png" alt="Flavor AI Logo" width="250"/>
 </p>
@@ -15,7 +16,7 @@
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
->Welcome to FlavorAI, your AI-powered culinary companion! This project is designed to make meal planning and recipe exploration effortless and fun. Whether you're looking for AI-curated recipes, diverse food categories, or exciting culinary surprises, FlavorAI has it all.
+> Welcome to FlavorAI, your AI-powered culinary companion! This project is designed to make meal planning and recipe exploration effortless and fun. Whether you're looking for AI-curated recipes, diverse food categories, or exciting culinary surprises, FlavorAI has it all.
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
@@ -60,7 +61,7 @@
 - **Voice Input**: Use voice commands to describe your desired recipe.
 - **Text-to-Speech**: Listen to recipe instructions while cooking.
 - **Smart Filtering**: Filter recipes by dietary restrictions and cuisine types.
-- **Festive Recipe**: Get recipes of festivals 
+- **Festive Recipe**: Get recipes of festivals
 - **Favourites**: You can save your favourite recipes
 - **Toggle Theme**: Seamlessly switch between light and dark modes for good viewing experience.
 - **Language Selector**: Easily switch the app’s language for a personalized experience supports native languages too.
@@ -125,12 +126,12 @@
 
 Here are some screenshots of the project in action:
 
-| Screenshot 1 | Screenshot 2 |
-|--------------|--------------|
+| Screenshot 1                                    | Screenshot 2                                       |
+| ----------------------------------------------- | -------------------------------------------------- |
 | ![Screenshot 1](./app/screenshots/homepage.png) | ![Screenshot 2](./app/screenshots/aigenerated.png) |
 
-| Screenshot 3 | Screenshot 4 |
-|--------------|--------------|
+| Screenshot 3                                      | Screenshot 4                                     |
+| ------------------------------------------------- | ------------------------------------------------ |
 | ![Screenshot 3](./app/screenshots/categories.png) | ![Screenshot 4](./app/screenshots/community.png) |
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
@@ -148,23 +149,22 @@ Here are some screenshots of the project in action:
 ## 📦 Installation & Setup
 
 - Clone repository
-git clone https://github.com/Ayushjhawar8/flavor-ai.git
+  git clone https://github.com/Ayushjhawar8/flavor-ai.git
 
 - Navigate to project folder
-cd flavor-ai
+  cd flavor-ai
 
 - Install dependencies
-npm install
+  npm install
 
 - Add environment keys
-cp .env.sample .env.local
+  cp .env.sample .env.local
 - Then add:
- GROQ_API_KEY=your_api_key_here
+  GROQ_API_KEY=your_api_key_here
 - GOOGLE_GENERATIVE_AI_API_KEY=your_google_gemini_api_key_here
 
 - Run development server
-npm run dev
-
+  npm run dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
@@ -238,8 +238,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - UI components from [DaisyUI](https://daisyui.com/)
 - AI powered by [Groq](https://groq.com/)
 
-
-***:movie_camera: Demo***
+**_:movie_camera: Demo_**
 [![YouTube](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/app/screenshots/homepage.png)](https://www.youtube.com/watch?v=OYd8R6s_UZs)
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
@@ -256,7 +255,7 @@ Please refer to the [`Code of Conduct`](https://github.com/Ayushjhawar8/Flavor-a
 
 We love our contributors! If you'd like to help, please check out our [`CONTRIBUTE.md`](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/CONTRIBUTING.md) file for guidelines.
 
->Thank you once again to all our contributors who has contributed to **Flavor-ai!** Your efforts are truly appreciated. 💖👏
+> Thank you once again to all our contributors who has contributed to **Flavor-ai!** Your efforts are truly appreciated. 💖👏
 
 <!-- Contributors badge (auto-updating) -->
 
@@ -286,7 +285,7 @@ Feel free to open issues or discussions if you have any feedback, feature sugges
 
 ## 🙌 Support & Star
 
-***If you find this project helpful, please give it a star ⭐ to support more such educational initiatives!***
+**_If you find this project helpful, please give it a star ⭐ to support more such educational initiatives!_**
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
@@ -328,13 +327,13 @@ This project is licensed under the MIT License - see the [`License`](https://git
 
 ## 👨‍🏫 Mentors – Flavor-ai (GSSoC'25)
 
-| Role          | Name               | GitHub Profile                                      | LinkedIn Profile                                                        |
-| ------------- | ------------------ | --------------------------------------------------- | ----------------------------------------------------------------------- |
-| Mentor 1   | Anshika Sansanwal  |  [anshikasansanwal](https://github.com/anshikasansanwal)  | [anshikasansanwal](https://www.linkedin.com/in/anshikasansanwal/) |
-| Mentor 2     | Zala Vishvarajsinh Krushnpalsinh |  [Zala0007](https://github.com/Zala0007)   | [vishvarajsinh-zala](https://www.linkedin.com/in/vishvarajsinh-zala-1299a7317/)     |
-| Mentor 3     | Krish Ahlawat  |  | [krishahlawat](https://www.linkedin.com/in/krishahlawat/)    |
-| Mentor 4     | Kanishka |  | [kanishka-tyagi](https://www.linkedin.com/in/kanishka-tyagi-a334b128b/) |
-| Mentor 5    | Arnab Laha | [LahaArnab](https://github.com/LahaArnab) | [arnab-laha](https://www.linkedin.com/in/arnab-laha-4012b3287/) |
+| Role     | Name                             | GitHub Profile                                          | LinkedIn Profile                                                                |
+| -------- | -------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Mentor 1 | Anshika Sansanwal                | [anshikasansanwal](https://github.com/anshikasansanwal) | [anshikasansanwal](https://www.linkedin.com/in/anshikasansanwal/)               |
+| Mentor 2 | Zala Vishvarajsinh Krushnpalsinh | [Zala0007](https://github.com/Zala0007)                 | [vishvarajsinh-zala](https://www.linkedin.com/in/vishvarajsinh-zala-1299a7317/) |
+| Mentor 3 | Krish Ahlawat                    |                                                         | [krishahlawat](https://www.linkedin.com/in/krishahlawat/)                       |
+| Mentor 4 | Kanishka                         |                                                         | [kanishka-tyagi](https://www.linkedin.com/in/kanishka-tyagi-a334b128b/)         |
+| Mentor 5 | Arnab Laha                       | [LahaArnab](https://github.com/LahaArnab)               | [arnab-laha](https://www.linkedin.com/in/arnab-laha-4012b3287/)                 |
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
@@ -361,6 +360,7 @@ This project is licensed under the MIT License - see the [`License`](https://git
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=65&section=footer"/>
 
 **Ready to show off your coding achievements? Get started with Flavor-ai today! 🚀**
+
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=00C853&center=true&vCenter=true&width=900&lines=Thanks+for+visiting+Flavor-ai!+🙌;Start+the+repo+✅;Share+it+with+others+🌍;Contribute+and+grow+🛠️;Happy+Coding+✨!" alt="Thanks Banner Typing SVG" />
 </div>

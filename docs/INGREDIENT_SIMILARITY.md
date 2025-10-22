@@ -73,32 +73,34 @@ The ingredient graph is built using the `graph-data-structure` library with the 
 ### Edge Categories
 
 1. **Flavor-Based Edges**
+
    ```javascript
    const flavorGroups = {
-     'sweet': ['honey', 'sugar', 'apple', 'banana'],
-     'savory': ['tomato', 'onion', 'garlic', 'mushroom'],
-     'spicy': ['chili', 'pepper', 'paprika'],
-     'herbal': ['basil', 'oregano', 'thyme', 'rosemary']
+     sweet: ["honey", "sugar", "apple", "banana"],
+     savory: ["tomato", "onion", "garlic", "mushroom"],
+     spicy: ["chili", "pepper", "paprika"],
+     herbal: ["basil", "oregano", "thyme", "rosemary"],
    };
    ```
 
 2. **Culinary Pairing Edges**
+
    ```javascript
    const culinaryPairs = [
-     ['tomato', 'basil'],     // Italian
-     ['rice', 'cumin'],       // Indian
-     ['fish', 'ginger'],      // Asian
-     ['olive oil', 'garlic']  // Mediterranean
+     ["tomato", "basil"], // Italian
+     ["rice", "cumin"], // Indian
+     ["fish", "ginger"], // Asian
+     ["olive oil", "garlic"], // Mediterranean
    ];
    ```
 
 3. **Substitute Edges**
    ```javascript
    const substitutes = [
-     ['milk', 'yogurt'],
-     ['onion', 'shallot'],
-     ['lemon', 'lime'],
-     ['basil', 'oregano']
+     ["milk", "yogurt"],
+     ["onion", "shallot"],
+     ["lemon", "lime"],
+     ["basil", "oregano"],
    ];
    ```
 
@@ -107,10 +109,11 @@ The ingredient graph is built using the `graph-data-structure` library with the 
 The similarity between two ingredients is calculated using:
 
 ```javascript
-similarity = (average_edge_weight * path_penalty)
+similarity = average_edge_weight * path_penalty;
 ```
 
 Where:
+
 - `average_edge_weight`: Mean weight of edges in the shortest path
 - `path_penalty`: 1 / (path_length - 1) to favor shorter paths
 
@@ -119,6 +122,7 @@ Where:
 ### POST /api/ingredient-similarity
 
 **Request Body:**
+
 ```json
 {
   "ingredients": ["tomato", "onion", "garlic"],
@@ -128,6 +132,7 @@ Where:
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -148,6 +153,7 @@ Where:
 ### GET /api/ingredient-similarity/stats
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -166,9 +172,9 @@ Where:
 ### 1. Finding Complementary Ingredients
 
 ```javascript
-import ingredientGraph from '@/lib/ingredientGraph';
+import ingredientGraph from "@/lib/ingredientGraph";
 
-const complements = ingredientGraph.findComplementaryIngredients('tomato', 5);
+const complements = ingredientGraph.findComplementaryIngredients("tomato", 5);
 console.log(complements);
 // Output: [
 //   { ingredient: 'basil', score: 0.85 },
@@ -180,7 +186,7 @@ console.log(complements);
 ### 2. Finding Substitutes
 
 ```javascript
-const substitutes = ingredientGraph.findSubstituteIngredients('milk', 3);
+const substitutes = ingredientGraph.findSubstituteIngredients("milk", 3);
 console.log(substitutes);
 // Output: [
 //   { ingredient: 'yogurt', score: 0.91 },
@@ -191,7 +197,10 @@ console.log(substitutes);
 ### 3. Complete Pairing Analysis
 
 ```javascript
-const pairing = ingredientGraph.generatePairingSuggestions(['chicken', 'garlic'], 5);
+const pairing = ingredientGraph.generatePairingSuggestions(
+  ["chicken", "garlic"],
+  5,
+);
 console.log(pairing);
 // Output: {
 //   complementary: [...],
@@ -212,10 +221,15 @@ The graph-based model is integrated into the recipe generation process:
 
 ```javascript
 // In generate-recipe/route.js
-const pairingSuggestions = ingredientGraph.generatePairingSuggestions(ingredientNames, 3);
+const pairingSuggestions = ingredientGraph.generatePairingSuggestions(
+  ingredientNames,
+  3,
+);
 
 if (pairingSuggestions.complementary.length > 0) {
-  const complementaryNames = pairingSuggestions.complementary.map(c => c.ingredient).join(', ');
+  const complementaryNames = pairingSuggestions.complementary
+    .map((c) => c.ingredient)
+    .join(", ");
   ingredientSuggestions += `\nSuggested complementary ingredients: ${complementaryNames}.`;
 }
 ```
@@ -229,6 +243,7 @@ node lib/ingredientGraph.test.js
 ```
 
 The test suite validates:
+
 - ✅ Graph initialization and structure
 - ✅ Similarity calculations
 - ✅ Complementary ingredient suggestions
@@ -272,20 +287,22 @@ The test suite validates:
 To add new ingredients or relationships:
 
 1. **Add New Ingredients**:
+
    ```javascript
-   ingredientGraph.addIngredient('new_ingredient', [
-     { ingredient: 'similar_ingredient', weight: 0.8 }
+   ingredientGraph.addIngredient("new_ingredient", [
+     { ingredient: "similar_ingredient", weight: 0.8 },
    ]);
    ```
 
 2. **Update Edge Weights**:
+
    ```javascript
-   ingredientGraph.graph.addEdge('ingredient1', 'ingredient2', newWeight);
+   ingredientGraph.graph.addEdge("ingredient1", "ingredient2", newWeight);
    ```
 
 3. **Extend Flavor Groups**:
    ```javascript
-   flavorGroups['new_category'] = ['ingredient1', 'ingredient2'];
+   flavorGroups["new_category"] = ["ingredient1", "ingredient2"];
    ```
 
 ## Dependencies
@@ -300,4 +317,4 @@ This implementation is part of the Flavor-ai project and follows the same licens
 
 ---
 
-**Note**: This graph-based ingredient similarity model significantly enhances the recipe generation capabilities by providing intelligent ingredient pairing suggestions based on culinary traditions and flavor science, making the AI-generated recipes more creative and accurate. 
+**Note**: This graph-based ingredient similarity model significantly enhances the recipe generation capabilities by providing intelligent ingredient pairing suggestions based on culinary traditions and flavor science, making the AI-generated recipes more creative and accurate.

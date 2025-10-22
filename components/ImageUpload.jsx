@@ -5,10 +5,10 @@ import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 /**
  * ImageUpload Component
- * 
+ *
  * Handles image upload and ingredient analysis functionality
  * Allows users to upload images of their available ingredients
- * 
+ *
  * Props:
  * @param {Function} onIngredientsAnalyzed - Callback with analyzed ingredients
  * @param {Array} analyzedIngredients - Currently analyzed ingredients
@@ -26,7 +26,7 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       setError("Please select an image file");
       return;
     }
@@ -38,7 +38,7 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
     }
 
     setError("");
-    
+
     // Convert to base64
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -59,7 +59,9 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
     // Check for GOOGLE_GENERATIVE_AI_API_KEY
     const googleApiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
     if (!googleApiKey) {
-      setError("Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file.");
+      setError(
+        "Missing Gemini API key. Please set GOOGLE_GENERATIVE_AI_API_KEY in your .env.local file.",
+      );
       setIsAnalyzing(false);
       return;
     }
@@ -76,7 +78,9 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
       if (!response.ok) {
         const errorData = await response.json();
         if (errorData.error?.includes("quota")) {
-          throw new Error("OpenAI quota exceeded. Please add credits to your OpenAI account or try again later.");
+          throw new Error(
+            "OpenAI quota exceeded. Please add credits to your OpenAI account or try again later.",
+          );
         }
         throw new Error("Failed to analyze ingredients");
       }
@@ -84,7 +88,9 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
       const result = await response.json();
       onIngredientsAnalyzed(result.ingredients);
     } catch (err) {
-      setError(err.message || "Failed to analyze ingredients. Please try again.");
+      setError(
+        err.message || "Failed to analyze ingredients. Please try again.",
+      );
       console.error("Error analyzing ingredients:", err);
     } finally {
       setIsAnalyzing(false);
@@ -121,12 +127,8 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
             className="flex flex-col items-center bg-neutral/50 justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-input-bg hover:bg-gray-100 transition-colors "
           >
             <PhotoIcon className="w-8 h-8 text-gray-400 mb-2" />
-            <span className="text-sm">
-              Click to upload ingredient image
-            </span>
-            <span className="text-xs ">
-              PNG, JPG up to 5MB
-            </span>
+            <span className="text-sm">Click to upload ingredient image</span>
+            <span className="text-xs ">PNG, JPG up to 5MB</span>
           </label>
         </div>
       ) : (
@@ -143,7 +145,7 @@ function ImageUpload({ onIngredientsAnalyzed, analyzedIngredients = [] }) {
           >
             <XMarkIcon className="w-4 h-4" />
           </button>
-          
+
           {/* Analyze Button */}
           {analyzedIngredients.length === 0 && (
             <button

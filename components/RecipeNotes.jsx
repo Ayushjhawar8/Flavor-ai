@@ -53,16 +53,10 @@ export default function RecipeNotes({ recipeId }) {
           rows={4}
         />
         <div className="flex gap-2 mt-3">
-          <button
-            onClick={handleSave}
-            className="btn btn-primary btn-sm gap-2"
-          >
+          <button onClick={handleSave} className="btn btn-primary btn-sm gap-2">
             💾 Save Note
           </button>
-          <button
-            onClick={handleCancel}
-            className="btn btn-ghost btn-sm gap-2"
-          >
+          <button onClick={handleCancel} className="btn btn-ghost btn-sm gap-2">
             <X size={16} />
             Cancel
           </button>
@@ -87,16 +81,11 @@ export default function RecipeNotes({ recipeId }) {
             <StickyNote size={18} className="text-primary" />
             <h3 className="font-semibold text-base-content">My Notes</h3>
           </div>
-          <button
-            onClick={handleEdit}
-            className="btn btn-ghost btn-xs gap-1"
-          >
+          <button onClick={handleEdit} className="btn btn-ghost btn-xs gap-1">
             🖊️ Edit
           </button>
         </div>
-        <div className="text-base-content whitespace-pre-wrap">
-          {notes}
-        </div>
+        <div className="text-base-content whitespace-pre-wrap">{notes}</div>
       </div>
     );
   }
@@ -106,10 +95,7 @@ export default function RecipeNotes({ recipeId }) {
       <div className="text-center">
         <StickyNote size={24} className="text-base-content/40 mx-auto mb-2" />
         <p className="text-base-content/60 mb-3">No personal notes yet</p>
-        <button
-          onClick={handleEdit}
-          className="btn btn-outline btn-sm gap-2"
-        >
+        <button onClick={handleEdit} className="btn btn-outline btn-sm gap-2">
           🖊️ Add/Edit Note
         </button>
       </div>

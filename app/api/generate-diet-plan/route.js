@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 /**
  * API Route: POST /api/generate-diet-plan
  * Generates a personalized daily diet plan based on user health parameters and goals using Groq AI
- * 
+ *
  * Request body should include:
  * - height: User's height in cm
  * - weight: User's weight in kg
@@ -19,14 +19,17 @@ import { NextResponse } from "next/server";
  * - dietaryRestrictions: Array of dietary restrictions (optional)
  * - allergies: Array of food allergies (optional)
  * - targetDate: Date for the diet plan (optional, defaults to today)
- * 
+ *
  * Returns a structured diet plan object following the dietPlanSchema
  */
 export async function POST(req) {
   if (!process.env.GROQ_API_KEY) {
     return NextResponse.json(
-      { error: "Missing GROQ API key. Please set GROQ_API_KEY in your .env.local file." },
-      { status: 400 }
+      {
+        error:
+          "Missing GROQ API key. Please set GROQ_API_KEY in your .env.local file.",
+      },
+      { status: 400 },
     );
   }
 
@@ -47,20 +50,32 @@ export async function POST(req) {
       bloodPressure,
       dietaryRestrictions = [],
       allergies = [],
-      targetDate = new Date().toISOString().split('T')[0]
+      targetDate = new Date().toISOString().split("T")[0],
     } = requestBody;
 
     // Validate required fields
-    if (!height || !weight || !age || !gender || !activityLevel || !goal || !bloodSugar || !bloodPressure) {
+    if (
+      !height ||
+      !weight ||
+      !age ||
+      !gender ||
+      !activityLevel ||
+      !goal ||
+      !bloodSugar ||
+      !bloodPressure
+    ) {
       return NextResponse.json(
-        { error: "Missing required fields: height, weight, age, gender, activityLevel, goal, bloodSugar, bloodPressure" },
-        { status: 400 }
+        {
+          error:
+            "Missing required fields: height, weight, age, gender, activityLevel, goal, bloodSugar, bloodPressure",
+        },
+        { status: 400 },
       );
     }
 
     // Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation
     let bmr;
-    if (gender.toLowerCase() === 'male') {
+    if (gender.toLowerCase() === "male") {
       bmr = 10 * weight + 6.25 * height - 5 * age + 5;
     } else {
       bmr = 10 * weight + 6.25 * height - 5 * age - 161;
@@ -72,7 +87,7 @@ export async function POST(req) {
       lightly_active: 1.375,
       moderately_active: 1.55,
       very_active: 1.725,
-      extremely_active: 1.9
+      extremely_active: 1.9,
     };
 
     const tdee = bmr * (activityMultipliers[activityLevel] || 1.2);
@@ -80,13 +95,13 @@ export async function POST(req) {
     // Adjust calories based on goal
     let targetCalories;
     switch (goal.toLowerCase()) {
-      case 'bulk':
+      case "bulk":
         targetCalories = Math.round(tdee + 300); // Surplus for muscle gain
         break;
-      case 'cut':
+      case "cut":
         targetCalories = Math.round(tdee - 500); // Deficit for fat loss
         break;
-      case 'maintain':
+      case "maintain":
         targetCalories = Math.round(tdee);
         break;
       default:
@@ -94,7 +109,7 @@ export async function POST(req) {
     }
 
     // Calculate BMI for additional health insights
-    const bmi = weight / ((height / 100) ** 2);
+    const bmi = weight / (height / 100) ** 2;
 
     // Create detailed prompt for AI
     const prompt = `Create a personalized daily diet plan for a ${age}-year-old ${gender} with the following profile:
@@ -103,13 +118,13 @@ PHYSICAL STATS:
 - Height: ${height}cm
 - Weight: ${weight}kg
 - BMI: ${bmi.toFixed(1)}
-- Activity Level: ${activityLevel.replace('_', ' ')}
+- Activity Level: ${activityLevel.replace("_", " ")}
 
 HEALTH CONDITIONS:
 - Blood Sugar: ${bloodSugar}
 - Blood Pressure: ${bloodPressure}
-- Dietary Restrictions: ${dietaryRestrictions.length > 0 ? dietaryRestrictions.join(', ') : 'None'}
-- Allergies: ${allergies.length > 0 ? allergies.join(', ') : 'None'}
+- Dietary Restrictions: ${dietaryRestrictions.length > 0 ? dietaryRestrictions.join(", ") : "None"}
+- Allergies: ${allergies.length > 0 ? allergies.join(", ") : "None"}
 
 FITNESS GOAL: ${goal}
 TARGET CALORIES: ${targetCalories}
@@ -152,11 +167,10 @@ Focus on whole foods, balanced macronutrients, and meals that support the user's
         bloodSugar,
         bloodPressure,
         dietaryRestrictions,
-        allergies
+        allergies,
       },
-      ...result.object
+      ...result.object,
     });
-
   } catch (error) {
     console.error("Diet plan generation error:", error);
     console.error("Error stack:", error.stack);
@@ -166,9 +180,9 @@ Focus on whole foods, balanced macronutrients, and meals that support the user's
       {
         error: "Failed to generate diet plan. Please try again.",
         details: error.message,
-        type: error.constructor.name
+        type: error.constructor.name,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -180,21 +194,22 @@ Focus on whole foods, balanced macronutrients, and meals that support the user's
 export async function GET() {
   return NextResponse.json({
     message: "AI Diet Planner API",
-    description: "Generate personalized daily diet plans based on health parameters and fitness goals",
+    description:
+      "Generate personalized daily diet plans based on health parameters and fitness goals",
     requiredFields: [
       "height (cm)",
-      "weight (kg)", 
+      "weight (kg)",
       "age (years)",
       "gender (male/female)",
       "activityLevel (sedentary/lightly_active/moderately_active/very_active/extremely_active)",
       "goal (bulk/cut/maintain/general_health)",
       "bloodSugar (normal/prediabetic/diabetic)",
-      "bloodPressure (normal/elevated/high_stage1/high_stage2)"
+      "bloodPressure (normal/elevated/high_stage1/high_stage2)",
     ],
     optionalFields: [
       "dietaryRestrictions (array)",
       "allergies (array)",
-      "targetDate (YYYY-MM-DD)"
+      "targetDate (YYYY-MM-DD)",
     ],
     example: {
       height: 175,
@@ -207,7 +222,7 @@ export async function GET() {
       bloodPressure: "normal",
       dietaryRestrictions: ["vegetarian"],
       allergies: ["nuts"],
-      targetDate: "2025-01-15"
-    }
+      targetDate: "2025-01-15",
+    },
   });
 }

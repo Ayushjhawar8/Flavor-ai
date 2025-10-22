@@ -17,7 +17,9 @@ function extractIngredients(meal: any): string[] {
     const ing = meal[`strIngredient${i}`];
     const meas = meal[`strMeasure${i}`];
     if (ing && ing.trim()) {
-      result.push(`${meas ? meas.trim() : ""} ${ing.trim()}`.replace(/\s+/g, " "));
+      result.push(
+        `${meas ? meas.trim() : ""} ${ing.trim()}`.replace(/\s+/g, " "),
+      );
     }
   }
   return result;
@@ -53,10 +55,10 @@ export default function RandomRecipePage() {
   const [error, setError] = useState<string>("");
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // dynamic tab title     
-  useEffect(()=>{
-    document.title='Flavor AI-Random Recipes'
-  },[])
+  // dynamic tab title
+  useEffect(() => {
+    document.title = "Flavor AI-Random Recipes";
+  }, []);
 
   useEffect(() => {
     const favs = localStorage.getItem("favorites");
@@ -82,7 +84,9 @@ export default function RandomRecipePage() {
     setError("");
     setRecipe(null);
     try {
-      const res = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
+      const res = await fetch(
+        "https://www.themealdb.com/api/json/v1/1/random.php",
+      );
       const data = await res.json();
       if (data.meals && data.meals.length) {
         const meal = data.meals[0];
@@ -97,8 +101,8 @@ export default function RandomRecipePage() {
             meal.strTags && meal.strTags.toLowerCase().includes("easy")
               ? "Easy"
               : meal.strTags && meal.strTags.toLowerCase().includes("hard")
-              ? "Hard"
-              : "Medium",
+                ? "Hard"
+                : "Medium",
         });
       } else {
         setError("No recipe data received. Try again!");
@@ -126,7 +130,9 @@ export default function RandomRecipePage() {
             disabled={loading}
             className="px-8 py-4 bg-primary text-primary-content rounded-lg hover:bg-primary-focus transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 mx-auto font-semibold"
           >
-            <ArrowPathIcon className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
+            <ArrowPathIcon
+              className={`w-5 h-5 ${loading ? "animate-spin" : ""}`}
+            />
             {loading ? "Finding Recipe..." : "Get Random Recipe"}
           </button>
         </div>
@@ -171,19 +177,49 @@ export default function RandomRecipePage() {
               <div className="p-8">
                 <div className="grid md:grid-cols-4 gap-4 mb-8">
                   {[
-                    { label: "Prep Time", value: recipe.prepTime, icon: <ClockIcon className="w-5 h-5 text-primary" /> },
-                    { label: "Cook Time", value: recipe.cookTime, icon: <ClockIcon className="w-5 h-5 text-primary" /> },
-                    { label: "Servings", value: recipe.servings, icon: <UsersIcon className="w-5 h-5 text-primary" /> },
-                    { label: "Difficulty", value: recipe.difficulty, icon: <div className="w-5 h-5 text-primary flex items-center justify-center text-sm">👨‍🍳</div>, isBadge: true },
+                    {
+                      label: "Prep Time",
+                      value: recipe.prepTime,
+                      icon: <ClockIcon className="w-5 h-5 text-primary" />,
+                    },
+                    {
+                      label: "Cook Time",
+                      value: recipe.cookTime,
+                      icon: <ClockIcon className="w-5 h-5 text-primary" />,
+                    },
+                    {
+                      label: "Servings",
+                      value: recipe.servings,
+                      icon: <UsersIcon className="w-5 h-5 text-primary" />,
+                    },
+                    {
+                      label: "Difficulty",
+                      value: recipe.difficulty,
+                      icon: (
+                        <div className="w-5 h-5 text-primary flex items-center justify-center text-sm">
+                          👨‍🍳
+                        </div>
+                      ),
+                      isBadge: true,
+                    },
                   ].map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-4 bg-base-100 rounded-lg">
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 p-4 bg-base-100 rounded-lg"
+                    >
                       {item.icon}
                       <div>
-                        <div className="text-sm text-base-content/70">{item.label}</div>
+                        <div className="text-sm text-base-content/70">
+                          {item.label}
+                        </div>
                         {item.isBadge ? (
-                          <div className={getDifficultyColor(item.value)}>{item.value}</div>
+                          <div className={getDifficultyColor(item.value)}>
+                            {item.value}
+                          </div>
                         ) : (
-                          <div className="font-semibold text-base-content/90">{item.value}</div>
+                          <div className="font-semibold text-base-content/90">
+                            {item.value}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -192,7 +228,9 @@ export default function RandomRecipePage() {
 
                 {recipe.strTags && (
                   <div className="mb-8">
-                    <h3 className="text-xl font-bold mb-4 text-base-content/90">Tags</h3>
+                    <h3 className="text-xl font-bold mb-4 text-base-content/90">
+                      Tags
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {recipe.strTags.split(",").map((tag: string) => (
                         <span
@@ -213,12 +251,16 @@ export default function RandomRecipePage() {
                     </h3>
                     <div className="bg-base-100 rounded-lg p-4">
                       <ul className="space-y-2">
-                        {recipe.ingredients.map((ingredient: string, index: number) => (
-                          <li key={index} className="flex items-start gap-2">
-                            <span className="text-primary mt-1">•</span>
-                            <span className="text-base-content/80">{ingredient}</span>
-                          </li>
-                        ))}
+                        {recipe.ingredients.map(
+                          (ingredient: string, index: number) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <span className="text-primary mt-1">•</span>
+                              <span className="text-base-content/80">
+                                {ingredient}
+                              </span>
+                            </li>
+                          ),
+                        )}
                       </ul>
                     </div>
                   </div>
@@ -277,7 +319,9 @@ export default function RandomRecipePage() {
           </h3>
           <div className="grid md:grid-cols-2 gap-4 text-sm text-base-content/80">
             <div className="space-y-2">
-              <p>• Keep clicking for different cuisines and difficulty levels</p>
+              <p>
+                • Keep clicking for different cuisines and difficulty levels
+              </p>
               <p>• Check your pantry before starting to cook</p>
               <p>• Don't be afraid to substitute ingredients you don't have</p>
             </div>

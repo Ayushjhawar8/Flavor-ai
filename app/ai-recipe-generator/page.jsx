@@ -11,24 +11,23 @@ export default function AIRecipeGenerator() {
     dietaryRestrictions: "",
     cookingTime: "",
     servings: "4",
-    difficulty: "medium"
+    difficulty: "medium",
   });
-  
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedRecipe, setGeneratedRecipe] = useState(null);
   const [error, setError] = useState("");
 
-  // dynamic tab title     
-    useEffect(()=>{
-      document.title='Flavor AI-Recipe Generator'
-    },[])
-    
+  // dynamic tab title
+  useEffect(() => {
+    document.title = "Flavor AI-Recipe Generator";
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -36,28 +35,28 @@ export default function AIRecipeGenerator() {
     e.preventDefault();
     setIsGenerating(true);
     setError("");
-    
+
     try {
       // Simulated API call - replace with actual API endpoint
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Mock delay
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Mock delay
+
       // Mock generated recipe
       const mockRecipe = {
-        name: `Delicious ${formData.cuisineType || 'Mixed'} Recipe`,
-        ingredients: formData.ingredients.split(',').map(ing => ing.trim()),
+        name: `Delicious ${formData.cuisineType || "Mixed"} Recipe`,
+        ingredients: formData.ingredients.split(",").map((ing) => ing.trim()),
         instructions: [
           "Prepare all ingredients by washing and chopping as needed.",
           "Heat oil in a large pan over medium heat.",
           "Add ingredients according to cooking time requirements.",
           "Season with salt, pepper, and preferred spices.",
           "Cook until ingredients are tender and flavors are well combined.",
-          "Serve hot and enjoy your AI-generated recipe!"
+          "Serve hot and enjoy your AI-generated recipe!",
         ],
         cookingTime: formData.cookingTime || "30 minutes",
         servings: formData.servings,
-        difficulty: formData.difficulty
+        difficulty: formData.difficulty,
       };
-      
+
       setGeneratedRecipe(mockRecipe);
     } catch (err) {
       setError("Failed to generate recipe. Please try again.");
@@ -77,7 +76,8 @@ export default function AIRecipeGenerator() {
               🤖 AI Recipe Generator
             </h1>
             <p className="text-lg text-amber-700 max-w-2xl mx-auto">
-              Tell me what ingredients you have, and I'll create a delicious recipe just for you!
+              Tell me what ingredients you have, and I'll create a delicious
+              recipe just for you!
             </p>
           </div>
         </div>
@@ -85,12 +85,17 @@ export default function AIRecipeGenerator() {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Recipe Generator Form */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-2xl font-bold text-amber-800 mb-6">Create Your Recipe</h2>
-            
+            <h2 className="text-2xl font-bold text-amber-800 mb-6">
+              Create Your Recipe
+            </h2>
+
             <form onSubmit={handleGenerateRecipe} className="space-y-6">
               {/* Ingredients Input */}
               <div>
-                <label htmlFor="ingredients" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="ingredients"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Available Ingredients *
                 </label>
                 <textarea
@@ -107,7 +112,10 @@ export default function AIRecipeGenerator() {
 
               {/* Cuisine Type */}
               <div>
-                <label htmlFor="cuisineType" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="cuisineType"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Preferred Cuisine
                 </label>
                 <select
@@ -131,7 +139,10 @@ export default function AIRecipeGenerator() {
 
               {/* Dietary Restrictions */}
               <div>
-                <label htmlFor="dietaryRestrictions" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="dietaryRestrictions"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Dietary Restrictions
                 </label>
                 <select
@@ -154,7 +165,10 @@ export default function AIRecipeGenerator() {
               {/* Cooking Time and Servings */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="cookingTime" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="cookingTime"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Cooking Time
                   </label>
                   <select
@@ -172,9 +186,12 @@ export default function AIRecipeGenerator() {
                     <option value="2+ hours">2+ hours</option>
                   </select>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="servings" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="servings"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Servings
                   </label>
                   <select
@@ -195,7 +212,10 @@ export default function AIRecipeGenerator() {
 
               {/* Difficulty Level */}
               <div>
-                <label htmlFor="difficulty" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="difficulty"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Difficulty Level
                 </label>
                 <div className="flex gap-4">
@@ -234,9 +254,7 @@ export default function AIRecipeGenerator() {
                     Generating Recipe...
                   </>
                 ) : (
-                  <>
-                    🎯 Generate My Recipe
-                  </>
+                  <>🎯 Generate My Recipe</>
                 )}
               </button>
             </form>
@@ -244,33 +262,45 @@ export default function AIRecipeGenerator() {
 
           {/* Generated Recipe Display */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-2xl font-bold text-amber-800 mb-6">Your Generated Recipe</h2>
-            
+            <h2 className="text-2xl font-bold text-amber-800 mb-6">
+              Your Generated Recipe
+            </h2>
+
             {!generatedRecipe ? (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">🍳</div>
                 <p className="text-amber-600 text-lg">
-                  Fill in the form and click "Generate My Recipe" to create your personalized recipe!
+                  Fill in the form and click "Generate My Recipe" to create your
+                  personalized recipe!
                 </p>
               </div>
             ) : (
               <div className="space-y-6">
                 {/* Recipe Header */}
                 <div className="border-b border-amber-200 pb-4">
-                  <h3 className="text-2xl font-bold text-amber-800">{generatedRecipe.name}</h3>
+                  <h3 className="text-2xl font-bold text-amber-800">
+                    {generatedRecipe.name}
+                  </h3>
                   <div className="flex flex-wrap gap-4 mt-2 text-sm text-amber-600">
                     <span>⏱️ {generatedRecipe.cookingTime}</span>
                     <span>👥 {generatedRecipe.servings} servings</span>
-                    <span className="capitalize">📊 {generatedRecipe.difficulty}</span>
+                    <span className="capitalize">
+                      📊 {generatedRecipe.difficulty}
+                    </span>
                   </div>
                 </div>
 
                 {/* Ingredients */}
                 <div>
-                  <h4 className="text-lg font-bold text-amber-800 mb-3">🥄 Ingredients:</h4>
+                  <h4 className="text-lg font-bold text-amber-800 mb-3">
+                    🥄 Ingredients:
+                  </h4>
                   <ul className="space-y-2">
                     {generatedRecipe.ingredients.map((ingredient, index) => (
-                      <li key={index} className="flex items-center gap-2 text-amber-700">
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-amber-700"
+                      >
                         <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
                         {ingredient}
                       </li>
@@ -280,7 +310,9 @@ export default function AIRecipeGenerator() {
 
                 {/* Instructions */}
                 <div>
-                  <h4 className="text-lg font-bold text-amber-800 mb-3">👨‍🍳 Instructions:</h4>
+                  <h4 className="text-lg font-bold text-amber-800 mb-3">
+                    👨‍🍳 Instructions:
+                  </h4>
                   <ol className="space-y-3">
                     {generatedRecipe.instructions.map((step, index) => (
                       <li key={index} className="flex gap-3 text-amber-700">
@@ -309,22 +341,34 @@ export default function AIRecipeGenerator() {
 
         {/* Tips Section */}
         <div className="mt-12 bg-white rounded-2xl shadow-xl p-8">
-          <h3 className="text-2xl font-bold text-amber-800 mb-6 text-center">💡 Pro Tips for Better Recipes</h3>
+          <h3 className="text-2xl font-bold text-amber-800 mb-6 text-center">
+            💡 Pro Tips for Better Recipes
+          </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="text-3xl mb-2">🥕</div>
               <h4 className="font-bold text-amber-700 mb-2">Be Specific</h4>
-              <p className="text-amber-600 text-sm">List exact ingredients you have for more accurate recipes</p>
+              <p className="text-amber-600 text-sm">
+                List exact ingredients you have for more accurate recipes
+              </p>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-2">🌶️</div>
-              <h4 className="font-bold text-amber-700 mb-2">Mention Preferences</h4>
-              <p className="text-amber-600 text-sm">Include spice level and flavor preferences</p>
+              <h4 className="font-bold text-amber-700 mb-2">
+                Mention Preferences
+              </h4>
+              <p className="text-amber-600 text-sm">
+                Include spice level and flavor preferences
+              </p>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-2">⚡</div>
-              <h4 className="font-bold text-amber-700 mb-2">Try Different Combinations</h4>
-              <p className="text-amber-600 text-sm">Experiment with various cuisine types and restrictions</p>
+              <h4 className="font-bold text-amber-700 mb-2">
+                Try Different Combinations
+              </h4>
+              <p className="text-amber-600 text-sm">
+                Experiment with various cuisine types and restrictions
+              </p>
             </div>
           </div>
         </div>

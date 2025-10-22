@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
 import Footer from "../../components/Footer";
-import Navbar from "@/components/Navbar"; 
+import Navbar from "@/components/Navbar";
 
 /**
  * AI Diet Planner Component
@@ -31,10 +31,10 @@ export default function DietPlannerAI() {
   const [generatedPlans, setGeneratedPlans] = useState([]);
   const [error, setError] = useState("");
 
-  // dynamic tab title     
-  useEffect(()=>{
-    document.title='Flavor AI-Diet Planner'
-  },[])
+  // dynamic tab title
+  useEffect(() => {
+    document.title = "Flavor AI-Diet Planner";
+  }, []);
 
   // Handler for all input changes
   const handleInputChange = (e) => {
@@ -66,7 +66,15 @@ export default function DietPlannerAI() {
 
   // Mock function to generate a weekly meal plan structure
   const generateWeeklyPlan = () => {
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
     let mealTypes = ["Breakfast", "Lunch", "Dinner"];
 
     // Adjust meal types based on user input
@@ -75,11 +83,45 @@ export default function DietPlannerAI() {
 
     // Sample meals for variety
     const sampleMeals = {
-      Breakfast: ["Oatmeal with berries", "Greek yogurt with granola", "Avocado toast", "Smoothie bowl", "Cereal with milk", "Scrambled eggs", "Pancakes"],
-      Lunch: ["Grilled chicken salad", "Quinoa bowl", "Turkey sandwich", "Lentil soup", "Fish with veggies", "Veg stir-fry with rice", "Pasta with sauce"],
-      Dinner: ["Salmon with sweet potato", "Chicken curry with rice", "Veg pasta", "Beef stir-fry", "Grilled fish with quinoa", "Tofu with veggies", "Lean meat with salad"],
-      Snack: ["Mixed nuts", "Greek yogurt", "Veg sticks with hummus", "Apple with peanut butter", "Protein smoothie"],
-      "Evening Snack": ["Herbal tea with crackers", "Small fruit bowl", "Low-fat cheese with crackers"],
+      Breakfast: [
+        "Oatmeal with berries",
+        "Greek yogurt with granola",
+        "Avocado toast",
+        "Smoothie bowl",
+        "Cereal with milk",
+        "Scrambled eggs",
+        "Pancakes",
+      ],
+      Lunch: [
+        "Grilled chicken salad",
+        "Quinoa bowl",
+        "Turkey sandwich",
+        "Lentil soup",
+        "Fish with veggies",
+        "Veg stir-fry with rice",
+        "Pasta with sauce",
+      ],
+      Dinner: [
+        "Salmon with sweet potato",
+        "Chicken curry with rice",
+        "Veg pasta",
+        "Beef stir-fry",
+        "Grilled fish with quinoa",
+        "Tofu with veggies",
+        "Lean meat with salad",
+      ],
+      Snack: [
+        "Mixed nuts",
+        "Greek yogurt",
+        "Veg sticks with hummus",
+        "Apple with peanut butter",
+        "Protein smoothie",
+      ],
+      "Evening Snack": [
+        "Herbal tea with crackers",
+        "Small fruit bowl",
+        "Low-fat cheese with crackers",
+      ],
     };
 
     // Use formData.duration to slice the plan length
@@ -92,7 +134,13 @@ export default function DietPlannerAI() {
         // Use modulo to cycle through sample meals for variety
         meal: sampleMeals[mealType][i % sampleMeals[mealType].length],
         calories:
-          mealType === "Breakfast" ? 400 : mealType === "Lunch" ? 500 : mealType === "Dinner" ? 600 : 200,
+          mealType === "Breakfast"
+            ? 400
+            : mealType === "Lunch"
+              ? 500
+              : mealType === "Dinner"
+                ? 600
+                : 200,
       })),
     }));
   };
@@ -104,23 +152,29 @@ export default function DietPlannerAI() {
     setError("");
 
     // Input validation: Check if required fields are filled
-    if (!formData.age || !formData.gender || !formData.height || !formData.weight) {
-        setError("Please fill in all required fields (Age, Gender, Height, Weight).");
-        setIsGenerating(false);
-        return;
+    if (
+      !formData.age ||
+      !formData.gender ||
+      !formData.height ||
+      !formData.weight
+    ) {
+      setError(
+        "Please fill in all required fields (Age, Gender, Height, Weight).",
+      );
+      setIsGenerating(false);
+      return;
     }
 
     try {
       // Simulate API call delay (2 seconds)
-      await new Promise((resolve) => setTimeout(resolve, 2000)); 
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const goal = formData.fitnessGoal;
       const diet = formData.dietPreference;
 
       const mockPlan = {
-        // Mocked Calorie calculation based on goal 
-        dailyCalories:
-          goal === "cut" ? 1800 : goal === "bulk" ? 2500 : 2200,
+        // Mocked Calorie calculation based on goal
+        dailyCalories: goal === "cut" ? 1800 : goal === "bulk" ? 2500 : 2200,
         macros: {
           protein: goal === "bulk" ? "25%" : "20%",
           // Mocked Macro adjustment based on diet preference
@@ -139,13 +193,27 @@ export default function DietPlannerAI() {
 
       // Generate three mock plans for demonstration
       setGeneratedPlans([
-        { ...mockPlan, title: "Plan 1 (Balanced)", weeklyPlan: generateWeeklyPlan() },
-        { ...mockPlan, title: "Plan 2 (High Protein)", weeklyPlan: generateWeeklyPlan() },
-        { ...mockPlan, title: "Plan 3 (Low Carb)", weeklyPlan: generateWeeklyPlan() },
+        {
+          ...mockPlan,
+          title: "Plan 1 (Balanced)",
+          weeklyPlan: generateWeeklyPlan(),
+        },
+        {
+          ...mockPlan,
+          title: "Plan 2 (High Protein)",
+          weeklyPlan: generateWeeklyPlan(),
+        },
+        {
+          ...mockPlan,
+          title: "Plan 3 (Low Carb)",
+          weeklyPlan: generateWeeklyPlan(),
+        },
       ]);
     } catch (err) {
       console.error("Generation error:", err);
-      setError("Failed to generate diet plan. Please check your inputs and try again.");
+      setError(
+        "Failed to generate diet plan. Please check your inputs and try again.",
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -155,23 +223,23 @@ export default function DietPlannerAI() {
   const bmiInfo = bmi ? getBMICategory(bmi) : null;
 
   return (
-     
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-8">  
-          <header className="bg-base-300 z-50">       
-            <Navbar />
-          </header>
-           <div className="max-w-4xl mx-auto px-4">
-             <div className="mb-8 mt-20">
-            <div className="relative mt-10">
-              <BackButton />
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-8">
+      <header className="bg-base-300 z-50">
+        <Navbar />
+      </header>
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="mb-8 mt-20">
+          <div className="relative mt-10">
+            <BackButton />
+          </div>
           <div className="text-center mt-6">
             <h1 className="text-4xl font-bold text-amber-800 mb-4">
-             📋 AI Diet Planner
+              📋 AI Diet Planner
             </h1>
-           
+
             <p className="text-md text-stone-700 max-w-3xl mx-auto">
-              Get a personalized diet plan based on your goals, preferences, and lifestyle!
+              Get a personalized diet plan based on your goals, preferences, and
+              lifestyle!
             </p>
           </div>
         </div>
@@ -180,23 +248,50 @@ export default function DietPlannerAI() {
           {/* ===== Form Section (Column 1 & 2) ===== */}
           <div className="xl:col-span-2">
             {/* Section Title - Stone text */}
-            <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">Your Health Profile</h2>
+            <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">
+              Your Health Profile
+            </h2>
             <div className="bg-white rounded-xl shadow-lg p-8 border border-stone-200">
               <form onSubmit={handleGeneratePlan} className="space-y-6">
-
                 {/* Age & Gender */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     {/* Labels - Stone text */}
-                    <label htmlFor="age" className="block text-sm font-semibold text-stone-800 mb-2">Age *</label>
-                    <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} placeholder="25" min="16" max="100" 
+                    <label
+                      htmlFor="age"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Age *
+                    </label>
+                    <input
+                      type="number"
+                      id="age"
+                      name="age"
+                      value={formData.age}
+                      onChange={handleInputChange}
+                      placeholder="25"
+                      min="16"
+                      max="100"
                       // Input focus ring/border uses Amber accent color
-                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow" required/>
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"
+                      required
+                    />
                   </div>
                   <div>
-                    <label htmlFor="gender" className="block text-sm font-semibold text-stone-800 mb-2">Gender *</label>
-                    <select id="gender" name="gender" value={formData.gender} onChange={handleInputChange} 
-                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow" required>
+                    <label
+                      htmlFor="gender"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Gender *
+                    </label>
+                    <select
+                      id="gender"
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                      required
+                    >
                       <option value="">Select Gender</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
@@ -208,117 +303,261 @@ export default function DietPlannerAI() {
                 {/* Height & Weight */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="height" className="block text-sm font-semibold text-stone-800 mb-2">Height (cm) *</label>
-                    <input type="number" id="height" name="height" value={formData.height} onChange={handleInputChange} placeholder="170" min="140" max="220" 
-                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow" required/>
+                    <label
+                      htmlFor="height"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Height (cm) *
+                    </label>
+                    <input
+                      type="number"
+                      id="height"
+                      name="height"
+                      value={formData.height}
+                      onChange={handleInputChange}
+                      placeholder="170"
+                      min="140"
+                      max="220"
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"
+                      required
+                    />
                   </div>
                   <div>
-                    <label htmlFor="weight" className="block text-sm font-semibold text-stone-800 mb-2">Weight (kg) *</label>
-                    <input type="number" id="weight" name="weight" value={formData.weight} onChange={handleInputChange} placeholder="70" min="30" max="200" 
-                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow" required/>
+                    <label
+                      htmlFor="weight"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Weight (kg) *
+                    </label>
+                    <input
+                      type="number"
+                      id="weight"
+                      name="weight"
+                      value={formData.weight}
+                      onChange={handleInputChange}
+                      placeholder="70"
+                      min="30"
+                      max="200"
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"
+                      required
+                    />
                   </div>
                 </div>
 
                 {/* BMI Display - Amber accent box */}
                 {bmi && (
                   <div className="bg-amber-50 p-4 rounded-lg text-center border border-amber-200">
-                    <span className="text-sm font-semibold text-amber-700">Your BMI: </span>
-                    <span className="text-xl font-bold text-stone-900">{bmi}</span>
-                    <span className={`ml-3 font-bold ${bmiInfo.color}`}>({bmiInfo.category})</span>
+                    <span className="text-sm font-semibold text-amber-700">
+                      Your BMI:{" "}
+                    </span>
+                    <span className="text-xl font-bold text-stone-900">
+                      {bmi}
+                    </span>
+                    <span className={`ml-3 font-bold ${bmiInfo.color}`}>
+                      ({bmiInfo.category})
+                    </span>
                   </div>
                 )}
 
                 {/* Activity Level & Fitness Goal */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label htmlFor="activityLevel" className="block text-sm font-semibold text-stone-800 mb-2">Activity Level *</label>
-                        <select id="activityLevel" name="activityLevel" value={formData.activityLevel} onChange={handleInputChange} 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow">
-                            <option value="sedentary">Sedentary (little/no exercise)</option>
-                            <option value="light">Lightly active (1–3 days/week)</option>
-                            <option value="moderate">Moderately active (3–5 days/week)</option>
-                            <option value="very-active">Very active (6–7 days/week)</option>
-                            <option value="extreme">Extremely active (physical job)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="fitnessGoal" className="block text-sm font-semibold text-stone-800 mb-2">Fitness Goal *</label>
-                        <select id="fitnessGoal" name="fitnessGoal" value={formData.fitnessGoal} onChange={handleInputChange} 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow">
-                            <option value="cut">Fat Loss (Cut)</option>
-                            <option value="bulk">Muscle Gain (Bulk)</option>
-                            <option value="maintain">Maintain Current Weight</option>
-                            <option value="general">General Health</option>
-                        </select>
-                    </div>
+                  <div>
+                    <label
+                      htmlFor="activityLevel"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Activity Level *
+                    </label>
+                    <select
+                      id="activityLevel"
+                      name="activityLevel"
+                      value={formData.activityLevel}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                    >
+                      <option value="sedentary">
+                        Sedentary (little/no exercise)
+                      </option>
+                      <option value="light">
+                        Lightly active (1–3 days/week)
+                      </option>
+                      <option value="moderate">
+                        Moderately active (3–5 days/week)
+                      </option>
+                      <option value="very-active">
+                        Very active (6–7 days/week)
+                      </option>
+                      <option value="extreme">
+                        Extremely active (physical job)
+                      </option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="fitnessGoal"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Fitness Goal *
+                    </label>
+                    <select
+                      id="fitnessGoal"
+                      name="fitnessGoal"
+                      value={formData.fitnessGoal}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                    >
+                      <option value="cut">Fat Loss (Cut)</option>
+                      <option value="bulk">Muscle Gain (Bulk)</option>
+                      <option value="maintain">Maintain Current Weight</option>
+                      <option value="general">General Health</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Diet Preference & Meals per Day */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label htmlFor="dietPreference" className="block text-sm font-semibold text-stone-800 mb-2">Diet Preference *</label>
-                        <select id="dietPreference" name="dietPreference" value={formData.dietPreference} onChange={handleInputChange} 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow">
-                            <option value="non-vegetarian">Non-Vegetarian</option>
-                            <option value="vegetarian">Vegetarian</option>
-                            <option value="eggetarian">Eggetarian</option>
-                            <option value="vegan">Vegan</option>
-                            <option value="keto">Keto</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="mealsPerDay" className="block text-sm font-semibold text-stone-800 mb-2">Meals per Day</label>
-                        <select id="mealsPerDay" name="mealsPerDay" value={formData.mealsPerDay} onChange={handleInputChange} 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow">
-                            <option value="3">3 (Breakfast, Lunch, Dinner)</option>
-                            <option value="4">4 (+ Snack)</option>
-                            <option value="5">5 (+ Snack, Evening Snack)</option>
-                        </select>
-                    </div>
+                  <div>
+                    <label
+                      htmlFor="dietPreference"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Diet Preference *
+                    </label>
+                    <select
+                      id="dietPreference"
+                      name="dietPreference"
+                      value={formData.dietPreference}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                    >
+                      <option value="non-vegetarian">Non-Vegetarian</option>
+                      <option value="vegetarian">Vegetarian</option>
+                      <option value="eggetarian">Eggetarian</option>
+                      <option value="vegan">Vegan</option>
+                      <option value="keto">Keto</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="mealsPerDay"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Meals per Day
+                    </label>
+                    <select
+                      id="mealsPerDay"
+                      name="mealsPerDay"
+                      value={formData.mealsPerDay}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                    >
+                      <option value="3">3 (Breakfast, Lunch, Dinner)</option>
+                      <option value="4">4 (+ Snack)</option>
+                      <option value="5">5 (+ Snack, Evening Snack)</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Health Conditions (Blood Sugar/Pressure) */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label htmlFor="bloodSugar" className="block text-sm font-semibold text-stone-800 mb-2">Blood Sugar Level</label>
-                        <select id="bloodSugar" name="bloodSugar" value={formData.bloodSugar} onChange={handleInputChange} 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow">
-                            <option value="normal">Normal</option>
-                            <option value="prediabetic">Prediabetic</option>
-                            <option value="diabetic">Diabetic</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="bloodPressure" className="block text-sm font-semibold text-stone-800 mb-2">Blood Pressure</label>
-                        <select id="bloodPressure" name="bloodPressure" value={formData.bloodPressure} onChange={handleInputChange} 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow">
-                            <option value="normal">Normal</option>
-                            <option value="elevated">Elevated</option>
-                            <option value="high-stage1">High Stage 1</option>
-                            <option value="high-stage2">High Stage 2</option>
-                        </select>
-                    </div>
+                  <div>
+                    <label
+                      htmlFor="bloodSugar"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Blood Sugar Level
+                    </label>
+                    <select
+                      id="bloodSugar"
+                      name="bloodSugar"
+                      value={formData.bloodSugar}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                    >
+                      <option value="normal">Normal</option>
+                      <option value="prediabetic">Prediabetic</option>
+                      <option value="diabetic">Diabetic</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="bloodPressure"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Blood Pressure
+                    </label>
+                    <select
+                      id="bloodPressure"
+                      name="bloodPressure"
+                      value={formData.bloodPressure}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none appearance-none bg-white transition-shadow"
+                    >
+                      <option value="normal">Normal</option>
+                      <option value="elevated">Elevated</option>
+                      <option value="high-stage1">High Stage 1</option>
+                      <option value="high-stage2">High Stage 2</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Dietary Restrictions & Allergies */}
                 <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label htmlFor="dietaryRestriction" className="block text-sm font-semibold text-stone-800 mb-2">Dietary Restrictions (comma-separated)</label>
-                        <input type="text" id="dietaryRestriction" name="dietaryRestriction" value={formData.dietaryRestriction} onChange={handleInputChange} placeholder="e.g., lactose intolerant, low sodium" 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"/>
-                    </div>
-                    <div>
-                        <label htmlFor="allergies" className="block text-sm font-semibold text-stone-800 mb-2">Allergies (comma-separated)</label>
-                        <input type="text" id="allergies" name="allergies" value={formData.allergies} onChange={handleInputChange} placeholder="e.g., peanuts, shellfish" 
-                          className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"/>
-                    </div>
+                  <div>
+                    <label
+                      htmlFor="dietaryRestriction"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Dietary Restrictions (comma-separated)
+                    </label>
+                    <input
+                      type="text"
+                      id="dietaryRestriction"
+                      name="dietaryRestriction"
+                      value={formData.dietaryRestriction}
+                      onChange={handleInputChange}
+                      placeholder="e.g., lactose intolerant, low sodium"
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="allergies"
+                      className="block text-sm font-semibold text-stone-800 mb-2"
+                    >
+                      Allergies (comma-separated)
+                    </label>
+                    <input
+                      type="text"
+                      id="allergies"
+                      name="allergies"
+                      value={formData.allergies}
+                      onChange={handleInputChange}
+                      placeholder="e.g., peanuts, shellfish"
+                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"
+                    />
+                  </div>
                 </div>
 
                 {/* Plan Duration */}
                 <div>
-                    <label htmlFor="duration" className="block text-sm font-semibold text-stone-800 mb-2">Plan Duration (days)</label>
-                    <input type="number" id="duration" name="duration" value={formData.duration} onChange={handleInputChange} min="1" max="30" placeholder="7" 
-                      className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"/>
+                  <label
+                    htmlFor="duration"
+                    className="block text-sm font-semibold text-stone-800 mb-2"
+                  >
+                    Plan Duration (days)
+                  </label>
+                  <input
+                    type="number"
+                    id="duration"
+                    name="duration"
+                    value={formData.duration}
+                    onChange={handleInputChange}
+                    min="1"
+                    max="30"
+                    placeholder="7"
+                    className="w-full p-3 border-2 border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 focus:outline-none transition-shadow"
+                  />
                 </div>
 
                 {/* Generate Button - Brown/Amber Gradient CTA */}
@@ -329,9 +568,25 @@ export default function DietPlannerAI() {
                 >
                   {isGenerating ? (
                     <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Generating Your Personalized Plan...
                     </span>
@@ -342,21 +597,41 @@ export default function DietPlannerAI() {
                 <div className="text-center mt-4">
                   {/* Mock buttons for demoing the look of the toggles/switches in the image */}
                   <div className="flex justify-center space-x-6 text-sm">
-                      <div className="flex items-center space-x-2">
-                        <label htmlFor="test-api-switch" className="text-stone-700">Use Test API (for demo)</label>
-                        <input type="checkbox" id="test-api-switch" 
-                          // Toggle switch uses Amber accent
-                          className="form-switch h-5 w-10 appearance-none bg-stone-300 rounded-full transition-colors duration-200 ease-in-out cursor-pointer checked:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <label htmlFor="veg-mode-switch" className="text-stone-700">Vegetarian Mode</label>
-                        <input type="checkbox" id="veg-mode-switch" 
-                          // Toggle switch uses Amber accent
-                          className="form-switch h-5 w-10 appearance-none bg-stone-300 rounded-full transition-colors duration-200 ease-in-out cursor-pointer checked:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-                      </div>
+                    <div className="flex items-center space-x-2">
+                      <label
+                        htmlFor="test-api-switch"
+                        className="text-stone-700"
+                      >
+                        Use Test API (for demo)
+                      </label>
+                      <input
+                        type="checkbox"
+                        id="test-api-switch"
+                        // Toggle switch uses Amber accent
+                        className="form-switch h-5 w-10 appearance-none bg-stone-300 rounded-full transition-colors duration-200 ease-in-out cursor-pointer checked:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <label
+                        htmlFor="veg-mode-switch"
+                        className="text-stone-700"
+                      >
+                        Vegetarian Mode
+                      </label>
+                      <input
+                        type="checkbox"
+                        id="veg-mode-switch"
+                        // Toggle switch uses Amber accent
+                        className="form-switch h-5 w-10 appearance-none bg-stone-300 rounded-full transition-colors duration-200 ease-in-out cursor-pointer checked:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      />
+                    </div>
                   </div>
                 </div>
-                {error && <p className="text-red-500 text-center font-medium mt-4">{error}</p>}
+                {error && (
+                  <p className="text-red-500 text-center font-medium mt-4">
+                    {error}
+                  </p>
+                )}
               </form>
             </div>
           </div>
@@ -364,36 +639,67 @@ export default function DietPlannerAI() {
           {/* ===== Display Generated Plans (Column 3) ===== */}
           <div className="xl:col-span-1">
             {/* Section Title - Stone text */}
-            <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">Your Personalized Diet Plan</h2>
+            <h2 className="text-xl font-bold text-stone-800 mb-4 px-2">
+              Your Personalized Diet Plan
+            </h2>
             <div className="bg-white rounded-xl shadow-lg p-8 sticky top-8 border border-stone-200">
               {generatedPlans.length === 0 ? (
                 <div className="text-center p-10 bg-amber-50 rounded-lg border border-amber-200">
-                    {/* Placeholder content and icon using Amber/Stone theme */}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amber-500 mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-2h2v2zm0-4H9V7h2v6zm5-1.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S13.67 11 14.5 11s1.5.67 1.5 1.5z"/></svg>
-                    <p className="text-amber-700 font-medium">✨ Fill out your health profile to get your personalized diet plan!</p>
+                  {/* Placeholder content and icon using Amber/Stone theme */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 text-amber-500 mx-auto mb-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-2h2v2zm0-4H9V7h2v6zm5-1.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5S13.67 11 14.5 11s1.5.67 1.5 1.5z" />
+                  </svg>
+                  <p className="text-amber-700 font-medium">
+                    ✨ Fill out your health profile to get your personalized
+                    diet plan!
+                  </p>
                 </div>
               ) : (
                 generatedPlans.map((plan, idx) => (
                   <div key={idx} className="mb-6 border-b pb-4 last:border-b-0">
                     {/* Plan titles - Amber accent color */}
-                    <h3 className="text-lg font-bold text-amber-800 mb-2">{plan.title}</h3>
+                    <h3 className="text-lg font-bold text-amber-800 mb-2">
+                      {plan.title}
+                    </h3>
                     {/* Macro box - Amber accent theme */}
                     <div className="space-y-1 text-sm text-stone-700 mb-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
-                        <p><span className="font-semibold">Daily Calories:</span> {plan.dailyCalories} kcal</p>
-                        <p><span className="font-semibold">Macros:</span> Protein: {plan.macros.protein}, Carbs: {plan.macros.carbs}, Fats: {plan.macros.fats}</p>
+                      <p>
+                        <span className="font-semibold">Daily Calories:</span>{" "}
+                        {plan.dailyCalories} kcal
+                      </p>
+                      <p>
+                        <span className="font-semibold">Macros:</span> Protein:{" "}
+                        {plan.macros.protein}, Carbs: {plan.macros.carbs}, Fats:{" "}
+                        {plan.macros.fats}
+                      </p>
                     </div>
 
                     <div className="mt-4">
                       {/* H4 titles - Amber accent color */}
-                      <h4 className="font-bold text-amber-800 mb-2">📅 Weekly Plan Overview:</h4>
+                      <h4 className="font-bold text-amber-800 mb-2">
+                        📅 Weekly Plan Overview:
+                      </h4>
                       <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                         {plan.weeklyPlan.map((day) => (
-                          <div key={day.day} className="border border-stone-200 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
-                            <strong className="block text-stone-800 mb-1">{day.day}</strong>
+                          <div
+                            key={day.day}
+                            className="border border-stone-200 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                          >
+                            <strong className="block text-stone-800 mb-1">
+                              {day.day}
+                            </strong>
                             {day.meals.map((meal, i) => (
                               <div key={i} className="text-xs text-stone-700">
                                 {/* Meal type accent color - Amber */}
-                                <span className="font-medium text-amber-700">{meal.type}:</span> {meal.meal} ({meal.calories} kcal)
+                                <span className="font-medium text-amber-700">
+                                  {meal.type}:
+                                </span>{" "}
+                                {meal.meal} ({meal.calories} kcal)
                               </div>
                             ))}
                           </div>
@@ -402,11 +708,15 @@ export default function DietPlannerAI() {
                     </div>
 
                     <div className="mt-4">
-                        {/* H4 titles - Amber accent color */}
-                        <h4 className="font-bold text-amber-800 mb-2">💡 Nutrition Tips:</h4>
-                        <ul className="list-disc list-inside text-sm text-stone-700 space-y-1 ml-4">
-                            {plan.tips.map((tip, i) => <li key={i}>{tip}</li>)}
-                        </ul>
+                      {/* H4 titles - Amber accent color */}
+                      <h4 className="font-bold text-amber-800 mb-2">
+                        💡 Nutrition Tips:
+                      </h4>
+                      <ul className="list-disc list-inside text-sm text-stone-700 space-y-1 ml-4">
+                        {plan.tips.map((tip, i) => (
+                          <li key={i}>{tip}</li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 ))
@@ -419,8 +729,6 @@ export default function DietPlannerAI() {
     </div>
   );
 }
-
-
 
 // "use client";
 // import React, { useState } from "react";
@@ -440,7 +748,7 @@ export default function DietPlannerAI() {
 //     mealsPerDay: "3",
 //     duration: "7"
 //   });
-  
+
 //   const [isGenerating, setIsGenerating] = useState(false);
 //   const [generatedPlan, setGeneratedPlan] = useState(null);
 //   const [error, setError] = useState("");
@@ -473,11 +781,11 @@ export default function DietPlannerAI() {
 //     e.preventDefault();
 //     setIsGenerating(true);
 //     setError("");
-    
+
 //     try {
 //       // Simulated API call
 //       await new Promise(resolve => setTimeout(resolve, 3000));
-      
+
 //       // Mock diet plan generation
 //       const mockPlan = {
 //         dailyCalories: formData.goal === "lose" ? 1800 : formData.goal === "gain" ? 2500 : 2200,
@@ -495,7 +803,7 @@ export default function DietPlannerAI() {
 //           "Listen to your body's hunger cues"
 //         ]
 //       };
-      
+
 //       setGeneratedPlan(mockPlan);
 //     } catch (err) {
 //       setError("Failed to generate diet plan. Please try again.");
@@ -557,8 +865,8 @@ export default function DietPlannerAI() {
 //       meals: mealTypes.map(mealType => ({
 //         type: mealType,
 //         meal: sampleMeals[mealType][dayIndex % sampleMeals[mealType].length],
-//         calories: mealType === "Breakfast" ? 400 : 
-//                  mealType === "Lunch" ? 500 : 
+//         calories: mealType === "Breakfast" ? 400 :
+//                  mealType === "Lunch" ? 500 :
 //                  mealType === "Dinner" ? 600 : 200
 //       }))
 //     }));
@@ -588,7 +896,7 @@ export default function DietPlannerAI() {
 //           <div className="xl:col-span-2">
 //             <div className="bg-white rounded-2xl shadow-xl p-8">
 //               <h2 className="text-2xl font-bold text-green-800 mb-6">Personal Information</h2>
-              
+
 //               <form onSubmit={handleGeneratePlan} className="space-y-6">
 //                 {/* Basic Info */}
 //                 <div className="grid md:grid-cols-2 gap-6">
@@ -609,7 +917,7 @@ export default function DietPlannerAI() {
 //                       required
 //                     />
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="gender" className="block text-sm font-semibold text-green-700 mb-2">
 //                       Gender *
@@ -649,7 +957,7 @@ export default function DietPlannerAI() {
 //                       required
 //                     />
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="weight" className="block text-sm font-semibold text-green-700 mb-2">
 //                       Weight (kg) *
@@ -714,8 +1022,8 @@ export default function DietPlannerAI() {
 //                       { value: "gain", label: "Gain Weight", icon: "📈" }
 //                     ].map((goal) => (
 //                       <label key={goal.value} className={`cursor-pointer p-4 border-2 rounded-lg text-center transition-all ${
-//                         formData.goal === goal.value 
-//                           ? 'border-green-500 bg-green-50' 
+//                         formData.goal === goal.value
+//                           ? 'border-green-500 bg-green-50'
 //                           : 'border-green-200 hover:border-green-300'
 //                       }`}>
 //                         <input
@@ -790,7 +1098,7 @@ export default function DietPlannerAI() {
 //                       <option value="5">5 Meals (+ 2 Snacks)</option>
 //                     </select>
 //                   </div>
-                  
+
 //                   <div>
 //                     <label htmlFor="duration" className="block text-sm font-semibold text-green-700 mb-2">
 //                       Plan Duration
@@ -842,7 +1150,7 @@ export default function DietPlannerAI() {
 //           <div className="xl:col-span-1">
 //             <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-8">
 //               <h2 className="text-2xl font-bold text-green-800 mb-6">Your Diet Plan</h2>
-              
+
 //               {!generatedPlan ? (
 //                 <div className="text-center py-8">
 //                   <div className="text-6xl mb-4">🥗</div>

@@ -14,26 +14,28 @@ function NutritionAIPage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
   const [currentTheme, setCurrentTheme] = useState("light");
-  
-    useEffect(() => {
-      const observer = new MutationObserver(() => {
-        setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-      });
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["data-theme"],
-      });
-      setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-      return () => observer.disconnect();
-    }, []);
 
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setCurrentTheme(
+        document.documentElement.getAttribute("data-theme") || "light",
+      );
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    setCurrentTheme(
+      document.documentElement.getAttribute("data-theme") || "light",
+    );
+    return () => observer.disconnect();
+  }, []);
 
-    // dynamic tab title
-        
-          useEffect(()=>{
-            document.title='Flavor AI-Nutrition-AI'
-          },[])
-    
+  // dynamic tab title
+
+  useEffect(() => {
+    document.title = "Flavor AI-Nutrition-AI";
+  }, []);
 
   const fetchNutrition = async () => {
     if (!nutritionInput.trim()) return;
@@ -70,26 +72,42 @@ function NutritionAIPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 bg-base-100 flex flex-col pt-44 justify-center items-center relative transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
-        }`}>
-        <div style={{
-        position: 'absolute',
-        top: '85px',
-        left: '3px',
-      }} className="absolute"><BackButton/></div>
+      <div
+        className={`min-h-screen py-10 bg-base-100 flex flex-col pt-44 justify-center items-center relative transition-all duration-300 ${
+          showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: "85px",
+            left: "3px",
+          }}
+          className="absolute"
+        >
+          <BackButton />
+        </div>
 
         {/* Main Nutrition AI Section */}
 
-        <h1 className={`text-3xl font-bold mb-[50px] text-transparent bg-clip-text ${  currentTheme === "dark"
-            ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
-            : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600"
-        }`}
-        >AI-Powered Nutrition Analyzer</h1>
+        <h1
+          className={`text-3xl font-bold mb-[50px] text-transparent bg-clip-text ${
+            currentTheme === "dark"
+              ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+              : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600"
+          }`}
+        >
+          AI-Powered Nutrition Analyzer
+        </h1>
 
         <div className="w-full max-w-2xl p-6 rounded-xl shadow-lg bg-base-200 border border-base-300">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2 text-brown-700">🧬 Nutrition AI</h1>
-            <p className={`text-base-content/70`}>Analyze the nutritional content of your recipes and ingredients</p>
+            <h1 className="text-3xl font-bold mb-2 text-brown-700">
+              🧬 Nutrition AI
+            </h1>
+            <p className={`text-base-content/70`}>
+              Analyze the nutritional content of your recipes and ingredients
+            </p>
           </div>
 
           <textarea
@@ -104,7 +122,7 @@ function NutritionAIPage() {
             {/* Get Nutrition Info Button */}
             <button
               onClick={fetchNutrition}
-             disabled={loadingNutrition || !nutritionInput.trim()}
+              disabled={loadingNutrition || !nutritionInput.trim()}
               className={`btn btn-primary hover:bg-brown-700 text-white 
               ${currentTheme === "dark" ? "disabled:text-slate-500" : "disabled:text-black disabled:opacity-60"} flex-1`}
             >
@@ -131,8 +149,13 @@ function NutritionAIPage() {
                 <table className="w-full border border-base-300 rounded-lg">
                   <tbody>
                     {Object.entries(nutrition).map(([key, value]) => (
-                      <tr key={key} className="border-t border-base-300 hover:bg-base-50">
-                        <td className="p-3 font-semibold capitalize text-brown-600">{key}</td>
+                      <tr
+                        key={key}
+                        className="border-t border-base-300 hover:bg-base-50"
+                      >
+                        <td className="p-3 font-semibold capitalize text-brown-600">
+                          {key}
+                        </td>
                         <td className="p-3">{value}</td>
                       </tr>
                     ))}
@@ -153,8 +176,12 @@ function NutritionAIPage() {
             <h4 className="font-semibold text-white mb-2">How to use:</h4>
             <ul className="text-sm text-brown-700 space-y-1">
               <li>• Paste your recipe ingredients in the text area above</li>
-              <li>• Include quantities and measurements for accurate results</li>
-              <li>• Click "Get Nutrition Info" to analyze the nutritional content</li>
+              <li>
+                • Include quantities and measurements for accurate results
+              </li>
+              <li>
+                • Click "Get Nutrition Info" to analyze the nutritional content
+              </li>
               <li>• Results show nutrition facts per serving</li>
             </ul>
           </div>
@@ -166,4 +193,3 @@ function NutritionAIPage() {
 }
 
 export default NutritionAIPage;
-

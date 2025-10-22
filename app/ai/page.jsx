@@ -13,10 +13,10 @@ function Page() {
   const [showRecipe, setShowRecipe] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
-  // dynamic tab title     
-      useEffect(()=>{
-        document.title='Flavor AI-AI Powered Recipe Generator'
-      },[])
+  // dynamic tab title
+  useEffect(() => {
+    document.title = "Flavor AI-AI Powered Recipe Generator";
+  }, []);
 
   const formResetRef = useRef();
 
@@ -32,22 +32,23 @@ function Page() {
       formResetRef.current();
     }
   };
-  
 
   return (
-   <>
+    <>
       <Navbar
         showResults={showResults}
         setShowResults={setShowResults}
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${
-        showResults ? "opacity-80 blur-sm" : "opacity-100"
-      }`}>
+      <div
+        className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${
+          showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}
+      >
         <div className="no-print">
-  <BackButton />
-</div>
+          <BackButton />
+        </div>
 
         {showRecipe && recipe ? (
           <AiRecipe
@@ -67,10 +68,7 @@ function Page() {
         {!showRecipe && (
           <div className="flex space-x-4 mt-5">
             {/* Only show Clear button when not showing recipe */}
-            <button
-              className="btn btn-secondary btn-sm"
-              onClick={handleReset}
-            >
+            <button className="btn btn-secondary btn-sm" onClick={handleReset}>
               Clear
             </button>
 
@@ -85,12 +83,8 @@ function Page() {
             )}
           </div>
         )}
-
-
-</div>
+      </div>
       <Footer />
-
-      
     </>
   );
 }

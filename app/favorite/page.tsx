@@ -23,7 +23,6 @@ interface Category {
   strCategoryDescription: string;
 }
 
-
 const getMealType = (mealName: string) => {
   const nonVegKeywords = [
     "chicken",
@@ -36,17 +35,16 @@ const getMealType = (mealName: string) => {
     "pork",
     "lamb",
   ];
-  return nonVegKeywords.some((word) =>
-    mealName.toLowerCase().includes(word)
-  )
+  return nonVegKeywords.some((word) => mealName.toLowerCase().includes(word))
     ? "Non-Veg"
     : "Vegetarian";
 };
 
-
 const getCategoryType = (categoryName: string) => {
   const vegCategories = ["vegetarian", "vegan", "starter"];
-  return vegCategories.includes(categoryName.toLowerCase()) ? "Vegetarian" : "Non-Veg";
+  return vegCategories.includes(categoryName.toLowerCase())
+    ? "Vegetarian"
+    : "Non-Veg";
 };
 
 export default function FavoritesPage() {
@@ -58,11 +56,10 @@ export default function FavoritesPage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setShowResults(false);
 
-  // dynamic tab title      
-    useEffect(()=>{
-      document.title='Flavor AI-Favorite Meals'
-    },[])
-    
+  // dynamic tab title
+  useEffect(() => {
+    document.title = "Flavor AI-Favorite Meals";
+  }, []);
 
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
@@ -76,7 +73,6 @@ export default function FavoritesPage() {
     }
   }, []);
 
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -86,26 +82,23 @@ export default function FavoritesPage() {
         setCategories(data.categories || []);
       } catch (error) {
         console.error("Error fetching categories:", error);
-        setCategories([]); 
+        setCategories([]);
       }
     };
     fetchCategories();
   }, []);
 
- 
   const removeFavorite = (idMeal: string) => {
     const updatedFavorites = favorites.filter((meal) => meal.idMeal !== idMeal);
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
-
   const filteredFavorites = favorites.filter((meal) => {
     const type = getMealType(meal.strMeal);
     return filter === "All" || type === filter;
   });
 
-  
   const filteredCategories = categories.filter((category) => {
     const type = getCategoryType(category.strCategory);
     return filter === "All" || type === filter;
@@ -129,7 +122,6 @@ export default function FavoritesPage() {
           Your Favorite Meals 💖
         </h1>
 
-      
         <div className="flex justify-center gap-4 mb-8">
           {["All", "Vegetarian", "Non-Veg"].map((type) => (
             <button
@@ -142,12 +134,12 @@ export default function FavoritesPage() {
           ))}
         </div>
 
-      
         {favorites.length === 0 ? (
           <p className="text-center text-lg mb-6">No favorites yet!</p>
         ) : filteredFavorites.length === 0 ? (
           <p className="text-center text-lg mb-6">
-            No {filter === "Vegetarian" ? "vegetarian" : "non-vegetarian"} favorites yet!
+            No {filter === "Vegetarian" ? "vegetarian" : "non-vegetarian"}{" "}
+            favorites yet!
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center mb-16">
@@ -156,7 +148,6 @@ export default function FavoritesPage() {
                 key={meal.idMeal}
                 className="relative card w-80 lg:w-96 bg-base-200 shadow-xl rounded-2xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
               >
-             
                 <figure className="relative h-56 w-full">
                   <Image
                     src={meal.strMealThumb}
@@ -193,7 +184,6 @@ export default function FavoritesPage() {
           </div>
         )}
 
-        
         <section className="categories-section flex flex-col items-center justify-center p-5 md:p-10 w-full bg-base-200 rounded-lg shadow-lg">
           <h2 className="text-xl md:text-3xl text-base-content mb-10 font-semibold text-center">
             A Taste for Every Mood and Moment

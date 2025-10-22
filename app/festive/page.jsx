@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -17,14 +17,13 @@ export default function FestivePage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
-
   // dynamic tab title
-          
-  useEffect(()=>{
-    document.title='Flavor AI-Festive Dishes'
-  },[])
 
-// Updated filter for filtering based on festivals + difficulty 
+  useEffect(() => {
+    document.title = "Flavor AI-Festive Dishes";
+  }, []);
+
+  // Updated filter for filtering based on festivals + difficulty
   const filteredDishes = festivalDishes.filter((dish) => {
     const matchesFestival =
       selectedFestival === "All" || dish.festival === selectedFestival;
@@ -41,21 +40,27 @@ export default function FestivePage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div style={{
-        position: 'absolute',
-        top: '85px',
-        left: '3px',
-      }} className="absolute"><BackButton/></div>
-        
-      <div className={`min-h-screen bg-base-100 transition-all duration-300 ${
-        showResults ? "opacity-80 blur-sm" : "opacity-100"
-      }`}>
-     
+      <div
+        style={{
+          position: "absolute",
+          top: "85px",
+          left: "3px",
+        }}
+        className="absolute"
+      >
+        <BackButton />
+      </div>
+
+      <div
+        className={`min-h-screen bg-base-100 transition-all duration-300 ${
+          showResults ? "opacity-80 blur-sm" : "opacity-100"
+        }`}
+      >
         <div className="container mx-auto px-4 py-8 mt-36">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary mb-2">
-              Festival Recipes 
+              Festival Recipes
             </h1>
             <p className="text-base-content/70">
               Celebrate traditions with authentic festival dishes
@@ -71,7 +76,9 @@ export default function FestivePage() {
                   key={festival}
                   onClick={() => setSelectedFestival(festival)}
                   className={`btn btn-sm whitespace-nowrap ${
-                    selectedFestival === festival ? "btn-primary" : "btn-outline"
+                    selectedFestival === festival
+                      ? "btn-primary"
+                      : "btn-outline"
                   }`}
                 >
                   {festival}
@@ -86,7 +93,9 @@ export default function FestivePage() {
                   key={level}
                   onClick={() => setSelectedDifficulty(level)}
                   className={`btn btn-sm whitespace-nowrap ${
-                    selectedDifficulty === level ? "btn-secondary" : "btn-outline"
+                    selectedDifficulty === level
+                      ? "btn-secondary"
+                      : "btn-outline"
                   }`}
                 >
                   {level}

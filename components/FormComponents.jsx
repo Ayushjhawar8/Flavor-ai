@@ -11,7 +11,9 @@ export function SelectField({ label, name, options, register }) {
   return (
     <div className="form-control mb-4 min-w-64">
       <label className="label">
-        <span className="label-text text-base-content font-medium">{label}</span>
+        <span className="label-text text-base-content font-medium">
+          {label}
+        </span>
       </label>
       <select {...register(name)} className="select select-bordered w-full">
         {options.map((option) => (
@@ -24,7 +26,13 @@ export function SelectField({ label, name, options, register }) {
   );
 }
 
-export function CheckboxField({ label, name, options, register, descriptions = {} }) {
+export function CheckboxField({
+  label,
+  name,
+  options,
+  register,
+  descriptions = {},
+}) {
   return (
     <div className="form-control mb-4 ">
       <label>
@@ -45,7 +53,7 @@ export function CheckboxField({ label, name, options, register, descriptions = {
             />
             <div className="label-text text-base-content flex-1 ">
               {option}
-              <span style={{ display: 'none' }}>
+              <span style={{ display: "none" }}>
                 {descriptions[option] || ""}
               </span>
             </div>
@@ -123,7 +131,6 @@ export function InputField({ label, name, register, watch }) {
       </label>
 
       <div className="relative w-full flex items-center">
-
         <input
           type="text"
           {...register(name)}
@@ -134,8 +141,9 @@ export function InputField({ label, name, register, watch }) {
         <button
           type="button"
           onClick={startListening}
-          className={`absolute right-12 btn btn-circle btn-sm ${isListening ? "btn-secondary" : "btn-primary"
-            }`}
+          className={`absolute right-12 btn btn-circle btn-sm ${
+            isListening ? "btn-secondary" : "btn-primary"
+          }`}
         >
           {isListening ? <StopIcon /> : <MicrophoneIcon />}
         </button>
@@ -147,9 +155,7 @@ export function InputField({ label, name, register, watch }) {
         >
           <X />
         </button>
-
       </div>
-
     </div>
   );
 }

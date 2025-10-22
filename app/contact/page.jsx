@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Footer from '../../components/Footer';
-import Navbar from '../../components/Navbar';
-import BackButton from '../../components/BackButton';
-import { FiInstagram, FiMail, FiGithub } from 'react-icons/fi';
-import { FaXTwitter } from 'react-icons/fa6'; // ✅ Updated import for new "X" logo
+import React, { useEffect, useState } from "react";
+import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
+import BackButton from "../../components/BackButton";
+import { FiInstagram, FiMail, FiGithub } from "react-icons/fi";
+import { FaXTwitter } from "react-icons/fa6"; // ✅ Updated import for new "X" logo
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
   const [status, setStatus] = useState(null);
@@ -19,35 +19,33 @@ const ContactPage = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   // dynamic tab title
-        
-  useEffect(()=>{
-    document.title='Flavor AI-Contact Us'
-  },[])
-  
+
+  useEffect(() => {
+    document.title = "Flavor AI-Contact Us";
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.message) {
-      setStatus('All fields are required!');
+      setStatus("All fields are required!");
       return;
     }
 
-
-    setStatus('Sending...');
+    setStatus("Sending...");
 
     try {
-      console.log('Form submitted:', formData);
+      console.log("Form submitted:", formData);
 
-      setStatus('Message sent successfully!');
-      setFormData({ name: '', email: '', message: '' });
+      setStatus("Message sent successfully!");
+      setFormData({ name: "", email: "", message: "" });
     } catch (error) {
-      setStatus('Something went wrong. Please try again later.');
+      setStatus("Something went wrong. Please try again later.");
     }
   };
 
@@ -66,9 +64,12 @@ const ContactPage = () => {
         <div className="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 transition-all duration-300 ease-in-out">
           {/* Header Section */}
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold text-primary">Contact Us</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-primary">
+              Contact Us
+            </h1>
             <p className="text-base-content/70 mt-2 text-sm sm:text-base">
-              Have any questions or feedback? Reach out to us via email, or follow us on our social media channels.
+              Have any questions or feedback? Reach out to us via email, or
+              follow us on our social media channels.
             </p>
           </div>
 
@@ -101,7 +102,10 @@ const ContactPage = () => {
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300 flex items-center gap-2"
             >
-              <FaXTwitter size={30} className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300" />
+              <FaXTwitter
+                size={30}
+                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
+              />
               <span>Twitter</span>
             </a>
           </div>
@@ -114,7 +118,10 @@ const ContactPage = () => {
           )}
 
           {/* Form Section */}
-          <form className="w-full max-w-md mx-auto space-y-6" onSubmit={handleSubmit}>
+          <form
+            className="w-full max-w-md mx-auto space-y-6"
+            onSubmit={handleSubmit}
+          >
             <input
               type="text"
               name="name"
@@ -143,7 +150,7 @@ const ContactPage = () => {
               type="submit"
               className="w-full py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-800 transition-colors duration-300"
             >
-              {status === 'Sending...' ? 'Sending...' : 'Send Message'}
+              {status === "Sending..." ? "Sending..." : "Send Message"}
             </button>
           </form>
         </div>

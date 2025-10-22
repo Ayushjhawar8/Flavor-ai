@@ -48,7 +48,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
       attributeFilter: ["data-theme"],
     });
     setCurrentTheme(
-      document.documentElement.getAttribute("data-theme") || "dark"
+      document.documentElement.getAttribute("data-theme") || "dark",
     );
     return () => observer.disconnect();
   }, []);
@@ -87,7 +87,7 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
             (dish.type &&
               dish.type.toLowerCase().includes(value.toLowerCase())) ||
             (dish.description &&
-              dish.description.toLowerCase().includes(value.toLowerCase()))
+              dish.description.toLowerCase().includes(value.toLowerCase())),
         );
         setMeals([...apiMeals, ...customMeals]);
       });
@@ -191,11 +191,14 @@ const RecipeSearchBar: React.FC<RecipeSearchBarProps> = ({
         ? "#F5DEB3"
         : "#3a003a"
       : currentTheme === "dark"
-      ? "#E5E7EB"
-      : "#1a1a1a";
+        ? "#E5E7EB"
+        : "#1a1a1a";
 
   return (
-    <div id="searchBar" className={`relative w-full max-w-md ${className || ""}`}>
+    <div
+      id="searchBar"
+      className={`relative w-full max-w-md ${className || ""}`}
+    >
       {!isSearchOpen ? (
         <button
           onClick={() => {

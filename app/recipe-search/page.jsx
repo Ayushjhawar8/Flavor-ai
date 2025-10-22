@@ -10,7 +10,7 @@ export default function RecipeSearch() {
     difficulty: "",
     cookingTime: "",
     dietType: "",
-    sortBy: "relevance"
+    sortBy: "relevance",
   });
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -22,7 +22,8 @@ export default function RecipeSearch() {
     {
       id: 1,
       title: "Chicken Tikka Masala",
-      description: "Creamy and flavorful Indian curry with tender chicken pieces",
+      description:
+        "Creamy and flavorful Indian curry with tender chicken pieces",
       image: "🍛",
       category: "Indian",
       difficulty: "medium",
@@ -33,12 +34,13 @@ export default function RecipeSearch() {
       dietType: "non-vegetarian",
       ingredients: ["chicken breast", "yogurt", "tomatoes", "cream", "spices"],
       prepTime: "20 minutes",
-      tags: ["spicy", "creamy", "popular"]
+      tags: ["spicy", "creamy", "popular"],
     },
     {
       id: 2,
       title: "Avocado Toast Supreme",
-      description: "Healthy and delicious breakfast with fresh avocado and toppings",
+      description:
+        "Healthy and delicious breakfast with fresh avocado and toppings",
       image: "🥑",
       category: "Breakfast",
       difficulty: "easy",
@@ -49,7 +51,7 @@ export default function RecipeSearch() {
       dietType: "vegetarian",
       ingredients: ["avocado", "bread", "tomatoes", "lemon", "salt"],
       prepTime: "10 minutes",
-      tags: ["healthy", "quick", "fresh"]
+      tags: ["healthy", "quick", "fresh"],
     },
     {
       id: 3,
@@ -65,7 +67,7 @@ export default function RecipeSearch() {
       dietType: "vegetarian",
       ingredients: ["chocolate", "butter", "eggs", "sugar", "flour"],
       prepTime: "15 minutes",
-      tags: ["sweet", "rich", "indulgent"]
+      tags: ["sweet", "rich", "indulgent"],
     },
     {
       id: 4,
@@ -81,7 +83,7 @@ export default function RecipeSearch() {
       dietType: "vegan",
       ingredients: ["quinoa", "cucumber", "tomatoes", "olives", "feta"],
       prepTime: "15 minutes",
-      tags: ["healthy", "fresh", "colorful"]
+      tags: ["healthy", "fresh", "colorful"],
     },
     {
       id: 5,
@@ -97,7 +99,7 @@ export default function RecipeSearch() {
       dietType: "non-vegetarian",
       ingredients: ["beef", "vegetables", "soy sauce", "garlic", "ginger"],
       prepTime: "10 minutes",
-      tags: ["quick", "savory", "protein-rich"]
+      tags: ["quick", "savory", "protein-rich"],
     },
     {
       id: 6,
@@ -113,40 +115,43 @@ export default function RecipeSearch() {
       dietType: "vegetarian",
       ingredients: ["pizza dough", "tomato sauce", "mozzarella", "basil"],
       prepTime: "20 minutes",
-      tags: ["classic", "cheesy", "comfort"]
-    }
+      tags: ["classic", "cheesy", "comfort"],
+    },
   ];
 
   // dynamic tab title
-            
-    useEffect(()=>{
-      document.title='Flavor AI-Recipe Search'
-    },[])
 
+  useEffect(() => {
+    document.title = "Flavor AI-Recipe Search";
+  }, []);
 
   const handleSearch = async (query = searchQuery) => {
     setIsSearching(true);
     setHasSearched(true);
-    
+
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     // Filter recipes based on search query and filters
-    let results = mockRecipes.filter(recipe => {
-      const matchesQuery = query === "" || 
+    let results = mockRecipes.filter((recipe) => {
+      const matchesQuery =
+        query === "" ||
         recipe.title.toLowerCase().includes(query.toLowerCase()) ||
         recipe.description.toLowerCase().includes(query.toLowerCase()) ||
-        recipe.ingredients.some(ingredient => 
-          ingredient.toLowerCase().includes(query.toLowerCase())
+        recipe.ingredients.some((ingredient) =>
+          ingredient.toLowerCase().includes(query.toLowerCase()),
         ) ||
-        recipe.tags.some(tag => 
-          tag.toLowerCase().includes(query.toLowerCase())
+        recipe.tags.some((tag) =>
+          tag.toLowerCase().includes(query.toLowerCase()),
         );
 
-      const matchesCategory = filters.category === "" || recipe.category === filters.category;
-      const matchesDifficulty = filters.difficulty === "" || recipe.difficulty === filters.difficulty;
-      const matchesDietType = filters.dietType === "" || recipe.dietType === filters.dietType;
-      
+      const matchesCategory =
+        filters.category === "" || recipe.category === filters.category;
+      const matchesDifficulty =
+        filters.difficulty === "" || recipe.difficulty === filters.difficulty;
+      const matchesDietType =
+        filters.dietType === "" || recipe.dietType === filters.dietType;
+
       let matchesTime = true;
       if (filters.cookingTime) {
         const recipeTime = parseInt(recipe.cookingTime);
@@ -163,7 +168,13 @@ export default function RecipeSearch() {
         }
       }
 
-      return matchesQuery && matchesCategory && matchesDifficulty && matchesDietType && matchesTime;
+      return (
+        matchesQuery &&
+        matchesCategory &&
+        matchesDifficulty &&
+        matchesDietType &&
+        matchesTime
+      );
     });
 
     // Sort results
@@ -172,7 +183,9 @@ export default function RecipeSearch() {
         results.sort((a, b) => b.rating - a.rating);
         break;
       case "time":
-        results.sort((a, b) => parseInt(a.cookingTime) - parseInt(b.cookingTime));
+        results.sort(
+          (a, b) => parseInt(a.cookingTime) - parseInt(b.cookingTime),
+        );
         break;
       case "calories":
         results.sort((a, b) => a.calories - b.calories);
@@ -200,7 +213,7 @@ export default function RecipeSearch() {
       difficulty: "",
       cookingTime: "",
       dietType: "",
-      sortBy: "relevance"
+      sortBy: "relevance",
     });
     if (hasSearched) {
       handleSearch(searchQuery);
@@ -218,7 +231,8 @@ export default function RecipeSearch() {
               🔍 Recipe Search
             </h1>
             <p className="text-lg text-orange-700 max-w-3xl mx-auto">
-              Discover delicious recipes from around the world. Search by ingredients, cuisine, or dietary preferences!
+              Discover delicious recipes from around the world. Search by
+              ingredients, cuisine, or dietary preferences!
             </p>
           </div>
         </div>
@@ -234,7 +248,7 @@ export default function RecipeSearch() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search for recipes, ingredients, or cuisines..."
                   className="w-full p-4 pl-12 border-2 border-orange-200 rounded-lg focus:border-orange-500 focus:outline-none text-lg"
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-orange-400 text-xl">
                   🔍
@@ -269,7 +283,7 @@ export default function RecipeSearch() {
               Clear All
             </button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {/* Category Filter */}
             <div>
@@ -278,7 +292,7 @@ export default function RecipeSearch() {
               </label>
               <select
                 value={filters.category}
-                onChange={(e) => handleFilterChange('category', e.target.value)}
+                onChange={(e) => handleFilterChange("category", e.target.value)}
                 className="w-full p-3 border-2 border-orange-200 rounded-lg focus:border-orange-500 focus:outline-none"
               >
                 <option value="">All Categories</option>
@@ -298,7 +312,9 @@ export default function RecipeSearch() {
               </label>
               <select
                 value={filters.difficulty}
-                onChange={(e) => handleFilterChange('difficulty', e.target.value)}
+                onChange={(e) =>
+                  handleFilterChange("difficulty", e.target.value)
+                }
                 className="w-full p-3 border-2 border-orange-200 rounded-lg focus:border-orange-500 focus:outline-none"
               >
                 <option value="">Any Difficulty</option>
@@ -315,7 +331,9 @@ export default function RecipeSearch() {
               </label>
               <select
                 value={filters.cookingTime}
-                onChange={(e) => handleFilterChange('cookingTime', e.target.value)}
+                onChange={(e) =>
+                  handleFilterChange("cookingTime", e.target.value)
+                }
                 className="w-full p-3 border-2 border-orange-200 rounded-lg focus:border-orange-500 focus:outline-none"
               >
                 <option value="">Any Time</option>
@@ -332,7 +350,7 @@ export default function RecipeSearch() {
               </label>
               <select
                 value={filters.dietType}
-                onChange={(e) => handleFilterChange('dietType', e.target.value)}
+                onChange={(e) => handleFilterChange("dietType", e.target.value)}
                 className="w-full p-3 border-2 border-orange-200 rounded-lg focus:border-orange-500 focus:outline-none"
               >
                 <option value="">All Diets</option>
@@ -349,7 +367,7 @@ export default function RecipeSearch() {
               </label>
               <select
                 value={filters.sortBy}
-                onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+                onChange={(e) => handleFilterChange("sortBy", e.target.value)}
                 className="w-full p-3 border-2 border-orange-200 rounded-lg focus:border-orange-500 focus:outline-none"
               >
                 <option value="relevance">Relevance</option>
@@ -367,11 +385,14 @@ export default function RecipeSearch() {
             /* Initial State */
             <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
               <div className="text-8xl mb-6">🍳</div>
-              <h3 className="text-2xl font-bold text-orange-800 mb-4">Ready to Find Your Perfect Recipe?</h3>
+              <h3 className="text-2xl font-bold text-orange-800 mb-4">
+                Ready to Find Your Perfect Recipe?
+              </h3>
               <p className="text-orange-600 text-lg mb-8">
-                Use the search bar above to discover amazing recipes tailored to your taste!
+                Use the search bar above to discover amazing recipes tailored to
+                your taste!
               </p>
-              
+
               {/* Popular Categories */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-4xl mx-auto">
                 {[
@@ -380,7 +401,7 @@ export default function RecipeSearch() {
                   { name: "Healthy", emoji: "🥗", query: "healthy" },
                   { name: "Quick Meals", emoji: "⚡", query: "quick" },
                   { name: "Breakfast", emoji: "🍳", query: "breakfast" },
-                  { name: "Asian", emoji: "🍜", query: "asian" }
+                  { name: "Asian", emoji: "🍜", query: "asian" },
                 ].map((category) => (
                   <button
                     key={category.name}
@@ -391,7 +412,9 @@ export default function RecipeSearch() {
                     className="bg-orange-50 hover:bg-orange-100 border-2 border-orange-200 hover:border-orange-300 rounded-lg p-4 transition-all duration-300 hover:scale-105"
                   >
                     <div className="text-3xl mb-2">{category.emoji}</div>
-                    <div className="font-semibold text-orange-700">{category.name}</div>
+                    <div className="font-semibold text-orange-700">
+                      {category.name}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -400,7 +423,9 @@ export default function RecipeSearch() {
             /* No Results */
             <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
               <div className="text-6xl mb-4">😔</div>
-              <h3 className="text-2xl font-bold text-orange-800 mb-4">No Recipes Found</h3>
+              <h3 className="text-2xl font-bold text-orange-800 mb-4">
+                No Recipes Found
+              </h3>
               <p className="text-orange-600 text-lg mb-6">
                 Try adjusting your search terms or filters to find more recipes.
               </p>
@@ -420,11 +445,12 @@ export default function RecipeSearch() {
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-orange-800">
-                  Found {searchResults.length} recipe{searchResults.length !== 1 ? 's' : ''}
+                  Found {searchResults.length} recipe
+                  {searchResults.length !== 1 ? "s" : ""}
                   {searchQuery && ` for "${searchQuery}"`}
                 </h3>
               </div>
-              
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {searchResults.map((recipe) => (
                   <div
@@ -437,13 +463,19 @@ export default function RecipeSearch() {
                         <div className="text-4xl">{recipe.image}</div>
                         <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-full">
                           <span className="text-orange-500">⭐</span>
-                          <span className="text-sm font-semibold text-orange-700">{recipe.rating}</span>
+                          <span className="text-sm font-semibold text-orange-700">
+                            {recipe.rating}
+                          </span>
                         </div>
                       </div>
-                      
-                      <h4 className="text-xl font-bold text-orange-800 mb-2">{recipe.title}</h4>
-                      <p className="text-orange-600 text-sm mb-4 line-clamp-2">{recipe.description}</p>
-                      
+
+                      <h4 className="text-xl font-bold text-orange-800 mb-2">
+                        {recipe.title}
+                      </h4>
+                      <p className="text-orange-600 text-sm mb-4 line-clamp-2">
+                        {recipe.description}
+                      </p>
+
                       <div className="flex flex-wrap gap-2 mb-4">
                         {recipe.tags.slice(0, 3).map((tag) => (
                           <span
@@ -454,29 +486,39 @@ export default function RecipeSearch() {
                           </span>
                         ))}
                       </div>
-                      
+
                       <div className="grid grid-cols-3 gap-2 text-xs text-orange-600">
                         <div className="text-center">
-                          <div className="font-semibold">⏱️ {recipe.cookingTime}</div>
+                          <div className="font-semibold">
+                            ⏱️ {recipe.cookingTime}
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="font-semibold">👥 {recipe.servings} servings</div>
+                          <div className="font-semibold">
+                            👥 {recipe.servings} servings
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="font-semibold">🔥 {recipe.calories} cal</div>
+                          <div className="font-semibold">
+                            🔥 {recipe.calories} cal
+                          </div>
                         </div>
                       </div>
-                      
+
                       <div className="mt-4 pt-4 border-t border-orange-100">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-semibold text-orange-500 uppercase">
                             {recipe.category}
                           </span>
-                          <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                            recipe.difficulty === 'easy' ? 'bg-green-100 text-green-700' :
-                            recipe.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                            'bg-red-100 text-red-700'
-                          }`}>
+                          <span
+                            className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                              recipe.difficulty === "easy"
+                                ? "bg-green-100 text-green-700"
+                                : recipe.difficulty === "medium"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
                             {recipe.difficulty}
                           </span>
                         </div>
@@ -496,8 +538,12 @@ export default function RecipeSearch() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-orange-800">{selectedRecipe.title}</h3>
-                    <p className="text-orange-600 mt-2">{selectedRecipe.description}</p>
+                    <h3 className="text-2xl font-bold text-orange-800">
+                      {selectedRecipe.title}
+                    </h3>
+                    <p className="text-orange-600 mt-2">
+                      {selectedRecipe.description}
+                    </p>
                   </div>
                   <button
                     onClick={() => setSelectedRecipe(null)}
@@ -506,32 +552,47 @@ export default function RecipeSearch() {
                     ×
                   </button>
                 </div>
-                
-                <div className="text-6xl text-center mb-6">{selectedRecipe.image}</div>
-                
+
+                <div className="text-6xl text-center mb-6">
+                  {selectedRecipe.image}
+                </div>
+
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="text-center p-3 bg-orange-50 rounded-lg">
-                    <div className="text-orange-700 font-semibold">⏱️ Total Time</div>
-                    <div className="text-orange-800">{selectedRecipe.cookingTime}</div>
+                    <div className="text-orange-700 font-semibold">
+                      ⏱️ Total Time
+                    </div>
+                    <div className="text-orange-800">
+                      {selectedRecipe.cookingTime}
+                    </div>
                   </div>
                   <div className="text-center p-3 bg-orange-50 rounded-lg">
-                    <div className="text-orange-700 font-semibold">👥 Servings</div>
-                    <div className="text-orange-800">{selectedRecipe.servings}</div>
+                    <div className="text-orange-700 font-semibold">
+                      👥 Servings
+                    </div>
+                    <div className="text-orange-800">
+                      {selectedRecipe.servings}
+                    </div>
                   </div>
                 </div>
-                
+
                 <div className="mb-6">
-                  <h4 className="text-lg font-bold text-orange-800 mb-3">🥄 Ingredients:</h4>
+                  <h4 className="text-lg font-bold text-orange-800 mb-3">
+                    🥄 Ingredients:
+                  </h4>
                   <ul className="space-y-2">
                     {selectedRecipe.ingredients.map((ingredient, index) => (
-                      <li key={index} className="flex items-center gap-2 text-orange-700">
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-orange-700"
+                      >
                         <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                         {ingredient}
                       </li>
                     ))}
                   </ul>
                 </div>
-                
+
                 <div className="flex gap-3">
                   <button className="flex-1 bg-orange-100 text-orange-700 py-3 px-4 rounded-lg hover:bg-orange-200 transition-colors">
                     📋 Save Recipe

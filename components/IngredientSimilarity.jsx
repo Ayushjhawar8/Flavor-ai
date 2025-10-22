@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { MagnifyingGlassIcon, SparklesIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { useState } from "react";
+import {
+  MagnifyingGlassIcon,
+  SparklesIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
 
 /**
  * IngredientSimilarity Component
- * 
+ *
  * Demonstrates the graph-based ingredient similarity model with:
  * - Ingredient input and search
  * - Complementary ingredient suggestions
@@ -13,45 +17,45 @@ import { MagnifyingGlassIcon, SparklesIcon, ArrowPathIcon } from '@heroicons/rea
  * - Pairing analysis with reasoning
  */
 export default function IngredientSimilarity() {
-  const [ingredients, setIngredients] = useState('');
-  const [action, setAction] = useState('pairing');
+  const [ingredients, setIngredients] = useState("");
+  const [action, setAction] = useState("pairing");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!ingredients.trim()) {
-      setError('Please enter at least one ingredient');
+      setError("Please enter at least one ingredient");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const ingredientList = ingredients
-        .split(',')
-        .map(ing => ing.trim())
-        .filter(ing => ing.length > 0);
+        .split(",")
+        .map((ing) => ing.trim())
+        .filter((ing) => ing.length > 0);
 
-      const response = await fetch('/api/ingredient-similarity', {
-        method: 'POST',
+      const response = await fetch("/api/ingredient-similarity", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ingredients: ingredientList,
           action,
-          limit: 5
+          limit: 5,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to get ingredient suggestions');
+        throw new Error(data.error || "Failed to get ingredient suggestions");
       }
 
       setResults(data);
@@ -64,9 +68,9 @@ export default function IngredientSimilarity() {
   };
 
   const handleClear = () => {
-    setIngredients('');
+    setIngredients("");
     setResults(null);
-    setError('');
+    setError("");
   };
 
   return (
@@ -77,16 +81,19 @@ export default function IngredientSimilarity() {
           Ingredient Similarity Explorer
         </h1>
         <p className="text-lg text-amber-600 max-w-2xl mx-auto">
-          Discover ingredient pairings, substitutes, and complementary flavors using our 
-          graph-based similarity model. Enter ingredients to get AI-powered suggestions! 🔗
+          Discover ingredient pairings, substitutes, and complementary flavors
+          using our graph-based similarity model. Enter ingredients to get
+          AI-powered suggestions! 🔗
         </p>
       </div>
-      
-      <div className="bg-white rounded-2xl shadow-xl p-8">
 
+      <div className="bg-white rounded-2xl shadow-xl p-8">
         <form onSubmit={handleSubmit} className="space-y-6 mb-8">
           <div>
-            <label htmlFor="ingredients" className="block text-sm font-semibold text-amber-700 mb-2">
+            <label
+              htmlFor="ingredients"
+              className="block text-sm font-semibold text-amber-700 mb-2"
+            >
               Ingredients *
             </label>
             <textarea
@@ -100,7 +107,10 @@ export default function IngredientSimilarity() {
           </div>
 
           <div>
-            <label htmlFor="action" className="block text-sm font-semibold text-amber-700 mb-2">
+            <label
+              htmlFor="action"
+              className="block text-sm font-semibold text-amber-700 mb-2"
+            >
               Analysis Type
             </label>
             <select
@@ -126,7 +136,7 @@ export default function IngredientSimilarity() {
               ) : (
                 <MagnifyingGlassIcon className="h-5 w-5" />
               )}
-              {loading ? 'Analyzing...' : 'Analyze Ingredients'}
+              {loading ? "Analyzing..." : "Analyze Ingredients"}
             </button>
             <button
               type="button"
@@ -169,8 +179,13 @@ export default function IngredientSimilarity() {
                 </h3>
                 <div className="grid gap-3">
                   {results.complementary.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-green-100 rounded-lg border border-green-200">
-                      <span className="text-green-800 font-semibold">{item.ingredient}</span>
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-3 bg-green-100 rounded-lg border border-green-200"
+                    >
+                      <span className="text-green-800 font-semibold">
+                        {item.ingredient}
+                      </span>
                       <span className="text-green-700 text-sm font-medium bg-green-200 px-2 py-1 rounded-full">
                         {Math.round(item.score * 100)}% match
                       </span>
@@ -187,8 +202,13 @@ export default function IngredientSimilarity() {
                 </h3>
                 <div className="grid gap-3">
                   {results.substitutes.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-blue-100 rounded-lg border border-blue-200">
-                      <span className="text-blue-800 font-semibold">{item.ingredient}</span>
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-3 bg-blue-100 rounded-lg border border-blue-200"
+                    >
+                      <span className="text-blue-800 font-semibold">
+                        {item.ingredient}
+                      </span>
                       <span className="text-blue-700 text-sm font-medium bg-blue-200 px-2 py-1 rounded-full">
                         {Math.round(item.score * 100)}% match
                       </span>
@@ -203,7 +223,9 @@ export default function IngredientSimilarity() {
                 <h3 className="text-xl font-bold text-yellow-800 mb-4 flex items-center gap-2">
                   🧠 AI Reasoning
                 </h3>
-                <p className="text-yellow-800 leading-relaxed">{results.reasoning}</p>
+                <p className="text-yellow-800 leading-relaxed">
+                  {results.reasoning}
+                </p>
               </div>
             )}
           </div>
@@ -216,15 +238,27 @@ export default function IngredientSimilarity() {
           <div className="text-sm text-amber-700 space-y-3">
             <p className="flex items-start gap-2">
               <span className="text-amber-600 font-bold">•</span>
-              <span><strong>Graph Structure:</strong> Each ingredient is a node connected by edges representing flavor compatibility, culinary traditions, and substitutability.</span>
+              <span>
+                <strong>Graph Structure:</strong> Each ingredient is a node
+                connected by edges representing flavor compatibility, culinary
+                traditions, and substitutability.
+              </span>
             </p>
             <p className="flex items-start gap-2">
               <span className="text-amber-600 font-bold">•</span>
-              <span><strong>Similarity Calculation:</strong> Uses graph traversal algorithms to find paths between ingredients and calculate similarity scores.</span>
+              <span>
+                <strong>Similarity Calculation:</strong> Uses graph traversal
+                algorithms to find paths between ingredients and calculate
+                similarity scores.
+              </span>
             </p>
             <p className="flex items-start gap-2">
               <span className="text-amber-600 font-bold">•</span>
-              <span><strong>Pairing Logic:</strong> Combines flavor profiles, culinary traditions, and co-occurrence patterns for innovative suggestions.</span>
+              <span>
+                <strong>Pairing Logic:</strong> Combines flavor profiles,
+                culinary traditions, and co-occurrence patterns for innovative
+                suggestions.
+              </span>
             </p>
           </div>
         </div>

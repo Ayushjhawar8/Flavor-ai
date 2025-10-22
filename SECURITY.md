@@ -8,10 +8,10 @@ Thank you for your interest in keeping the `Flavor AI` project secure. This docu
 
 We aim to keep `Flavor AI` up to date and secure. Please see below for the versions we currently support with security updates.
 
-| Version | Supported          |
-|---------|--------------------|
-| Latest  | ✅ Yes              |
-| Older   | ❌ No               |
+| Version | Supported |
+| ------- | --------- |
+| Latest  | ✅ Yes    |
+| Older   | ❌ No     |
 
 ---
 
@@ -35,6 +35,7 @@ Instead, follow these steps:
 ## 🚫 Responsible Disclosure Guidelines
 
 We ask that you:
+
 - Do not publicly disclose the issue until it has been resolved.
 - Avoid testing vulnerabilities in a way that could disrupt services.
 - Act in good faith and with respect for user data and privacy.
@@ -45,6 +46,7 @@ We ask that you:
 
 - We follow a **coordinated disclosure** approach.
 - We appreciate responsible reporting and will publicly disclose the issue only **after a fix has been released**.
+
 ---
 
 ## 🔄 Security Fixes & Releases

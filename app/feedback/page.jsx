@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import BackButton from '@/components/BackButton';
+import React, { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BackButton from "@/components/BackButton";
 
 const FeedbackPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    feedbackType: 'General Feedback',
-    message: '',
+    name: "",
+    email: "",
+    feedbackType: "General Feedback",
+    message: "",
   });
 
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
 
   // dynamic tab title
-                  
-    useEffect(()=>{
-      document.title='Flavor AI-Feedback'
-    },[])
+
+  useEffect(() => {
+    document.title = "Flavor AI-Feedback";
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,36 +33,40 @@ const FeedbackPage = () => {
     e.preventDefault();
 
     if (!formData.message.trim()) {
-      setStatus('Error: The message field cannot be empty.');
+      setStatus("Error: The message field cannot be empty.");
       return;
     }
 
-    setStatus('Submitting...');
+    setStatus("Submitting...");
 
     try {
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-        method: 'POST',
+      const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        setStatus('Thank you for your feedback! We appreciate you helping us improve.');
+        setStatus(
+          "Thank you for your feedback! We appreciate you helping us improve.",
+        );
         setFormData({
-          name: '',
-          email: '',
-          feedbackType: 'General Feedback',
-          message: '',
+          name: "",
+          email: "",
+          feedbackType: "General Feedback",
+          message: "",
         });
       } else {
-        throw new Error('Form submission failed.');
+        throw new Error("Form submission failed.");
       }
     } catch (error) {
-      setStatus('Oops! There was a problem submitting your form. Please try again later.');
-      console.error('Submission Error:', error);
+      setStatus(
+        "Oops! There was a problem submitting your form. Please try again later.",
+      );
+      console.error("Submission Error:", error);
     }
   };
 
@@ -84,9 +88,12 @@ const FeedbackPage = () => {
         <div className="w-full max-w-2xl bg-base-100 rounded-2xl shadow-xl p-8 space-y-6 border border-base-300 transition-all duration-300 ease-in-out">
           {/* Header Section */}
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-primary">Share Your Thoughts</h1>
+            <h1 className="text-4xl font-bold text-primary">
+              Share Your Thoughts
+            </h1>
             <p className="text-base-content/70 mt-2">
-              We'd love to hear from you! Your feedback helps us improve Flavor AI.
+              We'd love to hear from you! Your feedback helps us improve Flavor
+              AI.
             </p>
           </div>
 
@@ -139,7 +146,9 @@ const FeedbackPage = () => {
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Message</span>
-                <span className="label-text-alt text-error font-semibold">* Required</span>
+                <span className="label-text-alt text-error font-semibold">
+                  * Required
+                </span>
               </label>
               <textarea
                 name="message"
@@ -154,15 +163,15 @@ const FeedbackPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full text-base"
-              disabled={status === 'Submitting...'}
+              disabled={status === "Submitting..."}
             >
-              {status === 'Submitting...' ? (
+              {status === "Submitting..." ? (
                 <>
                   <span className="loading loading-spinner"></span>
                   Sending...
                 </>
               ) : (
-                'Submit Feedback'
+                "Submit Feedback"
               )}
             </button>
           </form>
@@ -171,9 +180,9 @@ const FeedbackPage = () => {
             <div className="text-center pt-4">
               <p
                 className={`font-semibold ${
-                  status.includes('Error') || status.includes('Oops')
-                    ? 'text-error'
-                    : 'text-success'
+                  status.includes("Error") || status.includes("Oops")
+                    ? "text-error"
+                    : "text-success"
                 }`}
               >
                 {status}

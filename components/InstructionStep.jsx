@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 // This component handles the visual word-by-word highlighting simulation.
 function InstructionStep({ text, number, isActive }) {
   const [highlightedWordIndex, setHighlightedWordIndex] = useState(-1);
-  const words = text.split(' ');
+  const words = text.split(" ");
   const timeouts = useRef([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function InstructionStep({ text, number, isActive }) {
         if (wordIndex < words.length) {
           setHighlightedWordIndex(wordIndex);
           // Estimate word duration based on length. Adjust these numbers to change speed.
-          const duration = words[wordIndex].length * 90 + 150; 
+          const duration = words[wordIndex].length * 90 + 150;
           const timeoutId = setTimeout(highlightNextWord, duration);
           timeouts.current.push(timeoutId);
           wordIndex++;
@@ -26,7 +26,7 @@ function InstructionStep({ text, number, isActive }) {
           setHighlightedWordIndex(-1);
         }
       };
-      
+
       highlightNextWord();
     }
 
@@ -40,10 +40,13 @@ function InstructionStep({ text, number, isActive }) {
   }, [isActive, text]); // Dependency array ensures this only runs when needed.
 
   return (
-    <li className={`recipe-step ${isActive ? 'active-sentence' : ''}`}>
+    <li className={`recipe-step ${isActive ? "active-sentence" : ""}`}>
       {words.map((word, index) => (
-        <span key={index} className={index === highlightedWordIndex ? 'speaking-word' : ''}>
-          {word}{' '}
+        <span
+          key={index}
+          className={index === highlightedWordIndex ? "speaking-word" : ""}
+        >
+          {word}{" "}
         </span>
       ))}
     </li>

@@ -25,55 +25,57 @@ export default function UploadRecipeNew() {
       protein: "",
       carbs: "",
       fat: "",
-      fiber: ""
-    }
+      fiber: "",
+    },
   });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-   // dynamic tab title
-              
-      useEffect(()=>{
-        document.title='Flavor AI-Share Your Recipes'
-      },[])
+  // dynamic tab title
+
+  useEffect(() => {
+    document.title = "Flavor AI-Share Your Recipes";
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setFormData(prev => ({
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData((prev) => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value
-        }
+          [child]: value,
+        },
       }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleArrayChange = (index, value, arrayName) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [arrayName]: prev[arrayName].map((item, i) => i === index ? value : item)
+      [arrayName]: prev[arrayName].map((item, i) =>
+        i === index ? value : item,
+      ),
     }));
   };
 
   const addArrayItem = (arrayName) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [arrayName]: [...prev[arrayName], ""]
+      [arrayName]: [...prev[arrayName], ""],
     }));
   };
 
   const removeArrayItem = (index, arrayName) => {
     if (formData[arrayName].length > 1) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [arrayName]: prev[arrayName].filter((_, i) => i !== index)
+        [arrayName]: prev[arrayName].filter((_, i) => i !== index),
       }));
     }
   };
@@ -83,7 +85,7 @@ export default function UploadRecipeNew() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setFormData(prev => ({ ...prev, recipeImage: e.target.result }));
+        setFormData((prev) => ({ ...prev, recipeImage: e.target.result }));
       };
       reader.readAsDataURL(file);
     }
@@ -95,16 +97,19 @@ export default function UploadRecipeNew() {
     switch (step) {
       case 1:
         if (!formData.title) newErrors.title = "Recipe title is required";
-        if (!formData.description) newErrors.description = "Description is required";
+        if (!formData.description)
+          newErrors.description = "Description is required";
         if (!formData.category) newErrors.category = "Category is required";
         if (!formData.prepTime) newErrors.prepTime = "Prep time is required";
         if (!formData.cookTime) newErrors.cookTime = "Cook time is required";
         break;
       case 2:
-        if (formData.ingredients.some(ing => !ing.trim())) newErrors.ingredients = "All ingredients must be filled";
+        if (formData.ingredients.some((ing) => !ing.trim()))
+          newErrors.ingredients = "All ingredients must be filled";
         break;
       case 3:
-        if (formData.instructions.some(inst => !inst.trim())) newErrors.instructions = "All instructions must be filled";
+        if (formData.instructions.some((inst) => !inst.trim()))
+          newErrors.instructions = "All instructions must be filled";
         break;
     }
 
@@ -114,19 +119,19 @@ export default function UploadRecipeNew() {
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     }
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => prev - 1);
+    setCurrentStep((prev) => prev - 1);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateStep(currentStep)) {
       setIsSubmitting(true);
-      
+
       // Simulate API call
       setTimeout(() => {
         alert("Recipe uploaded successfully! 🎉");
@@ -153,8 +158,8 @@ export default function UploadRecipeNew() {
             protein: "",
             carbs: "",
             fat: "",
-            fiber: ""
-          }
+            fiber: "",
+          },
         });
         setCurrentStep(1);
       }, 2000);
@@ -165,21 +170,22 @@ export default function UploadRecipeNew() {
     { number: 1, title: "Basic Info" },
     { number: 2, title: "Ingredients" },
     { number: 3, title: "Instructions" },
-    { number: 4, title: "Final Details" }
+    { number: 4, title: "Final Details" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 p-4">
       <div className="max-w-4xl mx-auto">
         <BackButton />
-        
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-amber-800 mb-4">
             Share Your Recipe ✨
           </h1>
           <p className="text-lg text-amber-600 max-w-2xl mx-auto">
-            Join our community of food lovers! Share your favorite recipes and inspire others to create delicious meals.
+            Join our community of food lovers! Share your favorite recipes and
+            inspire others to create delicious meals.
           </p>
         </div>
 
@@ -188,37 +194,55 @@ export default function UploadRecipeNew() {
           <div className="flex items-center justify-center space-x-4">
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${
-                  currentStep >= step.number 
-                    ? 'bg-amber-600 text-white' 
-                    : 'bg-amber-200 text-amber-600'
-                }`}>
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${
+                    currentStep >= step.number
+                      ? "bg-amber-600 text-white"
+                      : "bg-amber-200 text-amber-600"
+                  }`}
+                >
                   {step.number}
                 </div>
-                <span className={`ml-2 text-sm font-medium ${
-                  currentStep >= step.number ? 'text-amber-800' : 'text-amber-500'
-                }`}>
+                <span
+                  className={`ml-2 text-sm font-medium ${
+                    currentStep >= step.number
+                      ? "text-amber-800"
+                      : "text-amber-500"
+                  }`}
+                >
                   {step.title}
                 </span>
                 {index < steps.length - 1 && (
-                  <div className={`w-8 h-0.5 ml-4 ${
-                    currentStep > step.number ? 'bg-amber-600' : 'bg-amber-200'
-                  }`}></div>
+                  <div
+                    className={`w-8 h-0.5 ml-4 ${
+                      currentStep > step.number
+                        ? "bg-amber-600"
+                        : "bg-amber-200"
+                    }`}
+                  ></div>
                 )}
               </div>
             ))}
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow-xl p-8"
+        >
           {/* Step 1: Basic Information */}
           {currentStep === 1 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-amber-800 mb-6">Basic Recipe Information</h2>
-              
+              <h2 className="text-2xl font-bold text-amber-800 mb-6">
+                Basic Recipe Information
+              </h2>
+
               {/* Recipe Title */}
               <div>
-                <label htmlFor="title" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Recipe Title *
                 </label>
                 <input
@@ -228,25 +252,41 @@ export default function UploadRecipeNew() {
                   value={formData.title}
                   onChange={handleInputChange}
                   className={`w-full p-4 border-2 rounded-lg focus:outline-none ${
-                    errors.title ? 'border-red-400 focus:border-red-500' : 'border-amber-200 focus:border-amber-500'
+                    errors.title
+                      ? "border-red-400 focus:border-red-500"
+                      : "border-amber-200 focus:border-amber-500"
                   }`}
                   placeholder="Enter your recipe title..."
                 />
-                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+                {errors.title && (
+                  <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+                )}
               </div>
 
               {/* Recipe Image */}
               <div>
-                <label htmlFor="recipeImage" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="recipeImage"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Recipe Image
                 </label>
                 <div className="border-2 border-dashed border-amber-300 rounded-lg p-8 text-center">
                   {formData.recipeImage ? (
                     <div className="space-y-4">
-                      <img src={formData.recipeImage} alt="Recipe preview" className="mx-auto max-h-48 rounded-lg" />
+                      <img
+                        src={formData.recipeImage}
+                        alt="Recipe preview"
+                        className="mx-auto max-h-48 rounded-lg"
+                      />
                       <button
                         type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, recipeImage: null }))}
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            recipeImage: null,
+                          }))
+                        }
                         className="text-amber-600 hover:text-amber-800"
                       >
                         Remove Image
@@ -270,7 +310,9 @@ export default function UploadRecipeNew() {
                         >
                           Upload Image
                         </label>
-                        <p className="text-sm text-amber-600 mt-2">JPG, PNG, or GIF (max 5MB)</p>
+                        <p className="text-sm text-amber-600 mt-2">
+                          JPG, PNG, or GIF (max 5MB)
+                        </p>
                       </div>
                     </div>
                   )}
@@ -279,7 +321,10 @@ export default function UploadRecipeNew() {
 
               {/* Description */}
               <div>
-                <label htmlFor="description" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Description *
                 </label>
                 <textarea
@@ -289,17 +334,26 @@ export default function UploadRecipeNew() {
                   onChange={handleInputChange}
                   rows={4}
                   className={`w-full p-4 border-2 rounded-lg focus:outline-none resize-none ${
-                    errors.description ? 'border-red-400 focus:border-red-500' : 'border-amber-200 focus:border-amber-500'
+                    errors.description
+                      ? "border-red-400 focus:border-red-500"
+                      : "border-amber-200 focus:border-amber-500"
                   }`}
                   placeholder="Describe your recipe, what makes it special..."
                 />
-                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+                {errors.description && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.description}
+                  </p>
+                )}
               </div>
 
               {/* Category and Cuisine */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="category" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Category *
                   </label>
                   <select
@@ -308,7 +362,9 @@ export default function UploadRecipeNew() {
                     value={formData.category}
                     onChange={handleInputChange}
                     className={`w-full p-4 border-2 rounded-lg focus:outline-none ${
-                      errors.category ? 'border-red-400 focus:border-red-500' : 'border-amber-200 focus:border-amber-500'
+                      errors.category
+                        ? "border-red-400 focus:border-red-500"
+                        : "border-amber-200 focus:border-amber-500"
                     }`}
                   >
                     <option value="">Select Category</option>
@@ -323,11 +379,18 @@ export default function UploadRecipeNew() {
                     <option value="salad">Salad</option>
                     <option value="soup">Soup</option>
                   </select>
-                  {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
+                  {errors.category && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.category}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label htmlFor="cuisine" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="cuisine"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Cuisine
                   </label>
                   <select
@@ -355,7 +418,10 @@ export default function UploadRecipeNew() {
               {/* Timing */}
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <label htmlFor="prepTime" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="prepTime"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Prep Time (minutes) *
                   </label>
                   <input
@@ -365,16 +431,25 @@ export default function UploadRecipeNew() {
                     value={formData.prepTime}
                     onChange={handleInputChange}
                     className={`w-full p-4 border-2 rounded-lg focus:outline-none ${
-                      errors.prepTime ? 'border-red-400 focus:border-red-500' : 'border-amber-200 focus:border-amber-500'
+                      errors.prepTime
+                        ? "border-red-400 focus:border-red-500"
+                        : "border-amber-200 focus:border-amber-500"
                     }`}
                     placeholder="15"
                     min="0"
                   />
-                  {errors.prepTime && <p className="text-red-500 text-sm mt-1">{errors.prepTime}</p>}
+                  {errors.prepTime && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.prepTime}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label htmlFor="cookTime" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="cookTime"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Cook Time (minutes) *
                   </label>
                   <input
@@ -384,16 +459,25 @@ export default function UploadRecipeNew() {
                     value={formData.cookTime}
                     onChange={handleInputChange}
                     className={`w-full p-4 border-2 rounded-lg focus:outline-none ${
-                      errors.cookTime ? 'border-red-400 focus:border-red-500' : 'border-amber-200 focus:border-amber-500'
+                      errors.cookTime
+                        ? "border-red-400 focus:border-red-500"
+                        : "border-amber-200 focus:border-amber-500"
                     }`}
                     placeholder="30"
                     min="0"
                   />
-                  {errors.cookTime && <p className="text-red-500 text-sm mt-1">{errors.cookTime}</p>}
+                  {errors.cookTime && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.cookTime}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label htmlFor="servings" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="servings"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Servings
                   </label>
                   <input
@@ -411,7 +495,10 @@ export default function UploadRecipeNew() {
 
               {/* Difficulty */}
               <div>
-                <label htmlFor="difficulty" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="difficulty"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Difficulty Level
                 </label>
                 <select
@@ -432,8 +519,10 @@ export default function UploadRecipeNew() {
           {/* Step 2: Ingredients */}
           {currentStep === 2 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-amber-800 mb-6">Ingredients</h2>
-              
+              <h2 className="text-2xl font-bold text-amber-800 mb-6">
+                Ingredients
+              </h2>
+
               <div>
                 <label className="block text-sm font-semibold text-amber-700 mb-4">
                   Recipe Ingredients * (Include quantities and measurements)
@@ -444,13 +533,19 @@ export default function UploadRecipeNew() {
                       <input
                         type="text"
                         value={ingredient}
-                        onChange={(e) => handleArrayChange(index, e.target.value, 'ingredients')}
+                        onChange={(e) =>
+                          handleArrayChange(
+                            index,
+                            e.target.value,
+                            "ingredients",
+                          )
+                        }
                         className="flex-1 p-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none"
                         placeholder={`Ingredient ${index + 1} (e.g., 2 cups flour, 1 tsp salt)`}
                       />
                       <button
                         type="button"
-                        onClick={() => removeArrayItem(index, 'ingredients')}
+                        onClick={() => removeArrayItem(index, "ingredients")}
                         className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         disabled={formData.ingredients.length === 1}
                       >
@@ -460,12 +555,16 @@ export default function UploadRecipeNew() {
                   ))}
                   <button
                     type="button"
-                    onClick={() => addArrayItem('ingredients')}
+                    onClick={() => addArrayItem("ingredients")}
                     className="w-full p-3 border-2 border-dashed border-amber-300 rounded-lg text-amber-600 hover:bg-amber-50 transition-colors"
                   >
                     + Add Ingredient
                   </button>
-                  {errors.ingredients && <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>}
+                  {errors.ingredients && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.ingredients}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -474,8 +573,10 @@ export default function UploadRecipeNew() {
           {/* Step 3: Instructions */}
           {currentStep === 3 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-amber-800 mb-6">Cooking Instructions</h2>
-              
+              <h2 className="text-2xl font-bold text-amber-800 mb-6">
+                Cooking Instructions
+              </h2>
+
               <div>
                 <label className="block text-sm font-semibold text-amber-700 mb-4">
                   Step-by-Step Instructions *
@@ -489,7 +590,13 @@ export default function UploadRecipeNew() {
                       <div className="flex-1">
                         <textarea
                           value={instruction}
-                          onChange={(e) => handleArrayChange(index, e.target.value, 'instructions')}
+                          onChange={(e) =>
+                            handleArrayChange(
+                              index,
+                              e.target.value,
+                              "instructions",
+                            )
+                          }
                           className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none resize-none"
                           rows={3}
                           placeholder={`Step ${index + 1}: Describe what to do...`}
@@ -497,7 +604,7 @@ export default function UploadRecipeNew() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => removeArrayItem(index, 'instructions')}
+                        onClick={() => removeArrayItem(index, "instructions")}
                         className="flex-shrink-0 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors mt-2"
                         disabled={formData.instructions.length === 1}
                       >
@@ -507,12 +614,16 @@ export default function UploadRecipeNew() {
                   ))}
                   <button
                     type="button"
-                    onClick={() => addArrayItem('instructions')}
+                    onClick={() => addArrayItem("instructions")}
                     className="w-full p-3 border-2 border-dashed border-amber-300 rounded-lg text-amber-600 hover:bg-amber-50 transition-colors"
                   >
                     + Add Step
                   </button>
-                  {errors.instructions && <p className="text-red-500 text-sm mt-1">{errors.instructions}</p>}
+                  {errors.instructions && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.instructions}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -521,12 +632,17 @@ export default function UploadRecipeNew() {
           {/* Step 4: Final Details */}
           {currentStep === 4 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-amber-800 mb-6">Final Details</h2>
-              
+              <h2 className="text-2xl font-bold text-amber-800 mb-6">
+                Final Details
+              </h2>
+
               {/* Tags and Diet Type */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="tags" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="tags"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Tags (comma separated)
                   </label>
                   <input
@@ -541,7 +657,10 @@ export default function UploadRecipeNew() {
                 </div>
 
                 <div>
-                  <label htmlFor="dietType" className="block text-sm font-semibold text-amber-700 mb-2">
+                  <label
+                    htmlFor="dietType"
+                    className="block text-sm font-semibold text-amber-700 mb-2"
+                  >
                     Diet Type
                   </label>
                   <select
@@ -566,10 +685,15 @@ export default function UploadRecipeNew() {
 
               {/* Nutrition Information */}
               <div>
-                <h3 className="text-lg font-semibold text-amber-800 mb-4">Nutrition Information (Optional)</h3>
+                <h3 className="text-lg font-semibold text-amber-800 mb-4">
+                  Nutrition Information (Optional)
+                </h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
-                    <label htmlFor="calories" className="block text-sm font-semibold text-amber-700 mb-2">
+                    <label
+                      htmlFor="calories"
+                      className="block text-sm font-semibold text-amber-700 mb-2"
+                    >
                       Calories per serving
                     </label>
                     <input
@@ -585,7 +709,10 @@ export default function UploadRecipeNew() {
                   </div>
 
                   <div>
-                    <label htmlFor="nutritionInfo.protein" className="block text-sm font-semibold text-amber-700 mb-2">
+                    <label
+                      htmlFor="nutritionInfo.protein"
+                      className="block text-sm font-semibold text-amber-700 mb-2"
+                    >
                       Protein (g)
                     </label>
                     <input
@@ -601,7 +728,10 @@ export default function UploadRecipeNew() {
                   </div>
 
                   <div>
-                    <label htmlFor="nutritionInfo.carbs" className="block text-sm font-semibold text-amber-700 mb-2">
+                    <label
+                      htmlFor="nutritionInfo.carbs"
+                      className="block text-sm font-semibold text-amber-700 mb-2"
+                    >
                       Carbs (g)
                     </label>
                     <input
@@ -617,7 +747,10 @@ export default function UploadRecipeNew() {
                   </div>
 
                   <div>
-                    <label htmlFor="nutritionInfo.fat" className="block text-sm font-semibold text-amber-700 mb-2">
+                    <label
+                      htmlFor="nutritionInfo.fat"
+                      className="block text-sm font-semibold text-amber-700 mb-2"
+                    >
                       Fat (g)
                     </label>
                     <input
@@ -636,7 +769,10 @@ export default function UploadRecipeNew() {
 
               {/* Cooking Tips */}
               <div>
-                <label htmlFor="tips" className="block text-sm font-semibold text-amber-700 mb-2">
+                <label
+                  htmlFor="tips"
+                  className="block text-sm font-semibold text-amber-700 mb-2"
+                >
                   Cooking Tips & Notes (Optional)
                 </label>
                 <textarea
@@ -697,7 +833,9 @@ export default function UploadRecipeNew() {
 
         {/* Tips Section */}
         <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-amber-800 mb-4">💡 Recipe Upload Tips</h3>
+          <h3 className="text-lg font-semibold text-amber-800 mb-4">
+            💡 Recipe Upload Tips
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 text-sm text-amber-700">
             <div className="space-y-2">
               <p>• Use clear, step-by-step instructions</p>

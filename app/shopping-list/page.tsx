@@ -44,11 +44,12 @@ export default function ShoppingListPage() {
 
   const copyText = useMemo(() => {
     return items
-      .map((it) =>
-        [it.qty, it.unit].filter(Boolean).join(" ") +
-        (it.qty || it.unit ? " " : "") +
-        it.name +
-        (it.note ? ` — ${it.note}` : "")
+      .map(
+        (it) =>
+          [it.qty, it.unit].filter(Boolean).join(" ") +
+          (it.qty || it.unit ? " " : "") +
+          it.name +
+          (it.note ? ` — ${it.note}` : ""),
       )
       .join("\n");
   }, [items]);
@@ -122,7 +123,9 @@ export default function ShoppingListPage() {
 
         {!hasItems ? (
           <div className="alert">
-            <span>Your shopping list is empty. Add ingredients from a recipe.</span>
+            <span>
+              Your shopping list is empty. Add ingredients from a recipe.
+            </span>
           </div>
         ) : (
           <>
@@ -146,7 +149,9 @@ export default function ShoppingListPage() {
                         <div className="flex flex-col">
                           <span className="font-medium">{it.name}</span>
                           {it.note && (
-                            <span className="text-xs opacity-70">{it.note}</span>
+                            <span className="text-xs opacity-70">
+                              {it.note}
+                            </span>
                           )}
                         </div>
                       </td>
@@ -181,14 +186,20 @@ export default function ShoppingListPage() {
                         </div>
                         <div className="text-sm opacity-80">
                           <span className="mr-2">
-                            Qty: <span className="font-medium">{it.qty ?? "-"}</span>
+                            Qty:{" "}
+                            <span className="font-medium">{it.qty ?? "-"}</span>
                           </span>
                           <span>
-                            Unit: <span className="font-medium">{it.unit ?? "-"}</span>
+                            Unit:{" "}
+                            <span className="font-medium">
+                              {it.unit ?? "-"}
+                            </span>
                           </span>
                         </div>
                         {it.note && (
-                          <div className="mt-1 text-xs opacity-70">{it.note}</div>
+                          <div className="mt-1 text-xs opacity-70">
+                            {it.note}
+                          </div>
                         )}
                       </div>
                       <button

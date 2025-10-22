@@ -5,7 +5,7 @@ export const SearchIcon = ({ className }) => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 16 16"
     fill="currentColor"
-    className={`w-4 h-4 opacity-70 ${className || ''}`}
+    className={`w-4 h-4 opacity-70 ${className || ""}`}
   >
     <path
       fillRule="evenodd"
@@ -68,8 +68,8 @@ export const BackIcon = () => (
     viewBox="0 0 24 24"
     className="text-base-content"
   >
-    <path 
-      d="M20 11H7.41l2.29-2.29A1 1 0 1 0 8.29 7.29L3.71 12l4.59 4.59a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z" 
+    <path
+      d="M20 11H7.41l2.29-2.29A1 1 0 1 0 8.29 7.29L3.71 12l4.59 4.59a1 1 0 0 0 1.42-1.42L7.41 13H20a1 1 0 0 0 0-2z"
       className="fill-current"
     />
   </svg>

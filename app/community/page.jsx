@@ -18,12 +18,11 @@ export default function CommunityPage() {
   const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => setTimeout(() => setShowResults(false), 200);
 
-
   // dynamic tab title
 
-  useEffect(()=>{
-    document.title='Flavor AI-Community'
-  },[])
+  useEffect(() => {
+    document.title = "Flavor AI-Community";
+  }, []);
 
   useEffect(() => {
     // Seed sample data on first visit
@@ -31,11 +30,9 @@ export default function CommunityPage() {
       seedSampleRecipes();
       setRecipes(getCommunityRecipes());
     });
-    
+
     setCurrentUser(getCurrentUser());
   }, []);
-
-
 
   return (
     <div className="relative flex flex-col min-h-screen">
@@ -45,11 +42,16 @@ export default function CommunityPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div style={{
-        position: 'absolute',
-        top: '85px',
-        left: '3px',
-      }} className="absolute"><BackButton/></div>
+      <div
+        style={{
+          position: "absolute",
+          top: "85px",
+          left: "3px",
+        }}
+        className="absolute"
+      >
+        <BackButton />
+      </div>
 
       <div
         className={`flex-grow bg-base-100 transition-all duration-300 ${

@@ -4,12 +4,16 @@ import { useCallback, useEffect, useState } from "react";
 import { ShareIcon } from "@heroicons/react/24/solid";
 
 type Props = {
-  title: string;          // recipe name
+  title: string; // recipe name
   className?: string;
   ariaLabel?: string;
 };
 
-export default function ShareButton({ title, className = "", ariaLabel }: Props) {
+export default function ShareButton({
+  title,
+  className = "",
+  ariaLabel,
+}: Props) {
   const [copied, setCopied] = useState(false);
   const [shareSupported, setShareSupported] = useState(false);
 
@@ -36,7 +40,9 @@ export default function ShareButton({ title, className = "", ariaLabel }: Props)
         await navigator.clipboard.writeText(url);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
-      } catch {/* ignore */}
+      } catch {
+        /* ignore */
+      }
     }
   }, [shareSupported, title]);
 

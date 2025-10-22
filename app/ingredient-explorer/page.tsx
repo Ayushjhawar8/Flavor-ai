@@ -1,252 +1,311 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
-import { Mic, MicOff, Plus, X, Clock, Users, ChefHat, Sparkles } from "lucide-react"
-import Navbar from "@/components/Navbar"
-import BackButton from "@/components/BackButton"
-import Footer from "@/components/Footer"
+import { useState, useRef, useEffect } from "react";
+import {
+  Mic,
+  MicOff,
+  Plus,
+  X,
+  Clock,
+  Users,
+  ChefHat,
+  Sparkles,
+} from "lucide-react";
+import Navbar from "@/components/Navbar";
+import BackButton from "@/components/BackButton";
+import Footer from "@/components/Footer";
 
 interface Recipe {
-  id: string
-  title: string
-  image: string
-  prepTime: string
-  difficulty: "Easy" | "Medium" | "Hard"
-  missingIngredients: string[]
-  availableIngredients: string[]
-  description: string
-  servings: number
-  ingredients: string[]
-  instructions: string[]
-  cuisine: string
-  calories?: number
+  id: string;
+  title: string;
+  image: string;
+  prepTime: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  missingIngredients: string[];
+  availableIngredients: string[];
+  description: string;
+  servings: number;
+  ingredients: string[];
+  instructions: string[];
+  cuisine: string;
+  calories?: number;
 }
 
 export default function IngredientExplorer() {
-  const [ingredients, setIngredients] = useState<string[]>([])
-  const [inputValue, setInputValue] = useState("")
-  const [isListening, setIsListening] = useState(false)
-  const [recipes, setRecipes] = useState<Recipe[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [savedSets, setSavedSets] = useState<{ name: string; ingredients: string[] }[]>([])
-  const [showSavedSets, setShowSavedSets] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [speechSupported, setSpeechSupported] = useState(false)
-  const [showResults, setShowResults] = useState(false)
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
-  const recognitionRef = useRef<any>(null)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [savedSets, setSavedSets] = useState<
+    { name: string; ingredients: string[] }[]
+  >([]);
+  const [showSavedSets, setShowSavedSets] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSearchFocus = () => setShowResults(true)
+  const handleSearchFocus = () => setShowResults(true);
   const handleBlur = () => {
-    setTimeout(() => setShowResults(false), 200)
-  }
+    setTimeout(() => setShowResults(false), 200);
+  };
 
-   // dynamic tab title     
-    useEffect(()=>{
-      document.title='Flavor AI-Ingredient Explorer'
-    },[])
+  // dynamic tab title
+  useEffect(() => {
+    document.title = "Flavor AI-Ingredient Explorer";
+  }, []);
 
   useEffect(() => {
     try {
-      if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
-        const recognition = new (window as any).webkitSpeechRecognition()
-        recognition.continuous = false
-        recognition.interimResults = false
-        recognition.lang = "en-US"
+      if (
+        typeof window !== "undefined" &&
+        "webkitSpeechRecognition" in window
+      ) {
+        const recognition = new (window as any).webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
 
         recognition.onresult = (event: any) => {
           try {
-            const transcript = event.results[0][0].transcript
+            const transcript = event.results[0][0].transcript;
             const newIngredients = transcript
               .split(/[,\s]+/)
               .map((item: string) => item.trim())
-              .filter((item: string) => item.length > 0)
+              .filter((item: string) => item.length > 0);
 
-            setIngredients((prev) => [...new Set([...prev, ...newIngredients])])
-            setIsListening(false)
-            setError(null)
+            setIngredients((prev) => [
+              ...new Set([...prev, ...newIngredients]),
+            ]);
+            setIsListening(false);
+            setError(null);
           } catch (err) {
-            console.error("Speech recognition result error:", err)
-            setError("Failed to process speech input")
-            setIsListening(false)
+            console.error("Speech recognition result error:", err);
+            setError("Failed to process speech input");
+            setIsListening(false);
           }
-        }
+        };
 
         recognition.onerror = (event: any) => {
-          console.error("Speech recognition error:", event.error)
-          setError(`Speech recognition error: ${event.error}`)
-          setIsListening(false)
-        }
+          console.error("Speech recognition error:", event.error);
+          setError(`Speech recognition error: ${event.error}`);
+          setIsListening(false);
+        };
 
         recognition.onend = () => {
-          setIsListening(false)
-        }
+          setIsListening(false);
+        };
 
-        recognitionRef.current = recognition
-        setSpeechSupported(true)
+        recognitionRef.current = recognition;
+        setSpeechSupported(true);
       } else {
-        setSpeechSupported(false)
+        setSpeechSupported(false);
       }
     } catch (err) {
-      console.error("Speech recognition initialization error:", err)
-      setSpeechSupported(false)
+      console.error("Speech recognition initialization error:", err);
+      setSpeechSupported(false);
     }
 
     return () => {
       if (recognitionRef.current) {
         try {
-          recognitionRef.current.stop()
+          recognitionRef.current.stop();
         } catch (err) {
-          console.error("Error stopping speech recognition:", err)
+          console.error("Error stopping speech recognition:", err);
         }
       }
       if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
+        clearTimeout(timeoutRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const addIngredient = () => {
     if (inputValue.trim() && !ingredients.includes(inputValue.trim())) {
-      setIngredients([...ingredients, inputValue.trim()])
-      setInputValue("")
-      setError(null)
+      setIngredients([...ingredients, inputValue.trim()]);
+      setInputValue("");
+      setError(null);
     }
-  }
+  };
 
   const removeIngredient = (ingredient: string) => {
-    setIngredients(ingredients.filter((item) => item !== ingredient))
-  }
+    setIngredients(ingredients.filter((item) => item !== ingredient));
+  };
 
   const startListening = () => {
     if (!speechSupported) {
-      setError("Speech recognition is not supported in your browser")
-      return
+      setError("Speech recognition is not supported in your browser");
+      return;
     }
 
     if (recognitionRef.current) {
       try {
-        setIsListening(true)
-        setError(null)
-        recognitionRef.current.start()
+        setIsListening(true);
+        setError(null);
+        recognitionRef.current.start();
       } catch (err) {
-        console.error("Error starting speech recognition:", err)
-        setError("Failed to start speech recognition")
-        setIsListening(false)
+        console.error("Error starting speech recognition:", err);
+        setError("Failed to start speech recognition");
+        setIsListening(false);
       }
     }
-  }
+  };
 
   const stopListening = () => {
     if (recognitionRef.current) {
       try {
-        recognitionRef.current.stop()
+        recognitionRef.current.stop();
       } catch (err) {
-        console.error("Error stopping speech recognition:", err)
+        console.error("Error stopping speech recognition:", err);
       }
     }
-    setIsListening(false)
-  }
+    setIsListening(false);
+  };
 
   const getRecipeImage = (recipeName: string, cuisine = "") => {
     const cleanName = recipeName
       .toLowerCase()
       .replace(/[^a-z0-9\s]/g, "")
-      .replace(/\s+/g, "+")
+      .replace(/\s+/g, "+");
 
     // Comprehensive food image mapping for world cuisines
     const imageMap: { [key: string]: string } = {
       // Indian Cuisine
-      "dal+tadka": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
-      "aloo+gobi": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&h=600&fit=crop&q=80",
-      "paneer+makhani": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=800&h=600&fit=crop&q=80",
-      "rajma+curry": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&h=600&fit=crop&q=80",
-      "poha+breakfast": "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800&h=600&fit=crop&q=80",
-      "chole+bhature": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&h=600&fit=crop&q=80",
-      "vegetable+biryani": "https://images.unsplash.com/photo-1563379091339-03246963d51a?w=800&h=600&fit=crop&q=80",
-      "sambar+south+indian": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
+      "dal+tadka":
+        "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
+      "aloo+gobi":
+        "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&h=600&fit=crop&q=80",
+      "paneer+makhani":
+        "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=800&h=600&fit=crop&q=80",
+      "rajma+curry":
+        "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&h=600&fit=crop&q=80",
+      "poha+breakfast":
+        "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=800&h=600&fit=crop&q=80",
+      "chole+bhature":
+        "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&h=600&fit=crop&q=80",
+      "vegetable+biryani":
+        "https://images.unsplash.com/photo-1563379091339-03246963d51a?w=800&h=600&fit=crop&q=80",
+      "sambar+south+indian":
+        "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
 
       // Italian Cuisine
-      "spaghetti+carbonara": "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=800&h=600&fit=crop&q=80",
-      "margherita+pizza": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop&q=80",
-      risotto: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=800&h=600&fit=crop&q=80",
-      lasagna: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=800&h=600&fit=crop&q=80",
+      "spaghetti+carbonara":
+        "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=800&h=600&fit=crop&q=80",
+      "margherita+pizza":
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop&q=80",
+      risotto:
+        "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=800&h=600&fit=crop&q=80",
+      lasagna:
+        "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=800&h=600&fit=crop&q=80",
 
       // Chinese Cuisine
-      "fried+rice": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800&h=600&fit=crop&q=80",
+      "fried+rice":
+        "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800&h=600&fit=crop&q=80",
       "sweet+and+sour+chicken":
         "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&h=600&fit=crop&q=80",
-      "kung+pao+chicken": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&q=80",
-      dumplings: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&h=600&fit=crop&q=80",
+      "kung+pao+chicken":
+        "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&q=80",
+      dumplings:
+        "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=800&h=600&fit=crop&q=80",
 
       // Mexican Cuisine
-      "chicken+tacos": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop&q=80",
-      "cheese+quesadilla": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=600&fit=crop&q=80",
-      burrito: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&h=600&fit=crop&q=80",
-      guacamole: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=800&h=600&fit=crop&q=80",
+      "chicken+tacos":
+        "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop&q=80",
+      "cheese+quesadilla":
+        "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=600&fit=crop&q=80",
+      burrito:
+        "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&h=600&fit=crop&q=80",
+      guacamole:
+        "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=800&h=600&fit=crop&q=80",
 
       // Thai Cuisine
-      "pad+thai": "https://images.unsplash.com/photo-1559314809-0f31657def5e?w=800&h=600&fit=crop&q=80",
-      "green+curry+chicken": "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800&h=600&fit=crop&q=80",
-      "tom+yum": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&q=80",
+      "pad+thai":
+        "https://images.unsplash.com/photo-1559314809-0f31657def5e?w=800&h=600&fit=crop&q=80",
+      "green+curry+chicken":
+        "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800&h=600&fit=crop&q=80",
+      "tom+yum":
+        "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&q=80",
 
       // American Cuisine
-      "classic+burger": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=600&fit=crop&q=80",
-      "mac+and+cheese": "https://images.unsplash.com/photo-1543826173-1ad64b6ac3c8?w=800&h=600&fit=crop&q=80",
-      "bbq+ribs": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=600&fit=crop&q=80",
+      "classic+burger":
+        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=600&fit=crop&q=80",
+      "mac+and+cheese":
+        "https://images.unsplash.com/photo-1543826173-1ad64b6ac3c8?w=800&h=600&fit=crop&q=80",
+      "bbq+ribs":
+        "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=600&fit=crop&q=80",
 
       // Japanese Cuisine
-      "chicken+teriyaki": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
-      sushi: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&q=80",
-      ramen: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&q=80",
+      "chicken+teriyaki":
+        "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
+      sushi:
+        "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&q=80",
+      ramen:
+        "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&q=80",
 
       // Mediterranean Cuisine
-      "greek+salad": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&h=600&fit=crop&q=80",
-      hummus: "https://images.unsplash.com/photo-1571197119282-621c1aff6aca?w=800&h=600&fit=crop&q=80",
+      "greek+salad":
+        "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&h=600&fit=crop&q=80",
+      hummus:
+        "https://images.unsplash.com/photo-1571197119282-621c1aff6aca?w=800&h=600&fit=crop&q=80",
 
       // French Cuisine
-      ratatouille: "https://images.unsplash.com/photo-1572441713132-51c75654db73?w=800&h=600&fit=crop&q=80",
-      "coq+au+vin": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
-    }
+      ratatouille:
+        "https://images.unsplash.com/photo-1572441713132-51c75654db73?w=800&h=600&fit=crop&q=80",
+      "coq+au+vin":
+        "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop&q=80",
+    };
 
     // Check for exact match first
-    const exactMatch = imageMap[cleanName]
-    if (exactMatch) return exactMatch
+    const exactMatch = imageMap[cleanName];
+    if (exactMatch) return exactMatch;
 
     // Check for partial matches
     for (const [key, value] of Object.entries(imageMap)) {
-      if (cleanName.includes(key.replace(/\+/g, " ")) || key.includes(cleanName.replace(/\+/g, " "))) {
-        return value
+      if (
+        cleanName.includes(key.replace(/\+/g, " ")) ||
+        key.includes(cleanName.replace(/\+/g, " "))
+      ) {
+        return value;
       }
     }
 
     // Cuisine-specific fallback images
     const cuisineFallbacks: { [key: string]: string } = {
-      indian: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&h=600&fit=crop&q=80",
-      italian: "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=800&h=600&fit=crop&q=80",
-      chinese: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800&h=600&fit=crop&q=80",
-      mexican: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop&q=80",
+      indian:
+        "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&h=600&fit=crop&q=80",
+      italian:
+        "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=800&h=600&fit=crop&q=80",
+      chinese:
+        "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800&h=600&fit=crop&q=80",
+      mexican:
+        "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop&q=80",
       thai: "https://images.unsplash.com/photo-1559314809-0f31657def5e?w=800&h=600&fit=crop&q=80",
-      american: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=600&fit=crop&q=80",
-      japanese: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&q=80",
-      mediterranean: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&h=600&fit=crop&q=80",
-      french: "https://images.unsplash.com/photo-1572441713132-51c75654db73?w=800&h=600&fit=crop&q=80",
-    }
+      american:
+        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=600&fit=crop&q=80",
+      japanese:
+        "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&q=80",
+      mediterranean:
+        "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&h=600&fit=crop&q=80",
+      french:
+        "https://images.unsplash.com/photo-1572441713132-51c75654db73?w=800&h=600&fit=crop&q=80",
+    };
 
     // Use cuisine-specific fallback
-    const cuisineFallback = cuisineFallbacks[cuisine.toLowerCase()]
-    if (cuisineFallback) return cuisineFallback
+    const cuisineFallback = cuisineFallbacks[cuisine.toLowerCase()];
+    if (cuisineFallback) return cuisineFallback;
 
     // Default fallback
-    return "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&q=80"
-  }
+    return "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&q=80";
+  };
 
   const generateRecipes = async () => {
-    if (ingredients.length === 0) return
+    if (ingredients.length === 0) return;
 
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
       const recipeDatabase: Recipe[] = [
@@ -259,7 +318,8 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "A comforting lentil curry with aromatic spices - the heart of Indian home cooking! 🇮🇳💛",
+          description:
+            "A comforting lentil curry with aromatic spices - the heart of Indian home cooking! 🇮🇳💛",
           servings: 4,
           cuisine: "Indian",
           calories: 180,
@@ -298,7 +358,8 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Classic potato and cauliflower curry - simple yet incredibly satisfying! 🥔🥬",
+          description:
+            "Classic potato and cauliflower curry - simple yet incredibly satisfying! 🥔🥬",
           servings: 4,
           cuisine: "Indian",
           calories: 150,
@@ -338,7 +399,8 @@ export default function IngredientExplorer() {
           difficulty: "Medium",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Rich, creamy, and absolutely divine! Restaurant-style paneer in tomato-butter gravy 🧈🧀",
+          description:
+            "Rich, creamy, and absolutely divine! Restaurant-style paneer in tomato-butter gravy 🧈🧀",
           servings: 4,
           cuisine: "Indian",
           calories: 320,
@@ -377,7 +439,8 @@ export default function IngredientExplorer() {
           difficulty: "Hard",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Aromatic rice dish layered with spiced vegetables - a royal feast! 👑🍚",
+          description:
+            "Aromatic rice dish layered with spiced vegetables - a royal feast! 👑🍚",
           servings: 6,
           cuisine: "Indian",
           calories: 350,
@@ -422,7 +485,8 @@ export default function IngredientExplorer() {
           difficulty: "Medium",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Classic Roman pasta with eggs, cheese, and pancetta - pure Italian comfort! 🇮🇹🍝",
+          description:
+            "Classic Roman pasta with eggs, cheese, and pancetta - pure Italian comfort! 🇮🇹🍝",
           servings: 4,
           cuisine: "Italian",
           calories: 450,
@@ -456,7 +520,8 @@ export default function IngredientExplorer() {
           difficulty: "Medium",
           missingIngredients: [],
           availableIngredients: [],
-          description: "The queen of pizzas with fresh tomatoes, mozzarella, and basil! 🍕👑",
+          description:
+            "The queen of pizzas with fresh tomatoes, mozzarella, and basil! 🍕👑",
           servings: 2,
           cuisine: "Italian",
           calories: 380,
@@ -531,7 +596,8 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Quick and satisfying Chinese-style fried rice with vegetables and eggs! 🇨🇳🍚",
+          description:
+            "Quick and satisfying Chinese-style fried rice with vegetables and eggs! 🇨🇳🍚",
           servings: 4,
           cuisine: "Chinese",
           calories: 280,
@@ -569,7 +635,8 @@ export default function IngredientExplorer() {
           difficulty: "Medium",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Spicy Sichuan chicken with peanuts and vegetables! 🌶️🥜",
+          description:
+            "Spicy Sichuan chicken with peanuts and vegetables! 🌶️🥜",
           servings: 4,
           cuisine: "Chinese",
           calories: 380,
@@ -610,7 +677,8 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Flavorful Mexican chicken tacos with fresh toppings! 🇲🇽🌮",
+          description:
+            "Flavorful Mexican chicken tacos with fresh toppings! 🇲🇽🌮",
           servings: 4,
           cuisine: "Mexican",
           calories: 320,
@@ -649,11 +717,22 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Creamy avocado dip with lime and cilantro - perfect for chips! 🥑🌿",
+          description:
+            "Creamy avocado dip with lime and cilantro - perfect for chips! 🥑🌿",
           servings: 4,
           cuisine: "Mexican",
           calories: 160,
-          ingredients: ["avocados", "lime", "onion", "tomatoes", "garlic", "cilantro", "jalapeño", "salt", "pepper"],
+          ingredients: [
+            "avocados",
+            "lime",
+            "onion",
+            "tomatoes",
+            "garlic",
+            "cilantro",
+            "jalapeño",
+            "salt",
+            "pepper",
+          ],
           instructions: [
             "Cut avocados in half, remove pits, and scoop into a bowl.",
             "Mash avocados with a fork, leaving some chunks for texture.",
@@ -675,7 +754,8 @@ export default function IngredientExplorer() {
           difficulty: "Medium",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Thailand's most famous noodle dish with sweet, sour, and savory flavors! 🇹🇭🍜",
+          description:
+            "Thailand's most famous noodle dish with sweet, sour, and savory flavors! 🇹🇭🍜",
           servings: 4,
           cuisine: "Thai",
           calories: 350,
@@ -868,7 +948,8 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Deconstructed sushi in a bowl - all the flavors, easier to make! 🍣🥢",
+          description:
+            "Deconstructed sushi in a bowl - all the flavors, easier to make! 🍣🥢",
           servings: 2,
           cuisine: "Japanese",
           calories: 320,
@@ -908,7 +989,8 @@ export default function IngredientExplorer() {
           difficulty: "Easy",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Fresh Mediterranean salad with feta, olives, and herbs! 🇬🇷🥗",
+          description:
+            "Fresh Mediterranean salad with feta, olives, and herbs! 🇬🇷🥗",
           servings: 4,
           cuisine: "Mediterranean",
           calories: 180,
@@ -949,7 +1031,17 @@ export default function IngredientExplorer() {
           servings: 6,
           cuisine: "Mediterranean",
           calories: 140,
-          ingredients: ["chickpeas", "tahini", "lemon", "garlic", "olive oil", "cumin", "salt", "paprika", "parsley"],
+          ingredients: [
+            "chickpeas",
+            "tahini",
+            "lemon",
+            "garlic",
+            "olive oil",
+            "cumin",
+            "salt",
+            "paprika",
+            "parsley",
+          ],
           instructions: [
             "Drain and rinse chickpeas, reserve some liquid.",
             "In a food processor, blend garlic until minced.",
@@ -1008,7 +1100,8 @@ export default function IngredientExplorer() {
           difficulty: "Hard",
           missingIngredients: [],
           availableIngredients: [],
-          description: "Classic French chicken braised in wine with herbs! 🍷🐓",
+          description:
+            "Classic French chicken braised in wine with herbs! 🍷🐓",
           servings: 4,
           cuisine: "French",
           calories: 420,
@@ -1041,7 +1134,7 @@ export default function IngredientExplorer() {
             "Serve garnished with fresh parsley.",
           ],
         },
-      ]
+      ];
 
       const matchedRecipes = recipeDatabase
         .map((recipe) => {
@@ -1051,7 +1144,7 @@ export default function IngredientExplorer() {
                 recipeIng.toLowerCase().includes(ingredient.toLowerCase()) ||
                 ingredient.toLowerCase().includes(recipeIng.toLowerCase()),
             ),
-          )
+          );
 
           const missingIngredients = recipe.ingredients
             .filter(
@@ -1062,59 +1155,62 @@ export default function IngredientExplorer() {
                     userIng.toLowerCase().includes(recipeIng.toLowerCase()),
                 ),
             )
-            .slice(0, 4) // Show only first 4 missing ingredients
+            .slice(0, 4); // Show only first 4 missing ingredients
 
           return {
             ...recipe,
             availableIngredients: availableInRecipe,
             missingIngredients: missingIngredients,
             matchScore: availableInRecipe.length,
-          }
+          };
         })
         .filter((recipe) => recipe.matchScore > 0) // Only show recipes with at least 1 matching ingredient
-        .sort((a, b) => b.matchScore - a.matchScore) // Sort by match score
+        .sort((a, b) => b.matchScore - a.matchScore); // Sort by match score
 
-      setRecipes(matchedRecipes)
+      setRecipes(matchedRecipes);
     } catch (err) {
-      console.error("Recipe generation error:", err)
-      setError("Failed to generate recipes. Please try again.")
+      console.error("Recipe generation error:", err);
+      setError("Failed to generate recipes. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const saveIngredientSet = () => {
-    if (ingredients.length === 0) return
+    if (ingredients.length === 0) return;
     try {
-      const name = prompt("Name this ingredient set:")
+      const name = prompt("Name this ingredient set:");
       if (name && name.trim()) {
-        setSavedSets([...savedSets, { name: name.trim(), ingredients: [...ingredients] }])
-        setError(null)
+        setSavedSets([
+          ...savedSets,
+          { name: name.trim(), ingredients: [...ingredients] },
+        ]);
+        setError(null);
       }
     } catch (err) {
-      console.error("Error saving ingredient set:", err)
-      setError("Failed to save ingredient set")
+      console.error("Error saving ingredient set:", err);
+      setError("Failed to save ingredient set");
     }
-  }
+  };
 
   const loadIngredientSet = (set: { name: string; ingredients: string[] }) => {
     try {
-      setIngredients(set.ingredients)
-      setShowSavedSets(false)
-      setError(null)
+      setIngredients(set.ingredients);
+      setShowSavedSets(false);
+      setError(null);
     } catch (err) {
-      console.error("Error loading ingredient set:", err)
-      setError("Failed to load ingredient set")
+      console.error("Error loading ingredient set:", err);
+      setError("Failed to load ingredient set");
     }
-  }
+  };
 
   const showFullRecipe = (recipe: Recipe) => {
-    setSelectedRecipe(recipe)
-  }
+    setSelectedRecipe(recipe);
+  };
 
   const closeRecipeModal = () => {
-    setSelectedRecipe(null)
-  }
+    setSelectedRecipe(null);
+  };
 
   return (
     <div className="min-h-screen bg-base-100 relative">
@@ -1131,8 +1227,13 @@ export default function IngredientExplorer() {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-base-100 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-base-100 border-b border-base-300 p-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-base-content">{selectedRecipe.title}</h2>
-              <button onClick={closeRecipeModal} className="btn btn-ghost btn-sm">
+              <h2 className="text-2xl font-bold text-base-content">
+                {selectedRecipe.title}
+              </h2>
+              <button
+                onClick={closeRecipeModal}
+                className="btn btn-ghost btn-sm"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1141,12 +1242,18 @@ export default function IngredientExplorer() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <img
-                    src={selectedRecipe.image || getRecipeImage(selectedRecipe.title, selectedRecipe.cuisine)}
+                    src={
+                      selectedRecipe.image ||
+                      getRecipeImage(
+                        selectedRecipe.title,
+                        selectedRecipe.cuisine,
+                      )
+                    }
                     alt={selectedRecipe.title}
                     className="w-full h-64 object-cover rounded-lg mb-4"
                     onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(selectedRecipe.title + " " + selectedRecipe.cuisine + " food dish authentic")}`
+                      const target = e.target as HTMLImageElement;
+                      target.src = `/placeholder.svg?height=400&width=600&query=${encodeURIComponent(selectedRecipe.title + " " + selectedRecipe.cuisine + " food dish authentic")}`;
                     }}
                   />
                   <div className="flex items-center gap-4 mb-4 text-sm">
@@ -1170,12 +1277,15 @@ export default function IngredientExplorer() {
                       {selectedRecipe.difficulty}
                     </div>
                   </div>
-                  <p className="text-base-content/70 mb-4">{selectedRecipe.description}</p>
+                  <p className="text-base-content/70 mb-4">
+                    {selectedRecipe.description}
+                  </p>
                   <div className="bg-base-200 p-4 rounded-lg">
                     <h4 className="font-semibold mb-2">Nutrition Info</h4>
                     <p className="text-sm text-base-content/70">
                       Cuisine: {selectedRecipe.cuisine} •
-                      {selectedRecipe.calories && ` ${selectedRecipe.calories} calories per serving`}
+                      {selectedRecipe.calories &&
+                        ` ${selectedRecipe.calories} calories per serving`}
                     </p>
                   </div>
                 </div>
@@ -1198,7 +1308,9 @@ export default function IngredientExplorer() {
                         <span className="bg-primary text-primary-content rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
                           {index + 1}
                         </span>
-                        <span className="text-sm leading-relaxed">{instruction}</span>
+                        <span className="text-sm leading-relaxed">
+                          {instruction}
+                        </span>
                       </li>
                     ))}
                   </ol>
@@ -1220,13 +1332,18 @@ export default function IngredientExplorer() {
             <Sparkles className="w-8 h-8 text-primary" />
             AI Ingredient Explorer
           </h1>
-          <p className="text-lg text-base-content/70">Discover amazing recipes based on what you have at home!</p>
+          <p className="text-lg text-base-content/70">
+            Discover amazing recipes based on what you have at home!
+          </p>
         </div>
 
         {error && (
           <div className="alert alert-error mb-6">
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="btn btn-sm btn-ghost">
+            <button
+              onClick={() => setError(null)}
+              className="btn btn-sm btn-ghost"
+            >
               Dismiss
             </button>
           </div>
@@ -1234,7 +1351,9 @@ export default function IngredientExplorer() {
 
         <div className="card bg-base-200 shadow-xl mb-8">
           <div className="card-body py-4 px-6">
-            <h2 className="card-title text-xl mb-4 text-center">What ingredients do you have?</h2>
+            <h2 className="card-title text-xl mb-4 text-center">
+              What ingredients do you have?
+            </h2>
             <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <div className="flex-1 flex gap-2">
                 <input
@@ -1256,7 +1375,11 @@ export default function IngredientExplorer() {
                   disabled={!speechSupported}
                   className={`btn ${isListening ? "btn-error" : "btn-info"} disabled:opacity-50`}
                 >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  {isListening ? (
+                    <MicOff className="w-4 h-4" />
+                  ) : (
+                    <Mic className="w-4 h-4" />
+                  )}
                   {isListening ? "Stop" : "Voice"}
                 </button>
               )}
@@ -1265,7 +1388,10 @@ export default function IngredientExplorer() {
               {ingredients.map((ingredient, index) => (
                 <div key={index} className="badge badge-primary badge-lg gap-2">
                   {ingredient}
-                  <button onClick={() => removeIngredient(ingredient)} className="hover:text-error">
+                  <button
+                    onClick={() => removeIngredient(ingredient)}
+                    className="hover:text-error"
+                  >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
@@ -1287,21 +1413,36 @@ export default function IngredientExplorer() {
               >
                 Save Set
               </button>
-              <button onClick={() => setShowSavedSets(!showSavedSets)} className="btn btn-outline btn-primary">
+              <button
+                onClick={() => setShowSavedSets(!showSavedSets)}
+                className="btn btn-outline btn-primary"
+              >
                 Saved Sets ({savedSets.length})
               </button>
             </div>
             {showSavedSets && savedSets.length > 0 && (
               <div className="mt-4 p-3 bg-base-300 rounded-lg">
-                <h3 className="font-semibold text-base-content mb-2">Your Saved Ingredient Sets:</h3>
+                <h3 className="font-semibold text-base-content mb-2">
+                  Your Saved Ingredient Sets:
+                </h3>
                 <div className="space-y-2">
                   {savedSets.map((set, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-base-100 rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 bg-base-100 rounded-lg"
+                    >
                       <div>
-                        <div className="font-medium text-base-content">{set.name}</div>
-                        <div className="text-sm text-base-content/70">{set.ingredients.join(", ")}</div>
+                        <div className="font-medium text-base-content">
+                          {set.name}
+                        </div>
+                        <div className="text-sm text-base-content/70">
+                          {set.ingredients.join(", ")}
+                        </div>
                       </div>
-                      <button onClick={() => loadIngredientSet(set)} className="btn btn-primary btn-sm">
+                      <button
+                        onClick={() => loadIngredientSet(set)}
+                        className="btn btn-primary btn-sm"
+                      >
                         Load
                       </button>
                     </div>
@@ -1314,30 +1455,42 @@ export default function IngredientExplorer() {
 
         {recipes.length > 0 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-base-content text-center">AI-Curated Recipe Suggestions</h2>
+            <h2 className="text-2xl font-bold text-base-content text-center">
+              AI-Curated Recipe Suggestions
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recipes.map((recipe) => (
-                <div key={recipe.id} className="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow">
+                <div
+                  key={recipe.id}
+                  className="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow"
+                >
                   <figure className="aspect-video">
                     <img
                       src={recipe.image || "/placeholder.svg"}
                       alt={recipe.title}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        const cuisineFallback = getRecipeImage("fallback", recipe.cuisine.toLowerCase())
+                        const target = e.target as HTMLImageElement;
+                        const cuisineFallback = getRecipeImage(
+                          "fallback",
+                          recipe.cuisine.toLowerCase(),
+                        );
                         if (target.src !== cuisineFallback) {
-                          target.src = cuisineFallback
+                          target.src = cuisineFallback;
                         } else {
                           target.src =
-                            "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&q=80"
+                            "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop&q=80";
                         }
                       }}
                     />
                   </figure>
                   <div className="card-body">
-                    <h3 className="card-title text-base-content">{recipe.title}</h3>
-                    <p className="text-base-content/70 text-sm mb-4">{recipe.description}</p>
+                    <h3 className="card-title text-base-content">
+                      {recipe.title}
+                    </h3>
+                    <p className="text-base-content/70 text-sm mb-4">
+                      {recipe.description}
+                    </p>
                     <div className="flex items-center gap-4 mb-4 text-sm text-base-content/70">
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
@@ -1360,33 +1513,52 @@ export default function IngredientExplorer() {
                       </div>
                     </div>
                     <div className="mb-3">
-                      <div className="text-sm font-medium text-base-content mb-2">You have:</div>
+                      <div className="text-sm font-medium text-base-content mb-2">
+                        You have:
+                      </div>
                       <div className="flex flex-wrap gap-1">
                         {recipe.availableIngredients.length > 0 ? (
-                          recipe.availableIngredients.map((ingredient, index) => (
-                            <span key={index} className="badge badge-success badge-sm">
-                              ✓ {ingredient}
-                            </span>
-                          ))
+                          recipe.availableIngredients.map(
+                            (ingredient, index) => (
+                              <span
+                                key={index}
+                                className="badge badge-success badge-sm"
+                              >
+                                ✓ {ingredient}
+                              </span>
+                            ),
+                          )
                         ) : (
-                          <span className="text-sm text-base-content/50">No matching ingredients</span>
+                          <span className="text-sm text-base-content/50">
+                            No matching ingredients
+                          </span>
                         )}
                       </div>
                     </div>
                     {recipe.missingIngredients.length > 0 && (
                       <div className="mb-4">
-                        <div className="text-sm font-medium text-base-content mb-2">You need:</div>
+                        <div className="text-sm font-medium text-base-content mb-2">
+                          You need:
+                        </div>
                         <div className="flex flex-wrap gap-1">
-                          {recipe.missingIngredients.map((ingredient, index) => (
-                            <span key={index} className="badge badge-warning badge-sm">
-                              + {ingredient}
-                            </span>
-                          ))}
+                          {recipe.missingIngredients.map(
+                            (ingredient, index) => (
+                              <span
+                                key={index}
+                                className="badge badge-warning badge-sm"
+                              >
+                                + {ingredient}
+                              </span>
+                            ),
+                          )}
                         </div>
                       </div>
                     )}
                     <div className="card-actions justify-end">
-                      <button onClick={() => showFullRecipe(recipe)} className="btn btn-primary w-full">
+                      <button
+                        onClick={() => showFullRecipe(recipe)}
+                        className="btn btn-primary w-full"
+                      >
                         View Full Recipe
                       </button>
                     </div>
@@ -1400,14 +1572,17 @@ export default function IngredientExplorer() {
         {ingredients.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🥘</div>
-            <h3 className="text-xl font-semibold text-amber-800 mb-2">Start by adding your ingredients</h3>
+            <h3 className="text-xl font-semibold text-amber-800 mb-2">
+              Start by adding your ingredients
+            </h3>
             <p className="text-amber-600">
-              Type them in{speechSupported ? ", use voice input," : ""} or load a saved set to get started!
+              Type them in{speechSupported ? ", use voice input," : ""} or load
+              a saved set to get started!
             </p>
           </div>
         )}
       </div>
       <Footer />
     </div>
-  )
+  );
 }

@@ -71,10 +71,10 @@ export default function Page() {
         const sortedCategories = data.categories.sort((a: any, b: any) => {
           const priority = ["Dessert", "Vegetarian", "Pasta"];
           const aIndex = priority.findIndex((cat) =>
-            a.strCategory.toLowerCase().includes(cat.toLowerCase())
+            a.strCategory.toLowerCase().includes(cat.toLowerCase()),
           );
           const bIndex = priority.findIndex((cat) =>
-            b.strCategory.toLowerCase().includes(cat.toLowerCase())
+            b.strCategory.toLowerCase().includes(cat.toLowerCase()),
           );
 
           if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
@@ -90,7 +90,7 @@ export default function Page() {
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setCurrentTheme(
-        document.documentElement.getAttribute("data-theme") || "light"
+        document.documentElement.getAttribute("data-theme") || "light",
       );
     });
     observer.observe(document.documentElement, {
@@ -98,7 +98,7 @@ export default function Page() {
       attributeFilter: ["data-theme"],
     });
     setCurrentTheme(
-      document.documentElement.getAttribute("data-theme") || "light"
+      document.documentElement.getAttribute("data-theme") || "light",
     );
     return () => observer.disconnect();
   }, []);
@@ -355,7 +355,7 @@ export default function Page() {
                       setSelectedDiets((prev) =>
                         prev.includes(diet)
                           ? prev.filter((d) => d !== diet)
-                          : [...prev, diet]
+                          : [...prev, diet],
                       )
                     }
                     className={`btn btn-sm md:btn-md ${
@@ -384,15 +384,15 @@ export default function Page() {
 
                   if (filter === "Vegetarian")
                     return vegetarianKeywords.some((keyword) =>
-                      lowerName.includes(keyword)
+                      lowerName.includes(keyword),
                     );
                   if (filter === "Non-Vegetarian")
                     return !vegetarianKeywords.some((keyword) =>
-                      lowerName.includes(keyword)
+                      lowerName.includes(keyword),
                     );
                   if (selectedDiets.length > 0)
                     return selectedDiets.some((diet) =>
-                      categoryDietMap[category.strCategory]?.includes(diet)
+                      categoryDietMap[category.strCategory]?.includes(diet),
                     );
                   return true;
                 })

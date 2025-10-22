@@ -78,7 +78,12 @@ function tailAfterQty(raw) {
 
 /* ---------------- Ingredients table ---------------- */
 
-function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) {
+function IngredientsTable({
+  mealData,
+  activeIngRange,
+  unitSystem,
+  factor = 1,
+}) {
   const ingredients = useMemo(
     () =>
       Object.keys(mealData)
@@ -91,7 +96,7 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) 
           return null;
         })
         .filter(Boolean),
-    [mealData]
+    [mealData],
   );
 
   return (
@@ -99,8 +104,12 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) 
       <table className="table w-full">
         <thead>
           <tr className="text-left">
-            <th className="p-2 w-1/3 text-sm font-semibold text-primary">Quantity</th>
-            <th className="p-2 text-sm font-semibold text-primary">Ingredient</th>
+            <th className="p-2 w-1/3 text-sm font-semibold text-primary">
+              Quantity
+            </th>
+            <th className="p-2 text-sm font-semibold text-primary">
+              Ingredient
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -112,7 +121,8 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) 
               const parsed = parseMeasure(raw); // { qty, unit } when recognized
               if (parsed && Number.isFinite(parsed.qty)) {
                 const scaledQty = parsed.qty * factor;
-                const pretty = scaledQty >= 10 ? Math.round(scaledQty) : round1(scaledQty);
+                const pretty =
+                  scaledQty >= 10 ? Math.round(scaledQty) : round1(scaledQty);
 
                 // keep whatever appears after the number (unit and descriptors)
                 const tail = tailAfterQty(raw);
@@ -139,7 +149,10 @@ function IngredientsTable({ mealData, activeIngRange, unitSystem, factor = 1 }) 
             }
 
             return (
-              <tr key={i} className="border-t border-base-300 hover:bg-base-200">
+              <tr
+                key={i}
+                className="border-t border-base-300 hover:bg-base-200"
+              >
                 <td className="p-2 font-medium text-secondary tabular-nums text-left whitespace-nowrap">
                   <HighlightedIngredient
                     text={displayMeasure}
@@ -212,7 +225,7 @@ function ShowMeal({ URL }) {
   const baseServings = 2;
   const { servings, setServings, factor, reset } = useServings(
     mealData?.idMeal || "pending",
-    baseServings
+    baseServings,
   );
 
   const utterances = useRef([]);
@@ -226,10 +239,30 @@ function ShowMeal({ URL }) {
   }, [mealData]);
 
   const allergenKeywords = [
-    "milk","cheese","butter","cream","egg",
-    "peanut","almond","cashew","walnut","pecan","hazelnut",
-    "wheat","barley","rye","soy","soybean",
-    "shrimp","prawn","crab","lobster","clam","mussel","oyster","fish",
+    "milk",
+    "cheese",
+    "butter",
+    "cream",
+    "egg",
+    "peanut",
+    "almond",
+    "cashew",
+    "walnut",
+    "pecan",
+    "hazelnut",
+    "wheat",
+    "barley",
+    "rye",
+    "soy",
+    "soybean",
+    "shrimp",
+    "prawn",
+    "crab",
+    "lobster",
+    "clam",
+    "mussel",
+    "oyster",
+    "fish",
   ];
 
   const detectedAllergens = useMemo(() => {
@@ -237,7 +270,9 @@ function ShowMeal({ URL }) {
     const ingredients = Object.keys(mealData)
       .filter((k) => k.startsWith("strIngredient") && mealData[k])
       .map((k) => mealData[k].toLowerCase());
-    return allergenKeywords.filter((a) => ingredients.some((ing) => ing.includes(a)));
+    return allergenKeywords.filter((a) =>
+      ingredients.some((ing) => ing.includes(a)),
+    );
   }, [mealData]);
 
   useEffect(() => {
@@ -272,7 +307,10 @@ function ShowMeal({ URL }) {
   const handlePlay = useCallback(() => {
     const synth = window.speechSynthesis;
 
-    if (ingredientPlayerState === "playing" || ingredientPlayerState === "paused") {
+    if (
+      ingredientPlayerState === "playing" ||
+      ingredientPlayerState === "paused"
+    ) {
       synth.cancel();
       setIngredientPlayerState("idle");
       setActiveIngRange({ sentenceIndex: -1, startChar: -1, endChar: -1 });
@@ -323,7 +361,7 @@ function ShowMeal({ URL }) {
 
   const ingredientsCopyText = useMemo(
     () => ingredientSentences.join("\n"),
-    [ingredientSentences]
+    [ingredientSentences],
   );
 
   const [copied, setCopied] = useState(false);
@@ -470,7 +508,7 @@ function ShowMeal({ URL }) {
                 strMeal: meal.strMeal,
                 strMealThumb: meal.strMealThumb,
               },
-            ])
+            ]),
           );
         }
       })
@@ -539,7 +577,10 @@ function ShowMeal({ URL }) {
       >
         <BackButton />
         {/* --- ANIMATION ADDED --- */}
-        <div data-aos="fade-in" className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
+        <div
+          data-aos="fade-in"
+          className="relative max-w-4xl w-full bg-base-200 shadow-xl rounded-xl"
+        >
           <div className="p-6 md:p-12 print-area">
             <header className="relative text-center mb-8">
               <div className="absolute top-0 right-0 flex items-center gap-2">
@@ -582,12 +623,17 @@ function ShowMeal({ URL }) {
               <h1 className="text-3xl md:text-5xl font-bold text-base-content">
                 {mealData.strMeal}
               </h1>
-              <p className="text-lg text-primary mt-2">{mealData.strArea} Cuisine</p>
+              <p className="text-lg text-primary mt-2">
+                {mealData.strArea} Cuisine
+              </p>
 
               {detectedAllergens.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-2 mt-2">
                   {detectedAllergens.map((allergen) => (
-                    <span key={allergen} className="badge badge-sm badge-error text-white">
+                    <span
+                      key={allergen}
+                      className="badge badge-sm badge-error text-white"
+                    >
                       {allergen}
                     </span>
                   ))}
@@ -607,7 +653,9 @@ function ShowMeal({ URL }) {
                 />
 
                 <div className="flex flex-wrap items-center gap-4 no-print">
-                  <span className="badge badge-lg badge-accent">{mealData.strCategory}</span>
+                  <span className="badge badge-lg badge-accent">
+                    {mealData.strCategory}
+                  </span>
 
                   {mealData.strYoutube && (
                     <Link
@@ -646,12 +694,20 @@ function ShowMeal({ URL }) {
                   </button>
                 </div>
                 {/* --- ANIMATION ADDED --- */}
-                <section data-aos="fade-right" id="instructions-section" className="mt-10">
+                <section
+                  data-aos="fade-right"
+                  id="instructions-section"
+                  className="mt-10"
+                >
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-base-content">Preparation Steps</h2>
+                    <h2 className="text-2xl font-bold text-base-content">
+                      Preparation Steps
+                    </h2>
                     <div className="flex items-center gap-2 p-1 border border-base-300 rounded-full bg-base-200">
                       <button
-                        onClick={playerState === "playing" ? handlePause : handlePlay}
+                        onClick={
+                          playerState === "playing" ? handlePause : handlePlay
+                        }
                         className="btn btn-ghost btn-circle"
                       >
                         {playerState === "playing" ? (
@@ -679,7 +735,10 @@ function ShowMeal({ URL }) {
 
               {/* RIGHT: Ingredients */}
               {/* --- ANIMATION ADDED --- */}
-              <div data-aos="fade-left" className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]">
+              <div
+                data-aos="fade-left"
+                className="md:w-1/2 md:self-start md:sticky md:top-24 md:max-h-[calc(100vh-8rem)] md:overflow-auto md:z-[1]"
+              >
                 {/* Heading */}
                 <div className="mb-1">
                   <h2 className="text-2xl font-bold text-base-content flex items-center gap-2">
@@ -719,18 +778,46 @@ function ShowMeal({ URL }) {
                       type="button"
                     >
                       {!copied ? (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect
+                            x="9"
+                            y="9"
+                            width="13"
+                            height="13"
+                            rx="2"
+                            ry="2"
+                          ></rect>
                           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                         </svg>
                       ) : (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <path d="M20 6L9 17l-5-5" />
                         </svg>
                       )}
                     </button>
 
-                    <Link href="/shopping-list" className="link link-primary link-hover text-xs sm:hidden">
+                    <Link
+                      href="/shopping-list"
+                      className="link link-primary link-hover text-xs sm:hidden"
+                    >
                       Open list
                     </Link>
                   </div>
