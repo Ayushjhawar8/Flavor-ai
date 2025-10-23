@@ -42,25 +42,20 @@ export default function CommunityPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div
-        style={{
-          position: "absolute",
-          top: "85px",
-          left: "3px",
-        }}
-        className="absolute"
-      >
-        <BackButton />
-      </div>
+      <div style={{
+        position: 'absolute',
+        top: '50px',
+        left: '-24px',
+      }} className="absolute"><BackButton/></div>
 
       <div
-        className={`flex-grow bg-base-100 transition-all duration-300 ${
+        className={`flex-grow pt-12 bg-base-100 transition-all duration-300 ${
           showResults ? "opacity-80 blur-sm" : "opacity-100"
         }`}
       >
-        <div className="container mx-auto px-4 py-8 mt-40">
-          <div className="flex justify-between items-center mb-8">
-            <div>
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex justify-between items-center mb-6">
+            <div className="pl-16">
               <h1 className="text-4xl font-bold text-primary mb-2">
                 Community Recipes
               </h1>

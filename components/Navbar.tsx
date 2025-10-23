@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Home, Menu, X, Info, HelpCircle, Users } from "lucide-react"; // Added HelpCircle and Users
+import { Home, Menu, X, Info, HelpCircle, Users, LogIn, UserPlus } from "lucide-react";
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
 import CursorToggle from "./CursorToggle";
@@ -127,6 +127,20 @@ const MobileNavigation = ({ currentTheme }) => {
               <HelpCircle size={20} className="text-white" />
             </div>
             <span>FAQ</span>
+          </Link>
+
+          <Link href="/login" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <LogIn size={20} className="text-white" />
+            </div>
+            <span>Login</span>
+          </Link>
+
+          <Link href="/signup" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <UserPlus size={20} className="text-white" />
+            </div>
+            <span>Sign Up</span>
           </Link>
         </div>
 
@@ -417,21 +431,40 @@ export default function Navbar({
             backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338",
           }}
         >
-          {/* This inner div needs the exact class styling of the <Link> component used for FAQ */}
           <div
-            id="theme-toggle-btn-wrapper" // Keep the wrapper ID consistent
+            id="theme-toggle-btn-wrapper"
             className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
           >
-            {/* The ThemeToggle component is called here */}
             <ThemeToggle />
           </div>
-
           <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
             Theme
           </span>
         </div>
 
-        <MobileNavigation currentTheme={currentTheme} />
+        <Link
+          href="/login"
+          className={`hidden md:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-md border hover:scale-[1.02] ${
+            currentTheme === "dark"
+              ? "bg-gradient-to-br from-base-100 via-base-300 to-base-200 text-white shadow-md hover:shadow-lg border-white/10"
+              : "bg-gradient-to-br from-base-200 via-base-100 to-base-300 text-gray-900 shadow-md hover:shadow-lg border-white/10"
+          }`}
+        >
+          Login
+        </Link>
+
+        <Link
+          href="/signup"
+          className={`hidden md:block text-sm font-bold px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-md hover:scale-[1.02] border border-white/10 ${
+            currentTheme === "dark"
+              ? "bg-gradient-to-br from-pink-700 via-purple-800 to-pink-700 text-white hover:shadow-lg"
+              : "bg-gradient-to-br from-pink-200 via-purple-300 to-pink-200 text-gray-900 hover:shadow-md"
+          }`}
+        >
+          Sign Up
+        </Link>
+
+        <MobileNavigation currentTheme={currentTheme}/>
       </div>
 
       {/* Mobile Search below */}

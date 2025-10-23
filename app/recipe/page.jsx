@@ -95,7 +95,7 @@ export default function ViewRecipePage() {
         />
 
         <div
-          className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex justify-center items-start transition-all duration-300 ${
+          className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex gap-2 justify-center items-start transition-all duration-300 ${
             showResults ? "opacity-80 blur-sm" : "opacity-100"
           }`}
         >
@@ -103,56 +103,62 @@ export default function ViewRecipePage() {
 
           <div className="relative mt-14 md:mt-0 max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
             <div className="p-6 md:p-12">
-              <header className="relative text-center mb-8">
-                <h1 className="text-3xl md:text-5xl font-bold text-base-content">
-                  {recipeData.title}
-                </h1>
+              <header className="relative text-center mb-12">
+                <div className="inline-block">
+                  <h1 className="text-4xl md:text-6xl font-extrabold text-base-content">
+                    {recipeData.title}
+                  </h1>
+                  <div className="h-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-full mt-2"></div>
+                </div>
                 {recipeData.description && (
-                  <p className="text-lg text-base-content/80 mt-2">
+                  <p className="text-lg text-base-content/90 mt-6 max-w-2xl mx-auto leading-relaxed">
                     {recipeData.description}
                   </p>
                 )}
 
-                <div className="flex items-center justify-center gap-6 mt-4 text-sm text-base-content/60">
+                <div className="flex items-center justify-center gap-8 mt-8 flex-wrap">
                   {recipeData.cookTime && (
-                    <div className="flex items-center gap-1">
-                      <Clock size={16} />
-                      <span>{recipeData.cookTime}</span>
+                    <div className="flex items-center gap-2 bg-base-100 px-4 py-3 rounded-full shadow-md hover:shadow-lg transition-all">
+                      <Clock size={20} className="text-purple-600 dark:text-purple-400" />
+                      <span className="font-semibold">{recipeData.cookTime}</span>
                     </div>
                   )}
                   {recipeData.servings && (
-                    <div className="flex items-center gap-1">
-                      <Users size={16} />
-                      <span>{recipeData.servings} servings</span>
+                    <div className="flex items-center gap-2 bg-base-100 px-4 py-3 rounded-full shadow-md hover:shadow-lg transition-all">
+                      <Users size={20} className="text-purple-600 dark:text-purple-400" />
+                      <span className="font-semibold">{recipeData.servings} servings</span>
                     </div>
                   )}
                   {recipeData.difficulty && (
-                    <div className="badge badge-primary">
+                    <div className="badge badge-primary badge-lg px-6 py-4 text-base font-bold shadow-md">
                       {recipeData.difficulty}
                     </div>
                   )}
                 </div>
               </header>
 
-              <div className="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
-                <div className="md:w-1/2">
-                  <img
-                    src={recipeData.image}
-                    alt={recipeData.title}
-                    className="w-full h-auto rounded-lg shadow-md mb-4"
-                  />
-                  <div className="flex items-center gap-4">
-                    <span className="badge badge-lg badge-accent">
+              <div className="flex flex-col md:flex-row gap-10 md:gap-16 mb-16">
+                <div className="md:w-1/2 group">
+                  <div className="relative overflow-hidden rounded-2xl shadow-2xl mb-6 transform transition-transform hover:scale-[1.02]">
+                    <img
+                      src={recipeData.image}
+                      alt={recipeData.title}
+                      className="w-full h-auto"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <span className="badge badge-lg badge-accent font-bold px-5 py-4 shadow-lg">
                       {recipeData.type || "Community"}
                     </span>
                     {recipeData.author && (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3 bg-base-100 px-4 py-2 rounded-full shadow-md">
                         <img
                           src={recipeData.author.avatar}
                           alt={recipeData.author.name}
-                          className="w-6 h-6 rounded-full"
+                          className="w-10 h-10 rounded-full ring-2 ring-purple-500"
                         />
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-bold">
                           {recipeData.author.name}
                         </span>
                       </div>
@@ -161,18 +167,16 @@ export default function ViewRecipePage() {
                 </div>
 
                 <div className="md:w-1/2">
-                  <h2 className="text-2xl font-bold mb-4 flex items-center text-base-content">
+                  <h2 className="text-2xl font-bold mb-6 flex items-center text-base-content">
                     <PlusIcon />
                     <span className="ml-2">Ingredients</span>
                   </h2>
-                  <div className="bg-base-100 rounded-lg p-4">
-                    <ul className="space-y-2">
+                  <div className="bg-base-100 rounded-lg p-6 shadow-sm border border-base-300">
+                    <ul className="space-y-3">
                       {recipeData.ingredients?.map((ingredient, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <span className="text-primary font-medium">•</span>
-                          <span className="text-base-content">
-                            {ingredient}
-                          </span>
+                        <li key={index} className="flex items-start gap-3">
+                          <span className="text-purple-600 dark:text-purple-400 font-bold text-lg">•</span>
+                          <span className="text-base-content leading-relaxed">{ingredient}</span>
                         </li>
                       ))}
                     </ul>
@@ -180,11 +184,11 @@ export default function ViewRecipePage() {
                 </div>
               </div>
 
-              <section id="instructions-section">
-                <h2 className="text-2xl font-bold text-base-content mb-4">
+              <section id="instructions-section" className="mt-12">
+                <h2 className="text-2xl font-bold text-base-content mb-6">
                   Preparation Steps
                 </h2>
-                <div className="bg-base-100 rounded-lg p-4">
+                <div className="bg-base-100 rounded-lg p-6 shadow-sm border border-base-300">
                   {recipeData.instructions?.length ? (
                     <PreparationChecklist
                       steps={recipeData.instructions}
