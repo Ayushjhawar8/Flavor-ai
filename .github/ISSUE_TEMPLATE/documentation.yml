@@ -1,7 +1,7 @@
 name: Documentation Update
 description: Propose updates or improvements to documentation
 title: "[DOCS] Documentation update"
-labels: [documentation, gssoc25, hacktoberfest]
+labels: [documentation, hacktoberfest]
 body:
   - type: textarea
     id: section

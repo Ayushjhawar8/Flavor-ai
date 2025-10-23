@@ -1,7 +1,7 @@
 name: Chore Task
 description: Request a non-functional change (e.g., refactor, config, tooling)
 title: "[CHORE] Task title"
-labels: [chore, gssoc25, hacktoberfest]
+labels: [chore, hacktoberfest]
 body:
   - type: textarea
     id: task
