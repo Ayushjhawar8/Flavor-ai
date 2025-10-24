@@ -29,8 +29,11 @@ const PreparationChecklist = ({ steps, checklistKey }) => {
   }, [steps, checklistKey]);
 
   const handleCheck = (idx) => {
-    const updated = [...checked];
+    let updated = [...checked];
     updated[idx] = !updated[idx];
+    if(!updated[idx]) {  // if the checkbox was unchecked
+    updated=  updated.slice(0,idx); // remove all checkboxes after it
+    }
     setChecked(updated);
     localStorage.setItem(checklistKey, JSON.stringify(updated));
   };
@@ -143,6 +146,7 @@ const PreparationChecklist = ({ steps, checklistKey }) => {
                 <input
                   type="checkbox"
                   checked={checked[idx] || false}
+                  disabled={idx>0 &&!checked[idx-1]}
                   onChange={() => handleCheck(idx)}
                   className="checkbox checkbox-primary checkbox-md mt-1 flex-shrink-0"
                 />
