@@ -207,9 +207,13 @@ export default function Page() {
         </Link>
       ))}
 
-      {/* Toggle Categories */}
+      {/* Toggle Categories - FIXED: Consistent border in light/dark */}
       <button
-        className="flex items-center gap-2 px-6 py-4 text-lg rounded-full bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/20 backdrop-blur-md shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+        className="flex items-center gap-2 px-6 py-4 text-lg rounded-full 
+           bg-white/20 dark:bg-black/20 
+           border border-gray-800/50 dark:border-purple-400/50 
+           backdrop-blur-md shadow-lg 
+           hover:scale-105 hover:shadow-xl transition-all duration-300"
         onClick={() => {
           setShowCategories((prev) => !prev);
           if (!showCategories) {
@@ -306,7 +310,7 @@ export default function Page() {
                       <p className="text-sm">{category.strCategoryDescription.slice(0,80)}...</p>
                       <div className="card-actions justify-end">
                         <Link href={`/category/${category.strCategory}`}>
-                          <button className="btn btn-primary text-sm md:text-base">Show Recipes 🍽️</button>
+                          <button className="btn btn-primary text-sm md:text-base">Show Recipes</button>
                         </Link>
                       </div>
                     </div>
