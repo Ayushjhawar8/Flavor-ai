@@ -149,8 +149,8 @@ const FAQPage = () => {
 
       <div className="flex flex-col min-h-screen bg-base-300 ">
         <Navbar />
-        <div className="relative mt-10"><BackButton /></div>
-        <main className="flex-grow flex items-center justify-center p-4 mt-6 sm:p-6 lg:p-8 pt-32">
+        <div className="relative mt-20 sm:mt-10"><BackButton /></div>
+        <main className="flex-grow flex items-center justify-center p-4 mt-6 sm:p-6 lg:p-8 pt-4 sm:pt-10 lg:pt-15">
           <div className="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl p-8 space-y-6 transition-all duration-300">
             <div className="text-center">
               <h1 className="text-4xl font-bold text-primary">

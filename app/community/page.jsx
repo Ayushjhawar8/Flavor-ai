@@ -45,14 +45,10 @@ export default function CommunityPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div style={{
-        position: 'absolute',
-        top: '50px',
-        left: '-24px',
-      }} className="absolute"><BackButton/></div>
+      <div className="absolute top-20 left-2 sm:top-14 sm:left-4 md:top-12 md:left-6"><BackButton/></div>
 
       <div
-        className={`flex-grow pt-12 bg-base-100 transition-all duration-300 ${
+        className={`flex-grow pt-24 sm:pt-20 md:pt-16 bg-base-100 transition-all duration-300 ${
           showResults ? "opacity-80 blur-sm" : "opacity-100"
         }`}
       >
