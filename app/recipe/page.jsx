@@ -92,13 +92,13 @@ export default function ViewRecipePage() {
         />
 
         <div
-          className={`min-h-screen py-10 px-4 mt-20 bg-base-100 flex gap-2 justify-center items-start transition-all duration-300 ${
+          className={`min-h-screen py-10 px-4 mt-10 md:mt-20 bg-base-100 flex flex-col md:flex-row gap-2 justify-center items-start transition-all duration-300 ${
             showResults ? "opacity-80 blur-sm" : "opacity-100"
           }`}
         >
           <BackButton />
 
-          <div className="relative mt-14 md:mt-0 max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
+          <div className="relative mt-5 md:mt-0 max-w-4xl w-full bg-base-200 shadow-xl rounded-xl">
             <div className="p-6 md:p-12">
               <header className="relative text-center mb-12">
                 <div className="inline-block">
