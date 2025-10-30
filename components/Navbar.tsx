@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import RecipeSearchBar from "@/components/RecipeSearchBar";
-import { Home, Menu, X, Info, HelpCircle, Users, LogIn, UserPlus } from "lucide-react";
+import { Home, Menu, X, Info, HelpCircle, Users, LogIn, UserPlus, MessageSquare } from "lucide-react";
 import GoogleTranslateWrapper from "./GoogleTranslateWrapper";
 import { createPortal } from "react-dom";
 import CursorToggle from "./CursorToggle";
@@ -102,6 +102,14 @@ const MobileNavigation = ({currentTheme}) => {
               <HelpCircle size={20} className="text-white" />
             </div>
             <span>FAQ</span>
+          </Link>
+
+          {/* Feedback Link */}
+          <Link href="/feedback" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
+            <div className="bg-purple-800/70 rounded-full w-10 h-10 flex items-center justify-center">
+              <MessageSquare size={20} className="text-white" />
+            </div>
+            <span>Feedback</span>
           </Link>
 
           <Link href="/login" className="flex items-center gap-3 p-2 rounded-lg border border-base-300 hover:bg-base-200 transition-colors">
@@ -299,6 +307,23 @@ export default function Navbar({
           </Link>
           <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
             FAQ
+          </span>
+        </div>
+
+        {/* Feedback */}
+        <div
+          className="rounded-full p-1 transition-colors duration-300 hidden md:block relative group"
+          style={{ backgroundColor: currentTheme === "dark" ? "#d8b4fe" : "#7F5338" }}
+        >
+          <Link
+            href="/feedback"
+            aria-label="Feedback"
+            className="w-8 h-8 flex items-center justify-center rounded-full backdrop-blur-sm bg-white/10 dark:bg-black/20 border border-white/20 shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          >
+            <MessageSquare size={16} className={`${currentTheme === "dark" ? "text-white" : "dark:text-white text-black"}`} />
+          </Link>
+          <span className="pointer-events-none absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium bg-white/90 text-gray-900 border border-gray-300/60 shadow-md dark:bg-black/80 dark:text-white dark:border-white/10 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150">
+            Feedback
           </span>
         </div>
 

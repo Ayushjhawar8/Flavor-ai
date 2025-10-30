@@ -7,7 +7,7 @@ const BackToTop = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 400) {
+      if (window.scrollY > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -25,14 +25,13 @@ const BackToTop = () => {
   return (
     <>
       {isVisible && (
-        <div
-          className="fixed bottom-6 right-6 z-50 cursor-pointer"
+        <button
           onClick={handleBackToTop}
+          className="fixed bottom-44 right-6 z-[9999] w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer"
+          aria-label="Back to top"
         >
-          <div className="btn btn-primary btn-circle shadow-lg hover:scale-110 transition-transform duration-300">
-            <ArrowUpIcon className="w-5 h-5 text-primary-content" />
-          </div>
-        </div>
+          <ArrowUpIcon className="w-6 h-6" />
+        </button>
       )}
     </>
   );

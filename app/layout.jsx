@@ -3,6 +3,8 @@ import "./globals.css";
 import ScrollToTop from "../components/ScrollToTop";
 import SnakeCursor from "@/components/SnakeCursor";
 import AOSInitializer from "@/components/AOSInitializer"; // <-- 1. IMPORT the AOS Initializer
+import FloatingFeedbackButton from "@/components/FloatingFeedbackButton";
+import FloatingContactUsButton from "@/components/FloatingContactUsButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +38,8 @@ export default function RootLayout({ children }) {
         <SnakeCursor enabled={false}/>
         {children}
         <ScrollToTop></ScrollToTop>
+        <FloatingContactUsButton />
+        <FloatingFeedbackButton />
       </body>
     </html>
   );
