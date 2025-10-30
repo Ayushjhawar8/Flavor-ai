@@ -40,17 +40,18 @@ const FeedbackPage = () => {
     setStatus('Submitting...');
 
     try {
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      const response = await fetch('/api/feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        setStatus('Thank you for your feedback! We appreciate you helping us improve.');
+        setStatus(data.message || 'Thank you for your feedback! We appreciate you helping us improve.');
         setFormData({
           name: '',
           email: '',
@@ -58,7 +59,7 @@ const FeedbackPage = () => {
           message: '',
         });
       } else {
-        throw new Error('Form submission failed.');
+        throw new Error(data.error || 'Form submission failed.');
       }
     } catch (error) {
       setStatus('Oops! There was a problem submitting your form. Please try again later.');
