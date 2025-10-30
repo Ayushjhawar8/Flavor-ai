@@ -70,21 +70,23 @@ function NutritionAIPage() {
         handleSearchFocus={handleSearchFocus}
         handleBlur={handleBlur}
       />
-      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-20 justify-center items-center relative transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
+      <div className={`min-h-screen py-10 bg-base-100 flex flex-col mt-10 justify-center items-center relative transition-all duration-300 ${showResults ? "opacity-80 blur-sm" : "opacity-100"
         }`}>
-        <div className="no-print">
-          <BackButton />
-        </div>
+        <div className="w-full max-w-6xl px-2 md:px-6 py-1">
+  <div className="no-print flex justify-start">
+    <BackButton />
+  </div>
+</div>
 
         {/* Main Nutrition AI Section */}
 
-        <h1 className={`text-3xl font-bold mb-[50px] text-transparent bg-clip-text ${  currentTheme === "dark"
+        <h1 className={` pt-2 text-3xl font-bold mb-[50px] text-transparent bg-clip-text ${  currentTheme === "dark"
             ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
             : "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600"
         }`}
         >AI-Powered Nutrition Analyzer</h1>
 
-        <div className="w-full max-w-2xl p-6 rounded-xl shadow-lg bg-base-200 border border-base-300">
+        <div className="w-full max-w-2xl  p-6 rounded-xl  shadow-lg bg-base-200 border border-base-300  ">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold mb-2 text-brown-700">🧬 Nutrition AI</h1>
             <p className={`text-base-content/70`}>Analyze the nutritional content of your recipes and ingredients</p>
