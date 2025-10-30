@@ -115,7 +115,7 @@ export default function Page() {
       />
 
       {/* Main container for all page content */}
-      <main className={`flex-grow flex flex-col items-center justify-center w-full bg-base-100 transition-all duration-300 relative z-10 ${
+      <main className={`flex-grow pt-20 sm:pt-24  md:pt-28 flex flex-col items-center justify-center w-full bg-base-100 transition-all duration-300 relative z-10 ${
           !showResults ? "opacity-100" : "opacity-80 blur-sm"
         }`}
       >
@@ -282,7 +282,7 @@ export default function Page() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto place-items-center ">
               {categories
                 .filter(category => {
                   const lowerName = category.strCategory.toLowerCase();
