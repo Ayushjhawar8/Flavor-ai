@@ -102,7 +102,6 @@
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="150%">
 
-![GSSoC Logo](https://github.com/Ayushjhawar8/Flavor-ai/blob/main/screenshots/gssoc%20logo.png)
 
 ## 🌟 Exciting News...
 
